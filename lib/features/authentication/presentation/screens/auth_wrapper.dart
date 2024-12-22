@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import '../../../home/home_wrapper.dart';
+import '../../../home/screens/home_wrapper.dart';
 import '../bloc/app_auth/app_auth_bloc.dart';
 import 'login_screen.dart';
 
@@ -14,12 +14,15 @@ class AuthWrapper extends StatelessWidget {
         return current is AuthenticatedState || current is UnAuthenticatedState;
       },
       builder: (context, state) {
-        return state.maybeMap(
-          authenticated: (value) => const HomeWrapper(),
-          unAuthenticated: (value) => const LoginScreen(),
-          loggedOut: (value) => const LoginScreen(),
-          orElse: () => const SizedBox.shrink(),
-        );
+        if (state is AuthenticatedState) {
+          return const HomeWrapper();
+        } else if (state is UnAuthenticatedState) {
+          return const LoginScreen();
+        } else if (state is LoggedOutState) {
+          return const LoginScreen();
+        } else {
+          return const SizedBox.shrink();
+        }
       },
     );
   }

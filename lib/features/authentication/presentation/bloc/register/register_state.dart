@@ -1,12 +1,28 @@
 part of 'register_cubit.dart';
 
-@freezed
-class RegisterState with _$RegisterState {
-  const factory RegisterState.initial() = RegisterInitial;
+abstract class RegisterState extends Equatable {
+  const RegisterState();
 
-  const factory RegisterState.registering() = Registering;
+  @override
+  List<Object> get props => [];
+}
 
-  const factory RegisterState.registerSuccess() = RegisterSuccess;
+class RegisterInitial extends RegisterState {
+  const RegisterInitial();
+}
 
-  const factory RegisterState.registerError(Failure failure) = RegisterError;
+class RegistrationInProgress extends RegisterState {
+  const RegistrationInProgress();
+}
+
+class RegistrationCompleted extends RegisterState {
+  const RegistrationCompleted();
+}
+
+class RegisterError extends RegisterState {
+  final Failure failure;
+  const RegisterError({required this.failure});
+
+  @override
+  List<Object> get props => [failure];
 }

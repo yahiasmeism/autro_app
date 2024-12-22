@@ -1,8 +1,14 @@
 part of 'app_auth_bloc.dart';
 
-@freezed
-class AppAuthEvent with _$AppAuthEvent {
-  const factory AppAuthEvent.checkAuthentication() = CheckAuthenticationAppEvent;
-  const factory AppAuthEvent.logout() = LogoutAppEvent;
-  const factory AppAuthEvent.sessionExpired() = SessionExpiredAppEvent;
+abstract class AppAuthEvent extends Equatable {
+  const AppAuthEvent();
+
+  @override
+  List<Object> get props => [];
 }
+
+class CheckAuthenticationAppEvent extends AppAuthEvent {}
+
+class LogoutAppEvent extends AppAuthEvent {}
+
+class SessionExpiredAppEvent extends AppAuthEvent {}

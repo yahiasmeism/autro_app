@@ -22,6 +22,7 @@ import 'package:autro_app/features/authentication/presentation/bloc/login/login_
     as _i878;
 import 'package:autro_app/features/authentication/presentation/bloc/register/register_cubit.dart'
     as _i744;
+import 'package:autro_app/features/home/bloc/home_bloc.dart' as _i80;
 import 'package:get_it/get_it.dart' as _i174;
 import 'package:injectable/injectable.dart' as _i526;
 import 'package:shared_preferences/shared_preferences.dart' as _i460;
@@ -42,6 +43,7 @@ extension GetItInjectableX on _i174.GetIt {
       () => iTMCoreInjectableModules.sharedPreferences,
       preResolve: true,
     );
+    gh.lazySingleton<_i80.HomeBloc>(() => _i80.HomeBloc());
     gh.lazySingleton<_i646.NetworkInfo>(() => _i646.NetworkInfoImpl());
     gh.lazySingleton<_i123.AppPreferences>(() => _i123.AppPreferencesImpl(
         sharedPreferences: gh<_i460.SharedPreferences>()));

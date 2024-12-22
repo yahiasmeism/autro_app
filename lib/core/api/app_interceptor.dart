@@ -1,4 +1,3 @@
-
 import 'package:autro_app/core/di/di.dart';
 import 'package:dio/dio.dart';
 import '../../features/authentication/presentation/bloc/app_auth/app_auth_bloc.dart';
@@ -25,7 +24,7 @@ class AppIntercepters extends Interceptor {
 
     /// if the error is 401 and the user is authenticated, then we need to logout
     if (err.response?.statusCode == 401 && isUserLoggedIn) {
-      sl<AppAuthBloc>().add(const AppAuthEvent.sessionExpired());
+      sl<AppAuthBloc>().add(SessionExpiredAppEvent());
     }
     super.onError(err, handler);
   }
