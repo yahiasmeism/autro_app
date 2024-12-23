@@ -63,7 +63,7 @@ class ErrorHandler implements Exception {
         return const SendTimeoutFailure();
       case DioExceptionType.badResponse:
         final code = exception.response?.statusCode ?? -1;
-        final message = exception.response?.data['message'];
+        final message = exception.response?.data['message'] ?? exception.response?.data['error'] ?? exception.message;
         return _handleExceptionByResponseCode(code, message);
 
       default:
