@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
-import '../../authentication/presentation/bloc/app_auth/app_auth_bloc.dart';
+import '../../authentication/bloc/app_auth/app_auth_bloc.dart';
 import '../bloc/home_bloc.dart';
 import 'drawer_item.dart';
 

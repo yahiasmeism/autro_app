@@ -1,8 +1,8 @@
-import 'package:autro_app/features/authentication/presentation/bloc/login/login_state.dart';
+import 'package:autro_app/features/authentication/bloc/login/login_state.dart';
 import 'package:bloc/bloc.dart';
 import 'package:injectable/injectable.dart';
 
-import '../../../data/repo/auth_repo.dart';
+import '../../data/repo/auth_repo.dart';
 
 @injectable
 class LoginCubit extends Cubit<LoginState> {

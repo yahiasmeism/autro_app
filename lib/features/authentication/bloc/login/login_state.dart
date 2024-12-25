@@ -1,6 +1,6 @@
 import 'package:equatable/equatable.dart';
 
-import '../../../../../core/errors/failures.dart';
+import '../../../../core/errors/failures.dart';
 
 abstract class LoginState extends Equatable {
   const LoginState();

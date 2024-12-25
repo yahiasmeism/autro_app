@@ -1,6 +1,6 @@
 import 'package:autro_app/core/di/di.dart';
 import 'package:dio/dio.dart';
-import '../../features/authentication/presentation/bloc/app_auth/app_auth_bloc.dart';
+import '../../features/authentication/bloc/app_auth/app_auth_bloc.dart';
 import '../constants/enums.dart';
 import '../storage/app_preferences.dart';
 import 'api_client.dart';

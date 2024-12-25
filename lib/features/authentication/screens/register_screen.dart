@@ -1,14 +1,14 @@
 import 'package:autro_app/core/utils/nav_util.dart';
-import 'package:autro_app/features/authentication/presentation/screens/login_screen.dart';
+import 'package:autro_app/features/authentication/screens/login_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
-import '../../../../core/di/di.dart';
-import '../../../../core/errors/failures.dart';
-import '../../../../core/utils/validator_util.dart';
-import '../../../../core/widgets/buttons/primary_button.dart';
-import '../../../../core/widgets/inputs/generic_text_form_field.dart';
-import '../../../../core/widgets/loading_dialog.dart';
+import '../../../core/di/di.dart';
+import '../../../core/errors/failures.dart';
+import '../../../core/utils/validator_util.dart';
+import '../../../core/widgets/buttons/primary_button.dart';
+import '../../../core/widgets/inputs/generic_text_form_field.dart';
+import '../../../core/widgets/loading_dialog.dart';
 import '../bloc/register/register_cubit.dart';
 
 class RegisterScreen extends StatefulWidget {

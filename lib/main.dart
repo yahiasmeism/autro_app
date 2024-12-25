@@ -2,7 +2,7 @@
 
 import 'dart:io';
 
-import 'package:autro_app/features/authentication/presentation/screens/auth_wrapper.dart';
+import 'package:autro_app/features/authentication/screens/auth_wrapper.dart';
 import 'package:bitsdojo_window/bitsdojo_window.dart';
 // import 'package:bitsdojo_window/bitsdojo_window.dart';
 import 'package:flutter/material.dart';
@@ -11,7 +11,7 @@ import 'package:injectable/injectable.dart';
 
 import 'core/theme/app_colors.dart';
 import 'core/di/di.dart';
-import 'features/authentication/presentation/bloc/app_auth/app_auth_bloc.dart';
+import 'features/authentication/bloc/app_auth/app_auth_bloc.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();

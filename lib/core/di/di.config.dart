@@ -16,11 +16,11 @@ import 'package:autro_app/features/authentication/data/data_sources/auth_remote_
     as _i388;
 import 'package:autro_app/features/authentication/data/repo/auth_repo.dart'
     as _i288;
-import 'package:autro_app/features/authentication/presentation/bloc/app_auth/app_auth_bloc.dart'
+import 'package:autro_app/features/authentication/bloc/app_auth/app_auth_bloc.dart'
     as _i353;
-import 'package:autro_app/features/authentication/presentation/bloc/login/login_cubit.dart'
+import 'package:autro_app/features/authentication/bloc/login/login_cubit.dart'
     as _i878;
-import 'package:autro_app/features/authentication/presentation/bloc/register/register_cubit.dart'
+import 'package:autro_app/features/authentication/bloc/register/register_cubit.dart'
     as _i744;
 import 'package:autro_app/features/home/bloc/home_bloc.dart' as _i80;
 import 'package:get_it/get_it.dart' as _i174;

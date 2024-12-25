@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import '../../../home/screens/home_wrapper.dart';
+import '../../home/screens/home_wrapper.dart';
 import '../bloc/app_auth/app_auth_bloc.dart';
 import 'login_screen.dart';
 

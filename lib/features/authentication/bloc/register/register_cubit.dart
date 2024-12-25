@@ -2,8 +2,8 @@ import 'package:bloc/bloc.dart';
 import 'package:equatable/equatable.dart';
 import 'package:injectable/injectable.dart';
 
-import '../../../../../core/errors/failures.dart';
-import '../../../data/repo/auth_repo.dart';
+import '../../../../core/errors/failures.dart';
+import '../../data/repo/auth_repo.dart';
 
 part 'register_state.dart';
 

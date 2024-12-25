@@ -4,7 +4,7 @@ import 'package:bloc/bloc.dart';
 import 'package:equatable/equatable.dart';
 import 'package:injectable/injectable.dart';
 
-import '../../../data/repo/auth_repo.dart';
+import '../../data/repo/auth_repo.dart';
 
 part 'app_auth_event.dart';
 part 'app_auth_state.dart';
