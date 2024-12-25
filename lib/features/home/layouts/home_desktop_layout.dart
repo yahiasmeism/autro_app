@@ -1,5 +1,5 @@
 import 'package:autro_app/core/constants/enums.dart';
-import 'package:autro_app/features/customers/screens/customers_screen.dart';
+import 'package:autro_app/features/customers/presentation/screens/customers_screen.dart';
 import 'package:autro_app/features/home/bloc/home_bloc.dart';
 import 'package:autro_app/features/home/widget/custom_drawer.dart';
 import 'package:flutter/material.dart';
