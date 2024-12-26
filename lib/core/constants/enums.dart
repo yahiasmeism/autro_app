@@ -16,3 +16,17 @@ enum MenuItemType {
   suppliers,
   messages,
 }
+
+enum ConditionOperator {
+  equals,
+  greaterThan,
+  lessThan,
+  notEquals,
+  contains,
+  startsWith,
+  endsWith,
+  withIn,
+  notIn,
+  greaterThanOrEqual,
+  lessThanOrEqual
+}

@@ -4,4 +4,9 @@ abstract class ApiPaths {
   static const String register = 'register';
   static const String logout = 'logout';
   static const String currentUser = 'user';
+
+  //customers
+
+  static const String customers = 'customers';
+  static String customerById(int id) => 'customers/$id';
 }

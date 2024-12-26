@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 
-import '../../../../core/utils/nav_util.dart';
+import '../../../../../core/utils/nav_util.dart';
 import '../create_customer_screen.dart';
 
 class CustomersMobileLayout extends StatelessWidget {
