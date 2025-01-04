@@ -20,7 +20,7 @@ class PaginationFilterDTO extends Equatable {
     final filter = FilterDTO.defaultFilter();
     return PaginationFilterDTO(
       pageNumber: 1,
-      pageSize: 5,
+      pageSize: 10,
       sort: sort,
       filter: filter,
     );
