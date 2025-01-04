@@ -4,10 +4,10 @@ import 'package:autro_app/core/widgets/failure_screen.dart';
 import 'package:autro_app/core/widgets/no_data_screen.dart';
 import 'package:autro_app/core/widgets/standard_list_title.dart';
 import 'package:autro_app/features/customers/presentation/bloc/customers_list/customers_list_bloc.dart';
-import 'package:autro_app/features/customers/presentation/screens/layouts/desktop/widgets/customer_pagination_bottom_bar.dart';
-import 'package:autro_app/features/customers/presentation/screens/layouts/desktop/widgets/customer_filter_search_bar.dart';
-import 'package:autro_app/features/customers/presentation/screens/layouts/desktop/widgets/customers_list.dart';
-import 'package:autro_app/features/customers/presentation/screens/layouts/desktop/widgets/customers_list_headers_row.dart';
+import 'package:autro_app/features/customers/presentation/widgets/customer_pagination_bottom_bar.dart';
+import 'package:autro_app/features/customers/presentation/widgets/customer_filter_search_bar.dart';
+import 'package:autro_app/features/customers/presentation/widgets/customers_list.dart';
+import 'package:autro_app/features/customers/presentation/widgets/customers_list_headers_row.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 

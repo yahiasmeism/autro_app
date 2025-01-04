@@ -14,8 +14,8 @@ import 'package:flutter_svg/flutter_svg.dart';
 import 'package:url_launcher/url_launcher.dart';
 import 'package:url_launcher/url_launcher_string.dart';
 
-import '../../../../../../../core/theme/text_styles.dart';
-import '../../../../bloc/customers_list/customers_list_bloc.dart';
+import '../../../../core/theme/text_styles.dart';
+import '../bloc/customers_list/customers_list_bloc.dart';
 
 class CustomerListTile extends StatelessWidget {
   const CustomerListTile({super.key, required this.customerEntity});
@@ -39,7 +39,7 @@ class CustomerListTile extends StatelessWidget {
               style: TextStyles.font16Regular,
             ),
           ),
-          const SizedBox(width: 12),
+          const SizedBox(width: 14),
           Expanded(
             flex: 3,
             child: Column(
@@ -59,9 +59,9 @@ class CustomerListTile extends StatelessWidget {
               ],
             ),
           ),
-          const SizedBox(width: 12),
+          const SizedBox(width: 14),
           Expanded(
-            flex: 4,
+            flex: 3,
             child: Text(
               customerEntity.businessDetails,
               style: TextStyles.font16Regular.copyWith(
@@ -69,7 +69,7 @@ class CustomerListTile extends StatelessWidget {
               ),
             ),
           ),
-          const SizedBox(width: 16),
+          const SizedBox(width: 14),
           Expanded(
             flex: 4,
             child: Text(
