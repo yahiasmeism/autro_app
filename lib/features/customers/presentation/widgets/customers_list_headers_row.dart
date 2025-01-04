@@ -21,7 +21,7 @@ class CustomersListHeadersRow extends StatelessWidget {
               ),
             ),
           ),
-          const SizedBox(width: 16),
+          const SizedBox(width: 14),
           Expanded(
             flex: 3,
             child: Text(
@@ -31,9 +31,9 @@ class CustomersListHeadersRow extends StatelessWidget {
               ),
             ),
           ),
-          const SizedBox(width: 16),
+          const SizedBox(width: 14),
           Expanded(
-            flex: 4,
+            flex: 3,
             child: Text(
               'Business',
               style: TextStyles.font16Regular.copyWith(
@@ -41,7 +41,7 @@ class CustomersListHeadersRow extends StatelessWidget {
               ),
             ),
           ),
-          const SizedBox(width: 16),
+          const SizedBox(width: 14),
           Expanded(
             flex: 4,
             child: Text(
