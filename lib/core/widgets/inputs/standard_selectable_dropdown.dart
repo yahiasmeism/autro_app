@@ -3,7 +3,7 @@ import 'package:autro_app/core/theme/text_styles.dart';
 import 'package:drop_down_search_field/drop_down_search_field.dart';
 import 'package:flutter/material.dart';
 
-class StandardSelectableDropDown extends StatefulWidget {
+class StandardSelectableDropdownField extends StatefulWidget {
   final List<String> items;
   final String? labelText;
   final String? hintText;
@@ -11,7 +11,7 @@ class StandardSelectableDropDown extends StatefulWidget {
   final bool readOnly;
   final bool showRequiredIndicator;
   final TextEditingController? controller;
-  const StandardSelectableDropDown({
+  const StandardSelectableDropdownField({
     super.key,
     this.readOnly = false,
     required this.items,
@@ -23,10 +23,10 @@ class StandardSelectableDropDown extends StatefulWidget {
   });
 
   @override
-  State<StandardSelectableDropDown> createState() => _StandardSelectableDropDownState();
+  State<StandardSelectableDropdownField> createState() => _StandardSelectableDropDownState();
 }
 
-class _StandardSelectableDropDownState extends State<StandardSelectableDropDown> {
+class _StandardSelectableDropDownState extends State<StandardSelectableDropdownField> {
   final SuggestionsBoxController _dropdownSearchFieldController = SuggestionsBoxController();
   late final TextEditingController textEditingController;
 
@@ -48,6 +48,7 @@ class _StandardSelectableDropDownState extends State<StandardSelectableDropDown>
         IgnorePointer(
           ignoring: widget.readOnly,
           child: DropDownSearchFormField(
+              enabled: !widget.readOnly,
               loadingBuilder: (context) {
                 return const Center(child: CircularProgressIndicator());
               },
@@ -77,7 +78,7 @@ class _StandardSelectableDropDownState extends State<StandardSelectableDropDown>
                 );
               },
               itemSeparatorBuilder: (context, index) {
-                return const Divider();
+                return const Divider(height: 0);
               },
               transitionBuilder: (context, suggestionsBox, controller) {
                 return suggestionsBox;

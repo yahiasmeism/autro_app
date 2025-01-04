@@ -61,7 +61,7 @@ class _CustomerFormState extends State<CustomerForm> {
                   )),
                   const SizedBox(width: 24),
                   Expanded(
-                      child: StandardSelectableDropDown(
+                      child: StandardSelectableDropdownField(
                     controller: primaryContactController,
                     items: const [
                       'Email',
