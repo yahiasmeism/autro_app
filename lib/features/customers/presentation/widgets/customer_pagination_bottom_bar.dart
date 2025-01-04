@@ -5,7 +5,7 @@ import 'package:autro_app/features/customers/presentation/screens/customer_infor
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
-import '../../../../bloc/customers_list/customers_list_bloc.dart';
+import '../bloc/customers_list/customers_list_bloc.dart';
 
 class CustomerPaginationBottomBar extends StatelessWidget {
   const CustomerPaginationBottomBar({super.key});

@@ -12,7 +12,7 @@ import 'package:autro_app/features/customers/presentation/bloc/customer/customer
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
-import '../../../../../../../core/extensions/primary_contact_type_extension.dart';
+import '../../../../core/extensions/primary_contact_type_extension.dart';
 
 class CustomerForm extends StatefulWidget {
   const CustomerForm({super.key});

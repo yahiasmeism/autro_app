@@ -2,7 +2,7 @@ import 'package:autro_app/core/constants/enums.dart';
 import 'package:autro_app/core/widgets/standard_card.dart';
 import 'package:flutter/material.dart';
 
-import 'widgets/customer_form.dart';
+import '../../../widgets/customer_form.dart';
 
 class CustomerInformationsDesktopLayout extends StatelessWidget {
   const CustomerInformationsDesktopLayout({super.key, required this.formType});
