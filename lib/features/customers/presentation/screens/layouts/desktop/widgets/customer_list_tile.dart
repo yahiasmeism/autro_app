@@ -1,4 +1,4 @@
-import 'package:autro_app/constants/assets.dart';
+import 'package:autro_app/core/constants/assets.dart';
 import 'package:autro_app/core/constants/enums.dart';
 import 'package:autro_app/core/theme/app_colors.dart';
 import 'package:autro_app/core/utils/dialog_utils.dart';

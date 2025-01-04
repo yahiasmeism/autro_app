@@ -1,4 +1,4 @@
-import 'package:autro_app/constants/assets.dart';
+import 'package:autro_app/core/constants/assets.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 
