@@ -18,14 +18,14 @@ class UpdateCustomerRequest extends RequestMapable {
     return {
       "name": customerModel.name,
       "country": customerModel.country,
-      "city": customerModel.city,
-      "website": customerModel.website,
       "business_details": customerModel.businessDetails,
       "email": customerModel.email,
       "phone": customerModel.phone,
-      "alt_phone": customerModel.altPhone,
-      "primary_contact": customerModel.primaryContact,
-      "notes": customerModel.notes
+      "primary_contact": customerModel.primaryContactType.name,
+      if (customerModel.website.isNotEmpty) "website": customerModel.website,
+      if (customerModel.city.isNotEmpty) "city": customerModel.city,
+      if (customerModel.altPhone.isNotEmpty) "alt_phone": customerModel.altPhone,
+      if (customerModel.notes.isNotEmpty) "notes": customerModel.notes
     };
   }
 }

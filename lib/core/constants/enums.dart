@@ -30,3 +30,15 @@ enum ConditionOperator {
   greaterThanOrEqual,
   lessThanOrEqual
 }
+
+enum PrimaryContectType {
+  email,
+  phone,
+  unknown,
+}
+
+enum FormType {
+  create,
+  edit,
+  view,
+}

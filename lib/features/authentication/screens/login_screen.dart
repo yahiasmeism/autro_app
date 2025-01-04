@@ -1,4 +1,5 @@
 import 'package:autro_app/core/utils/nav_util.dart';
+import 'package:autro_app/core/widgets/inputs/standard_input.dart';
 import 'package:autro_app/features/authentication/bloc/login/login_state.dart';
 import 'package:autro_app/features/home/screens/home_wrapper.dart';
 import 'package:flutter/material.dart';
@@ -8,7 +9,7 @@ import '../../../core/di/di.dart';
 import '../../../core/errors/failures.dart';
 import '../../../core/utils/validator_util.dart';
 import '../../../core/widgets/buttons/primary_button.dart';
-import '../../../core/widgets/inputs/generic_text_form_field.dart';
+import '../../../core/widgets/inputs/password_input_field.dart';
 import '../../../core/widgets/loading_dialog.dart';
 import '../bloc/login/login_cubit.dart';
 
@@ -68,34 +69,26 @@ class _LoginScreenState extends State<LoginScreen> {
                           textAlign: TextAlign.center,
                         ),
                         const SizedBox(height: 30),
-                        GenericTextFormField(
+                        StandardInput(
                           validator: ValidatorUtil.validateEmail,
                           keyboardType: TextInputType.emailAddress,
-                          prefixIcon: Icons.email,
+                          prefix: const Icon(Icons.email),
                           onChanged: (value) => _email = value,
-                          label: 'Email',
-                          hint: 'Enter your email',
+                          labelText: 'Email',
+                          hintText: 'Enter your email',
                         ),
                         const SizedBox(height: 20),
                         // Password Input
-                        GenericTextFormField(
-                          validator: ValidatorUtil.validatePassword,
-                          prefixIcon: Icons.lock,
-                          onChanged: (value) => _password = value,
-                          keyboardType: TextInputType.visiblePassword,
-                          label: 'Password',
-                          hint: 'Enter your password',
-                          obscureText: true,
-                        ),
+                        PasswordInputField(onChanged: (value) => _password = value),
                         const SizedBox(height: 30),
                         // Login Button
                         PrimaryButton(
+                          labelText: 'Login',
                           onPressed: () {
                             if (_formKey.currentState!.validate()) {
                               cubit.login(email: _email, password: _password);
                             }
                           },
-                          text: 'Login',
                         ),
                         const SizedBox(height: 20),
                         // Text for Sign Up Navigation

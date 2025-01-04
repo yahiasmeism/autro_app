@@ -1,4 +1,5 @@
 import 'package:autro_app/core/utils/nav_util.dart';
+import 'package:autro_app/core/widgets/inputs/standard_input.dart';
 import 'package:autro_app/features/authentication/screens/login_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -7,7 +8,7 @@ import '../../../core/di/di.dart';
 import '../../../core/errors/failures.dart';
 import '../../../core/utils/validator_util.dart';
 import '../../../core/widgets/buttons/primary_button.dart';
-import '../../../core/widgets/inputs/generic_text_form_field.dart';
+import '../../../core/widgets/inputs/password_input_field.dart';
 import '../../../core/widgets/loading_dialog.dart';
 import '../bloc/register/register_cubit.dart';
 
@@ -70,45 +71,36 @@ class _RegisterScreenState extends State<RegisterScreen> {
                         ),
                         const SizedBox(height: 30),
                         // Full Name Input
-                        GenericTextFormField(
+                        StandardInput(
                           validator: ValidatorUtil.validateUserName,
                           onChanged: (value) => userName = value,
-                          label: 'User Name',
-                          prefixIcon: Icons.person,
+                          labelText: 'User Name',
+                          prefix: const Icon(Icons.person),
                         ),
                         const SizedBox(height: 20),
                         // Email Input
-                        GenericTextFormField(
+                        StandardInput(
                           onChanged: (value) => email = value,
-                          label: 'Email',
-                          prefixIcon: Icons.email,
+                          labelText: 'Email',
+                          prefix: const Icon(Icons.email),
                           validator: ValidatorUtil.validateEmail,
                           keyboardType: TextInputType.emailAddress,
                         ),
                         const SizedBox(height: 20),
                         // Password Input
-                        GenericTextFormField(
-                          validator: ValidatorUtil.validatePassword,
+                        PasswordInputField(
                           onChanged: (value) => password = value,
-                          label: 'Password',
-                          prefixIcon: Icons.lock,
-                          keyboardType: TextInputType.visiblePassword,
-                          obscureText: true,
                         ),
                         const SizedBox(height: 20),
                         // Confirm Password Input
-                        GenericTextFormField(
-                          label: 'Confirm Password',
-                          validator: (value) => ValidatorUtil.validateConfirmPassword(value, password),
-                          prefixIcon: Icons.lock,
+                        PasswordInputField(
+                          isConfirmPassword: true,
                           onChanged: (value) => confirmPassword = value,
-                          keyboardType: TextInputType.visiblePassword,
-                          obscureText: true,
                         ),
                         const SizedBox(height: 30),
                         // Register Button
                         PrimaryButton(
-                            text: 'Register',
+                            labelText: 'Register',
                             onPressed: () {
                               if (_globalKey.currentState!.validate()) {
                                 cubit.register(email: email, password: confirmPassword, name: userName);

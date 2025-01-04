@@ -20,7 +20,7 @@ class PaginationFilterDTO extends Equatable {
     final filter = FilterDTO.defaultFilter();
     return PaginationFilterDTO(
       pageNumber: 1,
-      pageSize: 20,
+      pageSize: 5,
       sort: sort,
       filter: filter,
     );
@@ -90,68 +90,23 @@ class FilterDTO extends Equatable {
   }
 }
 
-abstract class FilterConditionDTO extends Equatable {
+class FilterConditionDTO extends Equatable {
   final String fieldName;
   final ConditionOperator conditionOperator;
+  final String value;
 
   const FilterConditionDTO({
     required this.fieldName,
     required this.conditionOperator,
-  });
-
-  @override
-  List<Object> get props => [fieldName, conditionOperator];
-}
-
-class FilterConditionSingleValueDTO extends FilterConditionDTO {
-  final String value;
-
-  const FilterConditionSingleValueDTO({
-    required super.fieldName,
-    required super.conditionOperator,
     required this.value,
   });
-    factory FilterConditionSingleValueDTO.searchFilter(String keyword) {
-    return FilterConditionSingleValueDTO(
-      fieldName: 'SearchTerm',
+  factory FilterConditionDTO.searchFilter(String keyword) {
+    return FilterConditionDTO(
+      fieldName: 'searchTerm',
       conditionOperator: ConditionOperator.contains,
       value: keyword,
     );
   }
-
   @override
-  List<Object> get props => [fieldName, conditionOperator, value];
-
-  FilterConditionSingleValueDTO copyWith({
-    String? value,
-  }) {
-    return FilterConditionSingleValueDTO(
-      fieldName: fieldName,
-      conditionOperator: conditionOperator,
-      value: value ?? this.value,
-    );
-  }
-}
-
-class FilterConditionMultiValueDTO extends FilterConditionDTO {
-  final List<String> values;
-
-  const FilterConditionMultiValueDTO({
-    required this.values,
-    required super.fieldName,
-    required super.conditionOperator,
-  });
-
-  @override
-  List<Object> get props => [fieldName, conditionOperator, values];
-
-  FilterConditionMultiValueDTO copyWith({
-    List<String>? values,
-  }) {
-    return FilterConditionMultiValueDTO(
-      fieldName: fieldName,
-      conditionOperator: conditionOperator,
-      values: values ?? this.values,
-    );
-  }
+  List<Object> get props => [fieldName, conditionOperator];
 }

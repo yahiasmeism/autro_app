@@ -1,3 +1,4 @@
+import 'package:autro_app/core/constants/enums.dart';
 import 'package:equatable/equatable.dart';
 
 class CustomerEntity extends Equatable {
@@ -10,7 +11,7 @@ class CustomerEntity extends Equatable {
   final String email;
   final String phone;
   final String altPhone;
-  final String primaryContact;
+  final PrimaryContectType primaryContactType;
   final String notes;
   final DateTime createdAt;
   final DateTime updatedAt;
@@ -25,10 +26,22 @@ class CustomerEntity extends Equatable {
       required this.email,
       required this.phone,
       required this.altPhone,
-      required this.primaryContact,
+      required this.primaryContactType,
       required this.notes,
       required this.createdAt,
       required this.updatedAt});
+
+  String get primaryContact {
+    switch (primaryContactType) {
+      case PrimaryContectType.email:
+        return email;
+      case PrimaryContectType.phone:
+        return phone;
+      default:
+        return '-';
+    }
+  }
+
   @override
   List<Object?> get props => [
         id,
@@ -40,9 +53,41 @@ class CustomerEntity extends Equatable {
         email,
         phone,
         altPhone,
-        primaryContact,
+        primaryContactType,
         notes,
         createdAt,
         updatedAt,
       ];
+
+  CustomerEntity copyWith({
+    int? id,
+    String? name,
+    String? country,
+    String? city,
+    String? website,
+    String? businessDetails,
+    String? email,
+    String? phone,
+    String? altPhone,
+    PrimaryContectType? primaryContactType,
+    String? notes,
+    DateTime? createdAt,
+    DateTime? updatedAt,
+  }) {
+    return CustomerEntity(
+      id: id ?? this.id,
+      name: name ?? this.name,
+      country: country ?? this.country,
+      city: city ?? this.city,
+      website: website ?? this.website,
+      businessDetails: businessDetails ?? this.businessDetails,
+      email: email ?? this.email,
+      phone: phone ?? this.phone,
+      altPhone: altPhone ?? this.altPhone,
+      primaryContactType: primaryContactType ?? this.primaryContactType,
+      notes: notes ?? this.notes,
+      createdAt: createdAt ?? this.createdAt,
+      updatedAt: updatedAt ?? this.updatedAt,
+    );
+  }
 }
