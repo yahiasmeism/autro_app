@@ -1,3 +1,4 @@
+import 'package:autro_app/core/theme/app_colors.dart';
 import 'package:autro_app/core/theme/font_weight_helper.dart';
 import 'package:flutter/material.dart';
 
@@ -13,6 +14,7 @@ class TextStyles {
   static TextStyle font16Regular = const TextStyle(
     fontSize: 16,
     fontWeight: FontWeightHelper.regular,
+    color: AppColors.secondary,
   );
   static TextStyle font18Regular = const TextStyle(
     fontSize: 18,
@@ -30,6 +32,7 @@ class TextStyles {
   static TextStyle font20Regular = const TextStyle(
     fontSize: 20,
     fontWeight: FontWeightHelper.regular,
+    color: AppColors.secondary,
   );
   static TextStyle font18Medium = const TextStyle(
     fontSize: 18,
@@ -91,6 +94,7 @@ class TextStyles {
   static TextStyle interFont15Regular = const TextStyle(
     fontSize: 15,
     fontWeight: FontWeightHelper.regular,
-    fontFamily: 'Inter',
+    // fontFamily: 'Inter',
+    color: AppColors.softBlueGray,
   );
 }

@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 import '../../../core/constants/enums.dart';
-import '../../customers/presentation/screens/customers_screen.dart';
+import '../../customers/presentation/screens/customers_list_screen.dart';
 import '../bloc/home_bloc.dart';
 import '../widget/custom_drawer.dart';
 
@@ -35,7 +35,7 @@ class _HomeMobileLayoutState extends State<HomeMobileLayout> {
 
   Widget _buildSelectedScreen(BuildContext context, HomeLoaded state) {
     final screens = <MenuItemType, Widget>{
-      MenuItemType.customers: const CustomersScreen(),
+      MenuItemType.customers: const CustomersListScreen(),
       MenuItemType.dashboard: const Center(child: Text('Dashboard')),
       MenuItemType.invoices: const Center(child: Text('Invoices')),
       MenuItemType.deals: const Center(child: Text('Deals')),

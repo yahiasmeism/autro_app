@@ -1,3 +1,4 @@
+import 'package:autro_app/core/constants/enums.dart';
 import 'package:autro_app/core/errors/failures.dart';
 import 'package:autro_app/features/customers/domin/entities/customer_entity.dart';
 import 'package:dartz/dartz.dart';
@@ -27,7 +28,7 @@ class CreateCustomerUsecaseParams extends Equatable {
   final String email;
   final String phone;
   final String altPhone;
-  final String primaryContact;
+  final PrimaryContectType primaryContactType;
   final String notes;
 
   const CreateCustomerUsecaseParams({
@@ -39,7 +40,7 @@ class CreateCustomerUsecaseParams extends Equatable {
     required this.email,
     required this.phone,
     required this.altPhone,
-    required this.primaryContact,
+    required this.primaryContactType,
     required this.notes,
   });
 
@@ -53,7 +54,7 @@ class CreateCustomerUsecaseParams extends Equatable {
         email,
         phone,
         altPhone,
-        primaryContact,
+        primaryContactType,
         notes,
       ];
 }

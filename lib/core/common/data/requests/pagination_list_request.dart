@@ -39,25 +39,11 @@ class FilterRequest extends FilterDTO implements RequestMapable {
 
   @override
   Map<String, dynamic> toJson() {
-    final json = {
-      "Filter.Logic": logic,
-      "Filter.Groups": List<dynamic>.from(groups.map((x) => x)),
-    };
+    final json = <String, dynamic>{};
     for (int i = 0; i < conditions.length; i++) {
-      json["Filter.Conditions[$i].field"] = conditions[i].fieldName;
-      json["Filter.Conditions[$i].operator"] = conditions[i].conditionOperator.index;
-
-      if (conditions[i] is FilterConditionSingleValueDTO) {
-        final condition = conditions[i] as FilterConditionSingleValueDTO;
-
-        json["Filter.Conditions[$i].value"] = condition.value;
-      } else if (conditions[i] is FilterConditionMultiValueDTO) {
-        final condition = conditions[i] as FilterConditionMultiValueDTO;
-
-        for (int j = 0; j < condition.values.length; j++) {
-          json["Filter.Conditions[$i].values[$j]"] = condition.values[j];
-        }
-      }
+      json["filter.conditions[$i][field]"] = conditions[i].fieldName;
+      json["filter.conditions[$i][operator]"] = conditions[i].conditionOperator.index;
+      json["filter.conditions[$i][value]"] = conditions[i].value;
     }
     return json;
   }

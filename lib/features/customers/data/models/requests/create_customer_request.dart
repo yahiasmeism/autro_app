@@ -1,3 +1,4 @@
+import 'package:autro_app/core/constants/enums.dart';
 import 'package:autro_app/core/interfaces/mapable.dart';
 import 'package:autro_app/features/customers/domin/usecases/create_customer_usecase.dart';
 
@@ -10,7 +11,7 @@ class CreateCustomerRequest extends RequestMapable {
   final String email;
   final String phone;
   final String altPhone;
-  final String primaryContact;
+  final PrimaryContectType primaryContactType;
   final String notes;
 
   CreateCustomerRequest(
@@ -22,21 +23,22 @@ class CreateCustomerRequest extends RequestMapable {
       required this.email,
       required this.phone,
       required this.altPhone,
-      required this.primaryContact,
+      required this.primaryContactType,
       required this.notes});
 
   factory CreateCustomerRequest.fromParams(CreateCustomerUsecaseParams params) {
     return CreateCustomerRequest(
-        name: params.name,
-        country: params.country,
-        city: params.city,
-        website: params.website,
-        businessDetails: params.businessDetails,
-        email: params.email,
-        phone: params.phone,
-        altPhone: params.altPhone,
-        primaryContact: params.primaryContact,
-        notes: params.notes);
+      name: params.name,
+      country: params.country,
+      city: params.city,
+      website: params.website,
+      businessDetails: params.businessDetails,
+      email: params.email,
+      phone: params.phone,
+      altPhone: params.altPhone,
+      primaryContactType: params.primaryContactType,
+      notes: params.notes,
+    );
   }
 
   @override
@@ -44,14 +46,14 @@ class CreateCustomerRequest extends RequestMapable {
     return {
       "name": name,
       "country": country,
-      "city": city,
-      "website": website,
       "business_details": businessDetails,
       "email": email,
       "phone": phone,
-      "alt_phone": altPhone,
-      "primary_contact": primaryContact,
-      "notes": notes
+      "primary_contact": primaryContactType.name,
+      if (website.isNotEmpty) "website": website,
+      if (city.isNotEmpty) "city": city,
+      if (altPhone.isNotEmpty) "alt_phone": altPhone,
+      if (notes.isNotEmpty) "notes": notes
     };
   }
 }

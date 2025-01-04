@@ -22,6 +22,7 @@ import '../models/requests/update_customer_request.dart';
 
 @LazySingleton(as: CustomersRepository)
 class CustomersRepositoryImpl implements CustomersRepository {
+  late int _totalCount;
   final CustomersRemoteDataSource remoteDataSource;
   final NetworkInfo networkInfo;
 
@@ -33,8 +34,9 @@ class CustomersRepositoryImpl implements CustomersRepository {
       try {
         final paginationFilterBody = PaginationFilterRequest.fromDTO(params.dto);
         final body = GetCustomersListRequest(paginationFilterRequest: paginationFilterBody);
-        final customers = await remoteDataSource.getCustomersList(body);
-        return Right(customers);
+        final paginationList = await remoteDataSource.getCustomersList(body);
+        _totalCount = paginationList.total;
+        return Right(paginationList.data);
       } catch (e) {
         return Left(ErrorHandler.handle(e));
       }
@@ -100,4 +102,7 @@ class CustomersRepositoryImpl implements CustomersRepository {
       return Left(ErrorHandler.noInternet());
     }
   }
+
+  @override
+  int get totalCount => _totalCount;
 }

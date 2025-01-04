@@ -11,4 +11,6 @@ abstract class CustomersRepository {
   Future<Either<Failure, CustomerEntity>> updateCustomer(UpdateCustomerUsecaseParams params);
   Future<Either<Failure, CustomerEntity>> getCustomer(int customerId);
   Future<Either<Failure, Unit>> deleteCustomer(int customerId);
+
+  int get totalCount;
 }

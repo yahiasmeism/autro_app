@@ -63,12 +63,26 @@ class ErrorHandler implements Exception {
         return const SendTimeoutFailure();
       case DioExceptionType.badResponse:
         final code = exception.response?.statusCode ?? -1;
-        final message = exception.response?.data['message'] ?? exception.response?.data['error'] ?? exception.message;
+        String? message = exception.response?.data['message'] ??
+            _getErrorMessageFromMap(exception.response?.data['error'] ?? {}) ??
+            exception.message;
         return _handleExceptionByResponseCode(code, message);
 
       default:
         return const GeneralFailure();
     }
+  }
+
+  static String? _getErrorMessageFromMap(Map<String, dynamic> map) {
+    String message = '';
+    for (var value in map.values) {
+      if (value is String) {
+        message += '$value\n';
+      } else if (value is List) {
+        message += value[0] + '\n';
+      }
+    }
+    return message.isEmpty ? null : message.trim();
   }
 }
 

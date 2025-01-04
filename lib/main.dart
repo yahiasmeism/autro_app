@@ -2,14 +2,15 @@
 
 import 'dart:io';
 
+import 'package:autro_app/core/theme/theme_data.dart';
 import 'package:autro_app/features/authentication/screens/auth_wrapper.dart';
 import 'package:bitsdojo_window/bitsdojo_window.dart';
 // import 'package:bitsdojo_window/bitsdojo_window.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/rendering.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:injectable/injectable.dart';
 
-import 'core/theme/app_colors.dart';
 import 'core/di/di.dart';
 import 'features/authentication/bloc/app_auth/app_auth_bloc.dart';
 
@@ -19,6 +20,7 @@ void main() async {
 
   runApp(const MyApp());
   _initializeDesktopWindow();
+  // debugPaintSizeEnabled = true;
 }
 
 _initializeDesktopWindow() {
@@ -44,12 +46,7 @@ class MyApp extends StatelessWidget {
     return BlocProvider(
       create: (context) => sl<AppAuthBloc>()..add(CheckAuthenticationAppEvent()),
       child: MaterialApp(
-        theme: ThemeData(
-          colorScheme: ColorScheme.fromSeed(
-            seedColor: AppColors.primary,
-            primary: AppColors.primary,
-          ),
-        ),
+        theme: getTheme(),
         debugShowCheckedModeBanner: false,
         home: const AuthWrapper(),
       ),

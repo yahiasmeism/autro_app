@@ -1,5 +1,6 @@
 import 'package:autro_app/core/extensions/date_time_extension.dart';
 import 'package:autro_app/core/extensions/num_extension.dart';
+import 'package:autro_app/core/extensions/primary_contact_type_extension.dart';
 import 'package:autro_app/core/extensions/string_extension.dart';
 import 'package:autro_app/core/interfaces/mapable.dart';
 import 'package:autro_app/features/customers/domin/entities/customer_entity.dart';
@@ -15,7 +16,7 @@ class CustomerModel extends CustomerEntity implements BaseMapable {
     required super.email,
     required super.phone,
     required super.altPhone,
-    required super.primaryContact,
+    required super.primaryContactType,
     required super.notes,
     required super.createdAt,
     required super.updatedAt,
@@ -32,7 +33,7 @@ class CustomerModel extends CustomerEntity implements BaseMapable {
       email: entity.email,
       phone: entity.phone,
       altPhone: entity.altPhone,
-      primaryContact: entity.primaryContact,
+      primaryContactType: entity.primaryContactType,
       notes: entity.notes,
       createdAt: entity.createdAt,
       updatedAt: entity.updatedAt,
@@ -50,7 +51,7 @@ class CustomerModel extends CustomerEntity implements BaseMapable {
       email: (json['email'] as String?).orEmpty,
       phone: (json['phone'] as String?).orEmpty,
       altPhone: (json['alt_phone'] as String?).orEmpty,
-      primaryContact: (json['primary_contact'] as String?).orEmpty,
+      primaryContactType: PrimaryContactTypeX.fromString((json['primary_contact'] as String?).orEmpty),
       notes: (json['notes'] as String?).orEmpty,
       createdAt: DateTime.tryParse(json['created_at']).orDefault,
       updatedAt: DateTime.tryParse(json['updated_at']).orDefault,
@@ -68,7 +69,7 @@ class CustomerModel extends CustomerEntity implements BaseMapable {
         "email": email,
         "phone": phone,
         "alt_phone": altPhone,
-        "primary_contact": primaryContact,
+        "primary_contact": primaryContactType,
         "notes": notes,
         "created_at": createdAt.toIso8601String(),
         "updated_at": updatedAt.toIso8601String(),
