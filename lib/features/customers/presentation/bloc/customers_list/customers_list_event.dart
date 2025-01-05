@@ -38,3 +38,5 @@ class SearchInputChangedEvent extends CustomersListEvent {
   @override
   List<Object> get props => [keyword];
 }
+
+class AddedUpdatedCustomerEvent extends CustomersListEvent {}

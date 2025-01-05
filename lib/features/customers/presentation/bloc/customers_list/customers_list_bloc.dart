@@ -59,6 +59,9 @@ class CustomersListBloc extends Bloc<CustomersListEvent, CustomersListState> {
     if (event is SearchInputChangedEvent) {
       await onSearchInputChanged(event, emit);
     }
+    if (event is AddedUpdatedCustomerEvent) {
+      await onAddedUpdatedCustomer(event, emit);
+    }
   }
 
   Future onGetCustomersList(GetCustomersListEvent event, Emitter<CustomersListState> emit) async {
@@ -162,6 +165,21 @@ class CustomersListBloc extends Bloc<CustomersListEvent, CustomersListState> {
           totalCount: totalCount,
         ));
       },
+    );
+  }
+
+  onAddedUpdatedCustomer(AddedUpdatedCustomerEvent event, Emitter<CustomersListState> emit) async {
+    final state = this.state as CustomersListLoaded;
+    final params = GetCustomersListUsecaseParams(dto: state.paginationFilterDTO);
+    emit(state.copyWith(loading: true));
+    final either = await getCustomersListUsecase.call(params);
+    emit(state.copyWith(loading: false));
+    either.fold(
+      (failure) => emit(CustomersListError(failure: failure)),
+      (customers) => emit(state.copyWith(
+        totalCount: totalCount,
+        customersList: customers,
+      )),
     );
   }
 }
