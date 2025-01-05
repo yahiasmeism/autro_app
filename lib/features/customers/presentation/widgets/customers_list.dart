@@ -9,6 +9,7 @@ class CustomersList extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return ListView.separated(
+      padding: const EdgeInsets.only(bottom: 8),
       separatorBuilder: (context, index) {
         return const SizedBox(height: 8);
       },
