@@ -47,8 +47,8 @@ final class CustomersListLoaded extends CustomersListState {
     );
   }
 
-  bool get canGoNextPage => paginationFilterDTO.pageNumber < totalCount / paginationFilterDTO.pageSize;
-  bool get canGoPreviousPage => paginationFilterDTO.pageNumber > 1;
+  bool get canGoNextPage => paginationFilterDTO.pageNumber < totalCount / paginationFilterDTO.pageSize && !loading;
+  bool get canGoPreviousPage => paginationFilterDTO.pageNumber > 1 && !loading;
 }
 
 class CustomersListError extends CustomersListState {

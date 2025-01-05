@@ -29,8 +29,6 @@ class CustomerInformationsDesktopLayout extends StatelessWidget {
     switch (formType) {
       case FormType.edit:
         return 'Edit Customer';
-      case FormType.view:
-        return 'Customer Details';
       case FormType.create:
         return 'Add New Customer';
       default:

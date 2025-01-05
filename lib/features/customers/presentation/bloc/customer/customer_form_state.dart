@@ -1,37 +1,35 @@
-part of 'customer_info_bloc.dart';
+part of 'customer_form_bloc.dart';
 
-sealed class CustomerInfoState extends Equatable {
-  const CustomerInfoState();
+sealed class CustomerFormState extends Equatable {
+  const CustomerFormState();
 
   @override
   List<Object?> get props => [];
 }
 
-final class CustomerInfoInitial extends CustomerInfoState {}
+final class CustomerInfoInitial extends CustomerFormState {}
 
-final class CustomerInfoLoaded extends CustomerInfoState {
+final class CustomerFormLoaded extends CustomerFormState {
   final CustomerEntity? customer;
   final bool loading;
   final Option<Either<Failure, String>> failureOrSuccessOption;
   final FormType formType;
-  const CustomerInfoLoaded({
+  const CustomerFormLoaded({
     this.customer,
     this.loading = false,
     this.failureOrSuccessOption = const None(),
     this.formType = FormType.create,
   });
-
-  bool get readOnly => formType == FormType.view;
   @override
   List<Object?> get props => [customer, loading, failureOrSuccessOption, formType];
 
-  CustomerInfoLoaded copyWith({
+  CustomerFormLoaded copyWith({
     CustomerEntity? customer,
     bool? loading,
     Option<Either<Failure, String>>? failureOrSuccessOption,
     FormType? formType,
   }) {
-    return CustomerInfoLoaded(
+    return CustomerFormLoaded(
       customer: customer ?? this.customer,
       loading: loading ?? this.loading,
       failureOrSuccessOption: failureOrSuccessOption ?? none(),

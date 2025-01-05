@@ -65,16 +65,16 @@ class ValidatorUtil {
     if (value == null || value.trim().isEmpty) {
       return 'Name is required.';
     }
-    if (!RegExp(r'^[a-zA-Z\s]+$').hasMatch(value)) {
-      return 'Name must contain only letters and spaces.';
+    if (!RegExp(r'^[a-zA-Z.\s]+$').hasMatch(value)) {
+      return 'Name must contain only letters, spaces, and periods.';
     }
     return null;
   }
 
   static String? validateNameOptional(String? value) {
     if (value != null && value.trim().isNotEmpty) {
-      if (!RegExp(r'^[a-zA-Z\s]+$').hasMatch(value)) {
-        return 'Name must contain only letters and spaces.';
+      if (!RegExp(r'^[a-zA-Z.\s]+$').hasMatch(value)) {
+        return 'Name must contain only letters, spaces, and periods.';
       }
     }
     return null;
@@ -84,7 +84,7 @@ class ValidatorUtil {
     if (value == null || value.trim().isEmpty) {
       return 'Phone number is required.';
     }
-    if (!RegExp(r'^\+?[0-9]{10,15}$').hasMatch(value)) {
+    if (!RegExp(r'^\+?[0-9\s\-\(\)]{10,20}$').hasMatch(value)) {
       return 'Enter a valid phone number.';
     }
     return null;

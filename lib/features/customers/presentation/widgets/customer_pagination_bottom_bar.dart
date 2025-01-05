@@ -1,7 +1,7 @@
 import 'package:autro_app/core/constants/enums.dart';
 import 'package:autro_app/core/utils/nav_util.dart';
 import 'package:autro_app/core/widgets/generic_pagination_bottom_bar.dart';
-import 'package:autro_app/features/customers/presentation/screens/customer_information_screen.dart';
+import 'package:autro_app/features/customers/presentation/screens/customer_form_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
@@ -14,20 +14,20 @@ class CustomerPaginationBottomBar extends StatelessWidget {
   Widget build(BuildContext context) {
     return BlocBuilder<CustomersListBloc, CustomersListState>(
       builder: (context, state) {
-        int totalCount = 0;
-        int shownCount = 0;
+        int currentPage = 0;
+        int totalPages = 0;
         bool isLoaded = state is CustomersListLoaded;
         bool canNext = false;
         bool canPrevious = false;
         if (isLoaded) {
-          shownCount = state.customersList.length;
-          totalCount = state.totalCount;
+          currentPage = state.paginationFilterDTO.pageNumber;
+          totalPages = (state.totalCount / state.paginationFilterDTO.pageSize).ceil();
           canNext = state.canGoNextPage;
           canPrevious = state.canGoPreviousPage;
         }
         return GenericPaginationBottomBar(
-          totalCount: totalCount,
-          shownCount: shownCount,
+          pagesCount: totalPages,
+          currentPage: currentPage,
           onPreviousTap: canPrevious
               ? () {
                   context.read<CustomersListBloc>().add(PreviousPageEvent());
@@ -41,7 +41,7 @@ class CustomerPaginationBottomBar extends StatelessWidget {
           labelAddButton: 'Add New Customer',
           onAddTap: isLoaded
               ? () {
-                  NavUtil.push(context, const CustomerInformationScreen(formType: FormType.create));
+                  NavUtil.push(context, const CustomerFormScreen(formType: FormType.create));
                 }
               : null,
         );

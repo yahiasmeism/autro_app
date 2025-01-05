@@ -1,18 +1,17 @@
 import 'package:autro_app/core/constants/assets.dart';
 import 'package:autro_app/core/constants/enums.dart';
 import 'package:autro_app/core/theme/app_colors.dart';
-import 'package:autro_app/core/utils/dialog_utils.dart';
+import 'package:autro_app/core/utils/link_util.dart';
 import 'package:autro_app/core/utils/nav_util.dart';
 import 'package:autro_app/core/widgets/delete_icon_button.dart';
 import 'package:autro_app/core/widgets/edit_icon_button.dart';
 import 'package:autro_app/core/widgets/show_icon_button.dart';
 import 'package:autro_app/features/customers/domin/entities/customer_entity.dart';
-import 'package:autro_app/features/customers/presentation/screens/customer_information_screen.dart';
+import 'package:autro_app/features/customers/presentation/screens/customer_details_screen.dart';
+import 'package:autro_app/features/customers/presentation/screens/customer_form_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/flutter_svg.dart';
-import 'package:url_launcher/url_launcher.dart';
-import 'package:url_launcher/url_launcher_string.dart';
 
 import '../../../../core/theme/text_styles.dart';
 import '../bloc/customers_list/customers_list_bloc.dart';
@@ -99,7 +98,7 @@ class CustomerListTile extends StatelessWidget {
                 onPressed: customerEntity.website.isEmpty
                     ? null
                     : () {
-                        _launchURL(context, customerEntity.website);
+                        LinkUtil.openLink(context, customerEntity.website);
                       },
                 icon: SvgPicture.asset(Assets.iconsInternet),
               ),
@@ -114,7 +113,7 @@ class CustomerListTile extends StatelessWidget {
                 EditIconButton(onPressed: () {
                   NavUtil.push(
                       context,
-                      CustomerInformationScreen(
+                      CustomerFormScreen(
                         customer: customerEntity,
                         formType: FormType.edit,
                       ));
@@ -122,12 +121,7 @@ class CustomerListTile extends StatelessWidget {
                 const SizedBox(width: 8),
                 ShowIconButton(
                   onPressed: () {
-                    NavUtil.push(
-                        context,
-                        CustomerInformationScreen(
-                          customer: customerEntity,
-                          formType: FormType.view,
-                        ));
+                    NavUtil.push(context, CustomerDetailsScreen(customerEntity: customerEntity));
                   },
                 ),
                 const SizedBox(width: 8),
@@ -146,18 +140,5 @@ class CustomerListTile extends StatelessWidget {
         ],
       ),
     );
-  }
-
-  void _launchURL(BuildContext context, String url) async {
-    if (!url.startsWith('http://') && !url.startsWith('https://')) {
-      url = 'https://$url';
-    }
-
-    if (await canLaunchUrlString(url)) {
-      await launchUrl(Uri.parse(url));
-    } else {
-      if (!context.mounted) return;
-      DialogUtil.showErrorSnackBar(context, 'Could not launch $url');
-    }
   }
 }

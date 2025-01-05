@@ -1,7 +1,7 @@
 import 'package:autro_app/core/constants/enums.dart';
 
 extension PrimaryContactTypeX on PrimaryContectType {
-  String get name {
+  String get str {
     switch (this) {
       case PrimaryContectType.email:
         return 'Email';

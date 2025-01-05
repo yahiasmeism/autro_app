@@ -40,5 +40,4 @@ enum PrimaryContectType {
 enum FormType {
   create,
   edit,
-  view,
 }
