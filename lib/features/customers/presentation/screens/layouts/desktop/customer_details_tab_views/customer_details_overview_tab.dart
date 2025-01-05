@@ -1,20 +1,40 @@
 // ignore_for_file: deprecated_member_use
 
 import 'package:autro_app/constants/assets.dart';
+import 'package:autro_app/core/constants/enums.dart';
+import 'package:autro_app/core/di/di.dart';
 import 'package:autro_app/core/extensions/primary_contact_type_extension.dart';
 import 'package:autro_app/core/theme/app_colors.dart';
 import 'package:autro_app/core/theme/text_styles.dart';
+import 'package:autro_app/core/utils/dialog_utils.dart';
 import 'package:autro_app/core/utils/link_util.dart';
+import 'package:autro_app/core/utils/nav_util.dart';
 import 'package:autro_app/core/widgets/buttons/delete_outline_button.dart';
 import 'package:autro_app/core/widgets/buttons/edit_outline_button.dart';
 import 'package:autro_app/core/widgets/standard_container.dart';
 import 'package:autro_app/features/customers/domin/entities/customer_entity.dart';
+import 'package:autro_app/features/customers/presentation/bloc/customers_list/customers_list_bloc.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 
-class CustomerDetailsOverviewTab extends StatelessWidget {
+import '../../../customer_form_screen.dart';
+
+class CustomerDetailsOverviewTab extends StatefulWidget {
   const CustomerDetailsOverviewTab({super.key, required this.customerEntity});
   final CustomerEntity customerEntity;
+
+  @override
+  State<CustomerDetailsOverviewTab> createState() => _CustomerDetailsOverviewTabState();
+}
+
+class _CustomerDetailsOverviewTabState extends State<CustomerDetailsOverviewTab> {
+  late CustomerEntity customerEntity;
+
+  @override
+  void initState() {
+    super.initState();
+    customerEntity = widget.customerEntity;
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -75,7 +95,7 @@ class CustomerDetailsOverviewTab extends StatelessWidget {
                           ),
                         ],
                       ),
-                      const SizedBox(height: 50),
+                      const SizedBox(height: 40),
                       Row(
                         children: [
                           Expanded(
@@ -99,7 +119,7 @@ class CustomerDetailsOverviewTab extends StatelessWidget {
                           ),
                         ],
                       ),
-                      const SizedBox(height: 50),
+                      const SizedBox(height: 40),
                       Row(
                         mainAxisAlignment: MainAxisAlignment.start,
                         children: [
@@ -120,19 +140,19 @@ class CustomerDetailsOverviewTab extends StatelessWidget {
               ],
             ),
           ),
-          const SizedBox(height: 14),
+          const SizedBox(height: 12),
           Row(
             children: [
               Expanded(
                 child: _buildTotalRevenue(),
               ),
-              const SizedBox(width: 14),
+              const SizedBox(width: 12),
               Expanded(
                 child: _buildTotalDeals(),
               ),
             ],
           ),
-          const SizedBox(height: 14),
+          const SizedBox(height: 12),
           _buildButtonsSection(context),
         ],
       ),
@@ -224,7 +244,7 @@ class CustomerDetailsOverviewTab extends StatelessWidget {
 
   Widget _buildTotalDeals() {
     return StandardContainer(
-      padding: const EdgeInsets.all(24),
+      padding: const EdgeInsets.all(22),
       child: Row(
         crossAxisAlignment: CrossAxisAlignment.start,
         mainAxisAlignment: MainAxisAlignment.start,
@@ -283,22 +303,47 @@ class CustomerDetailsOverviewTab extends StatelessWidget {
         children: [
           const Spacer(),
           DeleteOutlineButton(
-            onPressed: () {},
+            onPressed: () => onDeleteTab(context),
           ),
           const SizedBox(width: 16),
           EditOutlineButton(
-            onPressed: () {
-              // NavUtil.push(
-              //   context,
-              //   CustomerFormScreen(
-              //     formType: FormType.edit,
-              //     customer: customerEntity,
-              //   ),
-              // );
-            },
+            onPressed: () => onEditTab(context),
           ),
         ],
       ),
     );
+  }
+
+  onDeleteTab(BuildContext context) async {
+    final isOk = await DialogUtil.showAlertDialog(
+          context,
+          title: 'Delete',
+          content: 'Are you sure you want to delete this item?',
+        ) ??
+        false;
+    if (isOk) {
+      if (context.mounted) {
+        NavUtil.pop(context);
+        sl<CustomersListBloc>().add(DeleteCustomerEvent(customerId: customerEntity.id));
+      }
+    }
+  }
+
+  onEditTab(BuildContext context) async {
+    final customerUpdated = await NavUtil.push(
+      context,
+      CustomerFormScreen(
+        customer: customerEntity,
+        formType: FormType.edit,
+      ),
+    ) as CustomerEntity?;
+
+    if (customerUpdated != null) {
+      if (context.mounted) {
+        setState(() {
+          customerEntity = customerUpdated;
+        });
+      }
+    }
   }
 }

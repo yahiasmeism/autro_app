@@ -25,7 +25,8 @@ import 'package:autro_app/features/customers/domin/usecases/delete_customer_usec
 import 'package:autro_app/features/customers/domin/usecases/get_customer_usecase.dart' as _i832;
 import 'package:autro_app/features/customers/domin/usecases/get_customers_list_usecase.dart' as _i486;
 import 'package:autro_app/features/customers/domin/usecases/update_customer_usecase.dart' as _i134;
-import 'package:autro_app/features/customers/presentation/bloc/customer/customer_form_bloc.dart' as _i896;
+
+import 'package:autro_app/features/customers/presentation/bloc/customer_form/customer_form_bloc.dart' as _i512;
 import 'package:autro_app/features/customers/presentation/bloc/customers_list/customers_list_bloc.dart' as _i815;
 import 'package:autro_app/features/home/bloc/home_bloc.dart' as _i80;
 import 'package:get_it/get_it.dart' as _i174;
@@ -84,7 +85,7 @@ extension GetItInjectableX on _i174.GetIt {
           gh<_i134.UpdateCustomerUsecase>(),
           gh<_i116.CreateCustomerUsecase>(),
         ));
-    gh.factory<_i896.CustomerFormBloc>(() => _i896.CustomerFormBloc(
+    gh.factory<_i512.CustomerFormBloc>(() => _i512.CustomerFormBloc(
           gh<_i116.CreateCustomerUsecase>(),
           gh<_i134.UpdateCustomerUsecase>(),
           gh<_i815.CustomersListBloc>(),

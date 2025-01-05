@@ -2,7 +2,7 @@ import 'package:autro_app/core/constants/enums.dart';
 import 'package:autro_app/core/di/di.dart';
 import 'package:autro_app/core/widgets/adaptive_layout.dart';
 import 'package:autro_app/features/customers/domin/entities/customer_entity.dart';
-import 'package:autro_app/features/customers/presentation/bloc/customer/customer_form_bloc.dart';
+import 'package:autro_app/features/customers/presentation/bloc/customer_form/customer_form_bloc.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 

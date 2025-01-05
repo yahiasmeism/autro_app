@@ -8,7 +8,7 @@ import 'package:autro_app/core/widgets/inputs/country_selectable_dropdown.dart';
 import 'package:autro_app/core/widgets/inputs/standard_input.dart';
 import 'package:autro_app/core/widgets/inputs/standard_selectable_dropdown.dart';
 import 'package:autro_app/features/customers/domin/entities/customer_entity.dart';
-import 'package:autro_app/features/customers/presentation/bloc/customer/customer_form_bloc.dart';
+import 'package:autro_app/features/customers/presentation/bloc/customer_form/customer_form_bloc.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
@@ -246,7 +246,7 @@ class _CustomerFormState extends State<CustomerForm> {
         (either) => either.fold(
           (failure) => DialogUtil.showErrorSnackBar(context, getErrorMsgFromFailure(failure)),
           (message) {
-            Navigator.pop(context);
+            Navigator.pop(context, state.customer);
             if (message.isNotEmpty) DialogUtil.showSuccessSnackBar(context, message);
           },
         ),
