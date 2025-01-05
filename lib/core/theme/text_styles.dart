@@ -28,6 +28,7 @@ class TextStyles {
   static TextStyle font24SemiBold = const TextStyle(
     fontSize: 24,
     fontWeight: FontWeightHelper.semiBold,
+    color: AppColors.secondary,
   );
   static TextStyle font20Regular = const TextStyle(
     fontSize: 20,
@@ -44,9 +45,10 @@ class TextStyles {
     fontWeight: FontWeightHelper.semiBold,
   );
 
-  static TextStyle font20SemiBold = const TextStyle(
+  static TextStyle font20SemiBold = TextStyle(
     fontSize: 20,
     fontWeight: FontWeightHelper.semiBold,
+    color: AppColors.secondaryOpacity50,
   );
 
   static TextStyle font14Regular = const TextStyle(

@@ -30,7 +30,7 @@ class CustomOutlineButton extends StatelessWidget {
           overlayColor: (color?.withOpacity(0.1) ?? AppColors.secondaryOpacity8),
           shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(8.0)),
           side: BorderSide(
-            color: borderColor?.withOpacity(onPressed != null ? 1 : 0.50) ??
+            color: (onPressed != null ? borderColor : borderColor?.withOpacity(0.50)) ??
                 color?.withOpacity(0.13) ??
                 AppColors.secondaryOpacity13,
           ),

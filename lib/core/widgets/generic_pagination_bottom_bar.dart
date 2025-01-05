@@ -10,11 +10,11 @@ class GenericPaginationBottomBar extends StatelessWidget {
     this.onNextTap,
     this.onPreviousTap,
     required this.onAddTap,
-    required this.shownCount,
-    required this.totalCount,
+    required this.currentPage,
+    required this.pagesCount,
   });
   final String labelAddButton;
-  final int shownCount, totalCount;
+  final int currentPage, pagesCount;
   final Function()? onNextTap, onPreviousTap, onAddTap;
 
   @override
@@ -30,7 +30,7 @@ class GenericPaginationBottomBar extends StatelessWidget {
           _buildGenericAddButton(),
           const Spacer(),
           Text(
-            'Showing $shownCount of $totalCount results',
+            'Page $currentPage of $pagesCount',
             style: TextStyles.interFont15Regular,
           ),
           const SizedBox(width: 16),

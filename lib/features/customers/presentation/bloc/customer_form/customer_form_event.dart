@@ -1,30 +1,30 @@
-part of 'customer_info_bloc.dart';
+part of 'customer_form_bloc.dart';
 
-sealed class CustomerInfoEvent extends Equatable {
-  const CustomerInfoEvent();
+sealed class CustomerFormEvent extends Equatable {
+  const CustomerFormEvent();
 
   @override
   List<Object?> get props => [];
 }
 
-class InitialCustomerInfoEvent extends CustomerInfoEvent {
+class InitialCustomerFormEvent extends CustomerFormEvent {
   final CustomerEntity? customer;
   final FormType formType;
-  const InitialCustomerInfoEvent({this.customer, required this.formType});
+  const InitialCustomerFormEvent({this.customer, required this.formType});
 
   @override
   List<Object?> get props => [customer];
 }
 
-final class UpdateCustomerEvent extends CustomerInfoEvent {
+final class UpdateCustomerFormEvent extends CustomerFormEvent {
   final CustomerEntity customer;
-  const UpdateCustomerEvent({required this.customer});
+  const UpdateCustomerFormEvent({required this.customer});
 
   @override
   List<Object> get props => [customer];
 }
 
-class CreateCustomerEvent extends CustomerInfoEvent {
+class CreateCustomerFormEvent extends CustomerFormEvent {
   final String name;
   final String country;
   final String city;
@@ -36,7 +36,7 @@ class CreateCustomerEvent extends CustomerInfoEvent {
   final PrimaryContectType primaryContactType;
   final String notes;
 
-  const CreateCustomerEvent(
+  const CreateCustomerFormEvent(
       {required this.name,
       required this.country,
       required this.city,

@@ -4,7 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 
 class DeleteIconButton extends StatelessWidget {
-  const DeleteIconButton({super.key, this.onPressed});
+  const DeleteIconButton({super.key, required this.onPressed});
   final Function()? onPressed;
 
   @override

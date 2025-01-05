@@ -8,7 +8,7 @@ import 'package:autro_app/core/widgets/inputs/country_selectable_dropdown.dart';
 import 'package:autro_app/core/widgets/inputs/standard_input.dart';
 import 'package:autro_app/core/widgets/inputs/standard_selectable_dropdown.dart';
 import 'package:autro_app/features/customers/domin/entities/customer_entity.dart';
-import 'package:autro_app/features/customers/presentation/bloc/customer/customer_info_bloc.dart';
+import 'package:autro_app/features/customers/presentation/bloc/customer_form/customer_form_bloc.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
@@ -35,119 +35,116 @@ class _CustomerFormState extends State<CustomerForm> {
 
   @override
   Widget build(BuildContext context) {
-    return BlocConsumer<CustomerInfoBloc, CustomerInfoState>(
+    return BlocConsumer<CustomerFormBloc, CustomerFormState>(
       listener: listener,
       builder: (context, state) {
-        if (state is CustomerInfoLoaded) {
+        if (state is CustomerFormLoaded) {
           if (state.loading) {
             return SizedBox(
               height: MediaQuery.sizeOf(context).height - 200,
               child: const Center(child: CircularProgressIndicator()),
             );
           }
-          return IgnorePointer(
-            ignoring: state.readOnly,
-            child: Form(
-              key: formKey,
-              child: Column(children: [
-                Row(children: [
-                  Expanded(
-                      child: StandardInput(
-                    controller: nameController,
-                    validator: ValidatorUtil.validateNameRequired,
-                    labelText: 'Customer Name',
-                    showRequiredIndecator: true,
-                    hintText: 'e.g John Doe',
-                  )),
-                  const SizedBox(width: 24),
-                  Expanded(
-                      child: StandardSelectableDropDown(
-                    controller: primaryContactController,
-                    items: const [
-                      'Email',
-                      'Phone',
-                    ],
-                    showRequiredIndicator: true,
-                    labelText: 'Primary Contact',
-                    hintText: 'Email/Phone',
-                  )),
-                ]),
-                const SizedBox(height: 20),
-                Row(children: [
-                  Expanded(
-                      child: CountrySelectableDropdown(
-                    controller: country,
-                  )),
-                  const SizedBox(width: 24),
-                  Expanded(
-                      child: StandardInput(
-                    controller: city,
-                    labelText: 'City',
-                    hintText: 'e.g SomeWhere',
-                    validator: ValidatorUtil.validateNameOptional,
-                  )),
-                ]),
-                const SizedBox(height: 20),
-                Row(children: [
-                  Expanded(
-                      child: StandardInput(
-                    labelText: 'Email',
-                    keyboardType: TextInputType.emailAddress,
-                    showRequiredIndecator: true,
-                    hintText: 'e.g 8PqHj@example.com',
-                    controller: email,
-                    validator: ValidatorUtil.validateEmail,
-                  )),
-                  const SizedBox(width: 24),
-                  Expanded(
-                      child: StandardInput(
-                    keyboardType: TextInputType.number,
-                    labelText: 'Phone Number',
-                    controller: phone,
-                    showRequiredIndecator: true,
-                    hintText: 'e.g 1234567890',
-                    validator: ValidatorUtil.validatePhoneNumber,
-                  )),
-                  const SizedBox(width: 24),
-                  Expanded(
-                      child: StandardInput(
-                    controller: altPhone,
-                    labelText: 'Alternative Phone Number',
-                    hintText: 'e.g SomeWhere',
-                  )),
-                ]),
-                const SizedBox(height: 20),
-                Row(
-                  children: [
-                    Expanded(
-                      child: StandardInput(
-                        labelText: 'Website',
-                        hintText: 'e.g Something.com',
-                        controller: website,
-                      ),
-                    ),
-                    const SizedBox(width: 24),
-                    Expanded(
-                        child: StandardInput(
-                      labelText: 'Business Details',
-                      showRequiredIndecator: true,
-                      hintText: 'e.g Papers/Plastic/etc',
-                      controller: businessDetails,
-                      validator: ValidatorUtil.validateRequired,
-                    )),
+          return Form(
+            key: formKey,
+            child: Column(children: [
+              Row(children: [
+                Expanded(
+                    child: StandardInput(
+                  controller: nameController,
+                  validator: ValidatorUtil.validateNameRequired,
+                  labelText: 'Customer Name',
+                  showRequiredIndecator: true,
+                  hintText: 'e.g John Doe',
+                )),
+                const SizedBox(width: 24),
+                Expanded(
+                    child: StandardSelectableDropdownField(
+                  controller: primaryContactController,
+                  items: const [
+                    'Email',
+                    'Phone',
                   ],
-                ),
-                const SizedBox(height: 20),
-                StandardInput(
-                  minLines: 3,
-                  labelText: 'Notes',
-                  controller: notes,
-                  hintText: 'e.g write anything here that you might need to store about this customer.',
-                ),
-                const SizedBox(height: 20),
-                if (!state.readOnly) _buildButtons(state),
+                  showRequiredIndicator: true,
+                  labelText: 'Primary Contact',
+                  hintText: 'Email/Phone',
+                )),
               ]),
-            ),
+              const SizedBox(height: 20),
+              Row(children: [
+                Expanded(
+                    child: CountrySelectableDropdown(
+                  controller: country,
+                )),
+                const SizedBox(width: 24),
+                Expanded(
+                    child: StandardInput(
+                  controller: city,
+                  labelText: 'City',
+                  hintText: 'e.g SomeWhere',
+                  validator: ValidatorUtil.validateNameOptional,
+                )),
+              ]),
+              const SizedBox(height: 20),
+              Row(children: [
+                Expanded(
+                    child: StandardInput(
+                  labelText: 'Email',
+                  keyboardType: TextInputType.emailAddress,
+                  showRequiredIndecator: true,
+                  hintText: 'e.g 8PqHj@example.com',
+                  controller: email,
+                  validator: ValidatorUtil.validateEmail,
+                )),
+                const SizedBox(width: 24),
+                Expanded(
+                    child: StandardInput(
+                  keyboardType: TextInputType.number,
+                  labelText: 'Phone Number',
+                  controller: phone,
+                  showRequiredIndecator: true,
+                  hintText: 'e.g 1234567890',
+                  validator: ValidatorUtil.validatePhoneNumber,
+                )),
+                const SizedBox(width: 24),
+                Expanded(
+                    child: StandardInput(
+                  controller: altPhone,
+                  labelText: 'Alternative Phone Number',
+                  hintText: 'e.g SomeWhere',
+                )),
+              ]),
+              const SizedBox(height: 20),
+              Row(
+                children: [
+                  Expanded(
+                    child: StandardInput(
+                      labelText: 'Website',
+                      hintText: 'e.g Something.com',
+                      controller: website,
+                    ),
+                  ),
+                  const SizedBox(width: 24),
+                  Expanded(
+                      child: StandardInput(
+                    labelText: 'Business Details',
+                    showRequiredIndecator: true,
+                    hintText: 'e.g Papers/Plastic/etc',
+                    controller: businessDetails,
+                    validator: ValidatorUtil.validateRequired,
+                  )),
+                ],
+              ),
+              const SizedBox(height: 20),
+              StandardInput(
+                minLines: 3,
+                labelText: 'Notes',
+                controller: notes,
+                hintText: 'e.g write anything here that you might need to store about this customer.',
+              ),
+              const SizedBox(height: 20),
+              _buildButtons(state),
+            ]),
           );
         } else {
           return const Center(child: CircularProgressIndicator());
@@ -156,7 +153,7 @@ class _CustomerFormState extends State<CustomerForm> {
     );
   }
 
-  _buildButtons(CustomerInfoLoaded state) {
+  _buildButtons(CustomerFormLoaded state) {
     return Padding(
       padding: const EdgeInsets.only(bottom: 20),
       child: Row(
@@ -209,7 +206,6 @@ class _CustomerFormState extends State<CustomerForm> {
   }
 
   void _onUpdateCustomer(CustomerEntity customer) {
-    final customerEntity = customer.copyWith();
     final updatedCustomer = customer.copyWith(
       name: nameController.text,
       country: country.text,
@@ -223,17 +219,12 @@ class _CustomerFormState extends State<CustomerForm> {
       notes: notes.text,
     );
 
-    if (updatedCustomer == customerEntity) {
-      const message = 'No changes detected in the form. Nothing to update.';
-      DialogUtil.showWarningSnackBar(context, message);
-      return;
-    }
-    context.read<CustomerInfoBloc>().add(UpdateCustomerEvent(customer: updatedCustomer));
+    context.read<CustomerFormBloc>().add(UpdateCustomerFormEvent(customer: updatedCustomer));
   }
 
   void _onCreateCustomer() {
-    context.read<CustomerInfoBloc>().add(
-          CreateCustomerEvent(
+    context.read<CustomerFormBloc>().add(
+          CreateCustomerFormEvent(
             name: nameController.text,
             country: country.text,
             city: city.text,
@@ -248,15 +239,15 @@ class _CustomerFormState extends State<CustomerForm> {
         );
   }
 
-  void listener(BuildContext context, CustomerInfoState state) {
-    if (state is CustomerInfoLoaded) {
+  void listener(BuildContext context, CustomerFormState state) {
+    if (state is CustomerFormLoaded) {
       state.failureOrSuccessOption.fold(
         () => null,
         (either) => either.fold(
           (failure) => DialogUtil.showErrorSnackBar(context, getErrorMsgFromFailure(failure)),
           (message) {
-            Navigator.pop(context);
-            return DialogUtil.showSuccessSnackBar(context, message);
+            Navigator.pop(context, state.customer);
+            if (message.isNotEmpty) DialogUtil.showSuccessSnackBar(context, message);
           },
         ),
       );
@@ -270,7 +261,7 @@ class _CustomerFormState extends State<CustomerForm> {
         email.text = customer.email;
         phone.text = customer.phone;
         altPhone.text = customer.altPhone;
-        primaryContactController.text = customer.primaryContactType.name;
+        primaryContactController.text = customer.primaryContactType.str;
         notes.text = customer.notes;
       }
     }

@@ -10,40 +10,40 @@ import 'package:injectable/injectable.dart';
 import '../../../domin/usecases/create_customer_usecase.dart';
 import '../../../domin/usecases/update_customer_usecase.dart';
 
-part 'customer_info_event.dart';
-part 'customer_info_state.dart';
+part 'customer_form_event.dart';
+part 'customer_form_state.dart';
 
 @injectable
-class CustomerInfoBloc extends Bloc<CustomerInfoEvent, CustomerInfoState> {
+class CustomerFormBloc extends Bloc<CustomerFormEvent, CustomerFormState> {
   final CreateCustomerUsecase createCustomerUsecase;
   final UpdateCustomerUsecase updateCustomerUsecase;
   final CustomersListBloc customersListBloc;
-  CustomerInfoBloc(
+  CustomerFormBloc(
     this.createCustomerUsecase,
     this.updateCustomerUsecase,
     this.customersListBloc,
   ) : super(CustomerInfoInitial()) {
-    on<CustomerInfoEvent>(_mapEvents);
+    on<CustomerFormEvent>(_mapEvents);
   }
 
-  _mapEvents(CustomerInfoEvent event, Emitter<CustomerInfoState> emit) async {
-    if (event is InitialCustomerInfoEvent) {
+  _mapEvents(CustomerFormEvent event, Emitter<CustomerFormState> emit) async {
+    if (event is InitialCustomerFormEvent) {
       await _initial(event, emit);
     }
-    if (event is CreateCustomerEvent) {
+    if (event is CreateCustomerFormEvent) {
       await _onCreateCustomer(event, emit);
     }
-    if (event is UpdateCustomerEvent) {
+    if (event is UpdateCustomerFormEvent) {
       await _onUpdateCustomer(event, emit);
     }
   }
 
-  _initial(InitialCustomerInfoEvent event, Emitter<CustomerInfoState> emit) {
-    emit(CustomerInfoLoaded(customer: event.customer, formType: event.formType));
+  _initial(InitialCustomerFormEvent event, Emitter<CustomerFormState> emit) {
+    emit(CustomerFormLoaded(customer: event.customer, formType: event.formType));
   }
 
-  Future _onCreateCustomer(CreateCustomerEvent event, Emitter<CustomerInfoState> emit) async {
-    final state = this.state as CustomerInfoLoaded;
+  Future _onCreateCustomer(CreateCustomerFormEvent event, Emitter<CustomerFormState> emit) async {
+    final state = this.state as CustomerFormLoaded;
     emit(state.copyWith(loading: true));
 
     final either = await createCustomerUsecase.call(event.toParams());
@@ -62,8 +62,13 @@ class CustomerInfoBloc extends Bloc<CustomerInfoEvent, CustomerInfoState> {
     );
   }
 
-  Future _onUpdateCustomer(UpdateCustomerEvent event, Emitter<CustomerInfoState> emit) async {
-    final state = this.state as CustomerInfoLoaded;
+  Future _onUpdateCustomer(UpdateCustomerFormEvent event, Emitter<CustomerFormState> emit) async {
+    final state = this.state as CustomerFormLoaded;
+    final customerEntity = state.customer?.copyWith();
+    if (customerEntity == event.customer) {
+      emit(state.copyWith(failureOrSuccessOption: some(right(''))));
+      return;
+    }
     emit(state.copyWith(loading: true));
     final either = await updateCustomerUsecase.call(UpdateCustomerUsecaseParams(event.customer));
     emit(state.copyWith(loading: false));
