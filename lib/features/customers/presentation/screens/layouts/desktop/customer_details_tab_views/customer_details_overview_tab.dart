@@ -13,31 +13,34 @@ import 'package:autro_app/core/widgets/buttons/delete_outline_button.dart';
 import 'package:autro_app/core/widgets/buttons/edit_outline_button.dart';
 import 'package:autro_app/core/widgets/standard_container.dart';
 import 'package:autro_app/features/customers/domin/entities/customer_entity.dart';
+import 'package:autro_app/features/customers/presentation/bloc/customer_details/customer_details_cubit.dart';
 import 'package:autro_app/features/customers/presentation/bloc/customers_list/customers_list_bloc.dart';
+import 'package:autro_app/features/customers/presentation/screens/customer_form_screen.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/svg.dart';
 
-import '../../../customer_form_screen.dart';
-
-class CustomerDetailsOverviewTab extends StatefulWidget {
-  const CustomerDetailsOverviewTab({super.key, required this.customerEntity});
-  final CustomerEntity customerEntity;
-
-  @override
-  State<CustomerDetailsOverviewTab> createState() => _CustomerDetailsOverviewTabState();
-}
-
-class _CustomerDetailsOverviewTabState extends State<CustomerDetailsOverviewTab> {
-  late CustomerEntity customerEntity;
-
-  @override
-  void initState() {
-    super.initState();
-    customerEntity = widget.customerEntity;
-  }
-
+class CustomerDetailsOverviewTab extends StatelessWidget {
+  const CustomerDetailsOverviewTab({
+    super.key,
+  });
   @override
   Widget build(BuildContext context) {
+    return BlocBuilder<CustomerDetailsCubit, CustomerDetailsState>(
+      builder: (context, state) {
+        if (state is CustomerDetailsInitial) {
+          return const Center(child: CircularProgressIndicator());
+        } else if (state is CustomerDetailsLoaded) {
+          return _buildLoadedState(state, context);
+        } else {
+          return const SizedBox.shrink();
+        }
+      },
+    );
+  }
+
+  Widget _buildLoadedState(CustomerDetailsLoaded state, BuildContext context) {
+    final customerEntity = state.customerEntity;
     return SingleChildScrollView(
       child: Column(
         children: [
@@ -115,7 +118,7 @@ class _CustomerDetailsOverviewTabState extends State<CustomerDetailsOverviewTab>
                           ),
                           const SizedBox(width: 24),
                           Expanded(
-                            child: _buildWebsiteDetails(context),
+                            child: _buildWebsiteDetails(context, customerEntity),
                           ),
                         ],
                       ),
@@ -153,39 +156,13 @@ class _CustomerDetailsOverviewTabState extends State<CustomerDetailsOverviewTab>
             ],
           ),
           const SizedBox(height: 12),
-          _buildButtonsSection(context),
+          _buildButtonsSection(context, customerEntity),
         ],
       ),
     );
   }
 
-  Widget _buildDetailsSection({
-    required String title,
-    required String iconPath,
-    required List<String> details,
-  }) {
-    return Column(
-      crossAxisAlignment: CrossAxisAlignment.start,
-      children: [
-        _buildTitleWithSvgIcon(title: title, iconPath: iconPath),
-        const SizedBox(height: 8),
-        for (var detail in details)
-          detail.isNotEmpty
-              ? Text(
-                  detail,
-                  style: TextStyles.font18Regular,
-                  maxLines: 2,
-                  overflow: TextOverflow.ellipsis,
-                )
-              : Text(
-                  '-',
-                  style: TextStyles.font18Regular.copyWith(color: AppColors.secondaryOpacity50),
-                ),
-      ],
-    );
-  }
-
-  Widget _buildWebsiteDetails(BuildContext context) {
+  Widget _buildWebsiteDetails(BuildContext context, CustomerEntity customerEntity) {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
@@ -296,25 +273,51 @@ class _CustomerDetailsOverviewTabState extends State<CustomerDetailsOverviewTab>
     );
   }
 
-  Widget _buildButtonsSection(BuildContext context) {
+  Widget _buildButtonsSection(BuildContext context, CustomerEntity customerEntity) {
     return StandardContainer(
       padding: const EdgeInsets.all(16),
       child: Row(
         children: [
           const Spacer(),
           DeleteOutlineButton(
-            onPressed: () => onDeleteTab(context),
+            onPressed: () => _onDeleteTab(context, customerEntity),
           ),
           const SizedBox(width: 16),
           EditOutlineButton(
-            onPressed: () => onEditTab(context),
+            onPressed: () => _onUpdateTab(context, customerEntity),
           ),
         ],
       ),
     );
   }
 
-  onDeleteTab(BuildContext context) async {
+  Widget _buildDetailsSection({
+    required String title,
+    required String iconPath,
+    required List<String> details,
+  }) {
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        _buildTitleWithSvgIcon(title: title, iconPath: iconPath),
+        const SizedBox(height: 8),
+        for (var detail in details)
+          detail.isNotEmpty
+              ? Text(
+                  detail,
+                  style: TextStyles.font18Regular,
+                  maxLines: 2,
+                  overflow: TextOverflow.ellipsis,
+                )
+              : Text(
+                  '-',
+                  style: TextStyles.font18Regular.copyWith(color: AppColors.secondaryOpacity50),
+                ),
+      ],
+    );
+  }
+
+  _onDeleteTab(BuildContext context, CustomerEntity customerEntity) async {
     final isOk = await DialogUtil.showAlertDialog(
           context,
           title: 'Delete',
@@ -329,20 +332,18 @@ class _CustomerDetailsOverviewTabState extends State<CustomerDetailsOverviewTab>
     }
   }
 
-  onEditTab(BuildContext context) async {
-    final customerUpdated = await NavUtil.push(
+  _onUpdateTab(BuildContext context, CustomerEntity customerEntity) async {
+    final updatedCustomer = await NavUtil.push(
       context,
       CustomerFormScreen(
-        customer: customerEntity,
         formType: FormType.edit,
+        customer: customerEntity,
       ),
     ) as CustomerEntity?;
 
-    if (customerUpdated != null) {
+    if (updatedCustomer != null) {
       if (context.mounted) {
-        setState(() {
-          customerEntity = customerUpdated;
-        });
+        context.read<CustomerDetailsCubit>().updateCustomer(updatedCustomer);
       }
     }
   }

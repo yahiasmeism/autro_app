@@ -25,7 +25,7 @@ import 'package:autro_app/features/customers/domin/usecases/delete_customer_usec
 import 'package:autro_app/features/customers/domin/usecases/get_customer_usecase.dart' as _i832;
 import 'package:autro_app/features/customers/domin/usecases/get_customers_list_usecase.dart' as _i486;
 import 'package:autro_app/features/customers/domin/usecases/update_customer_usecase.dart' as _i134;
-
+import 'package:autro_app/features/customers/presentation/bloc/customer_details/customer_details_cubit.dart' as _i825;
 import 'package:autro_app/features/customers/presentation/bloc/customer_form/customer_form_bloc.dart' as _i512;
 import 'package:autro_app/features/customers/presentation/bloc/customers_list/customers_list_bloc.dart' as _i815;
 import 'package:autro_app/features/home/bloc/home_bloc.dart' as _i80;
@@ -90,6 +90,7 @@ extension GetItInjectableX on _i174.GetIt {
           gh<_i134.UpdateCustomerUsecase>(),
           gh<_i815.CustomersListBloc>(),
         ));
+    gh.factory<_i825.CustomerDetailsCubit>(() => _i825.CustomerDetailsCubit());
     return this;
   }
 }
