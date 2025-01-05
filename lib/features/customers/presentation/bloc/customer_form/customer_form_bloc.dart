@@ -75,7 +75,7 @@ class CustomerFormBloc extends Bloc<CustomerFormEvent, CustomerFormState> {
     either.fold(
       (failure) => emit((state.copyWith(failureOrSuccessOption: some(left(failure))))),
       (customer) {
-        customersListBloc.add(GetCustomersListEvent());
+        customersListBloc.add(AddedUpdatedCustomerEvent());
         emit(state.copyWith(customer: customer, failureOrSuccessOption: some(right('Customer updated'))));
       },
     );
