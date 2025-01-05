@@ -56,7 +56,7 @@ class CustomerFormBloc extends Bloc<CustomerFormEvent, CustomerFormState> {
         )),
       ),
       (customer) {
-        customersListBloc.add(GetCustomersListEvent());
+        customersListBloc.add(AddedUpdatedCustomerEvent());
         emit(state.copyWith(customer: customer, failureOrSuccessOption: some(right('Customer created'))));
       },
     );
