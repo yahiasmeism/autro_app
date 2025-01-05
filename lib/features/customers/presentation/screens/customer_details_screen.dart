@@ -11,7 +11,7 @@ class CustomerDetailsScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     return AdaptiveLayout(
       mobile: (context) => const Center(child: Text('Customers Mobile Layout')),
-      desktop: (context) => CustomerDetailsDesktopLayout(customer: customerEntity),
+      desktop: (context) => CustomerDetailsDesktopLayout(customerEntity: customerEntity),
     );
   }
 }
