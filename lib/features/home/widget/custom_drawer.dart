@@ -55,7 +55,7 @@ class CustomDrawer extends StatelessWidget {
                             );
                           },
                         ),
-                        const SizedBox(height: 100),
+                        const SizedBox(height: 50),
                         _buildLogoutButton(context),
                       ],
                     ),
@@ -72,6 +72,9 @@ class CustomDrawer extends StatelessWidget {
 
   ListTile _buildLogoutButton(BuildContext context) {
     return ListTile(
+      shape: ContinuousRectangleBorder(
+        borderRadius: BorderRadius.circular(32),
+      ),
       onTap: () async {
         final confirmLogout = await _showLogoutDialog(context);
         if (confirmLogout) {

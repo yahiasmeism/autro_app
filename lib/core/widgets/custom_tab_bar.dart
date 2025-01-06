@@ -75,7 +75,7 @@ class _CustomTabBarState extends State<CustomTabBar> with TickerProviderStateMix
             child: SizedBox(
               width: MediaQuery.sizeOf(context).width,
               child: const Divider(
-                height: 0,
+                height: 2,
               ),
             ),
           ),
