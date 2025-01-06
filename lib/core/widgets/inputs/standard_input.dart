@@ -115,10 +115,13 @@ class _StandardInputState extends State<StandardInput> {
         _buildLabel(),
         TextFormField(
           decoration: InputDecoration(
+            iconColor: AppColors.iconColor,
             constraints: BoxConstraints(maxHeight: widget.maxHeight ?? 90.0),
             enabled: widget.enabled,
             contentPadding: widget.contentPadding ?? const EdgeInsets.all(16),
             suffixIcon: widget.iconSuffix,
+            prefixIconColor: AppColors.iconColor,
+            suffix: widget.suffix,
             prefixIcon: widget.iconPrefix,
             prefix: widget.prefix,
             hintText: widget.hintText,
@@ -159,7 +162,7 @@ class _StandardInputState extends State<StandardInput> {
                     borderRadius: BorderRadius.circular(widget.radius),
                     borderSide: BorderSide.none,
                   ),
-            suffix: widget.suffix,
+            suffixIconColor: AppColors.iconColor,
             fillColor: widget.fillColor,
             filled: widget.fillColor != null,
 
