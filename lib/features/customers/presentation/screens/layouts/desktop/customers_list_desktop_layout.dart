@@ -34,7 +34,6 @@ class CustomersListDesktopLayout extends StatelessWidget {
                     return const Center(child: CircularProgressIndicator());
                   }
                   if (state is CustomersListLoaded) {
-                    if (state.loading) return const Center(child: CircularProgressIndicator());
                     if (state.customersList.isEmpty) return NoDataScreen.customers();
                     return Column(
                       children: [

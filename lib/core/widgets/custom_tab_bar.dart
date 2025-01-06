@@ -1,3 +1,4 @@
+import 'package:autro_app/core/theme/app_colors.dart';
 import 'package:autro_app/core/theme/text_styles.dart';
 import 'package:flutter/material.dart';
 
@@ -96,7 +97,7 @@ class _CustomTabBarState extends State<CustomTabBar> with TickerProviderStateMix
                       child: AnimatedDefaultTextStyle(
                         duration: const Duration(milliseconds: 150),
                         style: TextStyles.font16Regular.copyWith(
-                          color: index == _tabController?.index ? Colors.blue : Colors.black,
+                          color: index == _tabController?.index ? AppColors.primary : Colors.black,
                         ),
                         child: Text(widget.tabs[index]),
                       ),
@@ -114,7 +115,7 @@ class _CustomTabBarState extends State<CustomTabBar> with TickerProviderStateMix
               transform: Matrix4.translationValues(_indicatorPosition, 0, 0),
               width: _indicatorWidth,
               height: 2,
-              color: Colors.blue,
+              color: AppColors.primary,
             ),
           ),
         ],

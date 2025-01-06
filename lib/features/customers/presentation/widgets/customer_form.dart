@@ -7,6 +7,7 @@ import 'package:autro_app/core/widgets/buttons/save_button.dart';
 import 'package:autro_app/core/widgets/inputs/country_selectable_dropdown.dart';
 import 'package:autro_app/core/widgets/inputs/standard_input.dart';
 import 'package:autro_app/core/widgets/inputs/standard_selectable_dropdown.dart';
+import 'package:autro_app/core/widgets/overley_loading.dart';
 import 'package:autro_app/features/customers/domin/entities/customer_entity.dart';
 import 'package:autro_app/features/customers/presentation/bloc/customer_form/customer_form_bloc.dart';
 import 'package:flutter/material.dart';
@@ -39,115 +40,114 @@ class _CustomerFormState extends State<CustomerForm> {
       listener: listener,
       builder: (context, state) {
         if (state is CustomerFormLoaded) {
-          if (state.loading) {
-            return SizedBox(
-              height: MediaQuery.sizeOf(context).height - 200,
-              child: const Center(child: CircularProgressIndicator()),
-            );
-          }
-          return Form(
-            key: formKey,
-            child: Column(children: [
-              Row(children: [
-                Expanded(
-                    child: StandardInput(
-                  controller: nameController,
-                  validator: ValidatorUtil.validateNameRequired,
-                  labelText: 'Customer Name',
-                  showRequiredIndecator: true,
-                  hintText: 'e.g John Doe',
-                )),
-                const SizedBox(width: 24),
-                Expanded(
-                    child: StandardSelectableDropdownField(
-                  controller: primaryContactController,
-                  items: const [
-                    'Email',
-                    'Phone',
-                  ],
-                  showRequiredIndicator: true,
-                  labelText: 'Primary Contact',
-                  hintText: 'Email/Phone',
-                )),
-              ]),
-              const SizedBox(height: 20),
-              Row(children: [
-                Expanded(
-                    child: CountrySelectableDropdown(
-                  controller: country,
-                )),
-                const SizedBox(width: 24),
-                Expanded(
-                    child: StandardInput(
-                  controller: city,
-                  labelText: 'City',
-                  hintText: 'e.g SomeWhere',
-                  validator: ValidatorUtil.validateNameOptional,
-                )),
-              ]),
-              const SizedBox(height: 20),
-              Row(children: [
-                Expanded(
-                    child: StandardInput(
-                  labelText: 'Email',
-                  keyboardType: TextInputType.emailAddress,
-                  showRequiredIndecator: true,
-                  hintText: 'e.g 8PqHj@example.com',
-                  controller: email,
-                  validator: ValidatorUtil.validateEmail,
-                )),
-                const SizedBox(width: 24),
-                Expanded(
-                    child: StandardInput(
-                  keyboardType: TextInputType.number,
-                  labelText: 'Phone Number',
-                  controller: phone,
-                  showRequiredIndecator: true,
-                  hintText: 'e.g 1234567890',
-                  validator: ValidatorUtil.validatePhoneNumber,
-                )),
-                const SizedBox(width: 24),
-                Expanded(
-                    child: StandardInput(
-                  controller: altPhone,
-                  labelText: 'Alternative Phone Number',
-                  hintText: 'e.g SomeWhere',
-                )),
-              ]),
-              const SizedBox(height: 20),
-              Row(
-                children: [
-                  Expanded(
-                    child: StandardInput(
-                      labelText: 'Website',
-                      hintText: 'e.g Something.com',
-                      controller: website,
-                    ),
+          return Stack(
+            children: [
+              Form(
+                key: formKey,
+                child: Column(children: [
+                  Row(children: [
+                    Expanded(
+                        child: StandardInput(
+                      controller: nameController,
+                      validator: ValidatorUtil.validateNameRequired,
+                      labelText: 'Customer Name',
+                      showRequiredIndecator: true,
+                      hintText: 'e.g John Doe',
+                    )),
+                    const SizedBox(width: 24),
+                    Expanded(
+                        child: StandardSelectableDropdownField(
+                      controller: primaryContactController,
+                      items: const [
+                        'Email',
+                        'Phone',
+                      ],
+                      showRequiredIndicator: true,
+                      labelText: 'Primary Contact',
+                      hintText: 'Email/Phone',
+                    )),
+                  ]),
+                  const SizedBox(height: 20),
+                  Row(children: [
+                    Expanded(
+                        child: CountrySelectableDropdown(
+                      controller: country,
+                    )),
+                    const SizedBox(width: 24),
+                    Expanded(
+                        child: StandardInput(
+                      controller: city,
+                      labelText: 'City',
+                      hintText: 'e.g SomeWhere',
+                      validator: ValidatorUtil.validateNameOptional,
+                    )),
+                  ]),
+                  const SizedBox(height: 20),
+                  Row(children: [
+                    Expanded(
+                        child: StandardInput(
+                      labelText: 'Email',
+                      keyboardType: TextInputType.emailAddress,
+                      showRequiredIndecator: true,
+                      hintText: 'e.g 8PqHj@example.com',
+                      controller: email,
+                      validator: ValidatorUtil.validateEmail,
+                    )),
+                    const SizedBox(width: 24),
+                    Expanded(
+                        child: StandardInput(
+                      keyboardType: TextInputType.number,
+                      labelText: 'Phone Number',
+                      controller: phone,
+                      showRequiredIndecator: true,
+                      hintText: 'e.g 1234567890',
+                      validator: ValidatorUtil.validatePhoneNumber,
+                    )),
+                    const SizedBox(width: 24),
+                    Expanded(
+                        child: StandardInput(
+                      controller: altPhone,
+                      labelText: 'Alternative Phone Number',
+                      hintText: 'e.g SomeWhere',
+                    )),
+                  ]),
+                  const SizedBox(height: 20),
+                  Row(
+                    children: [
+                      Expanded(
+                        child: StandardInput(
+                          labelText: 'Website',
+                          hintText: 'e.g Something.com',
+                          controller: website,
+                        ),
+                      ),
+                      const SizedBox(width: 24),
+                      Expanded(
+                          child: StandardInput(
+                        labelText: 'Business Details',
+                        showRequiredIndecator: true,
+                        hintText: 'e.g Papers/Plastic/etc',
+                        controller: businessDetails,
+                        validator: ValidatorUtil.validateRequired,
+                      )),
+                    ],
                   ),
-                  const SizedBox(width: 24),
-                  Expanded(
-                      child: StandardInput(
-                    labelText: 'Business Details',
-                    showRequiredIndecator: true,
-                    hintText: 'e.g Papers/Plastic/etc',
-                    controller: businessDetails,
-                    validator: ValidatorUtil.validateRequired,
-                  )),
-                ],
+                  const SizedBox(height: 20),
+                  StandardInput(
+                    minLines: 3,
+                    labelText: 'Notes',
+                    controller: notes,
+                    hintText: 'e.g write anything here that you might need to store about this customer.',
+                  ),
+                  const SizedBox(height: 20),
+                  _buildButtons(state),
+                ]),
               ),
-              const SizedBox(height: 20),
-              StandardInput(
-                minLines: 3,
-                labelText: 'Notes',
-                controller: notes,
-                hintText: 'e.g write anything here that you might need to store about this customer.',
-              ),
-              const SizedBox(height: 20),
-              _buildButtons(state),
-            ]),
+              if (state.loading) const Positioned.fill(child: LoadingOverlay()),
+            ],
           );
         } else {
-          return const Center(child: CircularProgressIndicator());
+          return const SizedBox.shrink();
         }
       },
     );

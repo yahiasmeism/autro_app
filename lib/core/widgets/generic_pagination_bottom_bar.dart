@@ -12,10 +12,13 @@ class GenericPaginationBottomBar extends StatelessWidget {
     required this.onAddTap,
     required this.currentPage,
     required this.pagesCount,
+    this.isLoading = false,
   });
+
   final String labelAddButton;
   final int currentPage, pagesCount;
   final Function()? onNextTap, onPreviousTap, onAddTap;
+  final bool isLoading;
 
   @override
   Widget build(BuildContext context) {
@@ -29,10 +32,7 @@ class GenericPaginationBottomBar extends StatelessWidget {
         children: [
           _buildGenericAddButton(),
           const Spacer(),
-          Text(
-            'Page $currentPage of $pagesCount',
-            style: TextStyles.interFont15Regular,
-          ),
+          _buildPageInfoWithLoading(),
           const SizedBox(width: 16),
           _buildPaginationButtons(),
         ],
@@ -40,7 +40,7 @@ class GenericPaginationBottomBar extends StatelessWidget {
     );
   }
 
-  _buildGenericAddButton() {
+  Widget _buildGenericAddButton() {
     return IntrinsicWidth(
       child: PrimaryButton(
         bgColor: AppColors.secondary,
@@ -58,11 +58,35 @@ class GenericPaginationBottomBar extends StatelessWidget {
             const SizedBox(width: 8),
             Text(
               labelAddButton,
-              style: TextStyles.font16Regular.copyWith(color: Colors.white.withOpacity(onAddTap == null ? 0.5 : 1)),
-            )
+              style: TextStyles.font16Regular.copyWith(
+                color: Colors.white.withOpacity(onAddTap == null ? 0.5 : 1),
+              ),
+            ),
           ],
         ),
       ),
+    );
+  }
+
+  Widget _buildPageInfoWithLoading() {
+    return Row(
+      children: [
+        SizedBox(
+          width: 18,
+          height: 18,
+          child: isLoading
+              ? const CircularProgressIndicator(
+                  strokeWidth: 2,
+                  valueColor: AlwaysStoppedAnimation<Color>(AppColors.secondary),
+                )
+              : const SizedBox.shrink(),
+        ),
+        const SizedBox(width: 14),
+        Text(
+          'Page $currentPage of $pagesCount',
+          style: TextStyles.interFont15Regular,
+        ),
+      ],
     );
   }
 
@@ -71,8 +95,8 @@ class GenericPaginationBottomBar extends StatelessWidget {
       children: [
         TextButton(
           style: ButtonStyle(
-            overlayColor: WidgetStatePropertyAll(AppColors.secondaryOpacity8),
-            shape: WidgetStatePropertyAll(
+            overlayColor: WidgetStateProperty.all(AppColors.secondaryOpacity8),
+            shape: WidgetStateProperty.all(
               RoundedRectangleBorder(
                 side: BorderSide(
                   color: AppColors.secondaryOpacity25,
@@ -84,18 +108,20 @@ class GenericPaginationBottomBar extends StatelessWidget {
               ),
             ),
           ),
-          onPressed: onPreviousTap,
+          onPressed: isLoading ? null : onPreviousTap,
           child: Text(
             'previous',
-            style: TextStyles.font16Regular.copyWith(color: onPreviousTap == null ? AppColors.secondaryOpacity50 : null),
+            style: TextStyles.font16Regular.copyWith(
+              color: isLoading || onPreviousTap == null ? AppColors.secondaryOpacity50 : null,
+            ),
           ),
         ),
         const SizedBox(width: 8),
         TextButton(
-          onPressed: onNextTap,
+          onPressed: isLoading ? null : onNextTap,
           style: ButtonStyle(
-            overlayColor: WidgetStatePropertyAll(AppColors.secondaryOpacity8),
-            shape: WidgetStatePropertyAll(
+            overlayColor: WidgetStateProperty.all(AppColors.secondaryOpacity8),
+            shape: WidgetStateProperty.all(
               RoundedRectangleBorder(
                 side: BorderSide(
                   color: AppColors.secondaryOpacity25,
@@ -107,8 +133,12 @@ class GenericPaginationBottomBar extends StatelessWidget {
               ),
             ),
           ),
-          child: Text('next',
-              style: TextStyles.font16Regular.copyWith(color: onNextTap == null ? AppColors.secondaryOpacity50 : null)),
+          child: Text(
+            'next',
+            style: TextStyles.font16Regular.copyWith(
+              color: isLoading || onNextTap == null ? AppColors.secondaryOpacity50 : null,
+            ),
+          ),
         ),
       ],
     );

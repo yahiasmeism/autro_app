@@ -21,123 +21,128 @@ class CustomerListTile extends StatelessWidget {
   final CustomerEntity customerEntity;
   @override
   Widget build(BuildContext context) {
-    return Container(
-      decoration: const BoxDecoration(
-        borderRadius: BorderRadius.all(Radius.circular(8)),
-        color: Colors.white,
-      ),
-      padding: const EdgeInsets.all(14),
-      child: Row(
-        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-        crossAxisAlignment: CrossAxisAlignment.center,
-        children: [
-          Expanded(
-            flex: 3,
-            child: Text(
-              customerEntity.name,
-              style: TextStyles.font16Regular,
+    return InkWell(
+      onTap: () {
+        NavUtil.push(context, CustomerDetailsScreen(customerEntity: customerEntity));
+      },
+      child: Container(
+        decoration: const BoxDecoration(
+          borderRadius: BorderRadius.all(Radius.circular(8)),
+          color: Colors.white,
+        ),
+        padding: const EdgeInsets.all(14),
+        child: Row(
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          crossAxisAlignment: CrossAxisAlignment.center,
+          children: [
+            Expanded(
+              flex: 3,
+              child: Text(
+                customerEntity.name,
+                style: TextStyles.font16Regular,
+              ),
             ),
-          ),
-          const SizedBox(width: 14),
-          Expanded(
-            flex: 3,
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              mainAxisSize: MainAxisSize.min,
-              children: [
-                Text(
-                  customerEntity.city,
-                  style: TextStyles.font16Regular,
-                ),
-                Text(
-                  customerEntity.country,
-                  style: TextStyles.font16Regular.copyWith(
-                    color: AppColors.secondaryOpacity50,
+            const SizedBox(width: 14),
+            Expanded(
+              flex: 3,
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                mainAxisSize: MainAxisSize.min,
+                children: [
+                  Text(
+                    customerEntity.city,
+                    style: TextStyles.font16Regular,
                   ),
+                  Text(
+                    customerEntity.country,
+                    style: TextStyles.font16Regular.copyWith(
+                      color: AppColors.secondaryOpacity50,
+                    ),
+                  ),
+                ],
+              ),
+            ),
+            const SizedBox(width: 14),
+            Expanded(
+              flex: 3,
+              child: Text(
+                customerEntity.businessDetails,
+                style: TextStyles.font16Regular.copyWith(
+                  color: AppColors.secondaryOpacity50,
                 ),
-              ],
-            ),
-          ),
-          const SizedBox(width: 14),
-          Expanded(
-            flex: 3,
-            child: Text(
-              customerEntity.businessDetails,
-              style: TextStyles.font16Regular.copyWith(
-                color: AppColors.secondaryOpacity50,
               ),
             ),
-          ),
-          const SizedBox(width: 14),
-          Expanded(
-            flex: 4,
-            child: Text(
-              customerEntity.primaryContact,
-              style: TextStyles.font16Regular.copyWith(
-                color: AppColors.secondaryOpacity50,
-              ),
-            ),
-          ),
-          const SizedBox(width: 8),
-          Expanded(
-            flex: 2,
-            child: Text(
-              '1',
-              textAlign: TextAlign.center,
-              style: TextStyles.font16Regular.copyWith(
-                color: AppColors.secondaryOpacity50,
-              ),
-            ),
-          ),
-          const SizedBox(width: 8),
-          Expanded(
-            flex: 2,
-            child: Opacity(
-              opacity: customerEntity.website.isNotEmpty ? 1 : 0.5,
-              child: IconButton(
-                onPressed: customerEntity.website.isEmpty
-                    ? null
-                    : () {
-                        LinkUtil.openLink(context, customerEntity.website);
-                      },
-                icon: SvgPicture.asset(Assets.iconsInternet),
-              ),
-            ),
-          ),
-          const SizedBox(width: 8),
-          Expanded(
-            flex: 3,
-            child: Row(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                EditIconButton(onPressed: () {
-                  NavUtil.push(
-                      context,
-                      CustomerFormScreen(
-                        customer: customerEntity,
-                        formType: FormType.edit,
-                      ));
-                }),
-                const SizedBox(width: 8),
-                ShowIconButton(
-                  onPressed: () {
-                    NavUtil.push(context, CustomerDetailsScreen(customerEntity: customerEntity));
-                  },
+            const SizedBox(width: 14),
+            Expanded(
+              flex: 4,
+              child: Text(
+                customerEntity.primaryContact,
+                style: TextStyles.font16Regular.copyWith(
+                  color: AppColors.secondaryOpacity50,
                 ),
-                const SizedBox(width: 8),
-                DeleteIconButton(
-                  onPressed: () {
-                    context.read<CustomersListBloc>().add(
-                          DeleteCustomerEvent(
-                            customerId: customerEntity.id,
-                          ),
-                        );
-                  },
-                ),
-              ],
+              ),
             ),
-          ),
-        ],
+            const SizedBox(width: 8),
+            Expanded(
+              flex: 2,
+              child: Text(
+                '1',
+                textAlign: TextAlign.center,
+                style: TextStyles.font16Regular.copyWith(
+                  color: AppColors.secondaryOpacity50,
+                ),
+              ),
+            ),
+            const SizedBox(width: 8),
+            Expanded(
+              flex: 2,
+              child: Opacity(
+                opacity: customerEntity.website.isNotEmpty ? 1 : 0.5,
+                child: IconButton(
+                  onPressed: customerEntity.website.isEmpty
+                      ? null
+                      : () {
+                          LinkUtil.openLink(context, customerEntity.website);
+                        },
+                  icon: SvgPicture.asset(Assets.iconsInternet),
+                ),
+              ),
+            ),
+            const SizedBox(width: 8),
+            Expanded(
+              flex: 3,
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  EditIconButton(onPressed: () {
+                    NavUtil.push(
+                        context,
+                        CustomerFormScreen(
+                          customer: customerEntity,
+                          formType: FormType.edit,
+                        ));
+                  }),
+                  const SizedBox(width: 8),
+                  ShowIconButton(
+                    onPressed: () {
+                      NavUtil.push(context, CustomerDetailsScreen(customerEntity: customerEntity));
+                    },
+                  ),
+                  const SizedBox(width: 8),
+                  DeleteIconButton(
+                    onPressed: () {
+                      context.read<CustomersListBloc>().add(
+                            DeleteCustomerEvent(
+                              customerId: customerEntity.id,
+                            ),
+                          );
+                    },
+                  ),
+                ],
+              ),
+            ),
+          ],
+        ),
       ),
     );
   }

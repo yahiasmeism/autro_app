@@ -17,6 +17,7 @@ class CustomerPaginationBottomBar extends StatelessWidget {
         int currentPage = 0;
         int totalPages = 0;
         bool isLoaded = state is CustomersListLoaded;
+        final loading = isLoaded && state.loading;
         bool canNext = false;
         bool canPrevious = false;
         if (isLoaded) {
@@ -26,6 +27,7 @@ class CustomerPaginationBottomBar extends StatelessWidget {
           canPrevious = state.canGoPreviousPage;
         }
         return GenericPaginationBottomBar(
+          isLoading: loading,
           pagesCount: totalPages,
           currentPage: currentPage,
           onPreviousTap: canPrevious
