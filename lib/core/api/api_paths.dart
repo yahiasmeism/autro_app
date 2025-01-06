@@ -9,4 +9,14 @@ abstract class ApiPaths {
 
   static const String customers = 'customers';
   static String customerById(int id) => 'customers/$id';
+
+
+  //suppliers
+
+  static const String suppliers = 'suppliers';
+  static String supplierById(int id) => 'suppliers/$id';
+
+
+
+
 }
