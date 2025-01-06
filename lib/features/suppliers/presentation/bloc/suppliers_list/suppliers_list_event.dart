@@ -9,19 +9,19 @@ sealed class SuppliersListEvent extends Equatable {
 
 class GetSuppliersListEvent extends SuppliersListEvent {}
 
-class OnUpdatePaginationEvent extends SuppliersListEvent {
+class OnUpdatePaginationSuppliersEvent extends SuppliersListEvent {
   final int pageNumber;
-  const OnUpdatePaginationEvent({required this.pageNumber});
+  const OnUpdatePaginationSuppliersEvent({required this.pageNumber});
 
   @override
   List<Object> get props => [pageNumber];
 }
 
-class HandleFailureEvent extends SuppliersListEvent {}
+class HandleFailureSuppliersEvent extends SuppliersListEvent {}
 
-class NextPageEvent extends SuppliersListEvent {}
+class NextPageSuppliersEvent extends SuppliersListEvent {}
 
-class PreviousPageEvent extends SuppliersListEvent {}
+class PreviousPageSuppliersEvent extends SuppliersListEvent {}
 
 class DeleteSupplierEvent extends SuppliersListEvent {
   final int supplierId;
@@ -31,9 +31,9 @@ class DeleteSupplierEvent extends SuppliersListEvent {
   List<Object> get props => [supplierId];
 }
 
-class SearchInputChangedEvent extends SuppliersListEvent {
+class SearchInputChangedSuppliersEvent extends SuppliersListEvent {
   final String keyword;
-  const SearchInputChangedEvent({required this.keyword});
+  const SearchInputChangedSuppliersEvent({required this.keyword});
 
   @override
   List<Object> get props => [keyword];

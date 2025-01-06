@@ -39,24 +39,24 @@ class SuppliersListBloc extends Bloc<SuppliersListEvent, SuppliersListState> {
       await onGetSuppliersList(event, emit);
     }
 
-    if (event is OnUpdatePaginationEvent) {
+    if (event is OnUpdatePaginationSuppliersEvent) {
       await onUpdatePagination(event, emit);
     }
 
-    if (event is HandleFailureEvent) {
+    if (event is HandleFailureSuppliersEvent) {
       await onHandleFailure(event, emit);
     }
 
-    if (event is NextPageEvent) {
+    if (event is NextPageSuppliersEvent) {
       await onNextPage(event, emit);
     }
-    if (event is PreviousPageEvent) {
+    if (event is PreviousPageSuppliersEvent) {
       await onPreviousPage(event, emit);
     }
     if (event is DeleteSupplierEvent) {
       await onDeleteSupplier(event, emit);
     }
-    if (event is SearchInputChangedEvent) {
+    if (event is SearchInputChangedSuppliersEvent) {
       await onSearchInputChanged(event, emit);
     }
     if (event is AddedUpdatedSupplierEvent) {
@@ -79,7 +79,7 @@ class SuppliersListBloc extends Bloc<SuppliersListEvent, SuppliersListState> {
     );
   }
 
-  Future onUpdatePagination(OnUpdatePaginationEvent event, Emitter<SuppliersListState> emit) async {
+  Future onUpdatePagination(OnUpdatePaginationSuppliersEvent event, Emitter<SuppliersListState> emit) async {
     final state = this.state as SuppliersListLoaded;
     final paginationFilterDto = state.paginationFilterDTO.copyWith(pageNumber: event.pageNumber);
     final params = GetSuppliersListUsecaseParams(dto: paginationFilterDto);
@@ -97,22 +97,22 @@ class SuppliersListBloc extends Bloc<SuppliersListEvent, SuppliersListState> {
     );
   }
 
-  onHandleFailure(HandleFailureEvent event, Emitter<SuppliersListState> emit) async {
+  onHandleFailure(HandleFailureSuppliersEvent event, Emitter<SuppliersListState> emit) async {
     emit(SuppliersListInitial());
     await Future.delayed(const Duration(milliseconds: 300));
     add(GetSuppliersListEvent());
   }
 
-  onNextPage(NextPageEvent event, Emitter<SuppliersListState> emit) {
+  onNextPage(NextPageSuppliersEvent event, Emitter<SuppliersListState> emit) {
     final state = this.state as SuppliersListLoaded;
     final pageNumber = state.paginationFilterDTO.pageNumber + 1;
-    add(OnUpdatePaginationEvent(pageNumber: pageNumber));
+    add(OnUpdatePaginationSuppliersEvent(pageNumber: pageNumber));
   }
 
-  onPreviousPage(PreviousPageEvent event, Emitter<SuppliersListState> emit) {
+  onPreviousPage(PreviousPageSuppliersEvent event, Emitter<SuppliersListState> emit) {
     final state = this.state as SuppliersListLoaded;
     final pageNumber = state.paginationFilterDTO.pageNumber - 1;
-    add(OnUpdatePaginationEvent(pageNumber: pageNumber));
+    add(OnUpdatePaginationSuppliersEvent(pageNumber: pageNumber));
   }
 
   onDeleteSupplier(DeleteSupplierEvent event, Emitter<SuppliersListState> emit) async {
@@ -135,7 +135,7 @@ class SuppliersListBloc extends Bloc<SuppliersListEvent, SuppliersListState> {
     );
   }
 
-  onSearchInputChanged(SearchInputChangedEvent event, Emitter<SuppliersListState> emit) async {
+  onSearchInputChanged(SearchInputChangedSuppliersEvent event, Emitter<SuppliersListState> emit) async {
     final state = this.state as SuppliersListLoaded;
 
     emit(state.copyWith(loading: true));
