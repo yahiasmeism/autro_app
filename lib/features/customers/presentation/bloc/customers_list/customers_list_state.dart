@@ -14,12 +14,14 @@ final class CustomersListLoaded extends CustomersListState {
   final PaginationFilterDTO paginationFilterDTO;
   final int totalCount;
   final bool loading;
+  final bool loadingPagination;
   final Option<Either<Failure, String>> failureOrSuccessOption;
   const CustomersListLoaded({
     required this.customersList,
     required this.totalCount,
     required this.paginationFilterDTO,
     this.loading = false,
+    this.loadingPagination = false,
     this.failureOrSuccessOption = const None(),
   });
   @override
@@ -29,6 +31,7 @@ final class CustomersListLoaded extends CustomersListState {
         totalCount,
         loading,
         failureOrSuccessOption,
+        loadingPagination,
       ];
 
   CustomersListLoaded copyWith({
@@ -37,6 +40,7 @@ final class CustomersListLoaded extends CustomersListState {
     int? totalCount,
     bool? loading,
     Option<Either<Failure, String>>? failureOrSuccessOption,
+    bool? loadingPagination,
   }) {
     return CustomersListLoaded(
       customersList: customersList ?? this.customersList,
@@ -44,6 +48,7 @@ final class CustomersListLoaded extends CustomersListState {
       totalCount: totalCount ?? this.totalCount,
       loading: loading ?? this.loading,
       failureOrSuccessOption: failureOrSuccessOption ?? none(),
+      loadingPagination: loadingPagination ?? this.loadingPagination,
     );
   }
 

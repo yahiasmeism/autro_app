@@ -2,6 +2,7 @@ import 'package:autro_app/core/errors/failure_mapper.dart';
 import 'package:autro_app/core/utils/dialog_utils.dart';
 import 'package:autro_app/core/widgets/failure_screen.dart';
 import 'package:autro_app/core/widgets/no_data_screen.dart';
+import 'package:autro_app/core/widgets/overley_loading.dart';
 import 'package:autro_app/core/widgets/standard_list_title.dart';
 import 'package:autro_app/features/customers/presentation/bloc/customers_list/customers_list_bloc.dart';
 import 'package:autro_app/features/customers/presentation/widgets/customer_pagination_bottom_bar.dart';
@@ -34,13 +35,7 @@ class CustomersListDesktopLayout extends StatelessWidget {
                     return const Center(child: CircularProgressIndicator());
                   }
                   if (state is CustomersListLoaded) {
-                    if (state.customersList.isEmpty) return NoDataScreen.customers();
-                    return Column(
-                      children: [
-                        const CustomersListHeadersRow(),
-                        Expanded(child: CustomersList(customers: state.customersList)),
-                      ],
-                    );
+                    return _buildLoadedBody(state);
                   } else if (state is CustomersListError) {
                     return FailureScreen(
                       failure: state.failure,
@@ -57,6 +52,21 @@ class CustomersListDesktopLayout extends StatelessWidget {
           ],
         ),
       ),
+    );
+  }
+
+  Widget _buildLoadedBody(CustomersListLoaded state) {
+    if (state.customersList.isEmpty) return NoDataScreen.customers();
+    return Stack(
+      children: [
+        Column(
+          children: [
+            const CustomersListHeadersRow(),
+            Expanded(child: CustomersList(customers: state.customersList)),
+          ],
+        ),
+        if (state.loading) const LoadingOverlay(),
+      ],
     );
   }
 
