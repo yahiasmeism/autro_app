@@ -2,7 +2,6 @@ import 'package:autro_app/core/errors/failure_mapper.dart';
 import 'package:autro_app/core/utils/dialog_utils.dart';
 import 'package:autro_app/core/widgets/failure_screen.dart';
 import 'package:autro_app/core/widgets/no_data_screen.dart';
-import 'package:autro_app/core/widgets/overley_loading.dart';
 import 'package:autro_app/core/widgets/standard_list_title.dart';
 import 'package:autro_app/features/customers/presentation/bloc/customers_list/customers_list_bloc.dart';
 import 'package:autro_app/features/customers/presentation/widgets/customer_pagination_bottom_bar.dart';
@@ -36,15 +35,10 @@ class CustomersListDesktopLayout extends StatelessWidget {
                   }
                   if (state is CustomersListLoaded) {
                     if (state.customersList.isEmpty) return NoDataScreen.customers();
-                    return Stack(
+                    return Column(
                       children: [
-                        Column(
-                          children: [
-                            const CustomersListHeadersRow(),
-                            Expanded(child: CustomersList(customers: state.customersList)),
-                          ],
-                        ),
-                        if (state.loading) const LoadingOverlay(),
+                        const CustomersListHeadersRow(),
+                        Expanded(child: CustomersList(customers: state.customersList)),
                       ],
                     );
                   } else if (state is CustomersListError) {
