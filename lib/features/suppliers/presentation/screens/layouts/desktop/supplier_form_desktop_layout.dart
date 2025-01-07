@@ -2,10 +2,10 @@ import 'package:autro_app/core/constants/enums.dart';
 import 'package:autro_app/core/widgets/standard_card.dart';
 import 'package:flutter/material.dart';
 
-import '../../../widgets/customer_form.dart';
+import '../../../widgets/supplier_form.dart';
 
-class CustomerFormDesktopLayout extends StatelessWidget {
-  const CustomerFormDesktopLayout({super.key, required this.formType});
+class SupplierFormDesktopLayout extends StatelessWidget {
+  const SupplierFormDesktopLayout({super.key, required this.formType});
   final FormType formType;
   @override
   Widget build(BuildContext context) {
@@ -17,8 +17,8 @@ class CustomerFormDesktopLayout extends StatelessWidget {
         child: Padding(
           padding: EdgeInsets.all(24),
           child: StandardCard(
-            title: 'Customer Information',
-            child: CustomerForm(),
+            title: 'Supplier Information',
+            child: SupplierForm(),
           ),
         ),
       ),
@@ -28,11 +28,11 @@ class CustomerFormDesktopLayout extends StatelessWidget {
   String get title {
     switch (formType) {
       case FormType.edit:
-        return 'Edit Customer';
+        return 'Edit Supplier';
       case FormType.create:
-        return 'Add New Customer';
+        return 'Add New Supplier';
       default:
-        return 'Customer';
+        return 'Supplier';
     }
   }
 }

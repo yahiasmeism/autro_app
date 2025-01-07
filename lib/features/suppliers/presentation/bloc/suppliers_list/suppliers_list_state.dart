@@ -52,8 +52,8 @@ final class SuppliersListLoaded extends SuppliersListState {
     );
   }
 
-  bool get canGoNextPage => paginationFilterDTO.pageNumber < totalCount / paginationFilterDTO.pageSize && !loading;
-  bool get canGoPreviousPage => paginationFilterDTO.pageNumber > 1 && !loading;
+  bool get canGoNextPage => paginationFilterDTO.pageNumber < totalCount / paginationFilterDTO.pageSize && !loadingPagination;
+  bool get canGoPreviousPage => paginationFilterDTO.pageNumber > 1 && !loadingPagination;
 }
 
 class SuppliersListError extends SuppliersListState {

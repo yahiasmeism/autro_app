@@ -61,6 +61,10 @@ import 'package:autro_app/features/suppliers/domin/usecases/get_suppliers_list_u
     as _i884;
 import 'package:autro_app/features/suppliers/domin/usecases/update_supplier_usecase.dart'
     as _i428;
+import 'package:autro_app/features/suppliers/presentation/bloc/supplier_details/supplier_details_cubit.dart'
+    as _i997;
+import 'package:autro_app/features/suppliers/presentation/bloc/supplier_form/supplier_form_bloc.dart'
+    as _i323;
 import 'package:autro_app/features/suppliers/presentation/bloc/suppliers_list/suppliers_list_bloc.dart'
     as _i497;
 import 'package:get_it/get_it.dart' as _i174;
@@ -84,6 +88,7 @@ extension GetItInjectableX on _i174.GetIt {
       preResolve: true,
     );
     gh.factory<_i825.CustomerDetailsCubit>(() => _i825.CustomerDetailsCubit());
+    gh.factory<_i997.SupplierDetailsCubit>(() => _i997.SupplierDetailsCubit());
     gh.lazySingleton<_i80.HomeBloc>(() => _i80.HomeBloc());
     gh.lazySingleton<_i646.NetworkInfo>(() => _i646.NetworkInfoImpl());
     gh.lazySingleton<_i123.AppPreferences>(() => _i123.AppPreferencesImpl(
@@ -162,6 +167,11 @@ extension GetItInjectableX on _i174.GetIt {
           gh<_i712.SuppliersRepository>(),
           gh<_i428.UpdateSupplierUsecase>(),
           gh<_i57.CreateSupplierUsecase>(),
+        ));
+    gh.factory<_i323.SupplierFormBloc>(() => _i323.SupplierFormBloc(
+          gh<_i57.CreateSupplierUsecase>(),
+          gh<_i428.UpdateSupplierUsecase>(),
+          gh<_i497.SuppliersListBloc>(),
         ));
     return this;
   }

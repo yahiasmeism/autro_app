@@ -5,9 +5,7 @@ import 'dart:io';
 import 'package:autro_app/core/theme/theme_data.dart';
 import 'package:autro_app/features/authentication/screens/auth_wrapper.dart';
 import 'package:bitsdojo_window/bitsdojo_window.dart';
-// import 'package:bitsdojo_window/bitsdojo_window.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/rendering.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:injectable/injectable.dart';
 
@@ -28,12 +26,11 @@ _initializeDesktopWindow() {
     doWhenWindowReady(() {
       const initialWidth = 1200.0;
       const aspectRatio = 16 / 9;
-      const initialHeight = initialWidth / aspectRatio;
 
       appWindow
         ..minSize = const Size(initialWidth, initialWidth / aspectRatio)
-        ..size = const Size(initialWidth, initialHeight)
         ..alignment = Alignment.center
+        ..maximize()
         ..show();
     });
   }

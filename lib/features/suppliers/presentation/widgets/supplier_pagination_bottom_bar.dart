@@ -1,7 +1,11 @@
+import 'package:autro_app/core/constants/enums.dart';
+import 'package:autro_app/core/utils/nav_util.dart';
 import 'package:autro_app/core/widgets/generic_pagination_bottom_bar.dart';
 import 'package:autro_app/features/suppliers/presentation/bloc/suppliers_list/suppliers_list_bloc.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+
+import '../screens/supplier_form_screen.dart';
 
 class SupplierPaginationBottomBar extends StatelessWidget {
   const SupplierPaginationBottomBar({super.key});
@@ -39,7 +43,7 @@ class SupplierPaginationBottomBar extends StatelessWidget {
           labelAddButton: 'Add New Supplier',
           onAddTap: isLoaded
               ? () {
-                  // NavUtil.push(context, const CustomerFormScreen(formType: FormType.create));
+                  NavUtil.push(context, const SupplierFormScreen(formType: FormType.create));
                 }
               : null,
         );

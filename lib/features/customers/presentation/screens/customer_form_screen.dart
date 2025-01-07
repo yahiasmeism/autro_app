@@ -24,7 +24,7 @@ class CustomerFormScreen extends StatelessWidget {
         mobile: (context) => const Center(
           child: Text('Customers Mobile Layout'),
         ),
-        desktop: (context) => CustomerInformationsDesktopLayout(formType: formType),
+        desktop: (context) => CustomerFormDesktopLayout(formType: formType),
       ),
     );
   }
