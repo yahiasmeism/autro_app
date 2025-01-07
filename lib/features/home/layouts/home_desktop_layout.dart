@@ -2,6 +2,7 @@ import 'package:autro_app/core/constants/enums.dart';
 import 'package:autro_app/features/customers/presentation/screens/customers_list_screen.dart';
 import 'package:autro_app/features/home/bloc/home_bloc.dart';
 import 'package:autro_app/features/home/widget/custom_drawer.dart';
+import 'package:autro_app/features/suppliers/presentation/screens/suppliers_list_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
@@ -44,7 +45,7 @@ class HomeWrapperDesktopLayout extends StatelessWidget {
       MenuItemType.shipping: _buildNavigator(const Center(child: Text('Shipping'))),
       MenuItemType.settings: _buildNavigator(const Center(child: Text('Settings'))),
       MenuItemType.bills: _buildNavigator(const Center(child: Text('Bills'))),
-      MenuItemType.suppliers: _buildNavigator(const Center(child: Text('Suppliers'))),
+      MenuItemType.suppliers: _buildNavigator(const SuppliersListScreen()),
       MenuItemType.messages: _buildNavigator(const Center(child: Text('Messages'))),
     };
 

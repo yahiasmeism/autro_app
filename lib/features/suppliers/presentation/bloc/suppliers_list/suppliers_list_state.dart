@@ -1,23 +1,23 @@
-part of 'customers_list_bloc.dart';
+part of 'suppliers_list_bloc.dart';
 
-sealed class CustomersListState extends Equatable {
-  const CustomersListState();
+sealed class SuppliersListState extends Equatable {
+  const SuppliersListState();
 
   @override
   List<Object> get props => [];
 }
 
-final class CustomersListInitial extends CustomersListState {}
+final class SuppliersListInitial extends SuppliersListState {}
 
-final class CustomersListLoaded extends CustomersListState {
-  final List<CustomerEntity> customersList;
+final class SuppliersListLoaded extends SuppliersListState {
+  final List<SupplierEntity> suppliersList;
   final PaginationFilterDTO paginationFilterDTO;
   final int totalCount;
   final bool loading;
   final bool loadingPagination;
   final Option<Either<Failure, String>> failureOrSuccessOption;
-  const CustomersListLoaded({
-    required this.customersList,
+  const SuppliersListLoaded({
+    required this.suppliersList,
     required this.totalCount,
     required this.paginationFilterDTO,
     this.loading = false,
@@ -26,7 +26,7 @@ final class CustomersListLoaded extends CustomersListState {
   });
   @override
   List<Object> get props => [
-        customersList,
+        suppliersList,
         paginationFilterDTO,
         totalCount,
         loading,
@@ -34,16 +34,16 @@ final class CustomersListLoaded extends CustomersListState {
         loadingPagination,
       ];
 
-  CustomersListLoaded copyWith({
-    List<CustomerEntity>? customersList,
+  SuppliersListLoaded copyWith({
+    List<SupplierEntity>? suppliersList,
     PaginationFilterDTO? paginationFilterDTO,
     int? totalCount,
     bool? loading,
     Option<Either<Failure, String>>? failureOrSuccessOption,
     bool? loadingPagination,
   }) {
-    return CustomersListLoaded(
-      customersList: customersList ?? this.customersList,
+    return SuppliersListLoaded(
+      suppliersList: suppliersList ?? this.suppliersList,
       paginationFilterDTO: paginationFilterDTO ?? this.paginationFilterDTO,
       totalCount: totalCount ?? this.totalCount,
       loading: loading ?? this.loading,
@@ -56,10 +56,10 @@ final class CustomersListLoaded extends CustomersListState {
   bool get canGoPreviousPage => paginationFilterDTO.pageNumber > 1 && !loadingPagination;
 }
 
-class CustomersListError extends CustomersListState {
+class SuppliersListError extends SuppliersListState {
   final Failure failure;
 
-  const CustomersListError({required this.failure});
+  const SuppliersListError({required this.failure});
 
   @override
   List<Object> get props => [failure];
