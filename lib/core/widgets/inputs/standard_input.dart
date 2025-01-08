@@ -29,7 +29,7 @@ class StandardInput extends StatefulWidget {
     this.autocorrect = false,
     this.delayOnChangeCallback = false,
     this.minLines = 1,
-    this.maxLines,
+    this.maxLines = 1,
     this.maxHeight,
     this.onChanged,
     this.onSaved,
@@ -60,13 +60,13 @@ class StandardInput extends StatefulWidget {
   final bool obscureText;
   final bool withBorder;
   final bool autofocus;
-  final int? minLines;
+  final int minLines;
   final bool enabled;
   final bool readOnly;
   final bool expands;
   final bool autocorrect;
   final bool delayOnChangeCallback;
-  final int? maxLines;
+  final int maxLines;
   final double? maxHeight;
   final double radius;
   final void Function(String)? onChanged;
@@ -176,7 +176,7 @@ class _StandardInputState extends State<StandardInput> {
           onChanged: _onSearchChanged,
           keyboardType: widget.keyboardType,
           obscureText: widget.obscureText,
-          maxLines: widget.maxLines,
+          maxLines: widget.maxLines < widget.minLines ? widget.minLines : widget.maxLines,
           minLines: widget.minLines,
           validator: widget.validator,
           expands: widget.expands,

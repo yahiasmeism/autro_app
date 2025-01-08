@@ -3,7 +3,7 @@ import 'package:autro_app/core/errors/failure_mapper.dart';
 import 'package:autro_app/core/utils/dialog_utils.dart';
 import 'package:autro_app/core/utils/validator_util.dart';
 import 'package:autro_app/core/widgets/buttons/clear_all_button.dart';
-import 'package:autro_app/core/widgets/buttons/save_button.dart';
+import 'package:autro_app/core/widgets/buttons/save_outline_button.dart';
 import 'package:autro_app/core/widgets/inputs/country_selectable_dropdown.dart';
 import 'package:autro_app/core/widgets/inputs/standard_input.dart';
 import 'package:autro_app/core/widgets/inputs/standard_selectable_dropdown.dart';
@@ -174,7 +174,7 @@ class _SupplierFormState extends State<SupplierForm> {
             },
           ),
           const SizedBox(width: 16),
-          SaveButton(
+          SaveOutLineButton(
             onPressed: () {
               if (formKey.currentState!.validate()) {
                 if (state.formType == FormType.edit) {

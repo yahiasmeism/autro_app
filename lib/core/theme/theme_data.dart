@@ -4,7 +4,10 @@ import 'package:flutter/material.dart';
 
 ThemeData getTheme() {
   return ThemeData(
-  
+    appBarTheme: AppBarTheme(
+      titleTextStyle: TextStyles.font24SemiBold,
+      titleSpacing: 24,
+    ),
     iconTheme: const IconThemeData(color: AppColors.iconColor),
     scaffoldBackgroundColor: AppColors.scaffoldBackgroundColor,
     colorScheme: ColorScheme.fromSeed(
@@ -12,7 +15,6 @@ ThemeData getTheme() {
       primary: AppColors.primary,
     ),
     inputDecorationTheme: InputDecorationTheme(
-      
       hintStyle: TextStyles.font16Regular.copyWith(color: AppColors.hintColor),
       border: OutlineInputBorder(
         borderRadius: const BorderRadius.all(Radius.circular(8)),
