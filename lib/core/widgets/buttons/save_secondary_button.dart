@@ -9,28 +9,29 @@ import 'package:flutter_svg/svg.dart';
 import '../../theme/text_styles.dart';
 
 class SaveScoundaryButton extends StatelessWidget {
-  const SaveScoundaryButton({super.key, this.onPressed});
+  const SaveScoundaryButton({super.key, this.onPressed, this.title = 'Save Changes'});
   final VoidCallback? onPressed;
+  final String title;
   @override
   Widget build(BuildContext context) {
     return SecondaryButton(
       expended: false,
       onPressed: onPressed,
       child: Padding(
-        padding: const EdgeInsets.symmetric(horizontal: 16),
+        padding: const EdgeInsets.symmetric(horizontal: 8),
         child: Row(
           mainAxisSize: MainAxisSize.min,
           children: [
             SvgPicture.asset(
               Assets.iconsSave,
-              color: AppColors.white,
-            ),
-            const SizedBox(width: 16),
-            Text(
-              'Save',
-              style: TextStyles.font16Regular.copyWith(color: AppColors.white),
+              color: onPressed != null ? AppColors.white : AppColors.white.withOpacity(0.5),
             ),
             const SizedBox(width: 8),
+            Text(
+              title,
+              style: TextStyles.font16Regular
+                  .copyWith(color: onPressed != null ? AppColors.white : AppColors.white.withOpacity(0.5)),
+            ),
           ],
         ),
       ),
