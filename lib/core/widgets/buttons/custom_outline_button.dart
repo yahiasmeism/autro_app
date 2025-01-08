@@ -51,7 +51,7 @@ class CustomOutlineButton extends StatelessWidget {
               ),
             Text(labelText,
                 style: TextStyles.font16Regular.copyWith(
-                  color: onPressed != null ? textColor ?? AppColors.secondary : AppColors.secondaryOpacity50,
+                  color: onPressed != null ? (textColor ?? AppColors.red) : (textColor ?? AppColors.red).withOpacity(0.5),
                 )),
           ],
         ));

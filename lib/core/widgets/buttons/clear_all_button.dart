@@ -16,7 +16,7 @@ class ClearAllButton extends StatelessWidget {
       textColor: AppColors.red,
       borderColor: AppColors.red,
       icon: SvgPicture.asset(Assets.iconsClearAll),
-      onPressed: onPressed,
+      onPressed: null,
     );
   }
 }

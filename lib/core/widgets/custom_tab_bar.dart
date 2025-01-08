@@ -10,115 +10,90 @@ class CustomTabBar extends StatefulWidget {
   State<CustomTabBar> createState() => _CustomTabBarState();
 }
 
-class _CustomTabBarState extends State<CustomTabBar> with TickerProviderStateMixin {
-  final List<GlobalKey> _tabKeys = [];
-  double _indicatorPosition = 0.0;
-  double _indicatorWidth = 0.0;
+class _CustomTabBarState extends State<CustomTabBar> {
   TabController? _tabController;
-
-  @override
-  void initState() {
-    super.initState();
-    for (var i = 0; i < widget.tabs.length; i++) {
-      _tabKeys.add(GlobalKey());
-    }
-  }
 
   @override
   void didChangeDependencies() {
     super.didChangeDependencies();
-
     _tabController?.removeListener(_handleTabSelection);
     _tabController = DefaultTabController.of(context);
     _tabController?.addListener(_handleTabSelection);
-
-    if (_tabController != null) {
-      WidgetsBinding.instance.addPostFrameCallback((_) {
-        if (mounted) {
-          _updateIndicatorPosition(_tabController!.index);
-        }
-      });
-    }
   }
 
   void _handleTabSelection() {
     if (_tabController != null && !_tabController!.indexIsChanging) {
-      _updateIndicatorPosition(_tabController!.index);
+      setState(() {});
     }
-  }
-
-  void _updateIndicatorPosition(int index) {
-    if (!mounted || _tabKeys[index].currentContext == null) return;
-
-    final RenderBox tabBox = _tabKeys[index].currentContext!.findRenderObject() as RenderBox;
-    final position = tabBox.localToGlobal(Offset.zero);
-    final containerBox = context.findRenderObject() as RenderBox;
-    final containerPosition = containerBox.localToGlobal(Offset.zero);
-
-    setState(() {
-      _indicatorPosition = position.dx - containerPosition.dx;
-      _indicatorWidth = tabBox.size.width;
-    });
   }
 
   @override
   Widget build(BuildContext context) {
     if (_tabController == null) return const SizedBox();
-
-    return SizedBox(
-      width: MediaQuery.sizeOf(context).width,
-      height: 40,
-      child: Stack(
-        children: [
-          Positioned(
-            bottom: 0,
-            child: SizedBox(
-              width: MediaQuery.sizeOf(context).width,
-              child: const Divider(
+    return Container(
+      width: double.infinity,
+      alignment: Alignment.centerLeft,
+      child: SizedBox(
+        height: 41,
+        child: Stack(
+          children: [
+            Positioned(
+              bottom: 0,
+              left: 0,
+              right: 0,
+              child: Container(
                 height: 2,
+                color: AppColors.secondaryOpacity13,
               ),
             ),
-          ),
-          Row(
-            mainAxisSize: MainAxisSize.min,
-            children: List.generate(
-              widget.tabs.length,
-              (index) {
-                return MouseRegion(
-                  cursor: SystemMouseCursors.click,
-                  child: GestureDetector(
-                    key: _tabKeys[index],
-                    onTap: () {
-                      _updateIndicatorPosition(index);
-                      _tabController?.animateTo(index);
-                    },
-                    child: Padding(
-                      padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 8),
-                      child: AnimatedDefaultTextStyle(
-                        duration: const Duration(milliseconds: 150),
-                        style: TextStyles.font16Regular.copyWith(
-                          color: index == _tabController?.index ? AppColors.primary : Colors.black,
+            SingleChildScrollView(
+              scrollDirection: Axis.horizontal,
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.start,
+                children: List.generate(
+                  widget.tabs.length,
+                  (index) {
+                    final isSelected = index == _tabController?.index;
+
+                    return MouseRegion(
+                      cursor: SystemMouseCursors.click,
+                      child: GestureDetector(
+                        onTap: () {
+                          _tabController?.animateTo(
+                            index,
+                            duration: const Duration(milliseconds: 100),
+                            curve: Curves.easeOut,
+                          );
+                        },
+                        child: AnimatedContainer(
+                          duration: const Duration(milliseconds: 100),
+                          curve: Curves.easeOut,
+                          padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 9),
+                          decoration: BoxDecoration(
+                            border: Border(
+                              bottom: BorderSide(
+                                color: isSelected ? AppColors.primary : Colors.transparent,
+                                width: 2,
+                              ),
+                            ),
+                          ),
+                          child: AnimatedDefaultTextStyle(
+                            duration: const Duration(milliseconds: 100),
+                            curve: Curves.easeOut,
+                            style: TextStyles.font16Regular.copyWith(
+                              color: isSelected ? AppColors.primary : Colors.black,
+                            ),
+                            child: Text(widget.tabs[index]),
+                          ),
                         ),
-                        child: Text(widget.tabs[index]),
                       ),
-                    ),
-                  ),
-                );
-              },
+                    );
+                  },
+                ),
+              ),
             ),
-          ),
-          Positioned(
-            bottom: 0,
-            child: AnimatedContainer(
-              duration: const Duration(milliseconds: 150),
-              curve: Curves.fastOutSlowIn,
-              transform: Matrix4.translationValues(_indicatorPosition, 0, 0),
-              width: _indicatorWidth,
-              height: 2,
-              color: AppColors.primary,
-            ),
-          ),
-        ],
+          ],
+        ),
       ),
     );
   }

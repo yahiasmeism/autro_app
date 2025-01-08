@@ -20,6 +20,9 @@ class CustomDrawer extends StatelessWidget {
         if (state is HomeLoaded) {
           final drawerItems = state.appNavMenuItems;
           return Drawer(
+            shape: const RoundedRectangleBorder(
+              borderRadius: BorderRadius.zero,
+            ),
             elevation: 0,
             child: SingleChildScrollView(
               child: Column(

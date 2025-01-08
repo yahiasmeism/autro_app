@@ -90,6 +90,7 @@ class TextStyles {
     fontSize: 16,
     fontWeight: FontWeightHelper.medium,
     fontFamily: 'Montserrat',
+    color: AppColors.secondary,
   );
 
   //?inter

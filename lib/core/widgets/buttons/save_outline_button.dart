@@ -4,8 +4,8 @@ import 'package:autro_app/core/widgets/buttons/custom_outline_button.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 
-class SaveButton extends StatelessWidget {
-  const SaveButton({super.key, this.onPressed});
+class SaveOutLineButton extends StatelessWidget {
+  const SaveOutLineButton({super.key, this.onPressed});
   final VoidCallback? onPressed;
   @override
   Widget build(BuildContext context) {
