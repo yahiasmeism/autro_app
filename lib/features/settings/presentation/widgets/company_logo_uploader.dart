@@ -1,10 +1,10 @@
 import 'package:autro_app/core/theme/app_colors.dart';
 import 'package:autro_app/core/theme/text_styles.dart';
-import 'package:autro_app/features/settings/widgets/upload_button.dart';
+import 'package:autro_app/features/settings/presentation/widgets/upload_button.dart';
 import 'package:flutter/material.dart';
 
-class CompanySignatureUploader extends StatelessWidget {
-  const CompanySignatureUploader({super.key});
+class CompanyLogoUploader extends StatelessWidget {
+  const CompanyLogoUploader({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -12,7 +12,7 @@ class CompanySignatureUploader extends StatelessWidget {
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         Text(
-          'Company Signature',
+          'Company Logo',
           style: TextStyles.font16Regular,
         ),
         const SizedBox(height: 8),
@@ -24,11 +24,11 @@ class CompanySignatureUploader extends StatelessWidget {
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 const UploadButton(
-                  title: 'Upload Signature',
+                  title: 'Upload Logo',
                 ),
                 const SizedBox(height: 8),
                 Text(
-                  'Recommended: PNG or JPG, max 2MB',
+                  'Recommended: 400x400px, Max 2MB',
                   style: TextStyles.font16Regular.copyWith(color: AppColors.secondaryOpacity75),
                 ),
               ],
@@ -49,7 +49,7 @@ class CompanySignatureUploader extends StatelessWidget {
       ),
       child: Center(
           child: Text(
-        'Signature',
+        'Logo',
         style: TextStyles.font20Regular.copyWith(color: AppColors.hintColor),
       )),
     );
