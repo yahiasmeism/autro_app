@@ -45,6 +45,18 @@ import 'package:autro_app/features/customers/presentation/bloc/customer_form/cus
 import 'package:autro_app/features/customers/presentation/bloc/customers_list/customers_list_bloc.dart'
     as _i815;
 import 'package:autro_app/features/home/bloc/home_bloc.dart' as _i80;
+import 'package:autro_app/features/settings/data/datasources/settings_remote_data_source.dart'
+    as _i509;
+import 'package:autro_app/features/settings/data/repositories_impl/settings_repository_impl.dart'
+    as _i923;
+import 'package:autro_app/features/settings/domin/repositories/settings_repository.dart'
+    as _i275;
+import 'package:autro_app/features/settings/domin/use_cases/change_company_info_use_case.dart'
+    as _i855;
+import 'package:autro_app/features/settings/domin/use_cases/get_company_use_case.dart'
+    as _i223;
+import 'package:autro_app/features/settings/presentation/bloc/company/company_cubit.dart'
+    as _i326;
 import 'package:autro_app/features/suppliers/data/datasources/suppliers_remote_datesourse.dart'
     as _i829;
 import 'package:autro_app/features/suppliers/data/repositories/suppliers_repository_impl.dart'
@@ -95,10 +107,17 @@ extension GetItInjectableX on _i174.GetIt {
         sharedPreferences: gh<_i460.SharedPreferences>()));
     gh.lazySingleton<_i228.ApiClient>(
         () => _i228.DioClient(gh<_i123.AppPreferences>()));
+    gh.lazySingleton<_i509.SettingsRemoteDataSource>(() =>
+        _i509.SettingsRemoteDataSourceImpl(client: gh<_i228.ApiClient>()));
     gh.lazySingleton<_i438.CustomersRemoteDataSource>(() =>
         _i438.CustomersRemoteDataSourceImpl(apiClient: gh<_i228.ApiClient>()));
     gh.lazySingleton<_i388.AuthRemoteDataSource>(
         () => _i388.AuthRemoteDataSourceImpl(apiClient: gh<_i228.ApiClient>()));
+    gh.lazySingleton<_i275.SettingsRepository>(
+        () => _i923.SettingsRepositoryImpl(
+              networkInfo: gh<_i646.NetworkInfo>(),
+              remoteDataSource: gh<_i509.SettingsRemoteDataSource>(),
+            ));
     gh.lazySingleton<_i829.SuppliersRemoteDataSource>(() =>
         _i829.SuppliersRemoteDataSourceImpl(apiClient: gh<_i228.ApiClient>()));
     gh.lazySingleton<_i288.AuthRepo>(() => _i288.AuthRepoImpl(
@@ -119,9 +138,18 @@ extension GetItInjectableX on _i174.GetIt {
     gh.lazySingleton<_i884.GetSuppliersListUsecase>(() =>
         _i884.GetSuppliersListUsecase(
             supplierRepository: gh<_i712.SuppliersRepository>()));
+    gh.lazySingleton<_i855.ChangeCompanyInfoUseCase>(() =>
+        _i855.ChangeCompanyInfoUseCase(
+            repository: gh<_i275.SettingsRepository>()));
+    gh.lazySingleton<_i223.GetCompanyUseCase>(() =>
+        _i223.GetCompanyUseCase(repository: gh<_i275.SettingsRepository>()));
     gh.lazySingleton<_i57.CreateSupplierUsecase>(() =>
         _i57.CreateSupplierUsecase(
             suplliersRepository: gh<_i712.SuppliersRepository>()));
+    gh.lazySingleton<_i326.CompanyCubit>(() => _i326.CompanyCubit(
+          gh<_i223.GetCompanyUseCase>(),
+          gh<_i855.ChangeCompanyInfoUseCase>(),
+        ));
     gh.lazySingleton<_i116.CreateCustomerUsecase>(() =>
         _i116.CreateCustomerUsecase(
             customersRepository: gh<_i54.CustomersRepository>()));
