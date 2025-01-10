@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:autro_app/core/errors/failures.dart';
 import 'package:autro_app/core/interfaces/use_case.dart';
 import 'package:autro_app/features/settings/domin/entities/company_entity.dart';
@@ -25,28 +27,27 @@ class CompanyCubit extends Cubit<CompanyState> {
   final ChangeCompanyInfoUseCase changeCompanyInfoUseCase;
   CompanyCubit(this.getCompanyUseCase, this.changeCompanyInfoUseCase) : super(CompanyInitial());
 
+  void updateSaveEnabled() {
+    final currentState = state as CompanyLoaded;
+    final isEdited = currentState.company.name != companyNameController.text ||
+        currentState.company.address != companyAddressController.text ||
+        currentState.company.phone != companyPhoneController.text ||
+        currentState.company.email != companyEmailController.text ||
+        currentState.company.telephone != companyTelephoneController.text ||
+        currentState.company.website != companyWebsiteController.text ||
+        currentState.pickedLogoFile.isSome() ||
+        currentState.pickedSignatureFile.isSome();
+
+    emit(currentState.copyWith(saveEnabled: isEdited));
+  }
+
   Future<void> setUpListeners() async {
-    if (state is CompanyLoaded) {
-      final currentState = state as CompanyLoaded;
-
-      void updateState() {
-        final isEdited = currentState.company.name != companyNameController.text ||
-            currentState.company.address != companyAddressController.text ||
-            currentState.company.phone != companyPhoneController.text ||
-            currentState.company.email != companyEmailController.text ||
-            currentState.company.telephone != companyTelephoneController.text ||
-            currentState.company.website != companyWebsiteController.text;
-
-        emit(currentState.copyWith(saveEnabled: isEdited));
-      }
-
-      companyNameController.addListener(updateState);
-      companyAddressController.addListener(updateState);
-      companyPhoneController.addListener(updateState);
-      companyEmailController.addListener(updateState);
-      companyTelephoneController.addListener(updateState);
-      companyWebsiteController.addListener(updateState);
-    }
+    companyNameController.addListener(updateSaveEnabled);
+    companyAddressController.addListener(updateSaveEnabled);
+    companyPhoneController.addListener(updateSaveEnabled);
+    companyEmailController.addListener(updateSaveEnabled);
+    companyTelephoneController.addListener(updateSaveEnabled);
+    companyWebsiteController.addListener(updateSaveEnabled);
   }
 
   initailizedControllers() {
@@ -57,6 +58,7 @@ class CompanyCubit extends Cubit<CompanyState> {
     companyEmailController.text = state.company.email;
     companyTelephoneController.text = state.company.telephone;
     companyWebsiteController.text = state.company.website;
+    setUpListeners();
   }
 
   Future<void> getCompany() async {
@@ -65,13 +67,13 @@ class CompanyCubit extends Cubit<CompanyState> {
       (failure) => emit(CompanyError(failure)),
       (company) async {
         emit(CompanyLoaded.initial(company));
-        await setUpListeners();
         initailizedControllers();
       },
     );
   }
 
   Future<void> changeCompanyInfo() async {
+    if (!formKey.currentState!.validate()) return;
     final state = this.state as CompanyLoaded;
     final params = ChangeCompanyInfoUseCaseParams(
       name: companyNameController.text,
@@ -80,6 +82,8 @@ class CompanyCubit extends Cubit<CompanyState> {
       email: companyEmailController.text,
       telephone: companyTelephoneController.text,
       website: companyWebsiteController.text,
+      logoPath: state.pickedLogoFile.fold(() => null, (file) => file.path),
+      signaturePath: state.pickedSignatureFile.fold(() => null, (file) => file.path),
     );
     emit(state.copyWith(loading: true));
     final either = await changeCompanyInfoUseCase.call(params);
@@ -92,11 +96,29 @@ class CompanyCubit extends Cubit<CompanyState> {
         emit(state.copyWith(
           company: company,
           failureOrSuccessOption: some(right('Company updated successfully')),
+          pickedLogoFile: none(),
+          pickedSignatureFile: none(),
         ));
       },
     );
+    updateSaveEnabled();
     initailizedControllers();
   }
 
-  Future<void> onHandleFailure() async => await getCompany();
+  Future<void> onHandleFailure() async {
+    emit(CompanyInitial());
+    await getCompany();
+  }
+
+  pickLogoFile(File file) {
+    final state = this.state as CompanyLoaded;
+    emit(state.copyWith(pickedLogoFile: some(file)));
+    updateSaveEnabled();
+  }
+
+  pickSignatureFile(File file) {
+    final state = this.state as CompanyLoaded;
+    emit(state.copyWith(pickedSignatureFile: some(file)));
+    updateSaveEnabled();
+  }
 }

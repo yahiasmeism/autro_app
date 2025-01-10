@@ -5,13 +5,14 @@ import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 
 class UploadButton extends StatelessWidget {
-  const UploadButton({super.key, this.title = 'Upload'});
+  const UploadButton({super.key, this.title = 'Upload', required this.onTap});
   final String title;
+  final Function() onTap;
   @override
   Widget build(BuildContext context) {
     return InkWell(
       borderRadius: const BorderRadius.all(Radius.circular(8)),
-      onTap: () {},
+      onTap: onTap,
       child: Container(
         padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 4),
         decoration: BoxDecoration(

@@ -12,7 +12,6 @@ abstract class SettingsRemoteDataSource {
   Future<CompanyModel> getCompany();
 }
 
-
 @LazySingleton(as: SettingsRemoteDataSource)
 class SettingsRemoteDataSourceImpl implements SettingsRemoteDataSource {
   final ApiClient client;
@@ -22,7 +21,8 @@ class SettingsRemoteDataSourceImpl implements SettingsRemoteDataSource {
   Future<CompanyModel> changeCompanyInfo(ChangeCompanyInfoRequest body) async {
     const path = ApiPaths.company;
 
-    final request = ApiRequest(path: path, body: body.toFormData());
+    final formData = await body.toFormData();
+    final request = ApiRequest(path: path, body: formData);
     final response = await client.post(request);
 
     if (ResponseCode.isOk(response.statusCode)) {

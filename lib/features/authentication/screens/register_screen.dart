@@ -72,7 +72,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
                         const SizedBox(height: 30),
                         // Full Name Input
                         StandardInput(
-                          validator: ValidatorUtil.validateUserName,
+                          validator: ValidatorUtils.validateUserName,
                           onChanged: (value) => userName = value,
                           labelText: 'User Name',
                           prefix: const Icon(Icons.person),
@@ -83,7 +83,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
                           onChanged: (value) => email = value,
                           labelText: 'Email',
                           prefix: const Icon(Icons.email),
-                          validator: ValidatorUtil.validateEmail,
+                          validator: ValidatorUtils.validateEmail,
                           keyboardType: TextInputType.emailAddress,
                         ),
                         const SizedBox(height: 20),

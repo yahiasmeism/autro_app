@@ -4,7 +4,7 @@ sealed class CompanyState extends Equatable {
   const CompanyState();
 
   @override
-  List<Object> get props => [];
+  List<Object?> get props => [];
 }
 
 final class CompanyInitial extends CompanyState {}
@@ -14,12 +14,16 @@ final class CompanyLoaded extends CompanyState {
   final Option<Either<Failure, String>> failureOrSuccessOption;
   final bool saveEnabled;
   final bool loading;
+  final Option<File> pickedLogoFile;
+  final Option<File>pickedSignatureFile;
 
   const CompanyLoaded({
     required this.company,
     required this.failureOrSuccessOption,
     required this.loading,
     required this.saveEnabled,
+    required this.pickedLogoFile,
+    required this.pickedSignatureFile,
   });
 
   factory CompanyLoaded.initial(CompanyEntity company) {
@@ -28,28 +32,30 @@ final class CompanyLoaded extends CompanyState {
       failureOrSuccessOption: none(),
       loading: false,
       saveEnabled: false,
+      pickedLogoFile: none(),
+      pickedSignatureFile: none(),
     );
   }
 
   @override
-  List<Object> get props => [
-        company,
-        loading,
-        failureOrSuccessOption,
-        saveEnabled,
-      ];
+  List<Object?> get props => [company, loading, failureOrSuccessOption, saveEnabled, pickedLogoFile, pickedSignatureFile];
 
-  CompanyLoaded copyWith(
-      {CompanyEntity? company,
-      Option<Either<Failure, String>>? failureOrSuccessOption,
-      bool? loading,
-      GlobalKey<FormState>? formKey,
-      final bool? saveEnabled}) {
+  CompanyLoaded copyWith({
+    CompanyEntity? company,
+    Option<Either<Failure, String>>? failureOrSuccessOption,
+    bool? loading,
+    GlobalKey<FormState>? formKey,
+    final bool? saveEnabled,
+    Option<File>? pickedLogoFile,
+    Option<File>? pickedSignatureFile,
+  }) {
     return CompanyLoaded(
       company: company ?? this.company,
       loading: loading ?? this.loading,
       failureOrSuccessOption: failureOrSuccessOption ?? none(),
       saveEnabled: saveEnabled ?? this.saveEnabled,
+      pickedLogoFile: pickedLogoFile ?? this.pickedLogoFile,
+      pickedSignatureFile: pickedSignatureFile ?? this.pickedSignatureFile,
     );
   }
 }

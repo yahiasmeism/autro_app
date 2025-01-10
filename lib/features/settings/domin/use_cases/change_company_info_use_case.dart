@@ -26,15 +26,18 @@ class ChangeCompanyInfoUseCaseParams extends Equatable {
   final String telephone;
   final String website;
 
-  const ChangeCompanyInfoUseCaseParams(
-      {required this.name,
-      required this.address,
-      required this.phone,
-      required this.email,
-      required this.telephone,
-      required this.website});
-  // final String? logoPath;
-  // final String? signaturePath;
+  const ChangeCompanyInfoUseCaseParams({
+    required this.name,
+    required this.address,
+    required this.phone,
+    required this.email,
+    required this.telephone,
+    required this.website,
+    this.logoPath,
+    this.signaturePath,
+  });
+  final String? logoPath;
+  final String? signaturePath;
 
   @override
   List<Object> get props => [
