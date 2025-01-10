@@ -1,4 +1,5 @@
 import 'package:autro_app/core/widgets/custom_tab_bar.dart';
+import 'package:autro_app/features/settings/presentation/layouts/tabs/bank_accounts_tab.dart';
 import 'package:autro_app/features/settings/presentation/layouts/tabs/company_information_tab.dart';
 import 'package:flutter/material.dart';
 
@@ -40,7 +41,7 @@ class ScreenSettingsDesktopLayout extends StatelessWidget {
                   physics: NeverScrollableScrollPhysics(),
                   children: [
                     CompanyInformationTab(),
-                    Center(child: Text('Bank Accountes')),
+                    BankAccountsTab(),
                     Center(child: Text('Preferences')),
                     Center(child: Text('User Management')),
                     Center(child: Text('System Settings')),

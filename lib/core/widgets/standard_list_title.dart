@@ -21,8 +21,9 @@ class StandartListTitle extends StatelessWidget {
           child: const Divider(),
         ),
         Padding(
-            padding: const EdgeInsets.only(left: 16),
+            padding: const EdgeInsets.symmetric(horizontal: 16),
             child: Container(
+              padding: const EdgeInsets.all(8),
               decoration: const BoxDecoration(
                 border: Border(bottom: BorderSide(color: AppColors.primary, width: 2)),
               ),
