@@ -5,7 +5,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 
 class ClearAllButton extends StatelessWidget {
-  const ClearAllButton({super.key, this.onPressed});
+  const ClearAllButton({super.key, required this.onPressed});
   final VoidCallback? onPressed;
   @override
   Widget build(BuildContext context) {
@@ -16,7 +16,7 @@ class ClearAllButton extends StatelessWidget {
       textColor: AppColors.red,
       borderColor: AppColors.red,
       icon: SvgPicture.asset(Assets.iconsClearAll),
-      onPressed: null,
+      onPressed: onPressed,
     );
   }
 }

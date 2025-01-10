@@ -17,4 +17,9 @@ abstract class ApiPaths {
 
   // company
   static const String company = 'company';
+
+
+  // bank accounts
+  static const String bankAccounts = 'bank-accounts';
+  static String bankAccountById(int id) => 'bank-accounts/$id';
 }

@@ -51,10 +51,16 @@ import 'package:autro_app/features/settings/data/repositories_impl/settings_repo
     as _i923;
 import 'package:autro_app/features/settings/domin/repositories/settings_repository.dart'
     as _i275;
+import 'package:autro_app/features/settings/domin/use_cases/add_bank_account_use_case.dart'
+    as _i232;
 import 'package:autro_app/features/settings/domin/use_cases/change_company_info_use_case.dart'
     as _i855;
+import 'package:autro_app/features/settings/domin/use_cases/get_bank_account_list_use_case.dart'
+    as _i362;
 import 'package:autro_app/features/settings/domin/use_cases/get_company_use_case.dart'
     as _i223;
+import 'package:autro_app/features/settings/presentation/bloc/bank_accounts_list/bank_accounts_list_cubit.dart'
+    as _i827;
 import 'package:autro_app/features/settings/presentation/bloc/company/company_cubit.dart'
     as _i326;
 import 'package:autro_app/features/suppliers/data/datasources/suppliers_remote_datesourse.dart'
@@ -118,6 +124,9 @@ extension GetItInjectableX on _i174.GetIt {
               networkInfo: gh<_i646.NetworkInfo>(),
               remoteDataSource: gh<_i509.SettingsRemoteDataSource>(),
             ));
+    gh.lazySingleton<_i232.AddBankAccountUseCase>(() =>
+        _i232.AddBankAccountUseCase(
+            settingsRepository: gh<_i275.SettingsRepository>()));
     gh.lazySingleton<_i829.SuppliersRemoteDataSource>(() =>
         _i829.SuppliersRemoteDataSourceImpl(apiClient: gh<_i228.ApiClient>()));
     gh.lazySingleton<_i288.AuthRepo>(() => _i288.AuthRepoImpl(
@@ -141,8 +150,16 @@ extension GetItInjectableX on _i174.GetIt {
     gh.lazySingleton<_i855.ChangeCompanyInfoUseCase>(() =>
         _i855.ChangeCompanyInfoUseCase(
             repository: gh<_i275.SettingsRepository>()));
+    gh.lazySingleton<_i362.GetBankAccountListUseCase>(() =>
+        _i362.GetBankAccountListUseCase(
+            repository: gh<_i275.SettingsRepository>()));
     gh.lazySingleton<_i223.GetCompanyUseCase>(() =>
         _i223.GetCompanyUseCase(repository: gh<_i275.SettingsRepository>()));
+    gh.lazySingleton<_i827.BankAccountsListCubit>(
+        () => _i827.BankAccountsListCubit(
+              gh<_i362.GetBankAccountListUseCase>(),
+              gh<_i232.AddBankAccountUseCase>(),
+            ));
     gh.lazySingleton<_i57.CreateSupplierUsecase>(() =>
         _i57.CreateSupplierUsecase(
             suplliersRepository: gh<_i712.SuppliersRepository>()));
