@@ -11,6 +11,7 @@ class AppNavMenuItem {
 
 class AppMenuItems {
   static final appNavItems = [
+    AppNavMenuItem(title: 'Settings', icon: Icons.settings, type: MenuItemType.settings),
     AppNavMenuItem(title: 'Dashboard', icon: Icons.dashboard, type: MenuItemType.dashboard),
     AppNavMenuItem(title: 'Deals', icon: Icons.local_offer, type: MenuItemType.deals),
     AppNavMenuItem(title: 'Proformas', icon: Icons.receipt_long, type: MenuItemType.proformas),
@@ -21,6 +22,5 @@ class AppMenuItems {
     AppNavMenuItem(title: 'Accounting', icon: Icons.account_balance, type: MenuItemType.accounting),
     AppNavMenuItem(title: 'Bills', icon: Icons.receipt_long, type: MenuItemType.bills),
     AppNavMenuItem(title: 'Messages', icon: Icons.message, type: MenuItemType.messages),
-    AppNavMenuItem(title: 'Settings', icon: Icons.settings, type: MenuItemType.settings),
   ];
 }
