@@ -70,7 +70,7 @@ class _LoginScreenState extends State<LoginScreen> {
                         ),
                         const SizedBox(height: 30),
                         StandardInput(
-                          validator: ValidatorUtil.validateEmail,
+                          validator: ValidatorUtils.validateEmail,
                           keyboardType: TextInputType.emailAddress,
                           prefix: const Icon(Icons.email),
                           onChanged: (value) => _email = value,

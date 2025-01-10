@@ -26,7 +26,9 @@ class SecondaryButton extends StatelessWidget {
       style: ButtonStyle(
         padding: WidgetStatePropertyAll(padding ?? const EdgeInsets.all(16)),
         shape: WidgetStatePropertyAll(RoundedRectangleBorder(borderRadius: BorderRadius.circular(8))),
-        backgroundColor: WidgetStateProperty.all(bgColor ?? AppColors.secondary),
+        backgroundColor: WidgetStateProperty.all(
+          onPressed != null ? (bgColor ?? AppColors.secondary) : (bgColor?.withOpacity(0.5) ?? AppColors.secondaryOpacity50),
+        ),
         overlayColor: WidgetStateProperty.all(Colors.white.withOpacity(0.1)),
       ),
       child: child ?? Text(labelText!, style: const TextStyle(color: Colors.white)),

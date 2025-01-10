@@ -10,6 +10,8 @@ class ChangeCompanyInfoRequest extends ChangeCompanyInfoUseCaseParams implements
     required super.email,
     required super.website,
     required super.telephone,
+    super.logoPath,
+    super.signaturePath,
   });
 
   factory ChangeCompanyInfoRequest.fromParams(ChangeCompanyInfoUseCaseParams params) {
@@ -20,10 +22,12 @@ class ChangeCompanyInfoRequest extends ChangeCompanyInfoUseCaseParams implements
       email: params.email,
       website: params.website,
       telephone: params.telephone,
+      logoPath: params.logoPath,
+      signaturePath: params.signaturePath,
     );
   }
 
-  FormData toFormData() {
+  Future<FormData> toFormData() async {
     return FormData.fromMap({
       'name': name,
       'address': address,
@@ -31,7 +35,8 @@ class ChangeCompanyInfoRequest extends ChangeCompanyInfoUseCaseParams implements
       'email': email,
       'website': website,
       'telephone': telephone,
-      
+      'logo': logoPath != null ? await MultipartFile.fromFile(logoPath!) : null,
+      'signature': signaturePath != null ? await MultipartFile.fromFile(signaturePath!) : null,
     });
   }
 

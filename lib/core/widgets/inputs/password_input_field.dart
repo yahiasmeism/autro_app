@@ -30,7 +30,7 @@ class _PasswordInputFieldState extends State<PasswordInputField> {
       labelText: widget.isConfirmPassword ? 'Confirm Password' : 'Password',
       onChanged: widget.onChanged,
       keyboardType: TextInputType.visiblePassword,
-      validator: ValidatorUtil.validatePassword,
+      validator: ValidatorUtils.validatePassword,
       controller: widget.controller,
       suffix: IconButton(
         icon: Icon(obscureText ? Icons.visibility_off : Icons.visibility),

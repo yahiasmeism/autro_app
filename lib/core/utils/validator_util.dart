@@ -1,5 +1,5 @@
-class ValidatorUtil {
-  ValidatorUtil._();
+class ValidatorUtils {
+  ValidatorUtils._();
   // Validate if the field is not empty
   static String? validateRequired(String? value, {String fieldName = 'This field'}) {
     if (value == null || value.trim().isEmpty) {
@@ -20,19 +20,6 @@ class ValidatorUtil {
     }
     if (!RegExp(r'^[a-zA-Z0-9_]+$').hasMatch(value)) {
       return 'Username can only contain letters, numbers, and underscores.';
-    }
-    return null;
-  }
-
-  // Validate email format
-  static String? validateEmail(String? value) {
-    if (value == null || value.trim().isEmpty) {
-      return 'Email is required.';
-    }
-    // Simplified and effective regex for validating email
-    final emailRegex = RegExp(r'^[^\s@]+@[^\s@]+\.[^\s@]+$');
-    if (!emailRegex.hasMatch(value)) {
-      return 'Enter a valid email address.';
     }
     return null;
   }
@@ -80,16 +67,6 @@ class ValidatorUtil {
     return null;
   }
 
-  static String? validatePhoneNumber(String? value) {
-    if (value == null || value.trim().isEmpty) {
-      return 'Phone number is required.';
-    }
-    if (!RegExp(r'^\+?[0-9\s\-\(\)]{10,20}$').hasMatch(value)) {
-      return 'Enter a valid phone number.';
-    }
-    return null;
-  }
-
   // Validate numeric input
   static String? validateNumeric(String? value) {
     if (value == null || value.trim().isEmpty) {
@@ -115,6 +92,78 @@ class ValidatorUtil {
   static String? validateMatch(String? value, String? compareTo, {String fieldName = 'Fields'}) {
     if (value != compareTo) {
       return '$fieldName do not match.';
+    }
+    return null;
+  }
+
+  /// Validate a non-empty text field
+  static String? validateRequiredField(String? value, String fieldName) {
+    if (value == null || value.trim().isEmpty) {
+      return '$fieldName cannot be empty.';
+    }
+    return null;
+  }
+
+  /// Validate email address
+  static String? validateEmail(String? value) {
+    if (value == null || value.trim().isEmpty) {
+      return 'Email address cannot be empty.';
+    }
+    final emailRegex = RegExp(r'^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$');
+    if (!emailRegex.hasMatch(value.trim())) {
+      return 'Please enter a valid email address.';
+    }
+    return null;
+  }
+
+  /// Validate website URL
+  static String? validateWebsite(String? value) {
+    if (value == null || value.trim().isEmpty) {
+      return 'Website URL cannot be empty.';
+    }
+    final urlRegex = RegExp(r'^(https?:\/\/)?([\w-]+(\.[\w-]+)+)([\/\w .-]*)*\/?$');
+    if (!urlRegex.hasMatch(value.trim())) {
+      return 'Please enter a valid website URL.';
+    }
+    return null;
+  }
+
+  static String? validateTelephone(String? value) {
+    if (value == null || value.trim().isEmpty) {
+      return 'Telephone number cannot be empty.';
+    }
+
+    final telephoneRegex = RegExp(r'^\+?[0-9]{1,4}([-\s]?[0-9]{1,3}){2,4}$');
+
+    if (!telephoneRegex.hasMatch(value.trim())) {
+      return 'Please enter a valid telephone number.';
+    }
+
+    return null;
+  }
+
+  static String? validatePhoneNumber(String? value) {
+    if (value == null || value.trim().isEmpty) {
+      return 'Phone number cannot be empty.';
+    }
+
+    // Regex to accept international phone numbers with spaces, dashes, and parentheses
+    final phoneRegex = RegExp(r'^\+?[0-9]+([ \-()]*[0-9]+)*$');
+
+    if (!phoneRegex.hasMatch(value.trim())) {
+      return 'Please enter a valid phone number.';
+    }
+
+    return null;
+  }
+
+  /// Validate optional file path (e.g., for logo or signature)
+  static String? validateFilePath(String? value, String fieldName) {
+    if (value != null && value.trim().isNotEmpty) {
+      final fileRegex = RegExp(r'^.+\.(jpg|jpeg|png|gif)$');
+      if (!fileRegex.hasMatch(value.trim())) {
+        return 'Please upload a valid $fieldName (JPG, JPEG, PNG, or GIF).';
+      }
     }
     return null;
   }

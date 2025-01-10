@@ -49,7 +49,7 @@ class _SupplierFormState extends State<SupplierForm> {
                     Expanded(
                         child: StandardInput(
                       controller: nameController,
-                      validator: ValidatorUtil.validateNameRequired,
+                      validator: ValidatorUtils.validateNameRequired,
                       labelText: 'Supplier Name',
                       showRequiredIndecator: true,
                       hintText: 'e.g John Doe',
@@ -79,7 +79,7 @@ class _SupplierFormState extends State<SupplierForm> {
                       controller: city,
                       labelText: 'City',
                       hintText: 'e.g SomeWhere',
-                      validator: ValidatorUtil.validateNameOptional,
+                      validator: ValidatorUtils.validateNameOptional,
                     )),
                   ]),
                   const SizedBox(height: 20),
@@ -91,7 +91,7 @@ class _SupplierFormState extends State<SupplierForm> {
                       showRequiredIndecator: true,
                       hintText: 'e.g 8PqHj@example.com',
                       controller: email,
-                      validator: ValidatorUtil.validateEmail,
+                      validator: ValidatorUtils.validateEmail,
                     )),
                     const SizedBox(width: 24),
                     Expanded(
@@ -101,7 +101,7 @@ class _SupplierFormState extends State<SupplierForm> {
                       controller: phone,
                       showRequiredIndecator: true,
                       hintText: 'e.g 1234567890',
-                      validator: ValidatorUtil.validatePhoneNumber,
+                      validator: ValidatorUtils.validatePhoneNumber,
                     )),
                     const SizedBox(width: 24),
                     Expanded(
@@ -128,7 +128,7 @@ class _SupplierFormState extends State<SupplierForm> {
                         showRequiredIndecator: true,
                         hintText: 'e.g Papers/Plastic/etc',
                         controller: businessDetails,
-                        validator: ValidatorUtil.validateRequired,
+                        validator: ValidatorUtils.validateRequired,
                       )),
                     ],
                   ),
