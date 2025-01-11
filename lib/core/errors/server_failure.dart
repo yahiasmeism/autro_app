@@ -20,7 +20,7 @@ class ForbiddenFailure extends ServerFailure {
 }
 
 class NotFoundFailure extends ServerFailure {
-  const NotFoundFailure() : super(code: 404);
+  const NotFoundFailure([String? message]) : super(code: 404, message: message);
 }
 
 class InternalServerFailure extends ServerFailure {

@@ -31,7 +31,7 @@ class ErrorHandler implements Exception {
       case ResponseCode.FORBIDDEN:
         return const ForbiddenFailure();
       case ResponseCode.NOT_FOUND:
-        return const NotFoundFailure();
+        return NotFoundFailure(message);
       case ResponseCode.INTERNAL_SERVER_ERROR:
         return InternalServerFailure(message: message);
       case ResponseCode.BAD_GATEWAY:

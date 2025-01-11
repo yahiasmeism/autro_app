@@ -19,8 +19,17 @@ class BankAccountsList extends StatelessWidget {
           return Column(
             children: [
               const StandartListTitle(title: 'Registered Accounts'),
-              _buildHeaderRow(),
-              _buildList(context, state),
+              state.bankAccountsList.isEmpty
+                  ? Padding(
+                      padding: const EdgeInsets.symmetric(vertical: 60),
+                      child: Center(child: Text('No Bank Accounts', style: TextStyles.font16Regular)),
+                    )
+                  : Column(
+                      children: [
+                        _buildHeaderRow(),
+                        _buildList(context, state),
+                      ],
+                    ),
             ],
           );
         } else {
@@ -162,13 +171,6 @@ class BankAccountsList extends StatelessWidget {
   }
 
   Widget _buildList(BuildContext context, BankAccountsListLoaded state) {
-    if (state.bankAccountsList.isEmpty) {
-      return Padding(
-        padding: const EdgeInsets.only(top: 120),
-        child: Center(child: Text('No Bank Accounts', style: TextStyles.font16Regular)),
-      );
-    }
-
     return ListView.separated(
       shrinkWrap: true,
       physics: const NeverScrollableScrollPhysics(),
