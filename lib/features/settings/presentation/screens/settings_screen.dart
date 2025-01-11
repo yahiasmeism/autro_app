@@ -17,7 +17,7 @@ class SettingsScreen extends StatelessWidget {
           create: (context) => sl<CompanyCubit>()..getCompany(),
         ),
         BlocProvider(
-          create: (context) => sl<BankAccountsListCubit>(),
+          create: (context) => sl<BankAccountsListCubit>()..getBankAccountList(),
         ),
       ],
       child: AdaptiveLayout(

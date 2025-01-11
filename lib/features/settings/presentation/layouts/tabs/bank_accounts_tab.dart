@@ -15,7 +15,6 @@ class BankAccountsTab extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    context.read<BankAccountsListCubit>().getBankAccountList();
     return BlocConsumer<BankAccountsListCubit, BankAccountsListState>(
       listener: listener,
       builder: (context, state) {
