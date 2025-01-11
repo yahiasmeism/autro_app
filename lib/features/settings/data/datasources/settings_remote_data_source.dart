@@ -16,6 +16,7 @@ abstract class SettingsRemoteDataSource {
   Future<CompanyModel> getCompany();
   Future<BankAccountModel> addBankAccount(AddBankAccountRequest body);
   Future<List<BankAccountModel>> getBankAccountsList();
+  Future<void> deleteBankAccount(int bankAccountId);
 }
 
 @LazySingleton(as: SettingsRemoteDataSource)
@@ -77,6 +78,19 @@ class SettingsRemoteDataSourceImpl implements SettingsRemoteDataSource {
       final json = response.data;
       final responseList = PaginationListResponse.fromJson(json, BankAccountModel.fromJson);
       return responseList.data;
+    }
+
+    throw ServerException(response.statusCode, response.statusMessage);
+  }
+
+  @override
+  Future<void> deleteBankAccount(int bankAccountId) async {
+    final path = ApiPaths.bankAccountById(bankAccountId);
+    final request = ApiRequest(path: path);
+    final response = await client.delete(request);
+
+    if (ResponseCode.isOk(response.statusCode)) {
+      return;
     }
 
     throw ServerException(response.statusCode, response.statusMessage);

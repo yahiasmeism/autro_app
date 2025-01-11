@@ -1,6 +1,7 @@
 import 'package:autro_app/core/errors/failure_mapper.dart';
 import 'package:autro_app/core/utils/dialog_utils.dart';
 import 'package:autro_app/core/widgets/failure_screen.dart';
+import 'package:autro_app/core/widgets/loading_indecator.dart';
 import 'package:autro_app/core/widgets/no_data_screen.dart';
 import 'package:autro_app/core/widgets/overley_loading.dart';
 import 'package:autro_app/core/widgets/standard_list_title.dart';
@@ -32,7 +33,7 @@ class CustomersListDesktopLayout extends StatelessWidget {
                 listener: listener,
                 builder: (context, state) {
                   if (state is CustomersListInitial) {
-                    return const Center(child: CircularProgressIndicator());
+                    return const LoadingIndicator();
                   }
                   if (state is CustomersListLoaded) {
                     return _buildLoadedBody(state);

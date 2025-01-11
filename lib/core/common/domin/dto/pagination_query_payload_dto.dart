@@ -53,7 +53,7 @@ class SortDTO extends Equatable {
     required this.ascending,
   });
   factory SortDTO.inital() {
-    return const SortDTO(sortBy: 'UpdateDate', ascending: false);
+    return const SortDTO(sortBy: 'updated_at', ascending: false);
   }
   @override
   List<Object> get props => [sortBy, ascending];

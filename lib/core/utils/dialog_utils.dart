@@ -96,7 +96,7 @@ class DialogUtil {
     Color? textColor,
     Widget? prefixIcon,
     IconData? icon,
-    Duration duration = const Duration(seconds: 4),
+    Duration duration = const Duration(seconds: 5),
     SnackBarBehavior behavior = SnackBarBehavior.floating,
     double elevation = 0,
   }) {

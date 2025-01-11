@@ -55,6 +55,8 @@ import 'package:autro_app/features/settings/domin/use_cases/add_bank_account_use
     as _i232;
 import 'package:autro_app/features/settings/domin/use_cases/change_company_info_use_case.dart'
     as _i855;
+import 'package:autro_app/features/settings/domin/use_cases/delete_bank_account_use_case.dart'
+    as _i253;
 import 'package:autro_app/features/settings/domin/use_cases/get_bank_account_list_use_case.dart'
     as _i362;
 import 'package:autro_app/features/settings/domin/use_cases/get_company_use_case.dart'
@@ -127,6 +129,9 @@ extension GetItInjectableX on _i174.GetIt {
     gh.lazySingleton<_i232.AddBankAccountUseCase>(() =>
         _i232.AddBankAccountUseCase(
             settingsRepository: gh<_i275.SettingsRepository>()));
+    gh.lazySingleton<_i253.DeleteBankAccountUseCase>(() =>
+        _i253.DeleteBankAccountUseCase(
+            settingsRepository: gh<_i275.SettingsRepository>()));
     gh.lazySingleton<_i829.SuppliersRemoteDataSource>(() =>
         _i829.SuppliersRemoteDataSourceImpl(apiClient: gh<_i228.ApiClient>()));
     gh.lazySingleton<_i288.AuthRepo>(() => _i288.AuthRepoImpl(
@@ -155,11 +160,6 @@ extension GetItInjectableX on _i174.GetIt {
             repository: gh<_i275.SettingsRepository>()));
     gh.lazySingleton<_i223.GetCompanyUseCase>(() =>
         _i223.GetCompanyUseCase(repository: gh<_i275.SettingsRepository>()));
-    gh.lazySingleton<_i827.BankAccountsListCubit>(
-        () => _i827.BankAccountsListCubit(
-              gh<_i362.GetBankAccountListUseCase>(),
-              gh<_i232.AddBankAccountUseCase>(),
-            ));
     gh.lazySingleton<_i57.CreateSupplierUsecase>(() =>
         _i57.CreateSupplierUsecase(
             suplliersRepository: gh<_i712.SuppliersRepository>()));
@@ -167,6 +167,12 @@ extension GetItInjectableX on _i174.GetIt {
           gh<_i223.GetCompanyUseCase>(),
           gh<_i855.ChangeCompanyInfoUseCase>(),
         ));
+    gh.lazySingleton<_i827.BankAccountsListCubit>(
+        () => _i827.BankAccountsListCubit(
+              gh<_i362.GetBankAccountListUseCase>(),
+              gh<_i232.AddBankAccountUseCase>(),
+              gh<_i253.DeleteBankAccountUseCase>(),
+            ));
     gh.lazySingleton<_i116.CreateCustomerUsecase>(() =>
         _i116.CreateCustomerUsecase(
             customersRepository: gh<_i54.CustomersRepository>()));

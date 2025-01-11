@@ -61,7 +61,7 @@ class SortRequest extends SortDTO {
       );
 
   Map<String, dynamic> toJson() => {
-        "Sort.SortBy": sortBy,
-        "Sort.Ascending": ascending,
+        "sort.sortBy": sortBy,
+        "sort.ascending": ascending,
       };
 }

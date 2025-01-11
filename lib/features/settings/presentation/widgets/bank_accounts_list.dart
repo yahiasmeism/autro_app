@@ -15,7 +15,6 @@ class BankAccountsList extends StatelessWidget {
   Widget build(BuildContext context) {
     return BlocBuilder<BankAccountsListCubit, BankAccountsListState>(
       builder: (context, state) {
-
         if (state is BankAccountsListLoaded) {
           return Column(
             children: [
@@ -92,7 +91,7 @@ class BankAccountsList extends StatelessWidget {
     );
   }
 
-  Widget _buildTileRow(BankAccountEntity bankAccount) {
+  Widget _buildTileRow(BankAccountEntity bankAccount, BuildContext context) {
     return InkWell(
       onTap: () {},
       child: Container(
@@ -149,7 +148,9 @@ class BankAccountsList extends StatelessWidget {
                   EditIconButton(onPressed: () {}),
                   const SizedBox(width: 8),
                   DeleteIconButton(
-                    onPressed: () {},
+                    onPressed: () {
+                      context.read<BankAccountsListCubit>().deleteBankAccount(bankAccount);
+                    },
                   ),
                 ],
               ),
@@ -161,11 +162,24 @@ class BankAccountsList extends StatelessWidget {
   }
 
   Widget _buildList(BuildContext context, BankAccountsListLoaded state) {
-    return Column(
-      children: List.generate(
-        state.bankAccountsList.length,
-        (index) => _buildTileRow(state.bankAccountsList[index]),
-      ),
+    if (state.bankAccountsList.isEmpty) {
+      return Padding(
+        padding: const EdgeInsets.only(top: 120),
+        child: Center(child: Text('No Bank Accounts', style: TextStyles.font16Regular)),
+      );
+    }
+
+    return ListView.separated(
+      shrinkWrap: true,
+      physics: const NeverScrollableScrollPhysics(),
+      padding: const EdgeInsets.only(bottom: 8),
+      separatorBuilder: (context, index) {
+        return const SizedBox(height: 8);
+      },
+      itemCount: state.bankAccountsList.length,
+      itemBuilder: (context, index) {
+        return _buildTileRow(state.bankAccountsList[index], context);
+      },
     );
   }
 }

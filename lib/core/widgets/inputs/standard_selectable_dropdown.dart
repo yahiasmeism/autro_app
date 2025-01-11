@@ -1,5 +1,6 @@
 import 'package:autro_app/core/theme/app_colors.dart';
 import 'package:autro_app/core/theme/text_styles.dart';
+import 'package:autro_app/core/widgets/loading_indecator.dart';
 import 'package:drop_down_search_field/drop_down_search_field.dart';
 import 'package:flutter/material.dart';
 
@@ -10,6 +11,7 @@ class StandardSelectableDropdownField extends StatefulWidget {
   final String? initialValue;
   final bool readOnly;
   final bool showRequiredIndicator;
+  final bool withValidator;
   final TextEditingController? controller;
   const StandardSelectableDropdownField({
     super.key,
@@ -20,6 +22,7 @@ class StandardSelectableDropdownField extends StatefulWidget {
     this.initialValue,
     this.showRequiredIndicator = false,
     this.controller,
+    this.withValidator = true,
   });
 
   @override
@@ -50,12 +53,14 @@ class _StandardSelectableDropDownState extends State<StandardSelectableDropdownF
           child: DropDownSearchFormField(
               enabled: !widget.readOnly,
               loadingBuilder: (context) {
-                return const Center(child: CircularProgressIndicator());
+                return const LoadingIndicator();
               },
-              validator: (value) {
-                if (!widget.items.contains(value)) return 'Please select a valid option.';
-                return null;
-              },
+              validator: widget.withValidator
+                  ? (value) {
+                      if (!widget.items.contains(value)) return 'Please select a valid option.';
+                      return null;
+                    }
+                  : null,
               debounceDuration: Duration.zero,
               suggestionsCallback: (pattern) {
                 return getSuggestions(pattern);

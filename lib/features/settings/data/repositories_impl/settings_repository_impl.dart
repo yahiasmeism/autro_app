@@ -79,4 +79,18 @@ class SettingsRepositoryImpl extends SettingsRepository {
       return Left(ErrorHandler.noInternet());
     }
   }
+
+  @override
+  Future<Either<Failure, Unit>> deleteBankAccount(int bankAccountId) async {
+    if (await networkInfo.isConnected) {
+      try {
+        await remoteDataSource.deleteBankAccount(bankAccountId);
+        return const Right(unit);
+      } catch (e) {
+        return Left(ErrorHandler.handle(e));
+      }
+    } else {
+      return Left(ErrorHandler.noInternet());
+    }
+  }
 }
