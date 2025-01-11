@@ -11,6 +11,7 @@ import 'package:autro_app/core/utils/link_util.dart';
 import 'package:autro_app/core/utils/nav_util.dart';
 import 'package:autro_app/core/widgets/buttons/delete_outline_button.dart';
 import 'package:autro_app/core/widgets/buttons/edit_outline_button.dart';
+import 'package:autro_app/core/widgets/loading_indecator.dart';
 import 'package:autro_app/core/widgets/standard_container.dart';
 import 'package:autro_app/features/customers/domin/entities/customer_entity.dart';
 import 'package:autro_app/features/customers/presentation/bloc/customer_details/customer_details_cubit.dart';
@@ -29,7 +30,7 @@ class CustomerDetailsOverviewTab extends StatelessWidget {
     return BlocBuilder<CustomerDetailsCubit, CustomerDetailsState>(
       builder: (context, state) {
         if (state is CustomerDetailsInitial) {
-          return const Center(child: CircularProgressIndicator());
+          return const LoadingIndicator();
         } else if (state is CustomerDetailsLoaded) {
           return _buildLoadedState(state, context);
         } else {

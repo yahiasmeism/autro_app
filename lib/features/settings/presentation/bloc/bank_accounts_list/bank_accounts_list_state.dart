@@ -11,26 +11,26 @@ final class BankAccountsListInitial extends BankAccountsListState {}
 
 final class BankAccountsListLoaded extends BankAccountsListState {
   final List<BankAccountEntity> bankAccountsList;
-  final Option<Failure> failureOption;
+  final Option<Either<Failure, String>> failureOrSuccessOption;
   final bool loading;
 
   const BankAccountsListLoaded({
     required this.bankAccountsList,
-    this.failureOption = const None(),
+    this.failureOrSuccessOption = const None(),
     this.loading = false,
   });
 
   @override
-  List<Object> get props => [bankAccountsList, failureOption, loading];
+  List<Object> get props => [bankAccountsList, failureOrSuccessOption, loading];
 
   BankAccountsListLoaded copyWith({
     List<BankAccountEntity>? bankAccountsList,
-    Option<Failure>? failureOption,
+    Option<Either<Failure, String>>? failureOrSuccessOption,
     bool? loading,
   }) {
     return BankAccountsListLoaded(
       bankAccountsList: bankAccountsList ?? this.bankAccountsList,
-      failureOption: failureOption ?? this.failureOption,
+      failureOrSuccessOption: failureOrSuccessOption ?? none(),
       loading: loading ?? this.loading,
     );
   }

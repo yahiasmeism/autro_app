@@ -25,6 +25,7 @@ class CustomOutlineButton extends StatelessWidget {
   Widget build(BuildContext context) {
     return OutlinedButton(
         style: OutlinedButton.styleFrom(
+          backgroundColor: color?.withOpacity(0.08) ?? AppColors.secondaryOpacity8,
           padding: padding ?? (const EdgeInsets.symmetric(horizontal: 24, vertical: 16)),
           textStyle: (TextStyles.font16Regular.copyWith(color: textColor ?? AppColors.secondary)),
           overlayColor: (color?.withOpacity(0.1) ?? AppColors.secondaryOpacity8),
@@ -51,7 +52,9 @@ class CustomOutlineButton extends StatelessWidget {
               ),
             Text(labelText,
                 style: TextStyles.font16Regular.copyWith(
-                  color: onPressed != null ? (textColor ?? AppColors.red) : (textColor ?? AppColors.red).withOpacity(0.5),
+                  color: onPressed != null
+                      ? (textColor ?? AppColors.secondary)
+                      : (textColor ?? AppColors.secondary).withOpacity(0.5),
                 )),
           ],
         ));

@@ -11,4 +11,5 @@ abstract class SettingsRepository {
   Future<Either<Failure, CompanyEntity>> changeCompanyInfo(ChangeCompanyInfoUseCaseParams params);
   Future<Either<Failure, List<BankAccountEntity>>> getBankAccountsList();
   Future<Either<Failure, BankAccountEntity>> addBankAccount(AddBankAccountUseCaseParams params);
+  Future<Either<Failure, Unit>> deleteBankAccount(int bankAccountId);
 }

@@ -4,7 +4,8 @@ import 'package:autro_app/core/utils/validator_util.dart';
 import 'package:autro_app/core/widgets/buttons/save_secondary_button.dart';
 import 'package:autro_app/core/widgets/failure_screen.dart';
 import 'package:autro_app/core/widgets/inputs/standard_input.dart';
-import 'package:autro_app/core/widgets/loading_overlay.dart';
+import 'package:autro_app/core/widgets/loading_indecator.dart';
+import 'package:autro_app/core/widgets/overley_loading.dart';
 import 'package:autro_app/core/widgets/standard_card.dart';
 import 'package:autro_app/features/settings/presentation/bloc/company/company_cubit.dart';
 import 'package:autro_app/features/settings/presentation/widgets/company_logo_uploader.dart';
@@ -36,7 +37,7 @@ class CompanyInformationTab extends StatelessWidget {
         if (state is CompanyInitial) {
           return const SizedBox(
             height: 500,
-            child: Center(child: CircularProgressIndicator()),
+            child: LoadingIndicator(),
           );
         } else if (state is CompanyLoaded) {
           return Stack(

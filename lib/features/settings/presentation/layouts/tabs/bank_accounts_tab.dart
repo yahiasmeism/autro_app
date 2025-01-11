@@ -1,10 +1,13 @@
+import 'package:autro_app/core/errors/failure_mapper.dart';
+import 'package:autro_app/core/utils/dialog_utils.dart';
 import 'package:autro_app/core/widgets/failure_screen.dart';
-import 'package:autro_app/core/widgets/loading_overlay.dart';
+import 'package:autro_app/core/widgets/loading_indecator.dart';
 import 'package:autro_app/features/settings/presentation/bloc/bank_accounts_list/bank_accounts_list_cubit.dart';
 import 'package:autro_app/features/settings/presentation/widgets/bank_accounts_list.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
+import '../../../../../core/widgets/overley_loading.dart';
 import '../../widgets/add_bank_account_form.dart';
 
 class BankAccountsTab extends StatelessWidget {
@@ -13,24 +16,25 @@ class BankAccountsTab extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     context.read<BankAccountsListCubit>().getBankAccountList();
-    return BlocBuilder<BankAccountsListCubit, BankAccountsListState>(
+    return BlocConsumer<BankAccountsListCubit, BankAccountsListState>(
+      listener: listener,
       builder: (context, state) {
-        if (state is BankAccountsListInitial) return const Center(child: CircularProgressIndicator());
+        if (state is BankAccountsListInitial) return const LoadingIndicator();
 
         if (state is BankAccountsListLoaded) {
-          return SingleChildScrollView(
-            child: Stack(
-              children: [
-                const Column(
+          return Stack(
+            children: [
+              const SingleChildScrollView(
+                child: Column(
                   children: [
                     AddBankAccountForm(),
                     SizedBox(height: 48),
                     BankAccountsList(),
                   ],
                 ),
-                if (state.loading) const Positioned.fill(child: LoadingOverlay()),
-              ],
-            ),
+              ),
+              if (state.loading) const Positioned.fill(child: LoadingOverlay()),
+            ],
           );
         } else if (state is BankAccountsListError) {
           return FailureScreen(
@@ -42,5 +46,15 @@ class BankAccountsTab extends StatelessWidget {
         }
       },
     );
+  }
+
+  void listener(BuildContext context, BankAccountsListState state) {
+    if (state is BankAccountsListLoaded) {
+      state.failureOrSuccessOption.fold(
+        () => null,
+        (either) => either.fold((a) => DialogUtil.showErrorSnackBar(context, getErrorMsgFromFailure(a)),
+            (message) => DialogUtil.showSuccessSnackBar(context, message)),
+      );
+    }
   }
 }
