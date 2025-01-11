@@ -44,7 +44,8 @@ class SettingsRepositoryImpl extends SettingsRepository {
         final company = await remoteDataSource.getCompany();
         return Right(company);
       } catch (e) {
-        return Left(ErrorHandler.handle(e));
+        final error = ErrorHandler.handle(e);
+        return Left(error);
       }
     } else {
       return Left(ErrorHandler.noInternet());
