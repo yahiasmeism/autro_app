@@ -4,7 +4,7 @@ import 'package:autro_app/core/widgets/loading_indecator.dart';
 import 'package:drop_down_search_field/drop_down_search_field.dart';
 import 'package:flutter/material.dart';
 
-class StandardSelectableDropdownField extends StatefulWidget {
+class StandardSelectableSearch extends StatefulWidget {
   final List<String> items;
   final String? labelText;
   final String? hintText;
@@ -13,7 +13,7 @@ class StandardSelectableDropdownField extends StatefulWidget {
   final bool showRequiredIndicator;
   final bool withValidator;
   final TextEditingController? controller;
-  const StandardSelectableDropdownField({
+  const StandardSelectableSearch({
     super.key,
     this.readOnly = false,
     required this.items,
@@ -26,10 +26,10 @@ class StandardSelectableDropdownField extends StatefulWidget {
   });
 
   @override
-  State<StandardSelectableDropdownField> createState() => _StandardSelectableDropDownState();
+  State<StandardSelectableSearch> createState() => _StandardSelectableDropDownState();
 }
 
-class _StandardSelectableDropDownState extends State<StandardSelectableDropdownField> {
+class _StandardSelectableDropDownState extends State<StandardSelectableSearch> {
   final SuggestionsBoxController _dropdownSearchFieldController = SuggestionsBoxController();
   late final TextEditingController textEditingController;
 

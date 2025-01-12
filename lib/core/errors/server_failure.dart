@@ -16,7 +16,7 @@ class UnauthorizedFailure extends ServerFailure {
 }
 
 class ForbiddenFailure extends ServerFailure {
-  const ForbiddenFailure() : super(code: 403);
+  const ForbiddenFailure([String? message]) : super(code: 403);
 }
 
 class NotFoundFailure extends ServerFailure {

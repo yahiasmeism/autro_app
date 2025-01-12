@@ -3,11 +3,12 @@ import 'package:autro_app/core/utils/validator_util.dart';
 import 'package:autro_app/core/widgets/buttons/add_button.dart';
 import 'package:autro_app/core/widgets/buttons/clear_all_button.dart';
 import 'package:autro_app/core/widgets/inputs/standard_input.dart';
-import 'package:autro_app/core/widgets/inputs/standard_selectable_dropdown.dart';
 import 'package:autro_app/core/widgets/standard_card.dart';
 import 'package:autro_app/features/settings/domin/use_cases/add_bank_account_use_case.dart';
 import 'package:autro_app/features/settings/presentation/bloc/bank_accounts_list/bank_accounts_list_cubit.dart';
 import 'package:flutter/material.dart';
+
+import '../../../../core/widgets/standard_selection_dropdown.dart';
 
 class AddBankAccountForm extends StatefulWidget {
   const AddBankAccountForm({super.key});
@@ -17,8 +18,8 @@ class AddBankAccountForm extends StatefulWidget {
 }
 
 class _AddBankAccountFormState extends State<AddBankAccountForm> {
-  bool enabledButtons = false;
-
+  bool addBankAccountEnabled = false;
+  bool clearAllEnabled = false;
   @override
   void initState() {
     super.initState();
@@ -26,19 +27,39 @@ class _AddBankAccountFormState extends State<AddBankAccountForm> {
   }
 
   setUpListeners() {
-    accountNumberController.addListener(updateSavedEnabled);
-    bankNameController.addListener(updateSavedEnabled);
-    swiftCodeController.addListener(updateSavedEnabled);
-    currencyController.addListener(updateSavedEnabled);
+    accountNumberController.addListener(updateOnChanged);
+    bankNameController.addListener(updateOnChanged);
+    swiftCodeController.addListener(updateOnChanged);
+    currencyController.addListener(updateOnChanged);
+  }
+
+  updateOnChanged() {
+    updateSavedEnabled();
+    updateClearAllEnabled();
   }
 
   updateSavedEnabled() {
-    enabledButtons = accountNumberController.text.isNotEmpty &&
+    bool isChanged = accountNumberController.text.isNotEmpty &&
         bankNameController.text.isNotEmpty &&
         swiftCodeController.text.isNotEmpty &&
         currencyController.text.isNotEmpty;
 
-    setState(() {});
+    if (isChanged != addBankAccountEnabled) {
+      addBankAccountEnabled = isChanged;
+      setState(() {});
+    }
+  }
+
+  updateClearAllEnabled() {
+    bool isChanged = accountNumberController.text.isNotEmpty ||
+        bankNameController.text.isNotEmpty ||
+        swiftCodeController.text.isNotEmpty ||
+        currencyController.text.isNotEmpty;
+
+    if (isChanged != clearAllEnabled) {
+      clearAllEnabled = isChanged;
+      setState(() {});
+    }
   }
 
   final formKey = GlobalKey<FormState>();
@@ -98,33 +119,15 @@ class _AddBankAccountFormState extends State<AddBankAccountForm> {
                 )),
                 const SizedBox(width: 32),
                 Expanded(
-                    child: StandardSelectableDropdownField(
+                    child: StandardSelectableDropdown(
                   items: const [
                     'USD(\$)',
                     'EUR(€)',
-                    'GBP(£)',
-                    'JPY(¥)',
-                    'AUD(A\$)',
-                    'CAD(C\$)',
-                    'CHF(CHF)',
-                    'CNY(¥)',
-                    'INR(₹)',
-                    'BRL(R\$)',
-                    'NGN(₦)',
-                    'ZAR(R)',
-                    'SAR(﷼)',
-                    'AED(د.إ)',
-                    'KRW(₩)',
-                    'RUB(₽)',
-                    'MXN(\$)',
-                    'TRY(₺)',
-                    'SEK(kr)',
-                    'NOK(kr)',
                   ],
-                  withValidator: false,
-                  controller: currencyController,
+                  initialValue: currencyController.text.isNotEmpty ? currencyController.text : null,
+                  onChanged: (p0) => currencyController.text = p0 ?? '',
                   labelText: 'Currency',
-                  hintText: 'Enter currency',
+                  hintText: 'Select currency',
                 )),
               ],
             ),
@@ -132,18 +135,19 @@ class _AddBankAccountFormState extends State<AddBankAccountForm> {
             Row(children: [
               const Spacer(),
               ClearAllButton(
-                onPressed: enabledButtons
+                onPressed: clearAllEnabled
                     ? () {
                         accountNumberController.clear();
                         bankNameController.clear();
                         swiftCodeController.clear();
                         currencyController.clear();
+                        setState(() {});
                       }
                     : null,
               ),
               const SizedBox(width: 16),
               AddButton(
-                onAddTap: enabledButtons
+                onAddTap: addBankAccountEnabled
                     ? () {
                         addBankAccount();
                       }

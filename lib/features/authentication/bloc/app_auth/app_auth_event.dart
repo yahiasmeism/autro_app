@@ -12,3 +12,9 @@ class CheckAuthenticationAppEvent extends AppAuthEvent {}
 class LogoutAppEvent extends AppAuthEvent {}
 
 class SessionExpiredAppEvent extends AppAuthEvent {}
+
+class AuthenticatedAppEvent extends AppAuthEvent {
+  final UserModel user;
+
+  const AuthenticatedAppEvent({required this.user});
+}

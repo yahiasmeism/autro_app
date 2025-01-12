@@ -6,7 +6,7 @@ import 'package:autro_app/core/widgets/buttons/clear_all_button.dart';
 import 'package:autro_app/core/widgets/buttons/save_outline_button.dart';
 import 'package:autro_app/core/widgets/inputs/country_selectable_dropdown.dart';
 import 'package:autro_app/core/widgets/inputs/standard_input.dart';
-import 'package:autro_app/core/widgets/inputs/standard_selectable_dropdown.dart';
+import 'package:autro_app/core/widgets/inputs/standard_selectable_search.dart';
 import 'package:autro_app/core/widgets/overley_loading.dart';
 import 'package:autro_app/features/customers/domin/entities/customer_entity.dart';
 import 'package:autro_app/features/customers/presentation/bloc/customer_form/customer_form_bloc.dart';
@@ -56,7 +56,7 @@ class _CustomerFormState extends State<CustomerForm> {
                     )),
                     const SizedBox(width: 24),
                     Expanded(
-                        child: StandardSelectableDropdownField(
+                        child: StandardSelectableSearch(
                       controller: primaryContactController,
                       items: const [
                         'Email',

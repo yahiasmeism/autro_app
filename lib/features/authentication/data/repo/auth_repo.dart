@@ -1,4 +1,5 @@
 import 'package:autro_app/core/errors/failures.dart';
+import 'package:autro_app/core/storage/hive_box_manager.dart';
 import 'package:dartz/dartz.dart';
 import 'package:injectable/injectable.dart';
 
@@ -11,7 +12,7 @@ import '../data_sources/auth_remote_data_source.dart';
 import '../models/user_model.dart';
 
 abstract class AuthRepo {
-  Future<Either<Failure, Unit>> login({required String email, required String password});
+  Future<Either<Failure, UserModel>> login({required String email, required String password});
   Future<Either<Failure, Unit>> register({required String email, required String password, required String name});
   Future<void> logout();
   Future<Either<Failure, UserModel>> getUser();
@@ -30,13 +31,13 @@ class AuthRepoImpl implements AuthRepo {
   bool get isAuthenticated => appPreferences.authState == AuthState.authenticated;
 
   @override
-  Future<Either<Failure, Unit>> login({required String email, required String password}) async {
+  Future<Either<Failure, UserModel>> login({required String email, required String password}) async {
     if (await networkInfo.isConnected) {
       try {
-        final token = await remoteDataSource.login(email: email, password: password);
-        await appPreferences.saveUserToken(token);
+        final user = await remoteDataSource.login(email: email, password: password);
+        await appPreferences.saveUserToken(user.token);
         await appPreferences.saveAuthState(AuthState.authenticated);
-        return const Right(unit);
+        return Right(user);
       } on Exception catch (e) {
         return Left(ErrorHandler.handle(e));
       }
@@ -57,13 +58,14 @@ class AuthRepoImpl implements AuthRepo {
     try {
       await appPreferences.saveAuthState(AuthState.unauthenticated);
       await appPreferences.removeUserToken();
+      await HiveBoxManager.clearAll();
     } on Exception catch (e) {
       LoggerUtils.e(e.toString());
     }
   }
 
   @override
-  Future<Either<Failure,Unit>> register({required String email, required String password, required String name}) async {
+  Future<Either<Failure, Unit>> register({required String email, required String password, required String name}) async {
     if (await networkInfo.isConnected) {
       try {
         final token = await remoteDataSource.register(email: email, password: password, name: name);
@@ -80,7 +82,7 @@ class AuthRepoImpl implements AuthRepo {
   }
 
   @override
-  Future<Either<Failure,UserModel>> getUser() async {
+  Future<Either<Failure, UserModel>> getUser() async {
     if (await networkInfo.isConnected) {
       try {
         final user = await remoteDataSource.fetchCurrentUser();

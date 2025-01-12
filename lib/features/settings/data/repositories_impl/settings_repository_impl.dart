@@ -1,10 +1,13 @@
 import 'package:autro_app/core/errors/error_handler.dart';
 import 'package:autro_app/core/errors/failures.dart';
 import 'package:autro_app/core/network_info/network_info.dart';
+import 'package:autro_app/features/authentication/data/models/user_model.dart';
+import 'package:autro_app/features/settings/data/models/requests/add_new_user_request.dart';
 import 'package:autro_app/features/settings/domin/entities/bank_account_entity.dart';
 
 import 'package:autro_app/features/settings/domin/entities/company_entity.dart';
 import 'package:autro_app/features/settings/domin/use_cases/add_bank_account_use_case.dart';
+import 'package:autro_app/features/settings/domin/use_cases/add_new_user_use_case.dart';
 
 import 'package:autro_app/features/settings/domin/use_cases/change_company_info_use_case.dart';
 
@@ -86,6 +89,49 @@ class SettingsRepositoryImpl extends SettingsRepository {
     if (await networkInfo.isConnected) {
       try {
         await remoteDataSource.deleteBankAccount(bankAccountId);
+        return const Right(unit);
+      } catch (e) {
+        return Left(ErrorHandler.handle(e));
+      }
+    } else {
+      return Left(ErrorHandler.noInternet());
+    }
+  }
+
+  @override
+  Future<Either<Failure, UserModel>> addUser(AddNewUserUseCaseParams params) async {
+    if (await networkInfo.isConnected) {
+      try {
+        final body = AddNewUserRequest.fromParams(params);
+        final user = await remoteDataSource.addUser(body);
+        return Right(user);
+      } catch (e) {
+        return Left(ErrorHandler.handle(e));
+      }
+    } else {
+      return Left(ErrorHandler.noInternet());
+    }
+  }
+
+  @override
+  Future<Either<Failure, List<UserModel>>> getUsersList() async {
+    if (await networkInfo.isConnected) {
+      try {
+        final usersList = await remoteDataSource.getUsersList();
+        return Right(usersList);
+      } catch (e) {
+        return Left(ErrorHandler.handle(e));
+      }
+    } else {
+      return Left(ErrorHandler.noInternet());
+    }
+  }
+
+  @override
+  Future<Either<Failure, Unit>> removeUser(int userId) async {
+    if (await networkInfo.isConnected) {
+      try {
+        await remoteDataSource.removeUser(userId);
         return const Right(unit);
       } catch (e) {
         return Left(ErrorHandler.handle(e));

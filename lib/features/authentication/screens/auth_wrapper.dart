@@ -1,3 +1,9 @@
+import 'package:autro_app/core/theme/text_styles.dart';
+import 'package:autro_app/features/customers/presentation/bloc/customers_list/customers_list_bloc.dart';
+import 'package:autro_app/features/settings/presentation/bloc/bank_accounts_list/bank_accounts_list_cubit.dart';
+import 'package:autro_app/features/settings/presentation/bloc/company/company_cubit.dart';
+import 'package:autro_app/features/settings/presentation/bloc/users_list/users_list_cubit.dart';
+import 'package:autro_app/features/suppliers/presentation/bloc/suppliers_list/suppliers_list_bloc.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import '../../home/screens/home_wrapper.dart';
@@ -9,11 +15,26 @@ class AuthWrapper extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return BlocBuilder<AppAuthBloc, AppAuthState>(
+    return BlocConsumer<AppAuthBloc, AppAuthState>(
+      listener: listener,
       buildWhen: (previous, current) {
-        return current is AuthenticatedState || current is UnAuthenticatedState;
+        return current is AuthenticatedState || current is UnAuthenticatedState || current is LoggedOutState;
       },
       builder: (context, state) {
+        if (state is InitialAppAuthState) {
+          return Scaffold(
+            body: Center(
+              child: Column(
+                mainAxisSize: MainAxisSize.min,
+                children: [
+                  const CircularProgressIndicator(),
+                  const SizedBox(height: 16),
+                  Text('Checking authentication...', style: TextStyles.font18Regular),
+                ],
+              ),
+            ),
+          );
+        }
         if (state is AuthenticatedState) {
           return const HomeWrapper();
         } else if (state is UnAuthenticatedState) {
@@ -25,5 +46,15 @@ class AuthWrapper extends StatelessWidget {
         }
       },
     );
+  }
+
+  void listener(BuildContext context, AppAuthState state) {
+    if (state is AuthenticatedState) {
+      context.read<CustomersListBloc>().add(GetCustomersListEvent());
+      context.read<SuppliersListBloc>().add(GetSuppliersListEvent());
+      context.read<CompanyCubit>().getCompany();
+      context.read<BankAccountsListCubit>().getBankAccountList();
+      context.read<UsersListCubit>().getUsersList();
+    }
   }
 }
