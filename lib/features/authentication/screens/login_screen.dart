@@ -1,7 +1,6 @@
 import 'package:autro_app/core/utils/nav_util.dart';
 import 'package:autro_app/core/widgets/inputs/standard_input.dart';
 import 'package:autro_app/features/authentication/bloc/login/login_state.dart';
-import 'package:autro_app/features/home/screens/home_wrapper.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
@@ -136,7 +135,6 @@ class _LoginScreenState extends State<LoginScreen> {
       );
     } else if (state is LoginCompleted) {
       NavUtil.pop(context);
-      NavUtil.push(context, const HomeWrapper());
     } else if (state is LoginError) {
       setupErrorState(context, state.failure);
     }

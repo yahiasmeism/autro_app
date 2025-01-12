@@ -53,6 +53,8 @@ import 'package:autro_app/features/settings/domin/repositories/settings_reposito
     as _i275;
 import 'package:autro_app/features/settings/domin/use_cases/add_bank_account_use_case.dart'
     as _i232;
+import 'package:autro_app/features/settings/domin/use_cases/add_new_user_use_case.dart'
+    as _i766;
 import 'package:autro_app/features/settings/domin/use_cases/change_company_info_use_case.dart'
     as _i855;
 import 'package:autro_app/features/settings/domin/use_cases/delete_bank_account_use_case.dart'
@@ -61,10 +63,18 @@ import 'package:autro_app/features/settings/domin/use_cases/get_bank_account_lis
     as _i362;
 import 'package:autro_app/features/settings/domin/use_cases/get_company_use_case.dart'
     as _i223;
+import 'package:autro_app/features/settings/domin/use_cases/get_current_user_use_case.dart'
+    as _i533;
+import 'package:autro_app/features/settings/domin/use_cases/get_users_list_use_case.dart'
+    as _i176;
+import 'package:autro_app/features/settings/domin/use_cases/remove_user_use_case.dart'
+    as _i130;
 import 'package:autro_app/features/settings/presentation/bloc/bank_accounts_list/bank_accounts_list_cubit.dart'
     as _i827;
 import 'package:autro_app/features/settings/presentation/bloc/company/company_cubit.dart'
     as _i326;
+import 'package:autro_app/features/settings/presentation/bloc/users_list/users_list_cubit.dart'
+    as _i729;
 import 'package:autro_app/features/suppliers/data/datasources/suppliers_remote_datesourse.dart'
     as _i829;
 import 'package:autro_app/features/suppliers/data/repositories/suppliers_repository_impl.dart'
@@ -132,6 +142,8 @@ extension GetItInjectableX on _i174.GetIt {
     gh.lazySingleton<_i253.DeleteBankAccountUseCase>(() =>
         _i253.DeleteBankAccountUseCase(
             settingsRepository: gh<_i275.SettingsRepository>()));
+    gh.lazySingleton<_i130.RemoveUserUseCase>(() => _i130.RemoveUserUseCase(
+        settingsRepository: gh<_i275.SettingsRepository>()));
     gh.lazySingleton<_i829.SuppliersRemoteDataSource>(() =>
         _i829.SuppliersRemoteDataSourceImpl(apiClient: gh<_i228.ApiClient>()));
     gh.lazySingleton<_i288.AuthRepo>(() => _i288.AuthRepoImpl(
@@ -152,6 +164,8 @@ extension GetItInjectableX on _i174.GetIt {
     gh.lazySingleton<_i884.GetSuppliersListUsecase>(() =>
         _i884.GetSuppliersListUsecase(
             supplierRepository: gh<_i712.SuppliersRepository>()));
+    gh.lazySingleton<_i766.AddNewUserUseCase>(() =>
+        _i766.AddNewUserUseCase(repository: gh<_i275.SettingsRepository>()));
     gh.lazySingleton<_i855.ChangeCompanyInfoUseCase>(() =>
         _i855.ChangeCompanyInfoUseCase(
             repository: gh<_i275.SettingsRepository>()));
@@ -160,6 +174,8 @@ extension GetItInjectableX on _i174.GetIt {
             repository: gh<_i275.SettingsRepository>()));
     gh.lazySingleton<_i223.GetCompanyUseCase>(() =>
         _i223.GetCompanyUseCase(repository: gh<_i275.SettingsRepository>()));
+    gh.lazySingleton<_i176.GetUsersListUseCase>(() =>
+        _i176.GetUsersListUseCase(repository: gh<_i275.SettingsRepository>()));
     gh.lazySingleton<_i57.CreateSupplierUsecase>(() =>
         _i57.CreateSupplierUsecase(
             suplliersRepository: gh<_i712.SuppliersRepository>()));
@@ -167,6 +183,8 @@ extension GetItInjectableX on _i174.GetIt {
           gh<_i223.GetCompanyUseCase>(),
           gh<_i855.ChangeCompanyInfoUseCase>(),
         ));
+    gh.lazySingleton<_i533.GetCurrentUserUseCase>(
+        () => _i533.GetCurrentUserUseCase(authRepo: gh<_i288.AuthRepo>()));
     gh.lazySingleton<_i827.BankAccountsListCubit>(
         () => _i827.BankAccountsListCubit(
               gh<_i362.GetBankAccountListUseCase>(),
@@ -195,7 +213,6 @@ extension GetItInjectableX on _i174.GetIt {
     gh.lazySingleton<_i428.UpdateSupplierUsecase>(() =>
         _i428.UpdateSupplierUsecase(
             suppliersRepository: gh<_i712.SuppliersRepository>()));
-    gh.factory<_i30.LoginCubit>(() => _i30.LoginCubit(gh<_i288.AuthRepo>()));
     gh.factory<_i173.RegisterCubit>(
         () => _i173.RegisterCubit(gh<_i288.AuthRepo>()));
     gh.lazySingleton<_i51.AppAuthBloc>(
@@ -206,6 +223,11 @@ extension GetItInjectableX on _i174.GetIt {
           gh<_i207.DeleteCustomerUsecase>(),
           gh<_i134.UpdateCustomerUsecase>(),
           gh<_i116.CreateCustomerUsecase>(),
+        ));
+    gh.lazySingleton<_i729.UsersListCubit>(() => _i729.UsersListCubit(
+          gh<_i176.GetUsersListUseCase>(),
+          gh<_i766.AddNewUserUseCase>(),
+          gh<_i130.RemoveUserUseCase>(),
         ));
     gh.factory<_i512.CustomerFormBloc>(() => _i512.CustomerFormBloc(
           gh<_i116.CreateCustomerUsecase>(),
@@ -218,6 +240,10 @@ extension GetItInjectableX on _i174.GetIt {
           gh<_i712.SuppliersRepository>(),
           gh<_i428.UpdateSupplierUsecase>(),
           gh<_i57.CreateSupplierUsecase>(),
+        ));
+    gh.factory<_i30.LoginCubit>(() => _i30.LoginCubit(
+          gh<_i288.AuthRepo>(),
+          gh<_i51.AppAuthBloc>(),
         ));
     gh.factory<_i323.SupplierFormBloc>(() => _i323.SupplierFormBloc(
           gh<_i57.CreateSupplierUsecase>(),

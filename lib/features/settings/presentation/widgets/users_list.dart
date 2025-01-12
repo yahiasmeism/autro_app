@@ -160,7 +160,7 @@ class UsersList extends StatelessWidget {
                   if (!isCurrentUser)
                     DeleteIconButton(
                       onPressed: () {
-                        // context.read<BankAccountsListCubit>().deleteBankAccount(user.id);
+                        context.read<UsersListCubit>().removeUser(user);
                       },
                     ),
                 ],

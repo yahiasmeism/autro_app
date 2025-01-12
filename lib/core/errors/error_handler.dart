@@ -29,7 +29,7 @@ class ErrorHandler implements Exception {
       case ResponseCode.UNAUTHORISED:
         return UnauthorizedFailure(message);
       case ResponseCode.FORBIDDEN:
-        return const ForbiddenFailure();
+        return ForbiddenFailure(message);
       case ResponseCode.NOT_FOUND:
         return NotFoundFailure(message);
       case ResponseCode.INTERNAL_SERVER_ERROR:
@@ -62,15 +62,20 @@ class ErrorHandler implements Exception {
       case DioExceptionType.sendTimeout:
         return const SendTimeoutFailure();
       case DioExceptionType.badResponse:
-        final code = exception.response?.statusCode ?? -1;
-        String? message = exception.response?.data['message'] ??
-            _getErrorMessageFromMap(exception.response?.data['error'] ?? {}) ??
-            exception.message;
-        return _handleExceptionByResponseCode(code, message);
-
+        return _handleDioBadResponse(exception);
       default:
         return const GeneralFailure();
     }
+  }
+
+  static Failure _handleDioBadResponse(DioException exception) {
+    final code = exception.response?.statusCode ?? -1;
+    String? message =
+        exception.response?.data['message'] ?? geErrorMessage(exception.response?.data['error']) ?? exception.message;
+    if (exception.response?.statusCode == 401) {
+      return UnauthorizedFailure(message ?? '');
+    }
+    return _handleExceptionByResponseCode(code, message);
   }
 
   static String? _getErrorMessageFromMap(Map<String, dynamic> map) {
@@ -83,6 +88,15 @@ class ErrorHandler implements Exception {
       }
     }
     return message.isEmpty ? null : message.trim();
+  }
+
+  static geErrorMessage(data) {
+    if (data is Map<String, dynamic>) {
+      return _getErrorMessageFromMap(data);
+    } else if (data is String) {
+      return data;
+    }
+    return null;
   }
 }
 

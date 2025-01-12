@@ -2,7 +2,6 @@ import 'package:autro_app/core/errors/failure_mapper.dart';
 import 'package:autro_app/core/utils/dialog_utils.dart';
 import 'package:autro_app/core/widgets/failure_screen.dart';
 import 'package:autro_app/core/widgets/loading_indecator.dart';
-import 'package:autro_app/features/settings/presentation/bloc/bank_accounts_list/bank_accounts_list_cubit.dart';
 import 'package:autro_app/features/settings/presentation/bloc/users_list/users_list_cubit.dart';
 import 'package:autro_app/features/settings/presentation/widgets/users_list.dart';
 import 'package:flutter/material.dart';
@@ -39,7 +38,7 @@ class UserManagementTab extends StatelessWidget {
         } else if (state is UsersListError) {
           return FailureScreen(
             failure: state.failure,
-            onRetryTap: () => context.read<BankAccountsListCubit>().onHandleError(),
+            onRetryTap: () => context.read<UsersListCubit>().onHandleFailure(),
           );
         } else {
           return const SizedBox.shrink();

@@ -121,4 +121,15 @@ class CompanyCubit extends Cubit<CompanyState> {
     emit(state.copyWith(pickedSignatureFile: some(file)));
     updateSaveEnabled();
   }
+
+  @override
+  Future<void> close() {
+    companyNameController.dispose();
+    companyAddressController.dispose();
+    companyPhoneController.dispose();
+    companyEmailController.dispose();
+    companyTelephoneController.dispose();
+    companyWebsiteController.dispose();
+    return super.close();
+  }
 }

@@ -41,7 +41,7 @@ class BankAccountsListCubit extends Cubit<BankAccountsListState> {
     either.fold(
       (failure) => emit(state.copyWith(failureOrSuccessOption: some(left(failure)))),
       (bankAccount) {
-        final bankAccounts = state.bankAccountsList..add(bankAccount);
+        final bankAccounts = [bankAccount, ...state.bankAccountsList];
         emit(
           state.copyWith(
             bankAccountsList: bankAccounts,

@@ -23,7 +23,7 @@ final class UsersListLoaded extends UsersListState {
   });
 
   @override
-  List<Object> get props => [usersList, loading, failureOrSuccessOption];
+  List<Object> get props => [usersList, loading, failureOrSuccessOption, currentUser];
 
   UsersListLoaded copyWith({
     List<UserModel>? usersList,
@@ -33,7 +33,7 @@ final class UsersListLoaded extends UsersListState {
     return UsersListLoaded(
       usersList: usersList ?? this.usersList,
       loading: loading ?? this.loading,
-      failureOrSuccessOption: failureOrSuccessOption ?? this.failureOrSuccessOption,
+      failureOrSuccessOption: failureOrSuccessOption ?? none(),
       currentUser: currentUser,
     );
   }

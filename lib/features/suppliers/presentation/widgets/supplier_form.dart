@@ -6,7 +6,7 @@ import 'package:autro_app/core/widgets/buttons/clear_all_button.dart';
 import 'package:autro_app/core/widgets/buttons/save_outline_button.dart';
 import 'package:autro_app/core/widgets/inputs/country_selectable_dropdown.dart';
 import 'package:autro_app/core/widgets/inputs/standard_input.dart';
-import 'package:autro_app/core/widgets/inputs/standard_selectable_dropdown.dart';
+import 'package:autro_app/core/widgets/inputs/standard_selectable_search.dart';
 import 'package:autro_app/core/widgets/overley_loading.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -56,7 +56,7 @@ class _SupplierFormState extends State<SupplierForm> {
                     )),
                     const SizedBox(width: 24),
                     Expanded(
-                        child: StandardSelectableDropdownField(
+                        child: StandardSelectableSearch(
                       controller: primaryContactController,
                       items: const [
                         'Email',

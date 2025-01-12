@@ -1,7 +1,10 @@
+import 'package:autro_app/core/di/di.dart';
 import 'package:autro_app/core/errors/failures.dart';
 import 'package:autro_app/core/errors/server_failure.dart';
 import 'package:autro_app/core/theme/app_colors.dart';
-import 'package:autro_app/core/widgets/buttons/primary_button.dart';
+import 'package:autro_app/core/widgets/buttons/custom_outline_button.dart';
+import 'package:autro_app/core/widgets/buttons/secondary_button.dart';
+import 'package:autro_app/features/authentication/bloc/app_auth/app_auth_bloc.dart';
 import 'package:flutter/material.dart';
 
 import '../errors/failure_mapper.dart';
@@ -25,8 +28,7 @@ class FailureScreen extends StatelessWidget {
   bool get isSessionExpired => failure is UnauthorizedFailure;
 
   handleLogout(BuildContext context) {
-    // NavUtil.popToRoot(context);
-    // context.read<AuthCubit>().onLogout(false);
+    sl<AppAuthBloc>().add(LogoutAppEvent());
   }
 
   @override
@@ -47,6 +49,7 @@ class FailureScreen extends StatelessWidget {
             buildErrorMessage(context),
             const SizedBox(height: 50),
             buildPrimaryButton(),
+            buildSecondaryButton(context),
           ],
         ),
       ),
@@ -71,12 +74,37 @@ class FailureScreen extends StatelessWidget {
     if (onRetryTap == null && hideButtonOnNullCallback) {
       return const SizedBox();
     }
-    return IntrinsicWidth(
-      child: PrimaryButton(
+    return SizedBox(
+      width: 100,
+      child: SecondaryButton(
+        expended: true,
         bgColor: AppColors.secondary,
         labelText: 'Retry',
         onPressed: onRetryTap,
       ),
+    );
+  }
+
+  Widget buildSecondaryButton(BuildContext context) {
+    Widget child;
+    if (onSecondaryTap == null && !isSessionExpired) {
+      child = const SizedBox();
+    } else if (isSessionExpired) {
+      child = CustomOutlineButton(
+        labelText: 'Logout',
+        onPressed: () => handleLogout(context),
+      );
+    } else {
+      child = CustomOutlineButton(
+        labelText: secondaryBtnLabel ?? '',
+        onPressed: onSecondaryTap,
+      );
+    }
+    return Column(
+      children: [
+        const SizedBox(height: 16),
+        IntrinsicWidth(child: child),
+      ],
     );
   }
 }

@@ -3,6 +3,8 @@ import 'package:autro_app/features/settings/presentation/layouts/tabs/bank_accou
 import 'package:autro_app/features/settings/presentation/layouts/tabs/company_information_tab.dart';
 import 'package:flutter/material.dart';
 
+import 'tabs/user_management_tab.dart';
+
 class ScreenSettingsDesktopLayout extends StatelessWidget {
   const ScreenSettingsDesktopLayout({
     super.key,
@@ -28,8 +30,8 @@ class ScreenSettingsDesktopLayout extends StatelessWidget {
                 tabs: [
                   'Company Information',
                   'Bank Accountes',
-                  'Preferences',
                   'User Management',
+                  'Preferences',
                   'System Settings',
                 ],
               ),
@@ -42,8 +44,8 @@ class ScreenSettingsDesktopLayout extends StatelessWidget {
                   children: [
                     CompanyInformationTab(),
                     BankAccountsTab(),
+                    UserManagementTab(),
                     Center(child: Text('Preferences')),
-                    Center(child: Text('User Management')),
                     Center(child: Text('System Settings')),
                   ],
                 ),

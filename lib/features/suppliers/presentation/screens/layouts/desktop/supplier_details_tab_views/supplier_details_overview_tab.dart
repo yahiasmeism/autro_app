@@ -1,6 +1,7 @@
 // ignore_for_file: deprecated_member_use
 
-import 'package:autro_app/constants/assets.dart';
+import 'package:autro_app/core/constants/assets.dart';
+
 import 'package:autro_app/core/constants/enums.dart';
 import 'package:autro_app/core/di/di.dart';
 import 'package:autro_app/core/extensions/primary_contact_type_extension.dart';

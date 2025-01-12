@@ -1,9 +1,10 @@
+import 'package:autro_app/core/di/di.dart';
 import 'package:autro_app/core/errors/failures.dart';
 import 'package:autro_app/core/interfaces/use_case.dart';
-import 'package:autro_app/features/authentication/bloc/app_auth/app_auth_bloc.dart';
 import 'package:autro_app/features/authentication/data/models/user_model.dart';
 import 'package:autro_app/features/settings/domin/use_cases/add_new_user_use_case.dart';
 import 'package:autro_app/features/settings/domin/use_cases/get_users_list_use_case.dart';
+import 'package:autro_app/features/settings/domin/use_cases/remove_user_use_case.dart';
 import 'package:bloc/bloc.dart';
 import 'package:dartz/dartz.dart';
 import 'package:equatable/equatable.dart';
@@ -15,12 +16,13 @@ part 'users_list_state.dart';
 class UsersListCubit extends Cubit<UsersListState> {
   final GetUsersListUseCase getUsersListUseCase;
   final AddNewUserUseCase addNewUserUseCase;
-  final AppAuthBloc appAuthBloc;
-  UsersListCubit(this.getUsersListUseCase, this.addNewUserUseCase, this.appAuthBloc) : super(UsersListInitial());
+  final RemoveUserUseCase removeUserUseCase;
+  UsersListCubit(this.getUsersListUseCase, this.addNewUserUseCase, this.removeUserUseCase)
+      : super(UsersListInitial());
 
   Future<void> getUsersList() async {
+    final currentUser = sl.get<UserModel>();
     Either<Failure, List<UserModel>> result = await getUsersListUseCase(NoParams());
-    final currentUser = (appAuthBloc.state as AuthenticatedState).user;
 
     result.fold((failure) => emit(UsersListError(failure)), (usersList) {
       emit(UsersListLoaded(usersList: usersList, currentUser: currentUser));
@@ -36,5 +38,27 @@ class UsersListCubit extends Cubit<UsersListState> {
       final users = [user, ...state.usersList];
       emit(state.copyWith(usersList: users, failureOrSuccessOption: some(right('User added'))));
     });
+  }
+
+  Future<void> removeUser(UserModel user) async {
+    final state = this.state as UsersListLoaded;
+    emit(state.copyWith(loading: true));
+    Either<Failure, Unit> result = await removeUserUseCase(user.id);
+    emit(state.copyWith(loading: false));
+    result.fold((failure) {
+      emit(state.copyWith(failureOrSuccessOption: some(left(failure))));
+    }, (_) {
+      final users = state.usersList.where((element) => element.id != user.id).toList();
+      emit(state.copyWith(
+        usersList: users,
+        failureOrSuccessOption: some(right('User removed')),
+      ));
+    });
+  }
+
+  onHandleFailure() async {
+    emit(UsersListInitial());
+    await Future.delayed(const Duration(seconds: 1));
+    getUsersList();
   }
 }

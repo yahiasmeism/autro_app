@@ -4,6 +4,9 @@ import 'package:autro_app/core/extensions/string_extension.dart';
 import 'package:flutter/material.dart';
 
 String _errorMessageByStatusCode(ServerFailure failure) {
+  if (failure is ForbiddenFailure) {
+    return failure.message ?? 'You do not have permission to access this resource';
+  }
   if (!failure.message.isNullOrEmpty) return failure.message!;
   final code = failure.code;
   final error = 'bad_response.$code';
@@ -17,6 +20,9 @@ String _errorMessageFromClientFailure(ClientFailure failure) {
 }
 
 String getErrorMsgFromFailure(Failure failure) {
+  if (failure is UnauthorizedFailure) {
+    return 'Session expired please login again';
+  }
   if (failure is ServerFailure) {
     return _errorMessageByStatusCode(failure);
   }

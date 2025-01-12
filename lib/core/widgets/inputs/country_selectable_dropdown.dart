@@ -1,4 +1,4 @@
-import 'package:autro_app/core/widgets/inputs/standard_selectable_dropdown.dart';
+import 'package:autro_app/core/widgets/inputs/standard_selectable_search.dart';
 import 'package:flutter/material.dart';
 
 class CountrySelectableDropdown extends StatelessWidget {
@@ -7,7 +7,7 @@ class CountrySelectableDropdown extends StatelessWidget {
   const CountrySelectableDropdown({super.key, required this.controller, this.readOnly = false});
   @override
   Widget build(BuildContext context) {
-    return StandardSelectableDropdownField(
+    return StandardSelectableSearch(
       readOnly: readOnly,
       controller: controller,
       items: countries,

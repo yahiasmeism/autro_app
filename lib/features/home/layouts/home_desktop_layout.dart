@@ -1,5 +1,4 @@
 import 'package:autro_app/core/constants/enums.dart';
-import 'package:autro_app/core/widgets/loading_indecator.dart';
 import 'package:autro_app/features/customers/presentation/screens/customers_list_screen.dart';
 import 'package:autro_app/features/home/bloc/home_bloc.dart';
 import 'package:autro_app/features/home/widget/custom_drawer.dart';
@@ -27,7 +26,7 @@ class HomeWrapperDesktopLayout extends StatelessWidget {
                 if (state is HomeLoaded) {
                   return _buildSelectedScreen(context, state);
                 }
-                return const LoadingIndicator();
+                return const SizedBox.shrink();
               },
             ),
           ),

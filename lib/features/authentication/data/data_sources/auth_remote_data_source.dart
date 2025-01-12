@@ -8,7 +8,7 @@ import '../../../../core/errors/exceptions.dart';
 import '../models/user_model.dart';
 
 abstract class AuthRemoteDataSource {
-  Future<String> login({
+  Future<UserModel> login({
     required String email,
     required String password,
   });
@@ -56,13 +56,13 @@ class AuthRemoteDataSourceImpl implements AuthRemoteDataSource {
   }
 
   @override
-  Future<String> login({required String email, required String password}) async {
+  Future<UserModel> login({required String email, required String password}) async {
     final body = {'email': email, 'password': password};
     final request = ApiRequest(path: ApiPaths.login, body: body);
     final response = await apiClient.post(request);
 
     if (ResponseCode.isOk(response.statusCode)) {
-      return response.data['token'] as String? ?? '';
+      return UserModel.fromJson(response.data);
     } else {
       throw ServerException(response.statusCode, response.statusMessage);
     }

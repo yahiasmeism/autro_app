@@ -4,7 +4,9 @@ import 'package:autro_app/core/api/api_request.dart';
 import 'package:autro_app/core/common/data/responses/pagination_list_response.dart';
 import 'package:autro_app/core/errors/error_handler.dart';
 import 'package:autro_app/core/errors/exceptions.dart';
+import 'package:autro_app/features/authentication/data/models/user_model.dart';
 import 'package:autro_app/features/settings/data/models/company_model.dart';
+import 'package:autro_app/features/settings/data/models/requests/add_new_user_request.dart';
 import 'package:autro_app/features/settings/data/models/requests/change_company_info_request.dart';
 import 'package:injectable/injectable.dart';
 
@@ -17,6 +19,9 @@ abstract class SettingsRemoteDataSource {
   Future<BankAccountModel> addBankAccount(AddBankAccountRequest body);
   Future<List<BankAccountModel>> getBankAccountsList();
   Future<void> deleteBankAccount(int bankAccountId);
+  Future<List<UserModel>> getUsersList();
+  Future<UserModel> addUser(AddNewUserRequest body);
+  Future<void> removeUser(int userId);
 }
 
 @LazySingleton(as: SettingsRemoteDataSource)
@@ -86,6 +91,47 @@ class SettingsRemoteDataSourceImpl implements SettingsRemoteDataSource {
   @override
   Future<void> deleteBankAccount(int bankAccountId) async {
     final path = ApiPaths.bankAccountById(bankAccountId);
+    final request = ApiRequest(path: path);
+    final response = await client.delete(request);
+
+    if (ResponseCode.isOk(response.statusCode)) {
+      return;
+    }
+
+    throw ServerException(response.statusCode, response.statusMessage);
+  }
+
+  @override
+  Future<UserModel> addUser(AddNewUserRequest body) async {
+    const path = ApiPaths.users;
+    final request = ApiRequest(path: path, body: body.toJson());
+    final response = await client.post(request);
+
+    if (ResponseCode.isOk(response.statusCode)) {
+      return UserModel.fromJson(response.data);
+    } else {
+      throw ServerException(response.statusCode, response.statusMessage);
+    }
+  }
+
+  @override
+  Future<List<UserModel>> getUsersList() async {
+    const path = ApiPaths.users;
+    final request = ApiRequest(path: path);
+    final response = await client.get(request);
+
+    if (ResponseCode.isOk(response.statusCode)) {
+      final json = response.data;
+      final responseList = PaginationListResponse.fromJson(json, UserModel.fromJson);
+      return responseList.data;
+    }
+
+    throw ServerException(response.statusCode, response.statusMessage);
+  }
+  
+  @override
+  Future<void> removeUser(int userId) async{
+    final path = ApiPaths.userById(userId);
     final request = ApiRequest(path: path);
     final response = await client.delete(request);
 
