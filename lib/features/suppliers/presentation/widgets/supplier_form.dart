@@ -135,6 +135,7 @@ class _SupplierFormState extends State<SupplierForm> {
                   const SizedBox(height: 20),
                   StandardInput(
                     minLines: 3,
+                    maxLines: 3,
                     labelText: 'Notes',
                     controller: notes,
                     hintText: 'e.g write anything here that you might need to store about this supplier.',

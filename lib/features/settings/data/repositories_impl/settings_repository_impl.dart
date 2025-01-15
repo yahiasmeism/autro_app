@@ -2,10 +2,12 @@ import 'package:autro_app/core/errors/error_handler.dart';
 import 'package:autro_app/core/errors/failures.dart';
 import 'package:autro_app/core/network_info/network_info.dart';
 import 'package:autro_app/features/authentication/data/models/user_model.dart';
+import 'package:autro_app/features/settings/data/models/invoice_settings_model.dart';
 import 'package:autro_app/features/settings/data/models/requests/add_new_user_request.dart';
 import 'package:autro_app/features/settings/domin/entities/bank_account_entity.dart';
 
 import 'package:autro_app/features/settings/domin/entities/company_entity.dart';
+import 'package:autro_app/features/settings/domin/entities/invoice_settings_entity.dart';
 import 'package:autro_app/features/settings/domin/use_cases/add_bank_account_use_case.dart';
 import 'package:autro_app/features/settings/domin/use_cases/add_new_user_use_case.dart';
 
@@ -133,6 +135,35 @@ class SettingsRepositoryImpl extends SettingsRepository {
       try {
         await remoteDataSource.removeUser(userId);
         return const Right(unit);
+      } catch (e) {
+        return Left(ErrorHandler.handle(e));
+      }
+    } else {
+      return Left(ErrorHandler.noInternet());
+    }
+  }
+
+  @override
+  Future<Either<Failure, InvoiceSettingsEntity>> getInvoiceSettings() async {
+    if (await networkInfo.isConnected) {
+      try {
+        final invoiceSettings = await remoteDataSource.getInvoiceSettings();
+        return Right(invoiceSettings);
+      } catch (e) {
+        return Left(ErrorHandler.handle(e));
+      }
+    } else {
+      return Left(ErrorHandler.noInternet());
+    }
+  }
+
+  @override
+  Future<Either<Failure, InvoiceSettingsEntity>> setInvoiceSettingsUseCase(InvoiceSettingsEntity invoiceSettings) async {
+    if (await networkInfo.isConnected) {
+      try {
+        var invoiceSettingsModel = InvoiceSettingsModel.fromEntity(invoiceSettings);
+        final updatedinvoiceSettings = await remoteDataSource.setInvoiceSettings(invoiceSettingsModel);
+        return Right(updatedinvoiceSettings);
       } catch (e) {
         return Left(ErrorHandler.handle(e));
       }

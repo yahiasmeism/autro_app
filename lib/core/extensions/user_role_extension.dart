@@ -14,6 +14,12 @@ extension UserRoleX on UserRole {
     }
   }
 
+  bool get isAdmin => this == UserRole.admin;
+
+  bool get isUser => this == UserRole.user;
+
+  bool get isViewer => this == UserRole.viewer;
+
   static UserRole fromString(String? name) {
     switch (name?.toLowerCase()) {
       case 'admin':

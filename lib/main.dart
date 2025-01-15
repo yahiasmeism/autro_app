@@ -18,6 +18,7 @@ import 'package:injectable/injectable.dart';
 import 'core/di/di.dart';
 import 'core/storage/hive_box_manager.dart';
 import 'features/authentication/bloc/app_auth/app_auth_bloc.dart';
+import 'features/settings/presentation/bloc/invoice_settings/invoice_settings_cubit.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -71,6 +72,9 @@ class MyApp extends StatelessWidget {
         ),
         BlocProvider(
           create: (context) => sl<UsersListCubit>(),
+        ),
+        BlocProvider(
+          create: (context) => sl<InvoiceSettingsCubit>(),
         ),
       ],
       child: MaterialApp(

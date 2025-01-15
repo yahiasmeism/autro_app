@@ -1,5 +1,6 @@
 import 'package:autro_app/core/di/di.dart';
 import 'package:autro_app/core/errors/failures.dart';
+import 'package:autro_app/core/extensions/user_role_extension.dart';
 import 'package:autro_app/core/interfaces/use_case.dart';
 import 'package:autro_app/features/authentication/data/models/user_model.dart';
 import 'package:autro_app/features/settings/domin/use_cases/add_new_user_use_case.dart';
@@ -17,8 +18,7 @@ class UsersListCubit extends Cubit<UsersListState> {
   final GetUsersListUseCase getUsersListUseCase;
   final AddNewUserUseCase addNewUserUseCase;
   final RemoveUserUseCase removeUserUseCase;
-  UsersListCubit(this.getUsersListUseCase, this.addNewUserUseCase, this.removeUserUseCase)
-      : super(UsersListInitial());
+  UsersListCubit(this.getUsersListUseCase, this.addNewUserUseCase, this.removeUserUseCase) : super(UsersListInitial());
 
   Future<void> getUsersList() async {
     final currentUser = sl.get<UserModel>();

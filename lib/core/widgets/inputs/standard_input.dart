@@ -116,7 +116,6 @@ class _StandardInputState extends State<StandardInput> {
         TextFormField(
           decoration: InputDecoration(
             iconColor: AppColors.iconColor,
-            constraints: BoxConstraints(maxHeight: widget.maxHeight ?? 90.0),
             enabled: widget.enabled,
             contentPadding: widget.contentPadding ?? const EdgeInsets.all(16),
             suffixIcon: widget.iconSuffix,

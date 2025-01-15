@@ -1,6 +1,7 @@
 import 'package:autro_app/core/errors/failure_mapper.dart';
 import 'package:autro_app/core/utils/dialog_utils.dart';
 import 'package:autro_app/core/utils/validator_util.dart';
+import 'package:autro_app/core/widgets/buttons/cancel_outline_button.dart';
 import 'package:autro_app/core/widgets/buttons/save_secondary_button.dart';
 import 'package:autro_app/core/widgets/failure_screen.dart';
 import 'package:autro_app/core/widgets/inputs/standard_input.dart';
@@ -153,9 +154,10 @@ class CompanyInformationTab extends StatelessWidget {
     return Row(
       children: [
         const Spacer(),
+        if (state.dataChanged) CancelOutlineButton(onPressed: context.read<CompanyCubit>().cancelChanges),
         const SizedBox(width: 16),
         SaveScoundaryButton(
-          onPressed: state.saveEnabled ? () => context.read<CompanyCubit>().changeCompanyInfo() : null,
+          onPressed: state.dataChanged ? () => context.read<CompanyCubit>().changeCompanyInfo() : null,
         ),
       ],
     );

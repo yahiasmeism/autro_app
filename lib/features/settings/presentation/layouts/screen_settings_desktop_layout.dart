@@ -1,6 +1,7 @@
 import 'package:autro_app/core/widgets/custom_tab_bar.dart';
 import 'package:autro_app/features/settings/presentation/layouts/tabs/bank_accounts_tab.dart';
 import 'package:autro_app/features/settings/presentation/layouts/tabs/company_information_tab.dart';
+import 'package:autro_app/features/settings/presentation/layouts/tabs/invoice_settings_tab.dart';
 import 'package:flutter/material.dart';
 
 import 'tabs/user_management_tab.dart';
@@ -23,7 +24,7 @@ class ScreenSettingsDesktopLayout extends StatelessWidget {
       body: const Padding(
         padding: EdgeInsets.all(24),
         child: DefaultTabController(
-          length: 5,
+          length: 4,
           child: Column(
             children: [
               CustomTabBar(
@@ -31,8 +32,7 @@ class ScreenSettingsDesktopLayout extends StatelessWidget {
                   'Company Information',
                   'Bank Accountes',
                   'User Management',
-                  'Preferences',
-                  'System Settings',
+                  'Invoice Settings',
                 ],
               ),
               SizedBox(
@@ -45,8 +45,7 @@ class ScreenSettingsDesktopLayout extends StatelessWidget {
                     CompanyInformationTab(),
                     BankAccountsTab(),
                     UserManagementTab(),
-                    Center(child: Text('Preferences')),
-                    Center(child: Text('System Settings')),
+                    InvoiceSettingsTab(),
                   ],
                 ),
               ),

@@ -20,7 +20,7 @@ class UsersList extends StatelessWidget {
           return Column(
             children: [
               const StandartListTitle(title: 'Registered Users'),
-              state.usersList.isEmpty
+              state.sortedUsers.isEmpty
                   ? Padding(
                       padding: const EdgeInsets.symmetric(vertical: 60),
                       child: Center(child: Text('No Users', style: TextStyles.font16Regular)),
@@ -182,7 +182,8 @@ class UsersList extends StatelessWidget {
       },
       itemCount: state.usersList.length,
       itemBuilder: (context, index) {
-        return _buildTileRow(state.usersList[index], context, isCurrentUser: state.usersList[index].id == state.currentUser.id);
+        return _buildTileRow(state.sortedUsers[index], context,
+            isCurrentUser: state.sortedUsers[index].id == state.currentUser.id);
       },
     );
   }

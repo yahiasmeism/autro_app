@@ -6,6 +6,7 @@ import 'package:autro_app/core/errors/error_handler.dart';
 import 'package:autro_app/core/errors/exceptions.dart';
 import 'package:autro_app/features/authentication/data/models/user_model.dart';
 import 'package:autro_app/features/settings/data/models/company_model.dart';
+import 'package:autro_app/features/settings/data/models/invoice_settings_model.dart';
 import 'package:autro_app/features/settings/data/models/requests/add_new_user_request.dart';
 import 'package:autro_app/features/settings/data/models/requests/change_company_info_request.dart';
 import 'package:injectable/injectable.dart';
@@ -22,6 +23,8 @@ abstract class SettingsRemoteDataSource {
   Future<List<UserModel>> getUsersList();
   Future<UserModel> addUser(AddNewUserRequest body);
   Future<void> removeUser(int userId);
+  Future<InvoiceSettingsModel> getInvoiceSettings();
+  Future<InvoiceSettingsModel> setInvoiceSettings(InvoiceSettingsModel invoiceSettings);
 }
 
 @LazySingleton(as: SettingsRemoteDataSource)
@@ -128,15 +131,43 @@ class SettingsRemoteDataSourceImpl implements SettingsRemoteDataSource {
 
     throw ServerException(response.statusCode, response.statusMessage);
   }
-  
+
   @override
-  Future<void> removeUser(int userId) async{
+  Future<void> removeUser(int userId) async {
     final path = ApiPaths.userById(userId);
     final request = ApiRequest(path: path);
     final response = await client.delete(request);
 
     if (ResponseCode.isOk(response.statusCode)) {
       return;
+    }
+
+    throw ServerException(response.statusCode, response.statusMessage);
+  }
+
+  @override
+  Future<InvoiceSettingsModel> getInvoiceSettings() async {
+    const path = ApiPaths.invoiceSettings;
+    final request = ApiRequest(path: path);
+    final response = await client.get(request);
+
+    if (ResponseCode.isOk(response.statusCode)) {
+      final json = response.data;
+      return InvoiceSettingsModel.fromJson(json);
+    }
+
+    throw ServerException(response.statusCode, response.statusMessage);
+  }
+
+  @override
+  Future<InvoiceSettingsModel> setInvoiceSettings(InvoiceSettingsModel invoiceSettings) async {
+    const path = ApiPaths.invoiceSettings;
+    final request = ApiRequest(path: path, body: invoiceSettings.toJson());
+    final response = await client.post(request);
+
+    if (ResponseCode.isOk(response.statusCode)) {
+      final json = response.data;
+      return InvoiceSettingsModel.fromJson(json);
     }
 
     throw ServerException(response.statusCode, response.statusMessage);

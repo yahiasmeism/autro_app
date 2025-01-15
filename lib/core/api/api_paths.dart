@@ -25,4 +25,8 @@ abstract class ApiPaths {
   // users
   static const String users = 'users';
   static String userById(int id) => 'users/$id';
+
+
+  // invoice settings
+  static const String invoiceSettings = 'invoice-settings';
 }

@@ -7,6 +7,7 @@ import 'package:autro_app/features/suppliers/presentation/bloc/suppliers_list/su
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import '../../home/screens/home_wrapper.dart';
+import '../../settings/presentation/bloc/invoice_settings/invoice_settings_cubit.dart';
 import '../bloc/app_auth/app_auth_bloc.dart';
 import 'login_screen.dart';
 
@@ -55,6 +56,7 @@ class AuthWrapper extends StatelessWidget {
       context.read<CompanyCubit>().getCompany();
       context.read<BankAccountsListCubit>().getBankAccountList();
       context.read<UsersListCubit>().getUsersList();
+      context.read<InvoiceSettingsCubit>().getInvoiceSettings();
     }
   }
 }

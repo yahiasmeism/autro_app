@@ -27,7 +27,7 @@ class CompanyCubit extends Cubit<CompanyState> {
   final ChangeCompanyInfoUseCase changeCompanyInfoUseCase;
   CompanyCubit(this.getCompanyUseCase, this.changeCompanyInfoUseCase) : super(CompanyInitial());
 
-  void updateSaveEnabled() {
+  void updateDataChanged() {
     final currentState = state as CompanyLoaded;
     final isEdited = currentState.company.name != companyNameController.text ||
         currentState.company.address != companyAddressController.text ||
@@ -38,19 +38,19 @@ class CompanyCubit extends Cubit<CompanyState> {
         currentState.pickedLogoFile.isSome() ||
         currentState.pickedSignatureFile.isSome();
 
-    emit(currentState.copyWith(saveEnabled: isEdited));
+    emit(currentState.copyWith(dataChanged: isEdited));
   }
 
   Future<void> setUpListeners() async {
-    companyNameController.addListener(updateSaveEnabled);
-    companyAddressController.addListener(updateSaveEnabled);
-    companyPhoneController.addListener(updateSaveEnabled);
-    companyEmailController.addListener(updateSaveEnabled);
-    companyTelephoneController.addListener(updateSaveEnabled);
-    companyWebsiteController.addListener(updateSaveEnabled);
+    companyNameController.addListener(updateDataChanged);
+    companyAddressController.addListener(updateDataChanged);
+    companyPhoneController.addListener(updateDataChanged);
+    companyEmailController.addListener(updateDataChanged);
+    companyTelephoneController.addListener(updateDataChanged);
+    companyWebsiteController.addListener(updateDataChanged);
   }
 
-  initailizedControllers() {
+  initailizeControllers() {
     final state = this.state as CompanyLoaded;
     companyNameController.text = state.company.name;
     companyAddressController.text = state.company.address;
@@ -58,7 +58,15 @@ class CompanyCubit extends Cubit<CompanyState> {
     companyEmailController.text = state.company.email;
     companyTelephoneController.text = state.company.telephone;
     companyWebsiteController.text = state.company.website;
+
+    updateDataChanged();
     setUpListeners();
+  }
+
+  cancelChanges() {
+    final state = this.state as CompanyLoaded;
+    emit(state.copyWith(pickedLogoFile: none(), pickedSignatureFile: none()));
+    initailizeControllers();
   }
 
   Future<void> getCompany() async {
@@ -67,7 +75,7 @@ class CompanyCubit extends Cubit<CompanyState> {
       (failure) => emit(CompanyError(failure)),
       (company) async {
         emit(CompanyLoaded.initial(company));
-        initailizedControllers();
+        initailizeControllers();
       },
     );
   }
@@ -99,10 +107,9 @@ class CompanyCubit extends Cubit<CompanyState> {
           pickedLogoFile: none(),
           pickedSignatureFile: none(),
         ));
+        initailizeControllers();
       },
     );
-    updateSaveEnabled();
-    initailizedControllers();
   }
 
   Future<void> onHandleFailure() async {
@@ -113,13 +120,13 @@ class CompanyCubit extends Cubit<CompanyState> {
   pickLogoFile(File file) {
     final state = this.state as CompanyLoaded;
     emit(state.copyWith(pickedLogoFile: some(file)));
-    updateSaveEnabled();
+    updateDataChanged();
   }
 
   pickSignatureFile(File file) {
     final state = this.state as CompanyLoaded;
     emit(state.copyWith(pickedSignatureFile: some(file)));
-    updateSaveEnabled();
+    updateDataChanged();
   }
 
   @override

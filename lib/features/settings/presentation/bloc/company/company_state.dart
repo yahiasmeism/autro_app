@@ -12,16 +12,16 @@ final class CompanyInitial extends CompanyState {}
 final class CompanyLoaded extends CompanyState {
   final CompanyEntity company;
   final Option<Either<Failure, String>> failureOrSuccessOption;
-  final bool saveEnabled;
+  final bool dataChanged;
   final bool loading;
   final Option<File> pickedLogoFile;
-  final Option<File>pickedSignatureFile;
+  final Option<File> pickedSignatureFile;
 
   const CompanyLoaded({
     required this.company,
     required this.failureOrSuccessOption,
     required this.loading,
-    required this.saveEnabled,
+    required this.dataChanged,
     required this.pickedLogoFile,
     required this.pickedSignatureFile,
   });
@@ -31,21 +31,21 @@ final class CompanyLoaded extends CompanyState {
       company: company,
       failureOrSuccessOption: none(),
       loading: false,
-      saveEnabled: false,
+      dataChanged: false,
       pickedLogoFile: none(),
       pickedSignatureFile: none(),
     );
   }
 
   @override
-  List<Object?> get props => [company, loading, failureOrSuccessOption, saveEnabled, pickedLogoFile, pickedSignatureFile];
+  List<Object?> get props => [company, loading, failureOrSuccessOption, dataChanged, pickedLogoFile, pickedSignatureFile];
 
   CompanyLoaded copyWith({
     CompanyEntity? company,
     Option<Either<Failure, String>>? failureOrSuccessOption,
     bool? loading,
     GlobalKey<FormState>? formKey,
-    final bool? saveEnabled,
+    final bool? dataChanged,
     Option<File>? pickedLogoFile,
     Option<File>? pickedSignatureFile,
   }) {
@@ -53,7 +53,7 @@ final class CompanyLoaded extends CompanyState {
       company: company ?? this.company,
       loading: loading ?? this.loading,
       failureOrSuccessOption: failureOrSuccessOption ?? none(),
-      saveEnabled: saveEnabled ?? this.saveEnabled,
+      dataChanged: dataChanged ?? this.dataChanged,
       pickedLogoFile: pickedLogoFile ?? this.pickedLogoFile,
       pickedSignatureFile: pickedSignatureFile ?? this.pickedSignatureFile,
     );
