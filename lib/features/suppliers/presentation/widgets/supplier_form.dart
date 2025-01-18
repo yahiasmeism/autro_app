@@ -1,5 +1,6 @@
 import 'package:autro_app/core/errors/failure_mapper.dart';
 import 'package:autro_app/core/utils/dialog_utils.dart';
+import 'package:autro_app/core/utils/nav_util.dart';
 import 'package:autro_app/core/utils/validator_util.dart';
 import 'package:autro_app/core/widgets/buttons/cancel_outline_button.dart';
 import 'package:autro_app/core/widgets/buttons/clear_all_button.dart';
@@ -39,7 +40,7 @@ class SupplierForm extends StatelessWidget {
                     const SizedBox(width: 24),
                     Expanded(
                         child: StandardSelectableDropdown(
-                      initialValue: bloc.primaryContactController.text,
+                      initialValue: bloc.primaryContactController.text.isNotEmpty ? bloc.primaryContactController.text : null,
                       onChanged: (p0) {
                         bloc.primaryContactController.text = p0 ?? '';
                       },
@@ -167,6 +168,7 @@ class SupplierForm extends StatelessWidget {
         (either) => either.fold(
           (failure) => DialogUtil.showErrorSnackBar(context, getErrorMsgFromFailure(failure)),
           (message) {
+            if (!state.updatedMode) NavUtil.pop(context);
             DialogUtil.showSuccessSnackBar(context, message);
           },
         ),

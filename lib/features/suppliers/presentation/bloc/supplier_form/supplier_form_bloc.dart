@@ -70,6 +70,7 @@ class SupplierFormBloc extends Bloc<SupplierFormEvent, SupplierFormState> {
 
   _initializeControllers() {
     final state = this.state as SupplierFormLoaded;
+    formKey.currentState?.reset();
     nameController.text = state.supplier?.name ?? '';
     country.text = state.supplier?.country ?? '';
     city.text = state.supplier?.city ?? '';
@@ -131,6 +132,8 @@ class SupplierFormBloc extends Bloc<SupplierFormEvent, SupplierFormState> {
 
   _onSubmitSupplier(SubmitSupplierFormEvent event, Emitter<SupplierFormState> emit) {
     final state = this.state as SupplierFormLoaded;
+    if (formKey.currentState?.validate() == false) return;
+
     if (state.updatedMode) {
       add(UpdateSupplierFormEvent());
     } else {
@@ -201,16 +204,17 @@ class SupplierFormBloc extends Bloc<SupplierFormEvent, SupplierFormState> {
   }
 
   _onClearSupplierForm(ClearSupplierFormEvent event, Emitter<SupplierFormState> emit) {
-    nameController.text = '';
-    country.text = '';
-    city.text = '';
-    website.text = '';
-    businessDetails.text = '';
-    email.text = '';
-    phone.text = '';
-    altPhone.text = '';
-    primaryContactController.text = '';
-    notes.text = '';
+    formKey.currentState?.reset();
+    nameController.clear();
+    country.clear();
+    city.clear();
+    website.clear();
+    businessDetails.clear();
+    email.clear();
+    phone.clear();
+    altPhone.clear();
+    primaryContactController.clear();
+    notes.clear();
   }
 
   _onCancelSupplierFormEvent(SupplierFormEvent event, Emitter<SupplierFormState> emit) => _initializeControllers();

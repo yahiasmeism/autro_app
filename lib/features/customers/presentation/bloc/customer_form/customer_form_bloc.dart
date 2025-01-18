@@ -71,6 +71,7 @@ class CustomerFormBloc extends Bloc<CustomerFormEvent, CustomerFormState> {
 
   _initializeControllers() {
     final state = this.state as CustomerFormLoaded;
+    formKey.currentState?.reset();
     nameController.text = state.customer?.name ?? '';
     country.text = state.customer?.country ?? '';
     city.text = state.customer?.city ?? '';
@@ -82,6 +83,7 @@ class CustomerFormBloc extends Bloc<CustomerFormEvent, CustomerFormState> {
     primaryContactController.text = state.customer?.primaryContactType.str ?? '';
     notes.text = state.customer?.notes ?? '';
     setupControllersListeners();
+    add(CustomerFormChangedEvent());
   }
 
   setupControllersListeners() {
@@ -131,6 +133,7 @@ class CustomerFormBloc extends Bloc<CustomerFormEvent, CustomerFormState> {
 
   _onSubmitCustomer(SubmitCustomerFormEvent event, Emitter<CustomerFormState> emit) {
     final state = this.state as CustomerFormLoaded;
+    if (formKey.currentState?.validate() == false) return;
     if (state.updatedMode) {
       add(UpdateCustomerFormEvent());
     } else {
@@ -195,21 +198,23 @@ class CustomerFormBloc extends Bloc<CustomerFormEvent, CustomerFormState> {
       (customer) {
         customersListBloc.add(AddedUpdatedCustomerEvent());
         emit(state.copyWith(customer: customer, failureOrSuccessOption: some(right('Customer updated'))));
+        _initializeControllers();
       },
     );
   }
 
   _onClearCustomerForm(ClearCustomerFormEvent event, Emitter<CustomerFormState> emit) {
-    nameController.text = '';
-    country.text = '';
-    city.text = '';
-    website.text = '';
-    businessDetails.text = '';
-    email.text = '';
-    phone.text = '';
-    altPhone.text = '';
-    primaryContactController.text = '';
-    notes.text = '';
+    formKey.currentState?.reset();
+    nameController.clear();
+    country.clear();
+    city.clear();
+    website.clear();
+    businessDetails.clear();
+    email.clear();
+    phone.clear();
+    altPhone.clear();
+    primaryContactController.clear();
+    notes.clear();
   }
 
   _onCancelCustomerFormEvent(CustomerFormEvent event, Emitter<CustomerFormState> emit) => _initializeControllers();

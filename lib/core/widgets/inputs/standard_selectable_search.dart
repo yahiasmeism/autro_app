@@ -22,7 +22,7 @@ class StandardSelectableSearch extends StatefulWidget {
     this.initialValue,
     this.showRequiredIndicator = false,
     this.controller,
-    this.withValidator = true,
+    this.withValidator = false,
   });
 
   @override
