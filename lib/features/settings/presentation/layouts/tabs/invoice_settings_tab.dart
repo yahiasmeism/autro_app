@@ -7,7 +7,6 @@ import 'package:autro_app/core/widgets/inputs/standard_input.dart';
 import 'package:autro_app/core/widgets/loading_indecator.dart';
 import 'package:autro_app/core/widgets/overley_loading.dart';
 import 'package:autro_app/core/widgets/standard_card.dart';
-import 'package:autro_app/features/settings/presentation/bloc/company/company_cubit.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
@@ -48,7 +47,7 @@ class InvoiceSettingsTab extends StatelessWidget {
         } else if (state is InvoiceSettingsError) {
           return FailureScreen(
             failure: state.failure,
-            onRetryTap: () => context.read<CompanyCubit>().onHandleFailure(),
+            onRetryTap: () => context.read<InvoiceSettingsCubit>().onHandleError(),
           );
         }
         return const SizedBox.shrink();

@@ -102,5 +102,11 @@ class InvoiceSettingsCubit extends Cubit<InvoiceSettingsState> {
     );
   }
 
+  onHandleError() async {
+    emit(InvoiceSettingsInitial());
+    await Future.delayed(const Duration(seconds: 1));
+    getInvoiceSettings();
+  }
+
   cancelChanges() => initailizeControllers();
 }
