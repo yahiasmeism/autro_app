@@ -57,3 +57,5 @@ enum FormType {
   create,
   edit,
 }
+
+enum PackingType { bales, loose, bults, rollosm, packing, lot ,unknown }
