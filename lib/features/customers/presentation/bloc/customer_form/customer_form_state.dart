@@ -13,27 +13,39 @@ final class CustomerFormLoaded extends CustomerFormState {
   final CustomerEntity? customer;
   final bool loading;
   final Option<Either<Failure, String>> failureOrSuccessOption;
-  final FormType formType;
+  final bool updatedMode;
+  final bool saveEnabled;
+  final bool cancelEnabled;
+  final bool clearEnabled;
   const CustomerFormLoaded({
     this.customer,
     this.loading = false,
     this.failureOrSuccessOption = const None(),
-    this.formType = FormType.create,
+    this.updatedMode = false,
+    this.saveEnabled = false,
+    this.cancelEnabled = false,
+    this.clearEnabled = false,
   });
   @override
-  List<Object?> get props => [customer, loading, failureOrSuccessOption, formType];
+  List<Object?> get props => [customer, loading, failureOrSuccessOption, updatedMode, saveEnabled, cancelEnabled,clearEnabled];
 
   CustomerFormLoaded copyWith({
     CustomerEntity? customer,
+    bool? clearEnabled,
+    bool? updatedMode,
+    bool? saveEnabled,
+    bool? cancelEnabled,
     bool? loading,
     Option<Either<Failure, String>>? failureOrSuccessOption,
-    FormType? formType,
   }) {
     return CustomerFormLoaded(
+      updatedMode: updatedMode ?? this.updatedMode,
       customer: customer ?? this.customer,
+      saveEnabled: saveEnabled ?? this.saveEnabled,
+      cancelEnabled: cancelEnabled ?? this.cancelEnabled,
+      clearEnabled: clearEnabled ?? this.clearEnabled,
       loading: loading ?? this.loading,
       failureOrSuccessOption: failureOrSuccessOption ?? none(),
-      formType: formType ?? this.formType,
     );
   }
 }

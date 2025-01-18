@@ -15,11 +15,7 @@ class CustomerFormScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return BlocProvider(
-      create: (context) => sl<CustomerFormBloc>()
-        ..add(InitialCustomerFormEvent(
-          customer: customer,
-          formType: formType,
-        )),
+      create: (context) => sl<CustomerFormBloc>()..add(InitialCustomerFormEvent(customer: customer)),
       child: AdaptiveLayout(
         mobile: (context) => const Center(
           child: Text('Customers Mobile Layout'),

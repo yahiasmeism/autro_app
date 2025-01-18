@@ -1,19 +1,16 @@
-import 'package:autro_app/core/constants/enums.dart';
 import 'package:autro_app/core/errors/failure_mapper.dart';
 import 'package:autro_app/core/utils/dialog_utils.dart';
 import 'package:autro_app/core/utils/validator_util.dart';
+import 'package:autro_app/core/widgets/buttons/cancel_outline_button.dart';
 import 'package:autro_app/core/widgets/buttons/clear_all_button.dart';
 import 'package:autro_app/core/widgets/buttons/save_outline_button.dart';
 import 'package:autro_app/core/widgets/inputs/country_selectable_dropdown.dart';
 import 'package:autro_app/core/widgets/inputs/standard_input.dart';
 import 'package:autro_app/core/widgets/inputs/standard_selectable_search.dart';
 import 'package:autro_app/core/widgets/overley_loading.dart';
-import 'package:autro_app/features/customers/domin/entities/customer_entity.dart';
 import 'package:autro_app/features/customers/presentation/bloc/customer_form/customer_form_bloc.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-
-import '../../../../core/extensions/primary_contact_type_extension.dart';
 
 class CustomerForm extends StatefulWidget {
   const CustomerForm({super.key});
@@ -22,20 +19,9 @@ class CustomerForm extends StatefulWidget {
 }
 
 class _CustomerFormState extends State<CustomerForm> {
-  final nameController = TextEditingController();
-  final primaryContactController = TextEditingController();
-  final country = TextEditingController();
-  final city = TextEditingController();
-  final website = TextEditingController();
-  final businessDetails = TextEditingController();
-  final email = TextEditingController();
-  final phone = TextEditingController();
-  final altPhone = TextEditingController();
-  final notes = TextEditingController();
-  final formKey = GlobalKey<FormState>();
-
   @override
   Widget build(BuildContext context) {
+    final cubit = context.read<CustomerFormBloc>();
     return BlocConsumer<CustomerFormBloc, CustomerFormState>(
       listener: listener,
       builder: (context, state) {
@@ -43,12 +29,12 @@ class _CustomerFormState extends State<CustomerForm> {
           return Stack(
             children: [
               Form(
-                key: formKey,
+                key: cubit.formKey,
                 child: Column(children: [
                   Row(children: [
                     Expanded(
                         child: StandardInput(
-                      controller: nameController,
+                      controller: cubit.nameController,
                       validator: ValidatorUtils.validateNameRequired,
                       labelText: 'Customer Name',
                       showRequiredIndecator: true,
@@ -57,7 +43,7 @@ class _CustomerFormState extends State<CustomerForm> {
                     const SizedBox(width: 24),
                     Expanded(
                         child: StandardSelectableSearch(
-                      controller: primaryContactController,
+                      controller: cubit.primaryContactController,
                       items: const [
                         'Email',
                         'Phone',
@@ -71,12 +57,12 @@ class _CustomerFormState extends State<CustomerForm> {
                   Row(children: [
                     Expanded(
                         child: CountrySelectableDropdown(
-                      controller: country,
+                      controller: cubit.country,
                     )),
                     const SizedBox(width: 24),
                     Expanded(
                         child: StandardInput(
-                      controller: city,
+                      controller: cubit.city,
                       labelText: 'City',
                       hintText: 'e.g SomeWhere',
                       validator: ValidatorUtils.validateNameOptional,
@@ -90,7 +76,7 @@ class _CustomerFormState extends State<CustomerForm> {
                       keyboardType: TextInputType.emailAddress,
                       showRequiredIndecator: true,
                       hintText: 'e.g 8PqHj@example.com',
-                      controller: email,
+                      controller: cubit.email,
                       validator: ValidatorUtils.validateEmail,
                     )),
                     const SizedBox(width: 24),
@@ -98,7 +84,7 @@ class _CustomerFormState extends State<CustomerForm> {
                         child: StandardInput(
                       keyboardType: TextInputType.number,
                       labelText: 'Phone Number',
-                      controller: phone,
+                      controller: cubit.phone,
                       showRequiredIndecator: true,
                       hintText: 'e.g 1234567890',
                       validator: ValidatorUtils.validatePhoneNumber,
@@ -106,7 +92,7 @@ class _CustomerFormState extends State<CustomerForm> {
                     const SizedBox(width: 24),
                     Expanded(
                         child: StandardInput(
-                      controller: altPhone,
+                      controller: cubit.altPhone,
                       labelText: 'Alternative Phone Number',
                       hintText: 'e.g SomeWhere',
                     )),
@@ -118,7 +104,7 @@ class _CustomerFormState extends State<CustomerForm> {
                         child: StandardInput(
                           labelText: 'Website',
                           hintText: 'e.g Something.com',
-                          controller: website,
+                          controller: cubit.website,
                         ),
                       ),
                       const SizedBox(width: 24),
@@ -127,7 +113,7 @@ class _CustomerFormState extends State<CustomerForm> {
                         labelText: 'Business Details',
                         showRequiredIndecator: true,
                         hintText: 'e.g Papers/Plastic/etc',
-                        controller: businessDetails,
+                        controller: cubit.businessDetails,
                         validator: ValidatorUtils.validateRequired,
                       )),
                     ],
@@ -137,7 +123,7 @@ class _CustomerFormState extends State<CustomerForm> {
                     minLines: 3,
                     maxLines: 3,
                     labelText: 'Notes',
-                    controller: notes,
+                    controller: cubit.notes,
                     hintText: 'e.g write anything here that you might need to store about this customer.',
                   ),
                   const SizedBox(height: 20),
@@ -160,84 +146,21 @@ class _CustomerFormState extends State<CustomerForm> {
       child: Row(
         mainAxisAlignment: MainAxisAlignment.end,
         children: [
+          if (state.cancelEnabled)
+            CancelOutlineButton(
+              onPressed: () => context.read<CustomerFormBloc>().add(CancelCustomerFormEvent()),
+            ),
+          SizedBox(width: state.cancelEnabled ? 16 : 0),
           ClearAllButton(
-            onPressed: () {
-              nameController.clear();
-              primaryContactController.clear();
-              country.clear();
-              city.clear();
-              website.clear();
-              businessDetails.clear();
-              email.clear();
-              phone.clear();
-              altPhone.clear();
-              notes.clear();
-            },
+            onPressed: state.clearEnabled ? () => context.read<CustomerFormBloc>().add(ClearCustomerFormEvent()) : null,
           ),
           const SizedBox(width: 16),
           SaveOutLineButton(
-            onPressed: () {
-              if (formKey.currentState!.validate()) {
-                if (state.formType == FormType.edit) {
-                  _onUpdateCustomer(state.customer!);
-                } else if (state.formType == FormType.create) {
-                  _onCreateCustomer();
-                }
-              }
-            },
+            onPressed: state.saveEnabled ? () => context.read<CustomerFormBloc>().add(SubmitCustomerFormEvent()) : null,
           ),
         ],
       ),
     );
-  }
-
-  @override
-  void dispose() {
-    nameController.dispose();
-    primaryContactController.dispose();
-    country.dispose();
-    city.dispose();
-    website.dispose();
-    businessDetails.dispose();
-    email.dispose();
-    phone.dispose();
-    altPhone.dispose();
-    notes.dispose();
-    super.dispose();
-  }
-
-  void _onUpdateCustomer(CustomerEntity customer) {
-    final updatedCustomer = customer.copyWith(
-      name: nameController.text,
-      country: country.text,
-      city: city.text,
-      website: website.text,
-      businessDetails: businessDetails.text,
-      email: email.text,
-      phone: phone.text,
-      altPhone: altPhone.text,
-      primaryContactType: PrimaryContactTypeX.fromString(primaryContactController.text),
-      notes: notes.text,
-    );
-
-    context.read<CustomerFormBloc>().add(UpdateCustomerFormEvent(customer: updatedCustomer));
-  }
-
-  void _onCreateCustomer() {
-    context.read<CustomerFormBloc>().add(
-          CreateCustomerFormEvent(
-            name: nameController.text,
-            country: country.text,
-            city: city.text,
-            website: website.text,
-            businessDetails: businessDetails.text,
-            email: email.text,
-            phone: phone.text,
-            altPhone: altPhone.text,
-            primaryContactType: PrimaryContactTypeX.fromString(primaryContactController.text),
-            notes: notes.text,
-          ),
-        );
   }
 
   void listener(BuildContext context, CustomerFormState state) {
@@ -252,19 +175,6 @@ class _CustomerFormState extends State<CustomerForm> {
           },
         ),
       );
-      if (state.customer != null) {
-        final customer = state.customer!;
-        nameController.text = customer.name;
-        country.text = customer.country;
-        city.text = customer.city;
-        website.text = customer.website;
-        businessDetails.text = customer.businessDetails;
-        email.text = customer.email;
-        phone.text = customer.phone;
-        altPhone.text = customer.altPhone;
-        primaryContactController.text = customer.primaryContactType.str;
-        notes.text = customer.notes;
-      }
     }
   }
 }
