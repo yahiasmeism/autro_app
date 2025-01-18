@@ -15,11 +15,7 @@ class SupplierFormScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return BlocProvider(
-      create: (context) => sl<SupplierFormBloc>()
-        ..add(InitialSupplierFormEvent(
-          supplier: supplier,
-          formType: formType,
-        )),
+      create: (context) => sl<SupplierFormBloc>()..add(InitialSupplierFormEvent(supplier: supplier)),
       child: AdaptiveLayout(
         mobile: (context) => const Center(
           child: Text('Suppliers Mobile Layout'),

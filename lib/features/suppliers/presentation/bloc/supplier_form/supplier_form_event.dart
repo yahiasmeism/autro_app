@@ -9,58 +9,21 @@ sealed class SupplierFormEvent extends Equatable {
 
 class InitialSupplierFormEvent extends SupplierFormEvent {
   final SupplierEntity? supplier;
-  final FormType formType;
-  const InitialSupplierFormEvent({this.supplier, required this.formType});
+  const InitialSupplierFormEvent({this.supplier});
 
   @override
   List<Object?> get props => [supplier];
 }
 
-final class UpdateSupplierFormEvent extends SupplierFormEvent {
-  final SupplierEntity supplier;
-  const UpdateSupplierFormEvent({required this.supplier});
+final class SubmitSupplierFormEvent extends SupplierFormEvent {}
 
-  @override
-  List<Object> get props => [supplier];
-}
+final class UpdateSupplierFormEvent extends SupplierFormEvent {}
 
-class CreateSupplierFormEvent extends SupplierFormEvent {
-  final String name;
-  final String country;
-  final String city;
-  final String website;
-  final String businessDetails;
-  final String email;
-  final String phone;
-  final String altPhone;
-  final PrimaryContectType primaryContactType;
-  final String notes;
+class CreateSupplierFormEvent extends SupplierFormEvent {}
 
-  const CreateSupplierFormEvent(
-      {required this.name,
-      required this.country,
-      required this.city,
-      required this.website,
-      required this.businessDetails,
-      required this.email,
-      required this.phone,
-      required this.altPhone,
-      required this.primaryContactType,
-      required this.notes});
+class SupplierFormChangedEvent extends SupplierFormEvent {}
 
-  @override
-  List<Object> get props => [];
 
-  CreateSupplierUsecaseParams toParams() => CreateSupplierUsecaseParams(
-        name: name,
-        country: country,
-        city: city,
-        website: website,
-        businessDetails: businessDetails,
-        email: email,
-        phone: phone,
-        altPhone: altPhone,
-        primaryContactType: primaryContactType,
-        notes: notes,
-      );
-}
+class ClearSupplierFormEvent extends SupplierFormEvent {}
+
+class CancelSupplierFormEvent extends SupplierFormEvent {}
