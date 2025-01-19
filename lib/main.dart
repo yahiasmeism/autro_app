@@ -6,6 +6,7 @@ import 'package:autro_app/core/theme/theme_data.dart';
 import 'package:autro_app/features/authentication/screens/auth_wrapper.dart';
 import 'package:autro_app/features/customers/presentation/bloc/customers_list/customers_list_bloc.dart';
 import 'package:autro_app/features/home/bloc/home_bloc.dart';
+import 'package:autro_app/features/proformas/presentation/bloc/proformas_list/proformas_list_bloc.dart';
 import 'package:autro_app/features/settings/presentation/bloc/bank_accounts_list/bank_accounts_list_cubit.dart';
 import 'package:autro_app/features/settings/presentation/bloc/company/company_cubit.dart';
 import 'package:autro_app/features/settings/presentation/bloc/users_list/users_list_cubit.dart';
@@ -75,6 +76,9 @@ class MyApp extends StatelessWidget {
         ),
         BlocProvider(
           create: (context) => sl<InvoiceSettingsCubit>(),
+        ),
+        BlocProvider(
+          create: (context) => sl<ProformasListBloc>(),
         ),
       ],
       child: MaterialApp(

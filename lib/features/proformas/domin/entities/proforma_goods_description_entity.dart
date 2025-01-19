@@ -9,6 +9,7 @@ class ProformaGoodsDescriptionEntity extends Equatable {
   final double unitPrice;
   final PackingType packing;
   final DateTime createdAt;
+  final double totalPrice;
   final DateTime updatedAt;
 
   const ProformaGoodsDescriptionEntity({
@@ -20,6 +21,7 @@ class ProformaGoodsDescriptionEntity extends Equatable {
     required this.packing,
     required this.createdAt,
     required this.updatedAt,
+    required this.totalPrice,
   });
 
   @override

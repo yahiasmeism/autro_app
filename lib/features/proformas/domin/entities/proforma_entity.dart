@@ -1,6 +1,7 @@
 import 'package:autro_app/features/customers/domin/entities/customer_entity.dart';
 import 'package:autro_app/features/settings/domin/entities/bank_account_entity.dart';
 import 'package:equatable/equatable.dart';
+import 'package:intl/intl.dart';
 
 import 'proforma_goods_description_entity.dart';
 
@@ -14,6 +15,7 @@ class ProformaEntity extends Equatable {
   final String deliveryTerms;
   final String paymentTerms;
   final String notes;
+  final double totalPrice;
   final DateTime createdAt;
   final DateTime updatedAt;
   final List<ProformaGoodsDescriptionEntity> goodsDescriptions;
@@ -35,6 +37,7 @@ class ProformaEntity extends Equatable {
     required this.goodsDescriptions,
     required this.bankAccount,
     required this.customer,
+    required this.totalPrice,
   });
 
   @override
@@ -53,5 +56,18 @@ class ProformaEntity extends Equatable {
         goodsDescriptions,
         bankAccount,
         customer,
+        totalPrice,
       ];
+
+  String get formattedDate => DateFormat('MMM d, y').format(date);
+  String get currancyCode {
+    if (bankAccount.currency == "USD") {
+      return "\$";
+    } else if (bankAccount.currency == "EUR") {
+      return "€";
+    }
+    return "";
+  }
+
+  String get formattedTotalPrice => "$currancyCode${totalPrice.toStringAsFixed(2)}";
 }

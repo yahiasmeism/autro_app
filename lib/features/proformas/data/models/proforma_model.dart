@@ -11,21 +11,23 @@ import 'package:autro_app/features/settings/data/models/bank_account_model.dart'
 import '../../domin/entities/proforma_entity.dart';
 
 class ProformaModel extends ProformaEntity implements BaseMapable {
-  const ProformaModel(
-      {required super.id,
-      required super.proformaNumber,
-      required super.date,
-      required super.address,
-      required super.taxId,
-      required super.ports,
-      required super.deliveryTerms,
-      required super.paymentTerms,
-      required super.notes,
-      required super.createdAt,
-      required super.updatedAt,
-      required super.goodsDescriptions,
-      required super.bankAccount,
-      required super.customer});
+  const ProformaModel({
+    required super.id,
+    required super.proformaNumber,
+    required super.date,
+    required super.address,
+    required super.taxId,
+    required super.ports,
+    required super.deliveryTerms,
+    required super.paymentTerms,
+    required super.notes,
+    required super.createdAt,
+    required super.updatedAt,
+    required super.goodsDescriptions,
+    required super.bankAccount,
+    required super.customer,
+    required super.totalPrice,
+  });
 
   factory ProformaModel.fromParams(ProformaEntity entity) {
     return ProformaModel(
@@ -43,6 +45,7 @@ class ProformaModel extends ProformaEntity implements BaseMapable {
       goodsDescriptions: entity.goodsDescriptions,
       bankAccount: entity.bankAccount,
       customer: entity.customer,
+      totalPrice: entity.totalPrice,
     );
   }
 
@@ -66,6 +69,7 @@ class ProformaModel extends ProformaEntity implements BaseMapable {
       ),
       bankAccount: BankAccountModel.fromJson((json['bank_account'] as Map<String, dynamic>?).orEmpty),
       customer: CustomerModel.fromJson((json['customer'] as Map<String, dynamic>?).orEmpty),
+      totalPrice: (json['total_price'] as num?).toDoubleOrZero,
     );
   }
 

@@ -45,6 +45,22 @@ import 'package:autro_app/features/customers/presentation/bloc/customer_form/cus
 import 'package:autro_app/features/customers/presentation/bloc/customers_list/customers_list_bloc.dart'
     as _i815;
 import 'package:autro_app/features/home/bloc/home_bloc.dart' as _i80;
+import 'package:autro_app/features/proformas/data/data_sources/remote/proformas_remote_data_source.dart'
+    as _i154;
+import 'package:autro_app/features/proformas/data/repositories_impl/proformas_repository_impl.dart'
+    as _i264;
+import 'package:autro_app/features/proformas/domin/repositories/proformas_repository.dart'
+    as _i1050;
+import 'package:autro_app/features/proformas/domin/use_cases/create_proforma_use_case.dart'
+    as _i927;
+import 'package:autro_app/features/proformas/domin/use_cases/delete_proforma_use_case.dart'
+    as _i1;
+import 'package:autro_app/features/proformas/domin/use_cases/get_proformas_list_use_case.dart'
+    as _i90;
+import 'package:autro_app/features/proformas/domin/use_cases/update_proforma_use_case.dart'
+    as _i635;
+import 'package:autro_app/features/proformas/presentation/bloc/proformas_list/proformas_list_bloc.dart'
+    as _i55;
 import 'package:autro_app/features/settings/data/datasources/settings_remote_data_source.dart'
     as _i509;
 import 'package:autro_app/features/settings/data/repositories_impl/settings_repository_impl.dart'
@@ -142,6 +158,8 @@ extension GetItInjectableX on _i174.GetIt {
               networkInfo: gh<_i646.NetworkInfo>(),
               remoteDataSource: gh<_i509.SettingsRemoteDataSource>(),
             ));
+    gh.lazySingleton<_i154.ProformasRemoteDataSource>(() =>
+        _i154.ProformasRemoteDataSourceImpl(client: gh<_i228.ApiClient>()));
     gh.lazySingleton<_i232.AddBankAccountUseCase>(() =>
         _i232.AddBankAccountUseCase(
             settingsRepository: gh<_i275.SettingsRepository>()));
@@ -188,9 +206,20 @@ extension GetItInjectableX on _i174.GetIt {
         _i223.GetCompanyUseCase(repository: gh<_i275.SettingsRepository>()));
     gh.lazySingleton<_i176.GetUsersListUseCase>(() =>
         _i176.GetUsersListUseCase(repository: gh<_i275.SettingsRepository>()));
+    gh.lazySingleton<_i1050.ProformasRepository>(
+        () => _i264.ProformasRepositoryImpl(
+              remoteDataSource: gh<_i154.ProformasRemoteDataSource>(),
+              networkInfo: gh<_i646.NetworkInfo>(),
+            ));
     gh.lazySingleton<_i57.CreateSupplierUsecase>(() =>
         _i57.CreateSupplierUsecase(
             suplliersRepository: gh<_i712.SuppliersRepository>()));
+    gh.lazySingleton<_i927.CreateProformaUseCase>(() =>
+        _i927.CreateProformaUseCase(
+            repository: gh<_i1050.ProformasRepository>()));
+    gh.lazySingleton<_i90.GetProformasListUseCase>(() =>
+        _i90.GetProformasListUseCase(
+            repository: gh<_i1050.ProformasRepository>()));
     gh.lazySingleton<_i239.InvoiceSettingsCubit>(
         () => _i239.InvoiceSettingsCubit(
               gh<_i321.GetInvoiceSettingsUseCase>(),
@@ -234,12 +263,24 @@ extension GetItInjectableX on _i174.GetIt {
         () => _i173.RegisterCubit(gh<_i288.AuthRepo>()));
     gh.lazySingleton<_i51.AppAuthBloc>(
         () => _i51.AppAuthBloc(gh<_i288.AuthRepo>()));
+    gh.lazySingleton<_i1.DeleteProformaUseCase>(() => _i1.DeleteProformaUseCase(
+        proformasRepository: gh<_i1050.ProformasRepository>()));
+    gh.lazySingleton<_i635.UpdateProformaUseCase>(() =>
+        _i635.UpdateProformaUseCase(
+            proformasRepository: gh<_i1050.ProformasRepository>()));
     gh.lazySingleton<_i815.CustomersListBloc>(() => _i815.CustomersListBloc(
           gh<_i486.GetCustomersListUsecase>(),
           gh<_i54.CustomersRepository>(),
           gh<_i207.DeleteCustomerUsecase>(),
           gh<_i134.UpdateCustomerUsecase>(),
           gh<_i116.CreateCustomerUsecase>(),
+        ));
+    gh.lazySingleton<_i55.ProformasListBloc>(() => _i55.ProformasListBloc(
+          gh<_i90.GetProformasListUseCase>(),
+          gh<_i1050.ProformasRepository>(),
+          gh<_i1.DeleteProformaUseCase>(),
+          gh<_i635.UpdateProformaUseCase>(),
+          gh<_i927.CreateProformaUseCase>(),
         ));
     gh.lazySingleton<_i729.UsersListCubit>(() => _i729.UsersListCubit(
           gh<_i176.GetUsersListUseCase>(),

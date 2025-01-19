@@ -15,6 +15,7 @@ class ProformaGoodsDescriptionModel extends ProformaGoodsDescriptionEntity imple
     required super.packing,
     required super.createdAt,
     required super.updatedAt,
+    required super.totalPrice,
   });
 
   factory ProformaGoodsDescriptionModel.fromJson(Map<String, dynamic> json) {
@@ -27,6 +28,7 @@ class ProformaGoodsDescriptionModel extends ProformaGoodsDescriptionEntity imple
       unitPrice: (json['unit_price'] as num?).toDoubleOrZero,
       createdAt: DateTime.tryParse((json['created_at'] as String?).orEmpty).orDefault,
       updatedAt: DateTime.tryParse((json['updated_at'] as String?).orEmpty).orDefault,
+      totalPrice: (json['total_amount'] as num?).toDoubleOrZero,
     );
   }
 
@@ -40,6 +42,7 @@ class ProformaGoodsDescriptionModel extends ProformaGoodsDescriptionEntity imple
       unitPrice: params.unitPrice,
       createdAt: params.createdAt,
       updatedAt: params.updatedAt,
+      totalPrice: params.totalPrice,
     );
   }
 
