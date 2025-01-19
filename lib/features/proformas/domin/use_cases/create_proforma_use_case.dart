@@ -7,6 +7,7 @@ import 'package:equatable/equatable.dart';
 import 'package:injectable/injectable.dart';
 
 import '../repositories/proformas_repository.dart';
+
 @lazySingleton
 class CreateProformaUseCase extends UseCase<ProformaEntity, CreateProformaUseCaseParams> {
   final ProformasRepository repository;
@@ -22,7 +23,7 @@ class CreateProformaUseCaseParams extends Equatable {
   final String proformaNumber;
   final DateTime date;
   final int customerId;
-  final String address;
+  final String customerAddress;
   final String taxId;
   final String ports;
   final String deliveryTerms;
@@ -35,7 +36,7 @@ class CreateProformaUseCaseParams extends Equatable {
     required this.proformaNumber,
     required this.date,
     required this.customerId,
-    required this.address,
+    required this.customerAddress,
     required this.taxId,
     required this.ports,
     required this.deliveryTerms,
@@ -49,7 +50,7 @@ class CreateProformaUseCaseParams extends Equatable {
         proformaNumber,
         date,
         customerId,
-        address,
+        customerAddress,
         taxId,
         ports,
         deliveryTerms,
