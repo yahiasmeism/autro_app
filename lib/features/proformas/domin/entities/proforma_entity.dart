@@ -9,7 +9,7 @@ class ProformaEntity extends Equatable {
   final int id;
   final String proformaNumber;
   final DateTime date;
-  final String address;
+  final String customerAddress;
   final String taxId;
   final String ports;
   final String deliveryTerms;
@@ -26,7 +26,7 @@ class ProformaEntity extends Equatable {
     required this.id,
     required this.proformaNumber,
     required this.date,
-    required this.address,
+    required this.customerAddress,
     required this.taxId,
     required this.ports,
     required this.deliveryTerms,
@@ -45,7 +45,7 @@ class ProformaEntity extends Equatable {
         id,
         proformaNumber,
         date,
-        address,
+        customerAddress,
         taxId,
         ports,
         deliveryTerms,
