@@ -1,7 +1,6 @@
 import 'package:autro_app/core/errors/failures.dart';
 import 'package:autro_app/core/extensions/primary_contact_type_extension.dart';
 import 'package:autro_app/features/suppliers/domin/entities/supplier_entity.dart';
-import 'package:autro_app/features/suppliers/presentation/bloc/suppliers_list/suppliers_list_bloc.dart';
 import 'package:bloc/bloc.dart';
 import 'package:dartz/dartz.dart';
 import 'package:equatable/equatable.dart';
@@ -18,11 +17,9 @@ part 'supplier_form_state.dart';
 class SupplierFormBloc extends Bloc<SupplierFormEvent, SupplierFormState> {
   final CreateSupplierUsecase createSupplierUsecase;
   final UpdateSupplierUsecase updateSupplierUsecase;
-  final SuppliersListBloc suppliersListBloc;
   SupplierFormBloc(
     this.createSupplierUsecase,
     this.updateSupplierUsecase,
-    this.suppliersListBloc,
   ) : super(SupplierInfoInitial()) {
     on<SupplierFormEvent>(_mapEvents);
   }
@@ -168,7 +165,6 @@ class SupplierFormBloc extends Bloc<SupplierFormEvent, SupplierFormState> {
         )),
       ),
       (supplier) {
-        suppliersListBloc.add(AddedUpdatedSupplierEvent());
         emit(state.copyWith(supplier: supplier, failureOrSuccessOption: some(right('Supplier created'))));
       },
     );
@@ -196,7 +192,6 @@ class SupplierFormBloc extends Bloc<SupplierFormEvent, SupplierFormState> {
     either.fold(
       (failure) => emit((state.copyWith(failureOrSuccessOption: some(left(failure))))),
       (supplier) {
-        suppliersListBloc.add(AddedUpdatedSupplierEvent());
         emit(state.copyWith(supplier: supplier, failureOrSuccessOption: some(right('Supplier updated'))));
         _initializeControllers();
       },

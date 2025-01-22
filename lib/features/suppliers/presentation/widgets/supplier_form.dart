@@ -13,6 +13,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 import '../bloc/supplier_form/supplier_form_bloc.dart';
+import '../bloc/suppliers_list/suppliers_list_bloc.dart';
 
 class SupplierForm extends StatelessWidget {
   const SupplierForm({super.key});
@@ -168,7 +169,8 @@ class SupplierForm extends StatelessWidget {
         (either) => either.fold(
           (failure) => DialogUtil.showErrorSnackBar(context, getErrorMsgFromFailure(failure)),
           (message) {
-            if (!state.updatedMode) NavUtil.pop(context);
+            if (state.supplier != null) context.read<SuppliersListBloc>().add(AddedUpdatedSupplierEvent());
+            NavUtil.pop(context, state.supplier);
             DialogUtil.showSuccessSnackBar(context, message);
           },
         ),

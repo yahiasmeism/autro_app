@@ -15,7 +15,7 @@ import '../../../domin/usecases/delete_supplier_usecase.dart';
 part 'suppliers_list_event.dart';
 part 'suppliers_list_state.dart';
 
-@lazySingleton
+@injectable
 class SuppliersListBloc extends Bloc<SuppliersListEvent, SuppliersListState> {
   final GetSuppliersListUsecase getSuppliersListUsecase;
   final DeleteSupplierUsecase deleteSupplierUsecase;

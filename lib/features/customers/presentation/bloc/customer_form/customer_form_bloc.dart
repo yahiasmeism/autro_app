@@ -1,7 +1,6 @@
 import 'package:autro_app/core/errors/failures.dart';
 import 'package:autro_app/core/extensions/primary_contact_type_extension.dart';
 import 'package:autro_app/features/customers/domin/entities/customer_entity.dart';
-import 'package:autro_app/features/customers/presentation/bloc/customers_list/customers_list_bloc.dart';
 import 'package:bloc/bloc.dart';
 import 'package:dartz/dartz.dart';
 import 'package:equatable/equatable.dart';
@@ -18,11 +17,9 @@ part 'customer_form_state.dart';
 class CustomerFormBloc extends Bloc<CustomerFormEvent, CustomerFormState> {
   final CreateCustomerUsecase createCustomerUsecase;
   final UpdateCustomerUsecase updateCustomerUsecase;
-  final CustomersListBloc customersListBloc;
   CustomerFormBloc(
     this.createCustomerUsecase,
     this.updateCustomerUsecase,
-    this.customersListBloc,
   ) : super(CustomerInfoInitial()) {
     on<CustomerFormEvent>(_mapEvents);
   }
@@ -168,7 +165,6 @@ class CustomerFormBloc extends Bloc<CustomerFormEvent, CustomerFormState> {
         )),
       ),
       (customer) {
-        customersListBloc.add(AddedUpdatedCustomerEvent());
         emit(state.copyWith(customer: customer, failureOrSuccessOption: some(right('Customer created'))));
       },
     );
@@ -196,7 +192,6 @@ class CustomerFormBloc extends Bloc<CustomerFormEvent, CustomerFormState> {
     either.fold(
       (failure) => emit((state.copyWith(failureOrSuccessOption: some(left(failure))))),
       (customer) {
-        customersListBloc.add(AddedUpdatedCustomerEvent());
         emit(state.copyWith(customer: customer, failureOrSuccessOption: some(right('Customer updated'))));
         _initializeControllers();
       },
