@@ -59,6 +59,8 @@ import 'package:autro_app/features/proformas/domin/use_cases/get_proformas_list_
     as _i90;
 import 'package:autro_app/features/proformas/domin/use_cases/update_proforma_use_case.dart'
     as _i635;
+import 'package:autro_app/features/proformas/presentation/bloc/cubit/proforma_form_cubit.dart'
+    as _i825;
 import 'package:autro_app/features/proformas/presentation/bloc/proformas_list/proformas_list_bloc.dart'
     as _i55;
 import 'package:autro_app/features/settings/data/datasources/settings_remote_data_source.dart'
@@ -231,12 +233,11 @@ extension GetItInjectableX on _i174.GetIt {
         ));
     gh.lazySingleton<_i533.GetCurrentUserUseCase>(
         () => _i533.GetCurrentUserUseCase(authRepo: gh<_i288.AuthRepo>()));
-    gh.lazySingleton<_i827.BankAccountsListCubit>(
-        () => _i827.BankAccountsListCubit(
-              gh<_i362.GetBankAccountListUseCase>(),
-              gh<_i232.AddBankAccountUseCase>(),
-              gh<_i253.DeleteBankAccountUseCase>(),
-            ));
+    gh.factory<_i827.BankAccountsListCubit>(() => _i827.BankAccountsListCubit(
+          gh<_i362.GetBankAccountListUseCase>(),
+          gh<_i232.AddBankAccountUseCase>(),
+          gh<_i253.DeleteBankAccountUseCase>(),
+        ));
     gh.lazySingleton<_i116.CreateCustomerUsecase>(() =>
         _i116.CreateCustomerUsecase(
             customersRepository: gh<_i54.CustomersRepository>()));
@@ -268,45 +269,47 @@ extension GetItInjectableX on _i174.GetIt {
     gh.lazySingleton<_i635.UpdateProformaUseCase>(() =>
         _i635.UpdateProformaUseCase(
             proformasRepository: gh<_i1050.ProformasRepository>()));
-    gh.lazySingleton<_i815.CustomersListBloc>(() => _i815.CustomersListBloc(
+    gh.factory<_i815.CustomersListBloc>(() => _i815.CustomersListBloc(
           gh<_i486.GetCustomersListUsecase>(),
           gh<_i54.CustomersRepository>(),
           gh<_i207.DeleteCustomerUsecase>(),
           gh<_i134.UpdateCustomerUsecase>(),
           gh<_i116.CreateCustomerUsecase>(),
         ));
-    gh.lazySingleton<_i55.ProformasListBloc>(() => _i55.ProformasListBloc(
+    gh.factory<_i55.ProformasListBloc>(() => _i55.ProformasListBloc(
           gh<_i90.GetProformasListUseCase>(),
           gh<_i1050.ProformasRepository>(),
           gh<_i1.DeleteProformaUseCase>(),
           gh<_i635.UpdateProformaUseCase>(),
           gh<_i927.CreateProformaUseCase>(),
         ));
+    gh.factory<_i512.CustomerFormBloc>(() => _i512.CustomerFormBloc(
+          gh<_i116.CreateCustomerUsecase>(),
+          gh<_i134.UpdateCustomerUsecase>(),
+        ));
     gh.lazySingleton<_i729.UsersListCubit>(() => _i729.UsersListCubit(
           gh<_i176.GetUsersListUseCase>(),
           gh<_i766.AddNewUserUseCase>(),
           gh<_i130.RemoveUserUseCase>(),
         ));
-    gh.factory<_i512.CustomerFormBloc>(() => _i512.CustomerFormBloc(
-          gh<_i116.CreateCustomerUsecase>(),
-          gh<_i134.UpdateCustomerUsecase>(),
-          gh<_i815.CustomersListBloc>(),
+    gh.factory<_i825.ProformaFormCubit>(() => _i825.ProformaFormCubit(
+          gh<_i927.CreateProformaUseCase>(),
+          gh<_i635.UpdateProformaUseCase>(),
         ));
-    gh.lazySingleton<_i497.SuppliersListBloc>(() => _i497.SuppliersListBloc(
+    gh.factory<_i497.SuppliersListBloc>(() => _i497.SuppliersListBloc(
           gh<_i884.GetSuppliersListUsecase>(),
           gh<_i226.DeleteSupplierUsecase>(),
           gh<_i712.SuppliersRepository>(),
           gh<_i428.UpdateSupplierUsecase>(),
           gh<_i57.CreateSupplierUsecase>(),
         ));
-    gh.factory<_i30.LoginCubit>(() => _i30.LoginCubit(
-          gh<_i288.AuthRepo>(),
-          gh<_i51.AppAuthBloc>(),
-        ));
     gh.factory<_i323.SupplierFormBloc>(() => _i323.SupplierFormBloc(
           gh<_i57.CreateSupplierUsecase>(),
           gh<_i428.UpdateSupplierUsecase>(),
-          gh<_i497.SuppliersListBloc>(),
+        ));
+    gh.factory<_i30.LoginCubit>(() => _i30.LoginCubit(
+          gh<_i288.AuthRepo>(),
+          gh<_i51.AppAuthBloc>(),
         ));
     return this;
   }

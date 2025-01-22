@@ -1,12 +1,14 @@
+import 'package:autro_app/core/constants/enums.dart';
 import 'package:autro_app/core/theme/app_colors.dart';
 import 'package:autro_app/core/theme/text_styles.dart';
 import 'package:autro_app/core/widgets/delete_icon_button.dart';
 import 'package:autro_app/core/widgets/edit_icon_button.dart';
-import 'package:autro_app/core/widgets/show_icon_button.dart';
 import 'package:autro_app/features/proformas/domin/entities/proforma_entity.dart';
+import 'package:autro_app/features/proformas/presentation/screens/proforma_form_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
+import '../../../../core/utils/nav_util.dart';
 import '../bloc/proformas_list/proformas_list_bloc.dart';
 
 class ProformaListTile extends StatelessWidget {
@@ -18,7 +20,7 @@ class ProformaListTile extends StatelessWidget {
     return InkWell(
       borderRadius: BorderRadius.circular(8),
       onTap: () {
-        // NavUtil.push(context, ProformaDetailsScreen(proformaEntity: proformaEntity));
+        NavUtil.push(context, ProformaFormScreen(formType: FormType.edit, proforma: proformaEntity));
       },
       child: Container(
         decoration: const BoxDecoration(
@@ -34,25 +36,25 @@ class ProformaListTile extends StatelessWidget {
               text: proformaEntity.proformaNumber,
               flex: 4,
             ),
-            const SizedBox(width: 8),
+            const SizedBox(width: 16),
             _buildCell(
               flex: 4,
               text: proformaEntity.formattedDate,
             ),
-            const SizedBox(width: 8),
+            const SizedBox(width: 16),
             _buildCell(
               flex: 4,
               text: proformaEntity.customer.name,
             ),
-            const SizedBox(width: 8),
+            const SizedBox(width: 16),
             _buildCell(
               flex: 4,
               text: proformaEntity.formattedTotalPrice,
             ),
-            const SizedBox(width: 8),
+            const SizedBox(width: 16),
             _buildCell(
               flex: 4,
-              text: proformaEntity.goodsDescriptions.firstOrNull?.description ?? '',
+              text: proformaEntity.goodsDescriptions.firstOrNull?.description ?? '-',
             ),
             const SizedBox(width: 16),
             Flexible(
@@ -62,13 +64,7 @@ class ProformaListTile extends StatelessWidget {
                 children: [
                   EditIconButton(
                     onPressed: () {
-                      // NavUtil.push(context, ProformaFormScreen(...));
-                    },
-                  ),
-                  const SizedBox(width: 8),
-                  ShowIconButton(
-                    onPressed: () {
-                      // NavUtil.push(context, ProformaDetailsScreen(...));
+                      NavUtil.push(context, ProformaFormScreen(formType: FormType.edit, proforma: proformaEntity));
                     },
                   ),
                   const SizedBox(width: 8),

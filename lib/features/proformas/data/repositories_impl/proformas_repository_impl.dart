@@ -1,7 +1,6 @@
 import 'package:autro_app/core/errors/error_handler.dart';
 import 'package:autro_app/core/errors/failures.dart';
 import 'package:autro_app/features/proformas/data/data_sources/remote/proformas_remote_data_source.dart';
-import 'package:autro_app/features/proformas/data/models/proforma_model.dart';
 
 import 'package:autro_app/features/proformas/domin/entities/proforma_entity.dart';
 
@@ -15,8 +14,10 @@ import 'package:injectable/injectable.dart';
 import '../../../../core/common/data/requests/pagination_list_request.dart';
 import '../../../../core/network_info/network_info.dart';
 import '../../domin/repositories/proformas_repository.dart';
+import '../../domin/use_cases/update_proforma_use_case.dart';
 import '../models/requests/create_proforma_request.dart';
 import '../models/requests/get_proformas_list_request.dart';
+import '../models/requests/update_proforma_request.dart';
 
 @LazySingleton(as: ProformasRepository)
 class ProformasRepositoryImpl extends ProformasRepository {
@@ -85,10 +86,11 @@ class ProformasRepositoryImpl extends ProformasRepository {
   }
 
   @override
-  Future<Either<Failure, ProformaEntity>> updateProforma(ProformaEntity proforma) async {
+  Future<Either<Failure, ProformaEntity>> updateProforma(UpdateProformaUseCaseParams params) async {
     if (await networkInfo.isConnected) {
       try {
-        final updatedProforma = await remoteDataSource.updateProforma(ProformaModel.fromParams(proforma));
+        final body = UpdateProformaRequest.fromParams(params);
+        final updatedProforma = await remoteDataSource.updateProforma(body);
         return Right(updatedProforma);
       } catch (e) {
         return Left(ErrorHandler.handle(e));

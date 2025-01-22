@@ -23,4 +23,6 @@ class BankAccountEntity extends Equatable {
         swiftCode,
         currency,
       ];
+
+  String get formattedLabel => '$bankName - $accountNumber $currency';
 }

@@ -1,8 +1,8 @@
-import 'package:autro_app/core/di/di.dart';
 import 'package:autro_app/core/theme/app_colors.dart';
 import 'package:autro_app/core/widgets/inputs/standard_search_input.dart';
 import 'package:autro_app/features/proformas/presentation/bloc/proformas_list/proformas_list_bloc.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 
 class ProformaSearchBar extends StatelessWidget {
   const ProformaSearchBar({super.key});
@@ -18,7 +18,7 @@ class ProformaSearchBar extends StatelessWidget {
       child: Row(children: [
         Expanded(child: StandardSearchInput(
           onSearch: (context, keyword) {
-            sl<ProformasListBloc>().add(SearchInputChangedEvent(keyword: keyword));
+            context.read<ProformasListBloc>().add(SearchInputChangedEvent(keyword: keyword));
           },
         )),
       ]),

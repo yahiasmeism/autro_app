@@ -57,7 +57,10 @@ class _StandardSelectableDropdownState extends State<StandardSelectableDropdown>
         _buildLabel(),
         DropdownButtonFormField<String>(
           alignment: AlignmentDirectional.centerStart,
-          hint: Text(widget.hintText ?? '', style: TextStyles.font16Regular.copyWith(color: AppColors.hintColor)),
+          hint: Text(
+            widget.hintText ?? '',
+            style: TextStyles.font16Regular.copyWith(color: AppColors.hintColor),
+          ),
           value: selectedValue,
           style: TextStyles.font16Regular,
           icon: const Icon(Icons.keyboard_arrow_down_outlined),

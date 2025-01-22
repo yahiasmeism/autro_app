@@ -9,7 +9,7 @@ class ProformaEntity extends Equatable {
   final int id;
   final String proformaNumber;
   final DateTime date;
-  final String customerAddress;
+  // final String customerAddress;
   final String taxId;
   final String ports;
   final String deliveryTerms;
@@ -26,7 +26,7 @@ class ProformaEntity extends Equatable {
     required this.id,
     required this.proformaNumber,
     required this.date,
-    required this.customerAddress,
+    // required this.customerAddress,
     required this.taxId,
     required this.ports,
     required this.deliveryTerms,
@@ -45,7 +45,7 @@ class ProformaEntity extends Equatable {
         id,
         proformaNumber,
         date,
-        customerAddress,
+        // customerAddress,
         taxId,
         ports,
         deliveryTerms,
@@ -70,4 +70,40 @@ class ProformaEntity extends Equatable {
   }
 
   String get formattedTotalPrice => "$currancyCode${totalPrice.toStringAsFixed(2)}";
+
+  ProformaEntity copyWith({
+    int? id,
+    String? proformaNumber,
+    DateTime? date,
+    // String? customerAddress,
+    String? taxId,
+    String? ports,
+    String? deliveryTerms,
+    String? paymentTerms,
+    String? notes,
+    double? totalPrice,
+    DateTime? createdAt,
+    DateTime? updatedAt,
+    List<ProformaGoodsDescriptionEntity>? goodsDescriptions,
+    BankAccountEntity? bankAccount,
+    CustomerEntity? customer,
+  }) {
+    return ProformaEntity(
+      id: id ?? this.id,
+      proformaNumber: proformaNumber ?? this.proformaNumber,
+      date: date ?? this.date,
+      // customerAddress: customerAddress ?? this.customerAddress,
+      taxId: taxId ?? this.taxId,
+      ports: ports ?? this.ports,
+      deliveryTerms: deliveryTerms ?? this.deliveryTerms,
+      paymentTerms: paymentTerms ?? this.paymentTerms,
+      notes: notes ?? this.notes,
+      totalPrice: totalPrice ?? this.totalPrice,
+      createdAt: createdAt ?? this.createdAt,
+      updatedAt: updatedAt ?? this.updatedAt,
+      goodsDescriptions: goodsDescriptions ?? this.goodsDescriptions,
+      bankAccount: bankAccount ?? this.bankAccount,
+      customer: customer ?? this.customer,
+    );
+  }
 }

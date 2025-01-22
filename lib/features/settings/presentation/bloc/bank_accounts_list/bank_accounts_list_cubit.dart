@@ -12,7 +12,7 @@ import '../../../domin/entities/bank_account_entity.dart';
 
 part 'bank_accounts_list_state.dart';
 
-@lazySingleton
+@injectable
 class BankAccountsListCubit extends Cubit<BankAccountsListState> {
   final GetBankAccountListUseCase getBankAccountListUseCase;
   final AddBankAccountUseCase addBankAccountUseCase;

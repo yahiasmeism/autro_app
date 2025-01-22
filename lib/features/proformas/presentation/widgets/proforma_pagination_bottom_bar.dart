@@ -1,8 +1,11 @@
+import 'package:autro_app/core/constants/enums.dart';
+import 'package:autro_app/core/utils/nav_util.dart';
 import 'package:autro_app/core/widgets/generic_pagination_bottom_bar.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 import '../bloc/proformas_list/proformas_list_bloc.dart';
+import '../screens/proforma_form_screen.dart';
 
 class ProformaPaginationBottomBar extends StatelessWidget {
   const ProformaPaginationBottomBar({super.key});
@@ -40,7 +43,7 @@ class ProformaPaginationBottomBar extends StatelessWidget {
           labelAddButton: 'Add New Proforma',
           onAddTap: isLoaded
               ? () {
-                  // NavUtil.push(context, const ProformaFormScreen(formType: FormType.create));
+                  NavUtil.push(context, const ProformaFormScreen(formType: FormType.create));
                 }
               : null,
         );

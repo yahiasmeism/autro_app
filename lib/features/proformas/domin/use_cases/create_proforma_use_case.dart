@@ -1,4 +1,3 @@
-import 'package:autro_app/core/constants/enums.dart';
 import 'package:autro_app/core/errors/failures.dart';
 import 'package:autro_app/core/interfaces/use_case.dart';
 import 'package:autro_app/features/proformas/domin/entities/proforma_entity.dart';
@@ -21,22 +20,20 @@ class CreateProformaUseCase extends UseCase<ProformaEntity, CreateProformaUseCas
 
 class CreateProformaUseCaseParams extends Equatable {
   final String proformaNumber;
-  final DateTime date;
+  final String date;
   final int customerId;
-  final String customerAddress;
   final String taxId;
   final String ports;
   final String deliveryTerms;
   final String paymentTerms;
   final int bankAccountId;
   final String notes;
-  final List<CreateProformaDescriptionUseCaseParams> descriptions;
+  final List<ProformaDescriptionParams> descriptions;
 
   const CreateProformaUseCaseParams({
     required this.proformaNumber,
     required this.date,
     required this.customerId,
-    required this.customerAddress,
     required this.taxId,
     required this.ports,
     required this.deliveryTerms,
@@ -50,7 +47,7 @@ class CreateProformaUseCaseParams extends Equatable {
         proformaNumber,
         date,
         customerId,
-        customerAddress,
+        // customerAddress,
         taxId,
         ports,
         deliveryTerms,
@@ -61,14 +58,14 @@ class CreateProformaUseCaseParams extends Equatable {
       ];
 }
 
-class CreateProformaDescriptionUseCaseParams extends Equatable {
+class ProformaDescriptionParams extends Equatable {
   final String description;
   final int containersCount;
   final double weight;
   final double unitPrice;
-  final PackingType packing;
+  final String packing;
 
-  const CreateProformaDescriptionUseCaseParams({
+  const ProformaDescriptionParams({
     required this.description,
     required this.containersCount,
     required this.weight,

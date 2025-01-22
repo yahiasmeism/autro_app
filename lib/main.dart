@@ -34,10 +34,12 @@ void main() async {
 _initializeDesktopWindow() {
   if (Platform.isWindows) {
     doWhenWindowReady(() {
-      const initialWidth = 1200.0;
+      const initialWidth = 1300.0;
       const aspectRatio = 16 / 9;
       appWindow
         ..minSize = const Size(initialWidth, initialWidth / aspectRatio)
+        ..size = const Size(initialWidth, initialWidth / aspectRatio)
+        ..maxSize = const Size(1920, 1080)
         ..alignment = Alignment.center
         ..maximize()
         ..show();

@@ -26,3 +26,7 @@ extension DateTimeX on DateTime? {
     return isAtSameDay(now.subtract(const Duration(days: 1)));
   }
 }
+
+extension DateOnlyX on DateTime {
+  String get formattedDateYYYYMMDD => "$year-${month.toString().padLeft(2, '0')}-${day.toString().padLeft(2, '0')}";
+}

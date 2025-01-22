@@ -15,7 +15,7 @@ import '../../../domin/use_cases/update_proforma_use_case.dart';
 part 'proformas_list_event.dart';
 part 'proformas_list_state.dart';
 
-@lazySingleton
+@injectable
 class ProformasListBloc extends Bloc<ProformasListEvent, ProformasListState> {
   final GetProformasListUseCase getProformasListUsecase;
   final DeleteProformaUseCase deleteProformaUsecase;

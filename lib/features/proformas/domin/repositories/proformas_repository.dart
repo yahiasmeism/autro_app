@@ -4,11 +4,12 @@ import 'package:autro_app/features/proformas/domin/use_cases/get_proformas_list_
 import 'package:dartz/dartz.dart';
 
 import '../use_cases/create_proforma_use_case.dart';
+import '../use_cases/update_proforma_use_case.dart';
 
 abstract class ProformasRepository {
   Future<Either<Failure, ProformaEntity>> createProforma(CreateProformaUseCaseParams params);
   Future<Either<Failure, List<ProformaEntity>>> getProformasList(GetProformasListUseCaseParams params);
-  Future<Either<Failure, ProformaEntity>> updateProforma(ProformaEntity proforma);
+  Future<Either<Failure, ProformaEntity>> updateProforma(UpdateProformaUseCaseParams params);
   Future<Either<Failure, ProformaEntity>> getProformaById(int proformaId);
   Future<Either<Failure, Unit>> deleteProforma(int proformaId);
 

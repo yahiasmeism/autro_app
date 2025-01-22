@@ -3,14 +3,15 @@ import 'package:autro_app/core/theme/text_styles.dart';
 import 'package:flutter/material.dart';
 
 class StandardCard extends StatelessWidget {
-  const StandardCard({super.key, required this.child, required this.title});
+  const StandardCard({super.key, required this.child, required this.title, this.padding});
   final Widget child;
   final String title;
-
+  final EdgeInsets? padding;
   @override
   Widget build(BuildContext context) {
     const radius = 8.0;
     return Card(
+      elevation: 0,
       color: AppColors.white,
       shape: RoundedRectangleBorder(
         borderRadius: BorderRadius.circular(radius),
@@ -36,7 +37,7 @@ class StandardCard extends StatelessWidget {
           ),
           Flexible(
             child: Padding(
-              padding: const EdgeInsets.symmetric(vertical: 14, horizontal: 28),
+              padding: padding ?? const EdgeInsets.symmetric(vertical: 14, horizontal: 28),
               child: child,
             ),
           ),
