@@ -1,4 +1,5 @@
 import 'package:autro_app/core/common/data/models/selectable_item_model.dart';
+import 'package:autro_app/core/theme/app_colors.dart';
 import 'package:autro_app/core/theme/text_styles.dart';
 import 'package:autro_app/core/widgets/failure_screen.dart';
 import 'package:autro_app/features/settings/presentation/bloc/bank_accounts_list/bank_accounts_list_cubit.dart';
@@ -71,16 +72,19 @@ class _BankAccountsListSelectionFieldState extends State<BankAccountsListSelecti
       barrierColor: Colors.black.withOpacity(0.5),
       builder: (context) {
         return Dialog(
+          clipBehavior: Clip.antiAlias,
+          backgroundColor: Colors.white,
           shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(16)),
           child: SizedBox(
             width: 600,
-            height: 500,
+            height: 400,
             child: Padding(
               padding: const EdgeInsets.all(8.0),
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   _buildDialogHeader(context),
+                  const Divider(),
                   const SizedBox(height: 16),
                   Expanded(
                     child: BlocBuilder<BankAccountsListCubit, BankAccountsListState>(
@@ -110,7 +114,11 @@ class _BankAccountsListSelectionFieldState extends State<BankAccountsListSelecti
   }
 
   Widget _buildDialogHeader(BuildContext context) {
-    return Padding(
+    return Container(
+      decoration: BoxDecoration(
+        borderRadius: BorderRadius.circular(8),
+        color: AppColors.scaffoldBackgroundColor,
+      ),
       padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
       child: Row(
         children: [
@@ -131,7 +139,8 @@ class _BankAccountsListSelectionFieldState extends State<BankAccountsListSelecti
       return Center(child: Text('No Results Found', style: TextStyles.font16Regular));
     }
 
-    return ListView.builder(
+    return ListView.separated(
+      separatorBuilder: (context, index) => const Divider(height: 0),
       controller: scrollController,
       itemCount: state.bankAccountsList.length,
       itemBuilder: (context, index) {
@@ -140,9 +149,8 @@ class _BankAccountsListSelectionFieldState extends State<BankAccountsListSelecti
         return ListTile(
           selectedTileColor: Colors.black12,
           tileColor: Colors.white,
-          trailing: isSelected ? const Icon(Icons.check) : null,
+          trailing: isSelected ? const Icon(Icons.check, color: AppColors.deepGreen) : null,
           selectedColor: Colors.black12,
-          selected: isSelected,
           shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(8)),
           title: Text(item.formattedLabel, style: TextStyles.font16Regular),
           onTap: () {
