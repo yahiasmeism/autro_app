@@ -73,6 +73,9 @@ class _CustomersListSelectionFieldState extends State<CustomersListSelectionFiel
       barrierColor: Colors.black.withOpacity(0.5),
       builder: (context) {
         return Dialog(
+          clipBehavior: Clip.antiAlias,
+          backgroundColor: Colors.white,
+          insetPadding: const EdgeInsets.all(0),
           shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(16)),
           child: SizedBox(
             width: 600,
@@ -82,12 +85,22 @@ class _CustomersListSelectionFieldState extends State<CustomersListSelectionFiel
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  _buildDialogHeader(context),
-                  const Divider(),
-                  StandardSearchInput(
-                    onSearch: (context, keyword) {
-                      context.read<CustomersListBloc>().add(SearchInputChangedEvent(keyword: keyword));
-                    },
+                  Container(
+                    color: Colors.white,
+                    child: Column(
+                      children: [
+                        _buildDialogHeader(context),
+                        const Divider(),
+                        Padding(
+                          padding: const EdgeInsets.symmetric(horizontal: 8),
+                          child: StandardSearchInput(
+                            onSearch: (context, keyword) {
+                              context.read<CustomersListBloc>().add(SearchInputChangedEvent(keyword: keyword));
+                            },
+                          ),
+                        ),
+                      ],
+                    ),
                   ),
                   const SizedBox(height: 16),
                   Expanded(
@@ -119,7 +132,14 @@ class _CustomersListSelectionFieldState extends State<CustomersListSelectionFiel
   }
 
   Widget _buildDialogHeader(BuildContext context) {
-    return Padding(
+    return Container(
+      decoration: const BoxDecoration(
+        color: AppColors.scaffoldBackgroundColor,
+        borderRadius: BorderRadius.only(
+          topLeft: Radius.circular(16),
+          topRight: Radius.circular(16),
+        ),
+      ),
       padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
       child: Row(
         children: [
@@ -149,7 +169,8 @@ class _CustomersListSelectionFieldState extends State<CustomersListSelectionFiel
         }
         return false;
       },
-      child: ListView.builder(
+      child: ListView.separated(
+        separatorBuilder: (context, index) => const Divider(height: 0),
         controller: scrollController,
         itemCount: state.loadingPagination ? state.customersList.length + 1 : state.customersList.length,
         itemBuilder: (context, index) {
@@ -174,9 +195,8 @@ class _CustomersListSelectionFieldState extends State<CustomersListSelectionFiel
           return ListTile(
             selectedTileColor: Colors.black12,
             tileColor: Colors.white,
-            trailing: isSelected ? const Icon(Icons.check) : null,
+            trailing: isSelected ? const Icon(Icons.check, color: AppColors.deepGreen) : null,
             selectedColor: Colors.black12,
-            selected: isSelected,
             shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(8)),
             title: Text(item.name, style: TextStyles.font16Regular),
             onTap: () {
@@ -188,5 +208,4 @@ class _CustomersListSelectionFieldState extends State<CustomersListSelectionFiel
       ),
     );
   }
-
 }
