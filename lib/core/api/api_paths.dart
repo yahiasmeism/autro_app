@@ -29,4 +29,10 @@ abstract class ApiPaths {
 
   // invoice settings
   static const String invoiceSettings = 'invoice-settings';
+
+
+
+  // proformas
+  static const String proformas = 'proformas';
+  static String proformaById(int id) => 'proformas/$id';
 }

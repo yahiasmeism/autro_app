@@ -7,6 +7,7 @@ import 'package:flutter/services.dart';
 
 class StandardInput extends StatefulWidget {
   const StandardInput({
+    this.onTap,
     super.key,
     this.controller,
     this.floatingLabelBehavior,
@@ -41,6 +42,7 @@ class StandardInput extends StatefulWidget {
     this.inputFormatters,
     this.radius = 6,
     this.showRequiredIndecator = false,
+    this.label,
   });
 
   final TextEditingController? controller;
@@ -53,6 +55,7 @@ class StandardInput extends StatefulWidget {
   final Widget? suffix;
   final String? hintText;
   final String? labelText;
+  final Widget? label;
   final String? initialValue;
   final String? Function(String?)? validator;
   final TextInputType keyboardType;
@@ -76,7 +79,7 @@ class StandardInput extends StatefulWidget {
   final List<String>? autoFillHints;
   final TextInputAction? textInputAction;
   final List<TextInputFormatter>? inputFormatters;
-
+  final GestureTapCallback? onTap;
   @override
   State<StandardInput> createState() => _StandardInputState();
 }
@@ -114,6 +117,7 @@ class _StandardInputState extends State<StandardInput> {
       children: [
         _buildLabel(),
         TextFormField(
+          onTap: widget.onTap,
           decoration: InputDecoration(
             iconColor: AppColors.iconColor,
             enabled: widget.enabled,
@@ -198,21 +202,22 @@ class _StandardInputState extends State<StandardInput> {
   }
 
   _buildLabel() {
-    if (widget.labelText == null) return const SizedBox.shrink();
+    if (widget.labelText == null && widget.label == null) return const SizedBox.shrink();
     return Padding(
       padding: const EdgeInsets.only(bottom: 8),
-      child: Text.rich(
-        TextSpan(
-          style: TextStyles.font16Regular,
-          children: [
-            TextSpan(text: widget.labelText, style: TextStyles.font16Regular),
+      child: widget.label ??
+          Text.rich(
             TextSpan(
-              text: widget.showRequiredIndecator ? ' *' : '',
-              style: TextStyles.font16Regular.copyWith(color: AppColors.red),
+              style: TextStyles.font16Regular,
+              children: [
+                TextSpan(text: widget.labelText, style: TextStyles.font16Regular),
+                TextSpan(
+                  text: widget.showRequiredIndecator ? ' *' : '',
+                  style: TextStyles.font16Regular.copyWith(color: AppColors.red),
+                ),
+              ],
             ),
-          ],
-        ),
-      ),
+          ),
     );
   }
 }

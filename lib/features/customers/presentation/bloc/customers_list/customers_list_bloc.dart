@@ -15,7 +15,7 @@ import '../../../domin/entities/customer_entity.dart';
 part 'customers_list_event.dart';
 part 'customers_list_state.dart';
 
-@lazySingleton
+@injectable
 class CustomersListBloc extends Bloc<CustomersListEvent, CustomersListState> {
   final GetCustomersListUsecase getCustomersListUsecase;
   final DeleteCustomerUsecase deleteCustomerUsecase;
@@ -61,6 +61,10 @@ class CustomersListBloc extends Bloc<CustomersListEvent, CustomersListState> {
     }
     if (event is AddedUpdatedCustomerEvent) {
       await onAddedUpdatedCustomer(event, emit);
+    }
+
+    if (event is LoadMoreCustomersEvent) {
+      await onLoadMoreCustomers(event, emit);
     }
   }
 
@@ -180,6 +184,32 @@ class CustomersListBloc extends Bloc<CustomersListEvent, CustomersListState> {
         totalCount: totalCount,
         customersList: customers,
       )),
+    );
+  }
+
+  onLoadMoreCustomers(LoadMoreCustomersEvent event, Emitter<CustomersListState> emit) async {
+    final state = this.state as CustomersListLoaded;
+
+    final pageNumber = state.paginationFilterDTO.pageNumber + 1;
+
+    if (pageNumber > state.totalPages) return;
+    emit(state.copyWith(loadingPagination: true));
+    final paginationFilterDto = state.paginationFilterDTO.copyWith(pageNumber: pageNumber);
+    final params = GetCustomersListUsecaseParams(dto: paginationFilterDto);
+
+    final either = await getCustomersListUsecase.call(params);
+    emit(state.copyWith(loadingPagination: false));
+    either.fold(
+      (failure) => emit(CustomersListError(failure: failure)),
+      (customers) {
+        final updatedCustomersList = List.of(state.customersList);
+        updatedCustomersList.addAll(customers);
+        emit(CustomersListLoaded(
+          totalCount: totalCount,
+          customersList: updatedCustomersList,
+          paginationFilterDTO: paginationFilterDto,
+        ));
+      },
     );
   }
 }

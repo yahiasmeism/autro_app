@@ -68,7 +68,6 @@ class _StandardSearchInputState extends State<StandardSearchInput> {
   @override
   Widget build(BuildContext context) {
     return StandardInput(
-      
       withBorder: false,
       fillColor: AppColors.scaffoldBackgroundColor,
       onFieldSubmitted: widget.onFieldSubmitted,

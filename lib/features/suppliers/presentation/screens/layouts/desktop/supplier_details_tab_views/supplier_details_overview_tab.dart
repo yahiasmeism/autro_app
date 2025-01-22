@@ -343,10 +343,8 @@ class SupplierDetailsOverviewTab extends StatelessWidget {
       ),
     ) as SupplierEntity?;
 
-    if (updatedSupplier != null) {
-      if (context.mounted) {
-        context.read<SupplierDetailsCubit>().updateSupplier(updatedSupplier);
-      }
+    if (updatedSupplier != null && context.mounted) {
+      context.read<SupplierDetailsCubit>().updateSupplier(updatedSupplier);
     }
   }
 }

@@ -1,4 +1,3 @@
-import 'package:autro_app/core/di/di.dart';
 import 'package:autro_app/core/utils/validator_util.dart';
 import 'package:autro_app/core/widgets/buttons/add_button.dart';
 import 'package:autro_app/core/widgets/buttons/clear_all_button.dart';
@@ -7,6 +6,7 @@ import 'package:autro_app/core/widgets/standard_card.dart';
 import 'package:autro_app/features/settings/domin/use_cases/add_bank_account_use_case.dart';
 import 'package:autro_app/features/settings/presentation/bloc/bank_accounts_list/bank_accounts_list_cubit.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 
 import '../../../../core/widgets/standard_selection_dropdown.dart';
 
@@ -76,7 +76,7 @@ class _AddBankAccountFormState extends State<AddBankAccountForm> {
         swiftCode: swiftCodeController.text,
         currency: currencyController.text,
       );
-      sl<BankAccountsListCubit>().addNewBankAccount(params: params);
+      context.read<BankAccountsListCubit>().addNewBankAccount(params: params);
     }
   }
 

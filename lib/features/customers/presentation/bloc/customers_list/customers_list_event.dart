@@ -40,3 +40,6 @@ class SearchInputChangedEvent extends CustomersListEvent {
 }
 
 class AddedUpdatedCustomerEvent extends CustomersListEvent {}
+
+
+class LoadMoreCustomersEvent extends CustomersListEvent {}

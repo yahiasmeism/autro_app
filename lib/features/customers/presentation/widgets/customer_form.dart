@@ -10,6 +10,7 @@ import 'package:autro_app/core/widgets/inputs/standard_input.dart';
 import 'package:autro_app/core/widgets/overley_loading.dart';
 import 'package:autro_app/core/widgets/standard_selection_dropdown.dart';
 import 'package:autro_app/features/customers/presentation/bloc/customer_form/customer_form_bloc.dart';
+import 'package:autro_app/features/customers/presentation/bloc/customers_list/customers_list_bloc.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
@@ -167,7 +168,10 @@ class CustomerForm extends StatelessWidget {
         (either) => either.fold(
           (failure) => DialogUtil.showErrorSnackBar(context, getErrorMsgFromFailure(failure)),
           (message) {
-            if (!state.updatedMode) NavUtil.pop(context);
+            if (state.customer != null) {
+              context.read<CustomersListBloc>().add(AddedUpdatedCustomerEvent());
+            }
+            NavUtil.pop(context, state.customer);
             return DialogUtil.showSuccessSnackBar(context, message);
           },
         ),

@@ -114,8 +114,8 @@ class CustomerListTile extends StatelessWidget {
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
-                  EditIconButton(onPressed: () {
-                    NavUtil.push(
+                  EditIconButton(onPressed: () async {
+                    await NavUtil.push(
                         context,
                         CustomerFormScreen(
                           customer: customerEntity,
