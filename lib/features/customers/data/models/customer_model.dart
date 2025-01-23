@@ -53,8 +53,8 @@ class CustomerModel extends CustomerEntity implements BaseMapable {
       altPhone: (json['alt_phone'] as String?).orEmpty,
       primaryContactType: PrimaryContactTypeX.fromString((json['primary_contact'] as String?).orEmpty),
       notes: (json['notes'] as String?).orEmpty,
-      createdAt: DateTime.tryParse(json['created_at']).orDefault,
-      updatedAt: DateTime.tryParse(json['updated_at']).orDefault,
+      createdAt: DateTime.tryParse((json['created_at'] as String?).orEmpty).orDefault,
+      updatedAt: DateTime.tryParse((json['updated_at'] as String?).orEmpty).orDefault,
     );
   }
 

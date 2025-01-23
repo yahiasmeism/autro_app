@@ -9,10 +9,10 @@ import '../entities/invoice_entity.dart';
 import '../repositories/invoices_repository.dart';
 
 @lazySingleton
-class GetInvoiceListUseCase extends UseCase<List<InvoiceEntity>, GetInvoicesListUseCaseParams> {
+class GetInvoicesListUseCase extends UseCase<List<InvoiceEntity>, GetInvoicesListUseCaseParams> {
   final InvoicesRepository repository;
 
-  GetInvoiceListUseCase({required this.repository});
+  GetInvoicesListUseCase({required this.repository});
   @override
   Future<Either<Failure, List<InvoiceEntity>>> call(GetInvoicesListUseCaseParams params) async {
     return await repository.getInvoicesList(params);
