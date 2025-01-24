@@ -39,7 +39,6 @@ class _HomeMobileLayoutState extends State<HomeMobileLayout> {
       MenuItemType.dashboard: const Center(child: Text('Dashboard')),
       MenuItemType.invoices: const Center(child: Text('Invoices')),
       MenuItemType.deals: const Center(child: Text('Deals')),
-      MenuItemType.accounting: const Center(child: Text('Accounting')),
       MenuItemType.shipping: const Center(child: Text('Shipping')),
       MenuItemType.settings: const Center(child: Text('Settings')),
       MenuItemType.bills: const Center(child: Text('Bills')),

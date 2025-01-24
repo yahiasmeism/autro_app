@@ -65,7 +65,7 @@ class BillsRemoteDataSourceImpl implements BillsRemoteDataSource {
   @override
   Future<PaginationListResponse<BillModel>> getBillsList(GetBillsListRequest body) async {
     const path = ApiPaths.bills;
-    final request = ApiRequest(path: path, body: body.toJson());
+    final request = ApiRequest(path: path, queryParameters: body.toJson());
     final response = await apiClient.get(request);
     if (ResponseCode.isOk(response.statusCode)) {
       final json = response.data;

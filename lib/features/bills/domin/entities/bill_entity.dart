@@ -1,4 +1,5 @@
 import 'package:equatable/equatable.dart';
+import 'package:intl/intl.dart';
 
 class BillEntity extends Equatable {
   final int id;
@@ -8,6 +9,8 @@ class BillEntity extends Equatable {
   final DateTime date;
   final DateTime createdAt;
   final DateTime updatedAt;
+
+  String get formattedDate => DateFormat('MMM d, y').format(date);
 
   const BillEntity({
     required this.id,
