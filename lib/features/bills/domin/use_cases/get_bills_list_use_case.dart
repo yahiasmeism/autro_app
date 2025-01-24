@@ -2,11 +2,12 @@ import 'package:autro_app/core/common/domin/dto/pagination_query_payload_dto.dar
 import 'package:autro_app/core/errors/failures.dart';
 import 'package:dartz/dartz.dart';
 import 'package:equatable/equatable.dart';
+import 'package:injectable/injectable.dart';
 
 import '../../../../core/interfaces/use_case.dart';
 import '../entities/bill_entity.dart';
 import '../repostiries/bills_respository.dart';
-
+@lazySingleton
 class GetBillsListUseCase extends UseCase<List<BillEntity>, GetBillsListUseCaseParams> {
   final BillsRepository repository;
 

@@ -22,6 +22,24 @@ import 'package:autro_app/features/authentication/data/data_sources/auth_remote_
     as _i388;
 import 'package:autro_app/features/authentication/data/repo/auth_repo.dart'
     as _i288;
+import 'package:autro_app/features/bills/data/data_sources/remote/bills_remote_data_source.dart'
+    as _i77;
+import 'package:autro_app/features/bills/data/repositories_impl/bills_repository_impl.dart'
+    as _i801;
+import 'package:autro_app/features/bills/domin/repostiries/bills_respository.dart'
+    as _i292;
+import 'package:autro_app/features/bills/domin/use_cases/add_bill_use_case.dart'
+    as _i671;
+import 'package:autro_app/features/bills/domin/use_cases/delete_bill_use_case.dart'
+    as _i321;
+import 'package:autro_app/features/bills/domin/use_cases/get_bill_use_case.dart'
+    as _i588;
+import 'package:autro_app/features/bills/domin/use_cases/get_bills_list_use_case.dart'
+    as _i218;
+import 'package:autro_app/features/bills/domin/use_cases/update_bill_use_case.dart'
+    as _i745;
+import 'package:autro_app/features/bills/presentation/bloc/bills_list/bills_list_bloc.dart'
+    as _i813;
 import 'package:autro_app/features/customers/data/datasources/customers_remote_datesourse.dart'
     as _i438;
 import 'package:autro_app/features/customers/data/repositories/customers_repository_impl.dart'
@@ -169,6 +187,8 @@ extension GetItInjectableX on _i174.GetIt {
         () => _i228.DioClient(gh<_i123.AppPreferences>()));
     gh.lazySingleton<_i509.SettingsRemoteDataSource>(() =>
         _i509.SettingsRemoteDataSourceImpl(client: gh<_i228.ApiClient>()));
+    gh.lazySingleton<_i77.BillsRemoteDataSource>(
+        () => _i77.BillsRemoteDataSourceImpl(apiClient: gh<_i228.ApiClient>()));
     gh.lazySingleton<_i438.CustomersRemoteDataSource>(() =>
         _i438.CustomersRemoteDataSourceImpl(apiClient: gh<_i228.ApiClient>()));
     gh.lazySingleton<_i388.AuthRemoteDataSource>(
@@ -233,6 +253,10 @@ extension GetItInjectableX on _i174.GetIt {
         _i223.GetCompanyUseCase(repository: gh<_i275.SettingsRepository>()));
     gh.lazySingleton<_i176.GetUsersListUseCase>(() =>
         _i176.GetUsersListUseCase(repository: gh<_i275.SettingsRepository>()));
+    gh.lazySingleton<_i292.BillsRepository>(() => _i801.BillsRepositoryImpl(
+          billsRemoteDataSource: gh<_i77.BillsRemoteDataSource>(),
+          networkInfo: gh<_i646.NetworkInfo>(),
+        ));
     gh.lazySingleton<_i1050.ProformasRepository>(
         () => _i264.ProformasRepositoryImpl(
               remoteDataSource: gh<_i154.ProformasRemoteDataSource>(),
@@ -329,6 +353,23 @@ extension GetItInjectableX on _i174.GetIt {
           gh<_i1.DeleteProformaUseCase>(),
           gh<_i635.UpdateProformaUseCase>(),
           gh<_i927.CreateProformaUseCase>(),
+        ));
+    gh.lazySingleton<_i671.AddBillUseCase>(
+        () => _i671.AddBillUseCase(repository: gh<_i292.BillsRepository>()));
+    gh.lazySingleton<_i321.DeleteBillUseCase>(
+        () => _i321.DeleteBillUseCase(repository: gh<_i292.BillsRepository>()));
+    gh.lazySingleton<_i218.GetBillsListUseCase>(() =>
+        _i218.GetBillsListUseCase(repository: gh<_i292.BillsRepository>()));
+    gh.lazySingleton<_i588.GetBillUseCase>(
+        () => _i588.GetBillUseCase(repository: gh<_i292.BillsRepository>()));
+    gh.lazySingleton<_i745.UpdateBillUseCase>(
+        () => _i745.UpdateBillUseCase(repository: gh<_i292.BillsRepository>()));
+    gh.factory<_i813.BillsListBloc>(() => _i813.BillsListBloc(
+          gh<_i218.GetBillsListUseCase>(),
+          gh<_i292.BillsRepository>(),
+          gh<_i321.DeleteBillUseCase>(),
+          gh<_i745.UpdateBillUseCase>(),
+          gh<_i671.AddBillUseCase>(),
         ));
     gh.factory<_i512.CustomerFormBloc>(() => _i512.CustomerFormBloc(
           gh<_i116.CreateCustomerUsecase>(),

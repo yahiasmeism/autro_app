@@ -16,4 +16,7 @@ abstract class BillsRepository {
   Future<Either<Failure, BillEntity>> updateBill(UpdateBillUseCaseParams params);
 
   Future<Either<Failure, BillEntity>> getBill(int billId);
+
+
+  int get billsCount;
 }

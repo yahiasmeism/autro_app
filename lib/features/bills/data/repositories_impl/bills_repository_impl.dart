@@ -9,10 +9,11 @@ import 'package:autro_app/features/bills/domin/use_cases/add_bill_use_case.dart'
 import 'package:autro_app/features/bills/domin/use_cases/get_bills_list_use_case.dart';
 import 'package:autro_app/features/bills/domin/use_cases/update_bill_use_case.dart';
 import 'package:dartz/dartz.dart';
+import 'package:injectable/injectable.dart';
 
 import '../models/requests/add_bill_request.dart';
 import '../models/requests/get_bills_list_request.dart';
-
+@LazySingleton(as: BillsRepository)
 class BillsRepositoryImpl implements BillsRepository {
   final BillsRemoteDataSource billsRemoteDataSource;
   final NetworkInfo networkInfo;
@@ -65,7 +66,8 @@ class BillsRepositoryImpl implements BillsRepository {
       try {
         final body = GetBillsListRequest(paginationFilterDTO: params.paginationFilterDTO);
         final list = await billsRemoteDataSource.getBillsList(body);
-        return Right(list);
+        _billsCount = list.total;
+        return Right(list.data);
       } catch (error) {
         return Left(ErrorHandler.handle(error));
       }
@@ -87,4 +89,9 @@ class BillsRepositoryImpl implements BillsRepository {
       return Left(ErrorHandler.noInternet());
     }
   }
+
+  int _billsCount = 0;
+
+  @override
+  int get billsCount => _billsCount;
 }

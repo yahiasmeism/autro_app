@@ -1,22 +1,25 @@
 import 'package:autro_app/core/api/api_client.dart';
 import 'package:autro_app/core/api/api_paths.dart';
 import 'package:autro_app/core/api/api_request.dart';
+import 'package:autro_app/core/common/data/responses/pagination_list_response.dart';
 import 'package:autro_app/core/errors/error_handler.dart';
 import 'package:autro_app/core/errors/exceptions.dart';
 import 'package:autro_app/features/bills/data/models/requests/update_bill_request.dart';
+import 'package:injectable/injectable.dart';
 
 import '../../models/bill_model.dart';
 import '../../models/requests/add_bill_request.dart';
 import '../../models/requests/get_bills_list_request.dart';
 
 abstract class BillsRemoteDataSource {
-  Future<List<BillModel>> getBillsList(GetBillsListRequest body);
+  Future<PaginationListResponse<BillModel>> getBillsList(GetBillsListRequest body);
   Future<BillModel> addBill(AddBillRequest body);
   Future<BillModel> updateBill(UpdateBillRequest body);
   Future<void> deleteBill(int billId);
   Future<BillModel> getBill(int billId);
 }
 
+@LazySingleton(as: BillsRemoteDataSource)
 class BillsRemoteDataSourceImpl implements BillsRemoteDataSource {
   final ApiClient apiClient;
 
@@ -60,13 +63,13 @@ class BillsRemoteDataSourceImpl implements BillsRemoteDataSource {
   }
 
   @override
-  Future<List<BillModel>> getBillsList(GetBillsListRequest body) async {
+  Future<PaginationListResponse<BillModel>> getBillsList(GetBillsListRequest body) async {
     const path = ApiPaths.bills;
     final request = ApiRequest(path: path, body: body.toJson());
     final response = await apiClient.get(request);
     if (ResponseCode.isOk(response.statusCode)) {
       final json = response.data;
-      return (json as List).map((e) => BillModel.fromJson(e)).toList();
+      return PaginationListResponse.fromJson(json, BillModel.fromJson);
     } else {
       throw ServerException(response.statusCode, response.statusMessage);
     }

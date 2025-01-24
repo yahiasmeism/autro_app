@@ -3,21 +3,21 @@ import 'package:autro_app/core/interfaces/use_case.dart';
 import 'package:autro_app/features/bills/domin/entities/bill_entity.dart';
 import 'package:dartz/dartz.dart';
 import 'package:equatable/equatable.dart';
+import 'package:injectable/injectable.dart';
 
 import '../repostiries/bills_respository.dart';
 
-class UpdateBillUseCase extends UseCase<BillEntity,UpdateBillUseCaseParams>{
+@lazySingleton
+class UpdateBillUseCase extends UseCase<BillEntity, UpdateBillUseCaseParams> {
   final BillsRepository repository;
 
   UpdateBillUseCase({required this.repository});
 
   @override
-  Future<Either<Failure, BillEntity>> call(UpdateBillUseCaseParams params)async {
+  Future<Either<Failure, BillEntity>> call(UpdateBillUseCaseParams params) async {
     return await repository.updateBill(params);
   }
 }
-
-
 
 class UpdateBillUseCaseParams extends Equatable {
   final int id;
@@ -26,8 +26,14 @@ class UpdateBillUseCaseParams extends Equatable {
   final String notes;
   final DateTime date;
 
-  const UpdateBillUseCaseParams({required this.id, required this.vendor, required this.amount, required this.notes, required this.date,});
-  
+  const UpdateBillUseCaseParams({
+    required this.id,
+    required this.vendor,
+    required this.amount,
+    required this.notes,
+    required this.date,
+  });
+
   @override
   List<Object?> get props => [id, vendor, amount, notes, date];
 }
