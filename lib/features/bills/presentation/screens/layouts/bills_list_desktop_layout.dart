@@ -8,6 +8,7 @@ import 'package:autro_app/core/widgets/standard_list_title.dart';
 import 'package:autro_app/features/bills/presentation/bloc/bills_list/bills_list_bloc.dart';
 import 'package:autro_app/features/bills/presentation/widgets/bill_pagination_bottom_bar.dart';
 import 'package:autro_app/features/bills/presentation/widgets/bill_filter_search_bar.dart';
+import 'package:autro_app/features/bills/presentation/widgets/bills_summary_top_section.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
@@ -24,6 +25,10 @@ class BillsListDesktopLayout extends StatelessWidget {
         padding: const EdgeInsets.all(24),
         child: Column(
           children: [
+            const BillsSummaryTopSection(),
+            const SizedBox(
+              height: 24,
+            ),
             const BillSearchBar(),
             const SizedBox(
               height: 24,

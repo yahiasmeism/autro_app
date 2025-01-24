@@ -4,6 +4,7 @@ import 'package:autro_app/core/api/api_request.dart';
 import 'package:autro_app/core/common/data/responses/pagination_list_response.dart';
 import 'package:autro_app/core/errors/error_handler.dart';
 import 'package:autro_app/core/errors/exceptions.dart';
+import 'package:autro_app/features/bills/data/models/bills_summary_model.dart';
 import 'package:autro_app/features/bills/data/models/requests/update_bill_request.dart';
 import 'package:injectable/injectable.dart';
 
@@ -17,6 +18,7 @@ abstract class BillsRemoteDataSource {
   Future<BillModel> updateBill(UpdateBillRequest body);
   Future<void> deleteBill(int billId);
   Future<BillModel> getBill(int billId);
+  Future<BillsSummaryModel> getBillsSummary();
 }
 
 @LazySingleton(as: BillsRemoteDataSource)
@@ -83,6 +85,19 @@ class BillsRemoteDataSourceImpl implements BillsRemoteDataSource {
     if (ResponseCode.isOk(response.statusCode)) {
       final json = response.data;
       return BillModel.fromJson(json);
+    } else {
+      throw ServerException(response.statusCode, response.statusMessage);
+    }
+  }
+  
+  @override
+  Future<BillsSummaryModel> getBillsSummary()async {
+    const path = ApiPaths.billsSummary;
+    final request = ApiRequest(path: path);
+    final response = await apiClient.get(request);
+    if (ResponseCode.isOk(response.statusCode)) {
+      final json = response.data;
+      return BillsSummaryModel.fromJson(json);
     } else {
       throw ServerException(response.statusCode, response.statusMessage);
     }

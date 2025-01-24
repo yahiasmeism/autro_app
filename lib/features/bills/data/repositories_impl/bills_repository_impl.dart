@@ -4,6 +4,7 @@ import 'package:autro_app/core/network_info/network_info.dart';
 import 'package:autro_app/features/bills/data/data_sources/remote/bills_remote_data_source.dart';
 import 'package:autro_app/features/bills/data/models/requests/update_bill_request.dart';
 import 'package:autro_app/features/bills/domin/entities/bill_entity.dart';
+import 'package:autro_app/features/bills/domin/entities/bills_summary_entity.dart';
 import 'package:autro_app/features/bills/domin/repostiries/bills_respository.dart';
 import 'package:autro_app/features/bills/domin/use_cases/add_bill_use_case.dart';
 import 'package:autro_app/features/bills/domin/use_cases/get_bills_list_use_case.dart';
@@ -13,6 +14,7 @@ import 'package:injectable/injectable.dart';
 
 import '../models/requests/add_bill_request.dart';
 import '../models/requests/get_bills_list_request.dart';
+
 @LazySingleton(as: BillsRepository)
 class BillsRepositoryImpl implements BillsRepository {
   final BillsRemoteDataSource billsRemoteDataSource;
@@ -94,4 +96,17 @@ class BillsRepositoryImpl implements BillsRepository {
 
   @override
   int get billsCount => _billsCount;
+
+  @override
+  Future<Either<Failure, BillsSummaryEntity>> getBillsSummary() async {
+    if (await networkInfo.isConnected) {
+      try {
+        return Right(await billsRemoteDataSource.getBillsSummary());
+      } catch (error) {
+        return Left(ErrorHandler.handle(error));
+      }
+    } else {
+      return Left(ErrorHandler.noInternet());
+    }
+  }
 }

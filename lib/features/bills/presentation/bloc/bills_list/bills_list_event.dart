@@ -42,3 +42,6 @@ class SearchInputChangedEvent extends BillsListEvent {
 class AddedUpdatedBillEvent extends BillsListEvent {}
 
 class LoadMoreBillsEvent extends BillsListEvent {}
+
+
+class GetBillsSummaryEvent extends BillsListEvent {}

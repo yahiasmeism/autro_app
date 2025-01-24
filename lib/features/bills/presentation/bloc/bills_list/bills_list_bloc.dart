@@ -1,5 +1,8 @@
 import 'package:autro_app/core/errors/failures.dart';
+import 'package:autro_app/core/interfaces/use_case.dart';
+import 'package:autro_app/features/bills/domin/entities/bills_summary_entity.dart';
 import 'package:autro_app/features/bills/domin/use_cases/get_bills_list_use_case.dart';
+import 'package:autro_app/features/bills/domin/use_cases/get_bills_summary_use_case.dart';
 import 'package:dartz/dartz.dart';
 import 'package:equatable/equatable.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -20,6 +23,7 @@ class BillsListBloc extends Bloc<BillsListEvent, BillsListState> {
   final GetBillsListUseCase getBillsListUsecase;
   final DeleteBillUseCase deleteBillUsecase;
   final BillsRepository billsRepository;
+  final GetBillsSummaryUseCase getBillsSummaryUsecase;
   final UpdateBillUseCase updateBillUsecase;
   final AddBillUseCase createBillUsecase;
   BillsListBloc(
@@ -28,6 +32,7 @@ class BillsListBloc extends Bloc<BillsListEvent, BillsListState> {
     this.deleteBillUsecase,
     this.updateBillUsecase,
     this.createBillUsecase,
+    this.getBillsSummaryUsecase,
   ) : super(BillsListInitial()) {
     on<BillsListEvent>(_mapEvents);
   }
@@ -66,6 +71,9 @@ class BillsListBloc extends Bloc<BillsListEvent, BillsListState> {
     if (event is LoadMoreBillsEvent) {
       await onLoadMoreBills(event, emit);
     }
+    if (event is GetBillsSummaryEvent) {
+      await onGetBillsSummary(event, emit);
+    }
   }
 
   Future onGetBillsList(GetBillsListEvent event, Emitter<BillsListState> emit) async {
@@ -75,12 +83,15 @@ class BillsListBloc extends Bloc<BillsListEvent, BillsListState> {
     final either = await getBillsListUsecase.call(params);
     either.fold(
       (failure) => emit(BillsListError(failure: failure)),
-      (bills) => emit(BillsListLoaded(
-        totalCount: billsCount,
-        billsList: bills,
-        paginationFilterDTO: paginationFilterDto,
-      )),
+      (bills) {
+        emit(BillsListLoaded(
+          totalCount: billsCount,
+          billsList: bills,
+          paginationFilterDTO: paginationFilterDto,
+        ));
+      },
     );
+    add(GetBillsSummaryEvent());
   }
 
   Future onUpdatePagination(OnUpdatePaginationEvent event, Emitter<BillsListState> emit) async {
@@ -92,8 +103,8 @@ class BillsListBloc extends Bloc<BillsListEvent, BillsListState> {
     final either = await getBillsListUsecase.call(params);
     emit(state.copyWith(loadingPagination: false));
     either.fold(
-      (failure) => emit(BillsListError(failure: failure)),
-      (bills) => emit(BillsListLoaded(
+      (failure) => emit(state.copyWith(failureOrSuccessOption: some(left(failure)))),
+      (bills) => emit(state.copyWith(
         totalCount: billsCount,
         billsList: bills,
         paginationFilterDTO: paginationFilterDto,
@@ -137,6 +148,7 @@ class BillsListBloc extends Bloc<BillsListEvent, BillsListState> {
         ));
       },
     );
+    add(GetBillsSummaryEvent());
   }
 
   onSearchInputChanged(SearchInputChangedEvent event, Emitter<BillsListState> emit) async {
@@ -179,12 +191,13 @@ class BillsListBloc extends Bloc<BillsListEvent, BillsListState> {
     final either = await getBillsListUsecase.call(params);
     emit(state.copyWith(loading: false));
     either.fold(
-      (failure) => emit(BillsListError(failure: failure)),
+      (failure) => emit(state.copyWith(failureOrSuccessOption: some(left(failure)))),
       (bills) => emit(state.copyWith(
         totalCount: billsCount,
         billsList: bills,
       )),
     );
+    add(GetBillsSummaryEvent());
   }
 
   onLoadMoreBills(LoadMoreBillsEvent event, Emitter<BillsListState> emit) async {
@@ -210,6 +223,16 @@ class BillsListBloc extends Bloc<BillsListEvent, BillsListState> {
           paginationFilterDTO: paginationFilterDto,
         ));
       },
+    );
+  }
+
+  onGetBillsSummary(GetBillsSummaryEvent event, Emitter<BillsListState> emit) async {
+    final state = this.state as BillsListLoaded;
+    emit(state.copyWith(loadingSummary: true));
+    final either = await getBillsSummaryUsecase.call(NoParams());
+    either.fold(
+      (failure) => null,
+      (billsSummary) => emit(state.copyWith(billsSummary: billsSummary, loadingSummary: false)),
     );
   }
 }

@@ -1,4 +1,5 @@
 import 'package:autro_app/core/errors/failures.dart';
+import 'package:autro_app/features/bills/domin/entities/bills_summary_entity.dart';
 import 'package:dartz/dartz.dart';
 
 import '../entities/bill_entity.dart';
@@ -17,6 +18,6 @@ abstract class BillsRepository {
 
   Future<Either<Failure, BillEntity>> getBill(int billId);
 
-
+  Future<Either<Failure,BillsSummaryEntity>> getBillsSummary();
   int get billsCount;
 }

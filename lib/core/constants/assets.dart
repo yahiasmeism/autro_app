@@ -62,6 +62,10 @@ class Assets {
   /// assets/icons/save.svg
   static const String iconsSave = "assets/icons/save.svg";
 
+  /// Assets for iconsTimeHalf
+  /// assets/icons/time-half.svg
+  static const String iconsTimeHalf = "assets/icons/time-half.svg";
+
   /// Assets for iconsUpload
   /// assets/icons/upload.svg
   static const String iconsUpload = "assets/icons/upload.svg";
