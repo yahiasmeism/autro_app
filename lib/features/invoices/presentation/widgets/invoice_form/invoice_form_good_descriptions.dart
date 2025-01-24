@@ -86,7 +86,7 @@ class InvoiceFormGoodDescriptions extends StatelessWidget {
             child: StandardInput(
               // readOnly: true,
               inputFormatters: [FilteringTextInputFormatter.allow(RegExp(r'^\d+\.?\d{0,2}'))],
-              labelText: 'Weight',
+              labelText: 'Weight(MT)',
               hintText: 'e.g 19.6',
               onChanged: (p0) => cubit.updateGoodDescription(dto.copyWith(weight: double.tryParse(p0) ?? 0)),
               controller: TextEditingController(text: dto.weight.toStringAsFixed(2)),
@@ -168,7 +168,7 @@ class InvoiceFormGoodDescriptions extends StatelessWidget {
             child: StandardInput(
               hintText: 'e.g 19.6',
               controller: bloc.weightController,
-              labelText: 'Weight',
+              labelText: 'Weight(MT)',
               keyboardType: TextInputType.number,
               inputFormatters: [FilteringTextInputFormatter.allow(RegExp(r'^\d*\.?\d{0,9}$'))],
             ),
@@ -276,18 +276,18 @@ class InvoiceFormGoodDescriptions extends StatelessWidget {
             readOnly: true,
           )),
           const SizedBox(width: 20),
-          // Expanded(
-          //     child: StandardInput(
-          //   readOnly: true,
-          //   label: Text.rich(
-          //     TextSpan(children: [
-          //       TextSpan(text: '40ft Containers Count ', style: TextStyles.font16Regular),
-          //       TextSpan(text: 'auto', style: TextStyles.font16Regular.copyWith(color: AppColors.primary)),
-          //     ]),
-          //   ),
-          //   controller: TextEditingController(text: state.allContainerCount.toString()),
-          // )),
-          // const SizedBox(width: 20),
+          Expanded(
+              child: StandardInput(
+            readOnly: true,
+            label: Text.rich(
+              TextSpan(children: [
+                TextSpan(text: '40ft Containers Count ', style: TextStyles.font16Regular),
+                TextSpan(text: 'auto', style: TextStyles.font16Regular.copyWith(color: AppColors.primary)),
+              ]),
+            ),
+            controller: TextEditingController(text: state.goodDescriptionsList.length.toString()),
+          )),
+          const SizedBox(width: 20),
           Expanded(
               child: StandardInput(
             readOnly: true,

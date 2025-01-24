@@ -15,6 +15,7 @@ class InvoiceFormBankDetails extends StatelessWidget {
     return StandardCard(
       title: 'Bank Details',
       child: BankAccountsListSelectionField(
+        canOpenDialog: false,
         nameController: cubit.bankNameController,
         idController: cubit.bankIdController,
       ),
