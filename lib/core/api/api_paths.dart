@@ -36,4 +36,8 @@ abstract class ApiPaths {
   // invoices
   static const String invoices = 'invoices';
   static String invoiceById(int id) => 'invoices/$id';
+
+  // bills
+  static const String bills = 'bills';
+  static String billById(int id) => 'bills/$id';
 }

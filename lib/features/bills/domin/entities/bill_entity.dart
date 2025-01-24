@@ -1,7 +1,7 @@
 import 'package:equatable/equatable.dart';
 
 class BillEntity extends Equatable {
-  final String id;
+  final int id;
   final String vendor;
   final double amount;
   final String notes;
