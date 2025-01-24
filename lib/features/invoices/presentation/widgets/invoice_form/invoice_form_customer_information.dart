@@ -1,0 +1,42 @@
+import 'package:autro_app/core/widgets/inputs/standard_input.dart';
+import 'package:autro_app/core/widgets/standard_card.dart';
+import 'package:autro_app/features/customers/presentation/widgets/customers_list_selection_field.dart';
+import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+
+import '../../bloc/invoice_form/invoice_form_cubit.dart';
+
+class InvoiceFormCustomerInformation extends StatelessWidget {
+  const InvoiceFormCustomerInformation({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    final bloc = context.read<InvoiceFormCubit>();
+
+    return StandardCard(
+      title: 'Customer Information',
+      child: Row(
+        children: [
+          Expanded(
+            child: CustomersListSelectionField(
+              enableOpenDialog: false,
+              nameController: bloc.customerNameController,
+              idController: bloc.customerIdController,
+            ),
+          ),
+          const SizedBox(
+            width: 32,
+          ),
+          Expanded(
+            child: StandardInput(
+              readOnly: true,
+              labelText: 'Tax ID',
+              hintText: 'e.g XXXX30283-9-00',
+              controller: bloc.taxIdController,
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+}

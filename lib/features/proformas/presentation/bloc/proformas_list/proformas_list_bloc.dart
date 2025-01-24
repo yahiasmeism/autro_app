@@ -62,6 +62,9 @@ class ProformasListBloc extends Bloc<ProformasListEvent, ProformasListState> {
     if (event is AddedUpdatedProformaEvent) {
       await onAddedUpdatedProforma(event, emit);
     }
+    if (event is LoadMoreProformasEvent) {
+      await onLoadMoreProformas(event, emit);
+    }
   }
 
   Future onGetProformasList(GetProformasListEvent event, Emitter<ProformasListState> emit) async {
@@ -180,6 +183,32 @@ class ProformasListBloc extends Bloc<ProformasListEvent, ProformasListState> {
         totalCount: totalCount,
         proformasList: proformas,
       )),
+    );
+  }
+
+  onLoadMoreProformas(LoadMoreProformasEvent event, Emitter<ProformasListState> emit) async {
+    final state = this.state as ProformasListLoaded;
+
+    final pageNumber = state.paginationFilterDTO.pageNumber + 1;
+
+    if (pageNumber > state.totalPages) return;
+    emit(state.copyWith(loadingPagination: true));
+    final paginationFilterDto = state.paginationFilterDTO.copyWith(pageNumber: pageNumber);
+    final params = GetProformasListUseCaseParams(dto: paginationFilterDto);
+
+    final either = await getProformasListUsecase.call(params);
+    emit(state.copyWith(loadingPagination: false));
+    either.fold(
+      (failure) => emit(state.copyWith(failureOrSuccessOption: some(left(failure)))),
+      (proformas) {
+        final updatedProformasList = List.of(state.proformasList);
+        updatedProformasList.addAll(proformas);
+        emit(state.copyWith(
+          totalCount: totalCount,
+          proformasList: updatedProformasList,
+          paginationFilterDTO: paginationFilterDto,
+        ));
+      },
     );
   }
 }

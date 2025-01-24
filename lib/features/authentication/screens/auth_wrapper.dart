@@ -1,5 +1,6 @@
 import 'package:autro_app/core/theme/text_styles.dart';
 import 'package:autro_app/features/customers/presentation/bloc/customers_list/customers_list_bloc.dart';
+import 'package:autro_app/features/invoices/presentation/bloc/invoices_list/invoices_list_bloc.dart';
 import 'package:autro_app/features/proformas/presentation/bloc/proformas_list/proformas_list_bloc.dart';
 import 'package:autro_app/features/settings/presentation/bloc/bank_accounts_list/bank_accounts_list_cubit.dart';
 import 'package:autro_app/features/settings/presentation/bloc/company/company_cubit.dart';
@@ -59,6 +60,7 @@ class AuthWrapper extends StatelessWidget {
       context.read<UsersListCubit>().getUsersList();
       context.read<InvoiceSettingsCubit>().getInvoiceSettings();
       context.read<ProformasListBloc>().add(GetProformasListEvent());
+      context.read<InvoicesListBloc>().add(GetInvoicesListEvent());
     }
   }
 }

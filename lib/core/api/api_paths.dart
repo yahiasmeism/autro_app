@@ -26,13 +26,14 @@ abstract class ApiPaths {
   static const String users = 'users';
   static String userById(int id) => 'users/$id';
 
-
   // invoice settings
   static const String invoiceSettings = 'invoice-settings';
-
-
 
   // proformas
   static const String proformas = 'proformas';
   static String proformaById(int id) => 'proformas/$id';
+
+  // invoices
+  static const String invoices = 'invoices';
+  static String invoiceById(int id) => 'invoices/$id';
 }

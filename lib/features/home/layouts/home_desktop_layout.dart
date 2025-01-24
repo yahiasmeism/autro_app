@@ -8,6 +8,8 @@ import 'package:autro_app/features/suppliers/presentation/screens/suppliers_list
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
+import '../../invoices/presentation/screens/invoices_list_screen.dart';
+
 class HomeWrapperDesktopLayout extends StatelessWidget {
   const HomeWrapperDesktopLayout({super.key});
 
@@ -39,7 +41,7 @@ class HomeWrapperDesktopLayout extends StatelessWidget {
   Widget _buildSelectedScreen(BuildContext context, HomeLoaded state) {
     final screens = <MenuItemType, Widget>{
       MenuItemType.dashboard: _buildNavigator(const Center(child: Text('Dashboard'))),
-      MenuItemType.invoices: _buildNavigator(const Center(child: Text('Invoices'))),
+      MenuItemType.invoices: _buildNavigator(const InvoicesListScreen()),
       MenuItemType.deals: _buildNavigator(const Center(child: Text('Deals'))),
       MenuItemType.proformas: _buildNavigator(const ProformasListScreen()),
       MenuItemType.customers: _buildNavigator(const CustomersListScreen()),

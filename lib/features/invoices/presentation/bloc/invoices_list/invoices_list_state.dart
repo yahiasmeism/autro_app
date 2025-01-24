@@ -1,23 +1,23 @@
-part of 'proformas_list_bloc.dart';
+part of 'invoices_list_bloc.dart';
 
-sealed class ProformasListState extends Equatable {
-  const ProformasListState();
+sealed class InvoicesListState extends Equatable {
+  const InvoicesListState();
 
   @override
   List<Object> get props => [];
 }
 
-final class ProformasListInitial extends ProformasListState {}
+final class InvoicesListInitial extends InvoicesListState {}
 
-final class ProformasListLoaded extends ProformasListState {
-  final List<ProformaEntity> proformasList;
+final class InvoicesListLoaded extends InvoicesListState {
+  final List<InvoiceEntity> invoicesList;
   final PaginationFilterDTO paginationFilterDTO;
   final int totalCount;
   final bool loading;
   final bool loadingPagination;
   final Option<Either<Failure, String>> failureOrSuccessOption;
-  const ProformasListLoaded({
-    required this.proformasList,
+  const InvoicesListLoaded({
+    required this.invoicesList,
     required this.totalCount,
     required this.paginationFilterDTO,
     this.loading = false,
@@ -26,7 +26,7 @@ final class ProformasListLoaded extends ProformasListState {
   });
   @override
   List<Object> get props => [
-        proformasList,
+        invoicesList,
         paginationFilterDTO,
         totalCount,
         loading,
@@ -34,16 +34,16 @@ final class ProformasListLoaded extends ProformasListState {
         loadingPagination,
       ];
 
-  ProformasListLoaded copyWith({
-    List<ProformaEntity>? proformasList,
+  InvoicesListLoaded copyWith({
+    List<InvoiceEntity>? invoicesList,
     PaginationFilterDTO? paginationFilterDTO,
     int? totalCount,
     bool? loading,
     Option<Either<Failure, String>>? failureOrSuccessOption,
     bool? loadingPagination,
   }) {
-    return ProformasListLoaded(
-      proformasList: proformasList ?? this.proformasList,
+    return InvoicesListLoaded(
+      invoicesList: invoicesList ?? this.invoicesList,
       paginationFilterDTO: paginationFilterDTO ?? this.paginationFilterDTO,
       totalCount: totalCount ?? this.totalCount,
       loading: loading ?? this.loading,
@@ -52,15 +52,14 @@ final class ProformasListLoaded extends ProformasListState {
     );
   }
 
-  int get totalPages => (totalCount / paginationFilterDTO.pageSize).ceil();
   bool get canGoNextPage => paginationFilterDTO.pageNumber < totalCount / paginationFilterDTO.pageSize && !loadingPagination;
   bool get canGoPreviousPage => paginationFilterDTO.pageNumber > 1 && !loadingPagination;
 }
 
-class ProformasListError extends ProformasListState {
+class InvoicesListError extends InvoicesListState {
   final Failure failure;
 
-  const ProformasListError({required this.failure});
+  const InvoicesListError({required this.failure});
 
   @override
   List<Object> get props => [failure];
