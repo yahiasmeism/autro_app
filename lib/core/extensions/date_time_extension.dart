@@ -1,3 +1,5 @@
+import 'package:intl/intl.dart';
+
 extension DateTimeX on DateTime? {
   DateTime get orDefault => this ?? DateTime.utc(1);
 
@@ -28,5 +30,5 @@ extension DateTimeX on DateTime? {
 }
 
 extension DateOnlyX on DateTime {
-  String get formattedDateYYYYMMDD => "$year-${month.toString().padLeft(2, '0')}-${day.toString().padLeft(2, '0')}";
+  String get formattedDateYYYYMMDD => DateFormat('yyyy-MM-dd').format(this);
 }
