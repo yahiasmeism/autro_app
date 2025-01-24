@@ -1,4 +1,5 @@
 import 'package:autro_app/core/constants/enums.dart';
+import 'package:autro_app/features/bills/presentation/screens/proformas_list_screen.dart';
 import 'package:autro_app/features/customers/presentation/screens/customers_list_screen.dart';
 import 'package:autro_app/features/home/bloc/home_bloc.dart';
 import 'package:autro_app/features/home/widget/custom_drawer.dart';
@@ -45,10 +46,9 @@ class HomeWrapperDesktopLayout extends StatelessWidget {
       MenuItemType.deals: _buildNavigator(const Center(child: Text('Deals'))),
       MenuItemType.proformas: _buildNavigator(const ProformasListScreen()),
       MenuItemType.customers: _buildNavigator(const CustomersListScreen()),
-      MenuItemType.accounting: _buildNavigator(const Center(child: Text('Accounting'))),
       MenuItemType.shipping: _buildNavigator(const Center(child: Text('Shipping'))),
       MenuItemType.settings: _buildNavigator(const SettingsScreen()),
-      MenuItemType.bills: _buildNavigator(const Center(child: Text('Bills'))),
+      MenuItemType.bills: _buildNavigator(const Center(child: BillsListScreen())),
       MenuItemType.suppliers: _buildNavigator(const SuppliersListScreen()),
       MenuItemType.messages: _buildNavigator(const Center(child: Text('Messages'))),
     };

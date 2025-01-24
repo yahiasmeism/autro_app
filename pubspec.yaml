@@ -58,7 +58,7 @@ dependencies:
   hive: ^2.2.3
   intl: ^0.20.1
   high_q_paginated_drop_down: ^2.1.0
-
+  skeleton_text: ^3.0.1
 dev_dependencies:
   flutter_test:
     sdk: flutter

@@ -12,9 +12,11 @@ class BankAccountsListSelectionField extends StatefulWidget {
     super.key,
     required this.nameController,
     required this.idController,
+    this.canOpenDialog = true,
   });
 
   final TextEditingController nameController, idController;
+  final bool canOpenDialog;
 
   @override
   State createState() => _BankAccountsListSelectionFieldState();
@@ -44,13 +46,15 @@ class _BankAccountsListSelectionFieldState extends State<BankAccountsListSelecti
   Widget _buildField() {
     return InkWell(
       borderRadius: BorderRadius.circular(8),
-      onTap: () async {
-        final value = await showCustomDialog();
-        if (value != null) {
-          widget.nameController.text = value.label;
-          widget.idController.text = value.value;
-        }
-      },
+      onTap: widget.canOpenDialog
+          ? () async {
+              final value = await showCustomDialog();
+              if (value != null) {
+                widget.nameController.text = value.label;
+                widget.idController.text = value.value;
+              }
+            }
+          : null,
       child: TextFormField(
         style: TextStyles.font16Regular,
         readOnly: true,
@@ -61,7 +65,7 @@ class _BankAccountsListSelectionFieldState extends State<BankAccountsListSelecti
           hintText: 'Select Bank Account',
           suffixIcon: Icon(Icons.keyboard_arrow_down),
         ),
-        enabled: false,
+        enabled: !widget.canOpenDialog,
       ),
     );
   }
