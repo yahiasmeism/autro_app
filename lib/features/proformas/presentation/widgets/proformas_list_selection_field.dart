@@ -3,22 +3,27 @@ import 'package:autro_app/core/theme/app_colors.dart';
 import 'package:autro_app/core/theme/text_styles.dart';
 import 'package:autro_app/core/widgets/failure_screen.dart';
 import 'package:autro_app/core/widgets/inputs/standard_search_input.dart';
-import 'package:autro_app/features/customers/presentation/bloc/customers_list/customers_list_bloc.dart';
+import 'package:autro_app/features/proformas/domin/entities/proforma_entity.dart';
+import 'package:autro_app/features/proformas/presentation/bloc/proformas_list/proformas_list_bloc.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
-class CustomersListSelectionField extends StatefulWidget {
-  const CustomersListSelectionField(
-      {super.key, required this.nameController, required this.idController, this.enableOpenDialog = true});
+class ProformasListSelectionField extends StatefulWidget {
+  const ProformasListSelectionField({
+    super.key,
+    required this.nameController,
+    required this.idController,
+    this.onItemTap,
+  });
 
   final TextEditingController nameController, idController;
-  final bool enableOpenDialog;
+  final Function(ProformaEntity proforma)? onItemTap;
 
   @override
-  State createState() => _CustomersListSelectionFieldState();
+  State createState() => _ProformasListSelectionFieldState();
 }
 
-class _CustomersListSelectionFieldState extends State<CustomersListSelectionField> {
+class _ProformasListSelectionFieldState extends State<ProformasListSelectionField> {
   final ScrollController scrollController = ScrollController();
   bool hasPagination = false;
 
@@ -36,42 +41,38 @@ class _CustomersListSelectionFieldState extends State<CustomersListSelectionFiel
   Widget _buildLabel() {
     return Padding(
       padding: const EdgeInsets.only(bottom: 8),
-      child: Text('Customer Name', style: TextStyles.font16Regular),
+      child: Text('Proforma Number', style: TextStyles.font16Regular),
     );
   }
 
   Widget _buildField() {
     return InkWell(
       borderRadius: BorderRadius.circular(8),
-      onTap: widget.enableOpenDialog
-          ? () async {
-              final value = await showCustomDialog();
-              if (value != null) {
-                widget.nameController.text = value.label;
-                widget.idController.text = value.value;
-              }
-            }
-          : null,
-      child: MouseRegion(
-        cursor: widget.enableOpenDialog ? SystemMouseCursors.click : MouseCursor.defer,
-        child: TextFormField(
-          style: TextStyles.font16Regular,
-          readOnly: true,
-          textAlignVertical: TextAlignVertical.center,
-          controller: widget.nameController,
-          decoration: const InputDecoration(
-            contentPadding: EdgeInsets.all(16),
-            hintText: 'Select Customer',
-            suffixIcon: Icon(Icons.keyboard_arrow_down),
-          ),
-          enabled: !widget.enableOpenDialog,
+      onTap: () async {
+        final value = await showCustomDialog();
+        if (value != null) {
+          widget.nameController.text = value.label;
+          widget.idController.text = value.value.id.toString();
+          widget.onItemTap?.call(value.value);
+        }
+      },
+      child: TextFormField(
+        style: TextStyles.font16Regular,
+        readOnly: true,
+        textAlignVertical: TextAlignVertical.center,
+        controller: widget.nameController,
+        decoration: const InputDecoration(
+          contentPadding: EdgeInsets.all(16),
+          hintText: 'Select Proforma',
+          suffixIcon: Icon(Icons.keyboard_arrow_down),
         ),
+        enabled: false,
       ),
     );
   }
 
-  Future<SelectableItemModel<String>?> showCustomDialog() async {
-    return showDialog<SelectableItemModel<String>?>(
+  Future<SelectableItemModel<ProformaEntity>?> showCustomDialog() async {
+    return showDialog<SelectableItemModel<ProformaEntity>?>(
       context: context,
       barrierColor: Colors.black.withOpacity(0.5),
       builder: (context) {
@@ -98,7 +99,7 @@ class _CustomersListSelectionFieldState extends State<CustomersListSelectionFiel
                           padding: const EdgeInsets.symmetric(horizontal: 8),
                           child: StandardSearchInput(
                             onSearch: (context, keyword) {
-                              context.read<CustomersListBloc>().add(SearchInputChangedEvent(keyword: keyword));
+                              context.read<ProformasListBloc>().add(SearchInputChangedEvent(keyword: keyword));
                             },
                           ),
                         ),
@@ -107,17 +108,17 @@ class _CustomersListSelectionFieldState extends State<CustomersListSelectionFiel
                   ),
                   const SizedBox(height: 16),
                   Expanded(
-                    child: BlocBuilder<CustomersListBloc, CustomersListState>(
+                    child: BlocBuilder<ProformasListBloc, ProformasListState>(
                       builder: (context, state) {
-                        if (state is CustomersListInitial) {
+                        if (state is ProformasListInitial) {
                           return const Center(child: CircularProgressIndicator());
-                        } else if (state is CustomersListLoaded) {
+                        } else if (state is ProformasListLoaded) {
                           if (!state.loadingPagination) hasPagination = false;
                           return _buildList(state);
-                        } else if (state is CustomersListError) {
+                        } else if (state is ProformasListError) {
                           return FailureScreen(
                             failure: state.failure,
-                            onRetryTap: () => context.read<CustomersListBloc>().add(HandleFailureEvent()),
+                            onRetryTap: () => context.read<ProformasListBloc>().add(HandleFailureEvent()),
                           );
                         } else {
                           return const SizedBox.shrink();
@@ -146,7 +147,7 @@ class _CustomersListSelectionFieldState extends State<CustomersListSelectionFiel
       padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
       child: Row(
         children: [
-          Text('Select Customer', style: TextStyles.font20Regular),
+          Text('Select Proforma', style: TextStyles.font20Regular),
           const Spacer(),
           IconButton(
             onPressed: () => Navigator.pop(context),
@@ -158,8 +159,8 @@ class _CustomersListSelectionFieldState extends State<CustomersListSelectionFiel
     );
   }
 
-  Widget _buildList(CustomersListLoaded state) {
-    if (state.customersList.isEmpty) {
+  Widget _buildList(ProformasListLoaded state) {
+    if (state.proformasList.isEmpty) {
       return Center(child: Text('No Results Found', style: TextStyles.font16Regular));
     }
 
@@ -168,16 +169,16 @@ class _CustomersListSelectionFieldState extends State<CustomersListSelectionFiel
         if (notification is ScrollUpdateNotification &&
             scrollController.position.pixels >= scrollController.position.maxScrollExtent * 0.9 &&
             !state.loadingPagination) {
-          context.read<CustomersListBloc>().add(LoadMoreCustomersEvent());
+          context.read<ProformasListBloc>().add(LoadMoreProformasEvent());
         }
         return false;
       },
       child: ListView.separated(
         separatorBuilder: (context, index) => const Divider(height: 0),
         controller: scrollController,
-        itemCount: state.loadingPagination ? state.customersList.length + 1 : state.customersList.length,
+        itemCount: state.loadingPagination ? state.proformasList.length + 1 : state.proformasList.length,
         itemBuilder: (context, index) {
-          if (index == state.customersList.length) {
+          if (index == state.proformasList.length) {
             return const Padding(
               padding: EdgeInsets.all(16),
               child: Center(
@@ -193,7 +194,7 @@ class _CustomersListSelectionFieldState extends State<CustomersListSelectionFiel
               ),
             );
           }
-          final item = state.customersList[index];
+          final item = state.proformasList[index];
           final isSelected = item.id.toString() == widget.idController.text;
           return ListTile(
             selectedTileColor: Colors.black12,
@@ -201,10 +202,10 @@ class _CustomersListSelectionFieldState extends State<CustomersListSelectionFiel
             trailing: isSelected ? const Icon(Icons.check, color: AppColors.deepGreen) : null,
             selectedColor: Colors.black12,
             shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(8)),
-            title: Text(item.name, style: TextStyles.font16Regular),
+            title: Text(item.proformaNumber, style: TextStyles.font16Regular),
             onTap: () {
-              Navigator.pop(context, SelectableItemModel<String>(label: item.name, value: item.id.toString()));
-              context.read<CustomersListBloc>().add(const SearchInputChangedEvent(keyword: ''));
+              Navigator.pop(context, SelectableItemModel<ProformaEntity>(label: item.proformaNumber, value: item));
+              context.read<ProformasListBloc>().add(const SearchInputChangedEvent(keyword: ''));
             },
           );
         },

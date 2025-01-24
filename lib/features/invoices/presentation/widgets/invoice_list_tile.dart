@@ -1,8 +1,11 @@
+import 'package:autro_app/core/constants/enums.dart';
 import 'package:autro_app/core/theme/app_colors.dart';
 import 'package:autro_app/core/theme/text_styles.dart';
+import 'package:autro_app/core/utils/nav_util.dart';
 import 'package:autro_app/core/widgets/delete_icon_button.dart';
 import 'package:autro_app/core/widgets/edit_icon_button.dart';
 import 'package:autro_app/features/invoices/domin/entities/invoice_entity.dart';
+import 'package:autro_app/features/invoices/presentation/screens/invoice_form_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
@@ -17,7 +20,7 @@ class InvoiceListTile extends StatelessWidget {
     return InkWell(
       borderRadius: BorderRadius.circular(8),
       onTap: () {
-        // NavUtil.push(context, InvoiceFormScreen(formType: FormType.edit, invoice: invoiceEntity));
+        NavUtil.push(context, InvoiceFormScreen(formType: FormType.edit, invoice: invoiceEntity));
       },
       child: Container(
         decoration: const BoxDecoration(
@@ -61,7 +64,7 @@ class InvoiceListTile extends StatelessWidget {
                 children: [
                   EditIconButton(
                     onPressed: () {
-                      // NavUtil.push(context, InvoiceFormScreen(formType: FormType.edit, invoice: invoiceEntity));
+                      NavUtil.push(context, InvoiceFormScreen(formType: FormType.edit, invoice: invoiceEntity));
                     },
                   ),
                   const SizedBox(width: 8),

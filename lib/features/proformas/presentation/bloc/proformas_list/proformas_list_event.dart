@@ -40,3 +40,5 @@ class SearchInputChangedEvent extends ProformasListEvent {
 }
 
 class AddedUpdatedProformaEvent extends ProformasListEvent {}
+
+class LoadMoreProformasEvent extends ProformasListEvent {}

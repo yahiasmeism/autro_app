@@ -59,8 +59,10 @@ import 'package:autro_app/features/invoices/domin/use_cases/get_invoices_list_us
     as _i39;
 import 'package:autro_app/features/invoices/domin/use_cases/update_invoice_use_case.dart'
     as _i707;
+import 'package:autro_app/features/invoices/presentation/bloc/invoice_form/invoice_form_cubit.dart'
+    as _i676;
 import 'package:autro_app/features/invoices/presentation/bloc/invoices_list/invoices_list_bloc.dart'
-    as _i963;
+    as _i654;
 import 'package:autro_app/features/proformas/data/data_sources/remote/proformas_remote_data_source.dart'
     as _i154;
 import 'package:autro_app/features/proformas/data/repositories_impl/proformas_repository_impl.dart'
@@ -286,6 +288,10 @@ extension GetItInjectableX on _i174.GetIt {
     gh.lazySingleton<_i134.UpdateCustomerUsecase>(() =>
         _i134.UpdateCustomerUsecase(
             customersRepository: gh<_i54.CustomersRepository>()));
+    gh.factory<_i676.InvoiceFormCubit>(() => _i676.InvoiceFormCubit(
+          gh<_i303.CreateInvoiceUseCase>(),
+          gh<_i707.UpdateInvoiceUseCase>(),
+        ));
     gh.lazySingleton<_i226.DeleteSupplierUsecase>(() =>
         _i226.DeleteSupplierUsecase(
             suppliersRepository: gh<_i712.SuppliersRepository>()));
@@ -298,7 +304,7 @@ extension GetItInjectableX on _i174.GetIt {
         () => _i173.RegisterCubit(gh<_i288.AuthRepo>()));
     gh.lazySingleton<_i51.AppAuthBloc>(
         () => _i51.AppAuthBloc(gh<_i288.AuthRepo>()));
-    gh.factory<_i963.InvoicesListBloc>(() => _i963.InvoicesListBloc(
+    gh.factory<_i654.InvoicesListBloc>(() => _i654.InvoicesListBloc(
           gh<_i39.GetInvoicesListUseCase>(),
           gh<_i342.InvoicesRepository>(),
           gh<_i426.DeleteInvoiceUseCase>(),

@@ -22,7 +22,7 @@ class InvoiceGoodDescriptionRequest extends InvoiceGoodDescriptionParams impleme
   Map<String, dynamic> toJson() {
     return {
       "description": description,
-      "containers_number": containerNumber,
+      "container_number": containerNumber,
       "weight": weight,
       "unit_price": unitPrice,
     };

@@ -30,6 +30,7 @@ class CreateInvoiceRequest extends CreateInvoiceUseCaseParams implements Request
   @override
   Map<String, dynamic> toJson() {
     return {
+      'invoice_number': invoiceNumber,
       "proforma_id": proformaId,
       "date": date,
       "customer_id": customerId,

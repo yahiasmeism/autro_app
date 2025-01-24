@@ -200,11 +200,11 @@ class CustomersListBloc extends Bloc<CustomersListEvent, CustomersListState> {
     final either = await getCustomersListUsecase.call(params);
     emit(state.copyWith(loadingPagination: false));
     either.fold(
-      (failure) => emit(CustomersListError(failure: failure)),
+      (failure) => emit(state.copyWith(failureOrSuccessOption: some(left(failure)))),
       (customers) {
         final updatedCustomersList = List.of(state.customersList);
         updatedCustomersList.addAll(customers);
-        emit(CustomersListLoaded(
+        emit(state.copyWith(
           totalCount: totalCount,
           customersList: updatedCustomersList,
           paginationFilterDTO: paginationFilterDto,

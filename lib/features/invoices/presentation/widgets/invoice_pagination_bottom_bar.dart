@@ -2,7 +2,10 @@ import 'package:autro_app/core/widgets/generic_pagination_bottom_bar.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
+import '../../../../core/constants/enums.dart';
+import '../../../../core/utils/nav_util.dart';
 import '../bloc/invoices_list/invoices_list_bloc.dart';
+import '../screens/invoice_form_screen.dart';
 
 class InvoicePaginationBottomBar extends StatelessWidget {
   const InvoicePaginationBottomBar({super.key});
@@ -40,7 +43,7 @@ class InvoicePaginationBottomBar extends StatelessWidget {
           labelAddButton: 'Add New Invoice',
           onAddTap: isLoaded
               ? () {
-                  // NavUtil.push(context, const InvoiceFormScreen(formType: FormType.create));
+                  NavUtil.push(context, const InvoiceFormScreen(formType: FormType.create));
                 }
               : null,
         );

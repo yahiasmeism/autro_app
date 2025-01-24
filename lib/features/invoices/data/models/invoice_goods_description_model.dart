@@ -20,7 +20,7 @@ class InvoiceGoodsDescriptionModel extends InvoiceGoodsDescriptionEntity impleme
     return InvoiceGoodsDescriptionModel(
       id: (json['id'] as int?).toIntOrZero,
       description: (json['description'] as String?).orEmpty,
-      containerNumber: (json['containers_number'] as String?).orEmpty,
+      containerNumber: (json['container_number'] as String?).orEmpty,
       weight: (json['weight'] as num?).toDoubleOrZero,
       unitPrice: (json['unit_price'] as num?).toDoubleOrZero,
       createdAt: DateTime.tryParse((json['created_at'] as String?).orEmpty).orDefault,
@@ -46,7 +46,7 @@ class InvoiceGoodsDescriptionModel extends InvoiceGoodsDescriptionEntity impleme
   Map<String, dynamic> toJson() {
     return {
       "description": description,
-      "containers_number": containerNumber,
+      "container_number": containerNumber,
       "weight": weight,
       "unit_price": unitPrice,
     };
