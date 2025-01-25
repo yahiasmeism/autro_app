@@ -88,8 +88,8 @@ class InvoicesListBloc extends Bloc<InvoicesListEvent, InvoicesListState> {
     final either = await getInvoicesListUsecase.call(params);
     emit(state.copyWith(loadingPagination: false));
     either.fold(
-      (failure) => emit(InvoicesListError(failure: failure)),
-      (invoices) => emit(InvoicesListLoaded(
+      (failure) => emit(state.copyWith(failureOrSuccessOption: some(left(failure)))),
+      (invoices) => emit(state.copyWith(
         totalCount: totalCount,
         invoicesList: invoices,
         paginationFilterDTO: paginationFilterDto,
@@ -175,7 +175,7 @@ class InvoicesListBloc extends Bloc<InvoicesListEvent, InvoicesListState> {
     final either = await getInvoicesListUsecase.call(params);
     emit(state.copyWith(loading: false));
     either.fold(
-      (failure) => emit(InvoicesListError(failure: failure)),
+      (failure) => emit(state.copyWith(failureOrSuccessOption: some(left(failure)))),
       (invoices) => emit(state.copyWith(
         totalCount: totalCount,
         invoicesList: invoices,

@@ -88,8 +88,8 @@ class SuppliersListBloc extends Bloc<SuppliersListEvent, SuppliersListState> {
     final either = await getSuppliersListUsecase.call(params);
     emit(state.copyWith(loadingPagination: false));
     either.fold(
-      (failure) => emit(SuppliersListError(failure: failure)),
-      (suppliers) => emit(SuppliersListLoaded(
+      (failure) => emit(state.copyWith(failureOrSuccessOption: some(left(failure)))),
+      (suppliers) => emit(state.copyWith(
         totalCount: totalCount,
         suppliersList: suppliers,
         paginationFilterDTO: paginationFilterDto,
@@ -175,7 +175,7 @@ class SuppliersListBloc extends Bloc<SuppliersListEvent, SuppliersListState> {
     final either = await getSuppliersListUsecase.call(params);
     emit(state.copyWith(loading: false));
     either.fold(
-      (failure) => emit(SuppliersListError(failure: failure)),
+      (failure) => emit(state.copyWith(failureOrSuccessOption: some(left(failure)))),
       (suppliers) => emit(state.copyWith(
         totalCount: totalCount,
         suppliersList: suppliers,
