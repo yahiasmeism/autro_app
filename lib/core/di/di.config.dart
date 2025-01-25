@@ -153,8 +153,10 @@ import 'package:autro_app/features/shipping-invoices/domin/usecases/get_shipping
     as _i856;
 import 'package:autro_app/features/shipping-invoices/domin/usecases/update_shipping_invoices_use_case.dart'
     as _i766;
-import 'package:autro_app/features/shipping-invoices/presentation/bloc/suppliers_list/shipping_invoices_list_bloc.dart'
-    as _i623;
+import 'package:autro_app/features/shipping-invoices/presentation/bloc/shipping_invoice_form/shipping_invoice_form_bloc.dart'
+    as _i839;
+import 'package:autro_app/features/shipping-invoices/presentation/bloc/shipping_invoice_list/shipping_invoices_list_bloc.dart'
+    as _i1020;
 import 'package:autro_app/features/suppliers/data/datasources/suppliers_remote_datesourse.dart'
     as _i829;
 import 'package:autro_app/features/suppliers/data/repositories/suppliers_repository_impl.dart'
@@ -322,8 +324,8 @@ extension GetItInjectableX on _i174.GetIt {
     gh.lazySingleton<_i707.UpdateInvoiceUseCase>(() =>
         _i707.UpdateInvoiceUseCase(
             invoicesRepository: gh<_i342.InvoicesRepository>()));
-    gh.factory<_i623.ShippingInvoicesListBloc>(
-        () => _i623.ShippingInvoicesListBloc(
+    gh.factory<_i1020.ShippingInvoicesListBloc>(
+        () => _i1020.ShippingInvoicesListBloc(
               gh<_i856.GetShippingInvoicesListUseCase>(),
               gh<_i725.DeleteShippingInvoiceUseCase>(),
               gh<_i43.ShippingInvoicesRepository>(),
@@ -431,6 +433,11 @@ extension GetItInjectableX on _i174.GetIt {
           gh<_i927.CreateProformaUseCase>(),
           gh<_i635.UpdateProformaUseCase>(),
         ));
+    gh.factory<_i839.ShippingInvoiceFormBloc>(
+        () => _i839.ShippingInvoiceFormBloc(
+              gh<_i163.CreateShippingInvoiceUseCase>(),
+              gh<_i766.UpdateShippingInvoicesUseCase>(),
+            ));
     gh.factory<_i497.SuppliersListBloc>(() => _i497.SuppliersListBloc(
           gh<_i884.GetSuppliersListUsecase>(),
           gh<_i226.DeleteSupplierUsecase>(),

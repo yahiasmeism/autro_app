@@ -46,4 +46,11 @@ class ShippingInvoiceEntity extends Equatable {
         return '';
     }
   }
+
+  bool get hasAttachment => attachmentUrl.isNotEmpty;
+
+  bool get hasImageAttachment =>
+      attachmentUrl.split('.').last == 'jpg' || attachmentUrl.split('.').last == 'png' || attachmentUrl.split('.').last == 'jpeg';
+
+  bool get hasPdfAttachment => attachmentUrl.split('.').last == 'pdf';
 }

@@ -12,7 +12,7 @@ import 'package:autro_app/features/shipping-invoices/presentation/widgets/shippi
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
-import '../../bloc/suppliers_list/shipping_invoices_list_bloc.dart';
+import '../../bloc/shipping_invoice_list/shipping_invoices_list_bloc.dart';
 
 class ShippingInvoicesListDesktopLayout extends StatelessWidget {
   const ShippingInvoicesListDesktopLayout({super.key});

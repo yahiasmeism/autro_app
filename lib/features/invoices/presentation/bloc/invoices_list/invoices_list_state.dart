@@ -52,6 +52,8 @@ final class InvoicesListLoaded extends InvoicesListState {
     );
   }
 
+  int get totalPages => (totalCount / paginationFilterDTO.pageSize).ceil(); 
+
   bool get canGoNextPage => paginationFilterDTO.pageNumber < totalCount / paginationFilterDTO.pageSize && !loadingPagination;
   bool get canGoPreviousPage => paginationFilterDTO.pageNumber > 1 && !loadingPagination;
 }

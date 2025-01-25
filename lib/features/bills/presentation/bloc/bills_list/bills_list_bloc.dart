@@ -152,36 +152,38 @@ class BillsListBloc extends Bloc<BillsListEvent, BillsListState> {
   }
 
   onSearchInputChanged(SearchInputChangedEvent event, Emitter<BillsListState> emit) async {
-    final state = this.state as BillsListLoaded;
+    if (state is BillsListLoaded) {
+      final state = this.state as BillsListLoaded;
 
-    emit(state.copyWith(loading: true));
+      emit(state.copyWith(loading: true));
 
-    final conditions = List.of(state.paginationFilterDTO.filter.conditions);
+      final conditions = List.of(state.paginationFilterDTO.filter.conditions);
 
-    final newCondition = FilterConditionDTO.searchFilter(event.keyword);
+      final newCondition = FilterConditionDTO.searchFilter(event.keyword);
 
-    conditions.removeWhere((condition) => condition.fieldName == newCondition.fieldName);
-    if (event.keyword.isNotEmpty) conditions.add(newCondition);
+      conditions.removeWhere((condition) => condition.fieldName == newCondition.fieldName);
+      if (event.keyword.isNotEmpty) conditions.add(newCondition);
 
-    final updatedFilter = state.paginationFilterDTO.filter.copyWith(conditions: conditions);
+      final updatedFilter = state.paginationFilterDTO.filter.copyWith(conditions: conditions);
 
-    final updatedFilterPagination = PaginationFilterDTO.initial().copyWith(filter: updatedFilter);
+      final updatedFilterPagination = PaginationFilterDTO.initial().copyWith(filter: updatedFilter);
 
-    final params = GetBillsListUseCaseParams(paginationFilterDTO: updatedFilterPagination);
+      final params = GetBillsListUseCaseParams(paginationFilterDTO: updatedFilterPagination);
 
-    final either = await getBillsListUsecase.call(params);
-    emit(state.copyWith(loading: false));
+      final either = await getBillsListUsecase.call(params);
+      emit(state.copyWith(loading: false));
 
-    either.fold(
-      (failure) => emit(state.copyWith(failureOrSuccessOption: some(left(failure)))),
-      (bills) {
-        emit(state.copyWith(
-          billsList: bills,
-          paginationFilterDTO: updatedFilterPagination,
-          totalCount: billsCount,
-        ));
-      },
-    );
+      either.fold(
+        (failure) => emit(state.copyWith(failureOrSuccessOption: some(left(failure)))),
+        (bills) {
+          emit(state.copyWith(
+            billsList: bills,
+            paginationFilterDTO: updatedFilterPagination,
+            totalCount: billsCount,
+          ));
+        },
+      );
+    }
   }
 
   onAddedUpdatedBill(AddedUpdatedBillEvent event, Emitter<BillsListState> emit) async {

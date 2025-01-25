@@ -70,19 +70,19 @@ class InvoicesRepositoryImpl extends InvoicesRepository {
 
   @override
   Future<Either<Failure, List<InvoiceEntity>>> getInvoicesList(GetInvoicesListUseCaseParams params) async {
-    if (await networkInfo.isConnected) {
-      try {
-        final paginationFilterBody = PaginationFilterRequest.fromDTO(params.dto);
-        final body = GetInvoicesListRequest(paginationFilterRequest: paginationFilterBody);
-        final paginationList = await remoteDataSource.getInvoicesList(body);
-        _totalCount = paginationList.total;
-        return Right(paginationList.data);
-      } catch (e) {
-        return Left(ErrorHandler.handle(e));
-      }
-    } else {
-      return Left(ErrorHandler.noInternet());
+    // if (await networkInfo.isConnected) {
+    try {
+      final paginationFilterBody = PaginationFilterRequest.fromDTO(params.dto);
+      final body = GetInvoicesListRequest(paginationFilterRequest: paginationFilterBody);
+      final paginationList = await remoteDataSource.getInvoicesList(body);
+      _totalCount = paginationList.total;
+      return Right(paginationList.data);
+    } catch (e) {
+      return Left(ErrorHandler.handle(e));
     }
+    // } else {
+    //   return Left(ErrorHandler.noInternet());
+    // }
   }
 
   @override

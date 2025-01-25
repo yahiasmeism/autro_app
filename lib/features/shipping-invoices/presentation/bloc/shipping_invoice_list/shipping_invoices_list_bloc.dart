@@ -136,36 +136,38 @@ class ShippingInvoicesListBloc extends Bloc<ShippingInvoicesListEvent, ShippingI
   }
 
   onSearchInputChanged(SearchInputChangedShippingInvoicesEvent event, Emitter<ShippingInvoicesListState> emit) async {
-    final state = this.state as ShippingInvoicesListLoaded;
+    if (state is ShippingInvoicesListLoaded) {
+      final state = this.state as ShippingInvoicesListLoaded;
 
-    emit(state.copyWith(loading: true));
+      emit(state.copyWith(loading: true));
 
-    final conditions = List.of(state.paginationFilterDTO.filter.conditions);
+      final conditions = List.of(state.paginationFilterDTO.filter.conditions);
 
-    final newCondition = FilterConditionDTO.searchFilter(event.keyword);
+      final newCondition = FilterConditionDTO.searchFilter(event.keyword);
 
-    conditions.removeWhere((condition) => condition.fieldName == newCondition.fieldName);
-    if (event.keyword.isNotEmpty) conditions.add(newCondition);
+      conditions.removeWhere((condition) => condition.fieldName == newCondition.fieldName);
+      if (event.keyword.isNotEmpty) conditions.add(newCondition);
 
-    final updatedFilter = state.paginationFilterDTO.filter.copyWith(conditions: conditions);
+      final updatedFilter = state.paginationFilterDTO.filter.copyWith(conditions: conditions);
 
-    final updatedFilterPagination = PaginationFilterDTO.initial().copyWith(filter: updatedFilter);
+      final updatedFilterPagination = PaginationFilterDTO.initial().copyWith(filter: updatedFilter);
 
-    final params = GetShippingInvoicesListUseCaseParams(paginationFilterDTO: updatedFilterPagination);
+      final params = GetShippingInvoicesListUseCaseParams(paginationFilterDTO: updatedFilterPagination);
 
-    final either = await getShippingInvoicesListUsecase.call(params);
-    emit(state.copyWith(loading: false));
+      final either = await getShippingInvoicesListUsecase.call(params);
+      emit(state.copyWith(loading: false));
 
-    either.fold(
-      (failure) => emit(state.copyWith(failureOrSuccessOption: some(left(failure)))),
-      (shippingInvoices) {
-        emit(state.copyWith(
-          shippingInvoicesList: shippingInvoices,
-          paginationFilterDTO: updatedFilterPagination,
-          totalCount: totalCount,
-        ));
-      },
-    );
+      either.fold(
+        (failure) => emit(state.copyWith(failureOrSuccessOption: some(left(failure)))),
+        (shippingInvoices) {
+          emit(state.copyWith(
+            shippingInvoicesList: shippingInvoices,
+            paginationFilterDTO: updatedFilterPagination,
+            totalCount: totalCount,
+          ));
+        },
+      );
+    }
   }
 
   onAddedUpdatedShippingInvoice(AddedUpdatedShippingInvoiceEvent event, Emitter<ShippingInvoicesListState> emit) async {

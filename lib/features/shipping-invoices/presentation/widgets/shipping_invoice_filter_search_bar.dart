@@ -3,7 +3,7 @@ import 'package:autro_app/core/widgets/inputs/standard_search_input.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
-import '../bloc/suppliers_list/shipping_invoices_list_bloc.dart';
+import '../bloc/shipping_invoice_list/shipping_invoices_list_bloc.dart';
 
 class ShippingInvoiceFilterSearchBar extends StatelessWidget {
   const ShippingInvoiceFilterSearchBar({super.key});

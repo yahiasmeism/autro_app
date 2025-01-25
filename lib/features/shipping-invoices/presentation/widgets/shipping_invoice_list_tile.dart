@@ -1,14 +1,17 @@
+import 'package:autro_app/core/constants/enums.dart';
 import 'package:autro_app/core/extensions/date_time_extension.dart';
 import 'package:autro_app/core/theme/app_colors.dart';
 import 'package:autro_app/core/theme/text_styles.dart';
+import 'package:autro_app/core/utils/nav_util.dart';
 import 'package:autro_app/core/widgets/delete_icon_button.dart';
 import 'package:autro_app/core/widgets/edit_icon_button.dart';
+import 'package:autro_app/features/shipping-invoices/presentation/screens/shipping_invoices_form_screen.dart';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 import '../../domin/entities/shipping_invoice_entites.dart';
-import '../bloc/suppliers_list/shipping_invoices_list_bloc.dart';
+import '../bloc/shipping_invoice_list/shipping_invoices_list_bloc.dart';
 
 class ShippingInvoiceListTile extends StatelessWidget {
   const ShippingInvoiceListTile({super.key, required this.shippingInvoiceEntity});
@@ -19,7 +22,7 @@ class ShippingInvoiceListTile extends StatelessWidget {
     return InkWell(
       borderRadius: BorderRadius.circular(8),
       onTap: () {
-        // NavUtil.push(context, ShippingInvoiceFormScreen(formType: FormType.edit, shippingInvoice: shippingInvoiceEntity));
+        NavUtil.push(context, ShippingInvoiceFormScreen(formType: FormType.edit, shippingInvoice: shippingInvoiceEntity));
       },
       child: Container(
         decoration: const BoxDecoration(
@@ -63,8 +66,8 @@ class ShippingInvoiceListTile extends StatelessWidget {
                 children: [
                   EditIconButton(
                     onPressed: () {
-                      // NavUtil.push(
-                      //     context, ShippingInvoiceFormScreen(formType: FormType.edit, shippingInvoice: shippingInvoiceEntity));
+                      NavUtil.push(
+                          context, ShippingInvoiceFormScreen(formType: FormType.edit, shippingInvoice: shippingInvoiceEntity));
                     },
                   ),
                   const SizedBox(width: 8),

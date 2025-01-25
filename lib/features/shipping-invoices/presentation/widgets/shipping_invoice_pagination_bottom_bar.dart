@@ -1,5 +1,8 @@
+import 'package:autro_app/core/constants/enums.dart';
+import 'package:autro_app/core/utils/nav_util.dart';
 import 'package:autro_app/core/widgets/generic_pagination_bottom_bar.dart';
-import 'package:autro_app/features/shipping-invoices/presentation/bloc/suppliers_list/shipping_invoices_list_bloc.dart';
+import 'package:autro_app/features/shipping-invoices/presentation/bloc/shipping_invoice_list/shipping_invoices_list_bloc.dart';
+import 'package:autro_app/features/shipping-invoices/presentation/screens/shipping_invoices_form_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
@@ -39,7 +42,7 @@ class ShippingInvoicePaginationBottomBar extends StatelessWidget {
           labelAddButton: 'Add New Shipping Invoice',
           onAddTap: isLoaded
               ? () {
-                  // NavUtil.push(context, const ProformaFormScreen(formType: FormType.create));
+                  NavUtil.push(context, const ShippingInvoiceFormScreen(formType: FormType.create));
                 }
               : null,
         );

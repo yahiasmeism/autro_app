@@ -56,7 +56,7 @@ class ShippingInvoicesRepositoryImpl extends ShippingInvoicesRepository {
   }
 
   @override
-  Future<Either<Failure, ShippingInvoiceEntity>> getShippingInvoiceById(int id) async{
+  Future<Either<Failure, ShippingInvoiceEntity>> getShippingInvoiceById(int id) async {
     if (await networkInfo.isConnected) {
       try {
         final shippingInvoice = await remoteDataSource.getShippingInvoice(id);
@@ -70,26 +70,27 @@ class ShippingInvoicesRepositoryImpl extends ShippingInvoicesRepository {
   }
 
   @override
-  Future<Either<Failure, List<ShippingInvoiceEntity>>> getShippingInvoicesList(GetShippingInvoicesListUseCaseParams params) async{
-    if (await networkInfo.isConnected) {
-      try {
-        final body = GetShippingInvoicesListRequest(paginationFilterDTO: params.paginationFilterDTO);
-        final shippingInvoices = await remoteDataSource.getShippingInvoicesList(body);
-        _totalCount = shippingInvoices.total;
-        return Right(shippingInvoices.data);
-      } catch (e) {
-        return Left(ErrorHandler.handle(e));
-      }
-    } else {
-      return Left(ErrorHandler.noInternet());
+  Future<Either<Failure, List<ShippingInvoiceEntity>>> getShippingInvoicesList(
+      GetShippingInvoicesListUseCaseParams params) async {
+    // if (await networkInfo.isConnected) {
+    try {
+      final body = GetShippingInvoicesListRequest(paginationFilterDTO: params.paginationFilterDTO);
+      final shippingInvoices = await remoteDataSource.getShippingInvoicesList(body);
+      _totalCount = shippingInvoices.total;
+      return Right(shippingInvoices.data);
+    } catch (e) {
+      return Left(ErrorHandler.handle(e));
     }
+    // } else {
+    //   return Left(ErrorHandler.noInternet());
+    // }
   }
 
   @override
   int get shippingInvoicesCount => _totalCount;
 
   @override
-  Future<Either<Failure, ShippingInvoiceEntity>> updateShippingInvoice(UpdateShippingInvoiceUseCaseParams params) async{
+  Future<Either<Failure, ShippingInvoiceEntity>> updateShippingInvoice(UpdateShippingInvoiceUseCaseParams params) async {
     if (await networkInfo.isConnected) {
       try {
         final body = UpdateShippingInvoiceRequest.fromParams(params);

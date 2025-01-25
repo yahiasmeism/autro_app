@@ -40,3 +40,6 @@ class SearchInputChangedEvent extends InvoicesListEvent {
 }
 
 class AddedUpdatedInvoiceEvent extends InvoicesListEvent {}
+
+
+class LoadMoreInvoicesEvent extends InvoicesListEvent {}

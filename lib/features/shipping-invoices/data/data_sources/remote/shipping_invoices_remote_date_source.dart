@@ -81,7 +81,7 @@ class ShippingInvoicesRemoteDateSourceImpl implements ShippingInvoicesRemoteDate
   Future<ShippingInvoiceModel> updateShippingInvoice(UpdateShippingInvoiceRequest body) async {
     final path = ApiPaths.shippingInvoiceById(body.id);
     final request = ApiRequest(path: path, body: await body.toFormData());
-    final response = await client.put(request);
+    final response = await client.post(request);
     if (ResponseCode.isOk(response.statusCode)) {
       return ShippingInvoiceModel.fromJson(response.data);
     } else {

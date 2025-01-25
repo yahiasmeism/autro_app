@@ -6,23 +6,24 @@ import 'package:autro_app/core/theme/text_styles.dart';
 import 'package:autro_app/core/utils/dialog_utils.dart';
 import 'package:autro_app/core/widgets/failure_screen.dart';
 import 'package:autro_app/core/widgets/inputs/standard_search_input.dart';
+import 'package:autro_app/core/widgets/loading_indecator.dart';
 import 'package:autro_app/core/widgets/overley_loading.dart';
-import 'package:autro_app/features/customers/presentation/bloc/customers_list/customers_list_bloc.dart';
+import 'package:autro_app/features/invoices/presentation/bloc/invoices_list/invoices_list_bloc.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
-class CustomersListSelectionField extends StatefulWidget {
-  const CustomersListSelectionField(
-      {super.key, required this.nameController, required this.idController, this.enableOpenDialog = true});
+class InvoicesListSelectionField extends StatefulWidget {
+  const InvoicesListSelectionField(
+      {super.key, required this.invoiceNumberController, required this.idController, this.enableOpenDialog = true});
 
-  final TextEditingController nameController, idController;
+  final TextEditingController invoiceNumberController, idController;
   final bool enableOpenDialog;
 
   @override
-  State createState() => _CustomersListSelectionFieldState();
+  State createState() => _InvoicesListSelectionFieldState();
 }
 
-class _CustomersListSelectionFieldState extends State<CustomersListSelectionField> {
+class _InvoicesListSelectionFieldState extends State<InvoicesListSelectionField> {
   final ScrollController scrollController = ScrollController();
   bool hasPagination = false;
 
@@ -40,7 +41,7 @@ class _CustomersListSelectionFieldState extends State<CustomersListSelectionFiel
   Widget _buildLabel() {
     return Padding(
       padding: const EdgeInsets.only(bottom: 8),
-      child: Text('Customer Name', style: TextStyles.font16Regular),
+      child: Text('Invoice Number', style: TextStyles.font16Regular),
     );
   }
 
@@ -51,7 +52,7 @@ class _CustomersListSelectionFieldState extends State<CustomersListSelectionFiel
           ? () async {
               final value = await showCustomDialog();
               if (value != null) {
-                widget.nameController.text = value.label;
+                widget.invoiceNumberController.text = value.label;
                 widget.idController.text = value.value;
               }
             }
@@ -62,10 +63,10 @@ class _CustomersListSelectionFieldState extends State<CustomersListSelectionFiel
           style: TextStyles.font16Regular,
           readOnly: true,
           textAlignVertical: TextAlignVertical.center,
-          controller: widget.nameController,
+          controller: widget.invoiceNumberController,
           decoration: const InputDecoration(
             contentPadding: EdgeInsets.all(16),
-            hintText: 'Select Customer',
+            hintText: 'Select Invoice',
             suffixIcon: Icon(Icons.keyboard_arrow_down),
           ),
           enabled: !widget.enableOpenDialog,
@@ -81,13 +82,13 @@ class _CustomersListSelectionFieldState extends State<CustomersListSelectionFiel
       builder: (context) {
         return Scaffold(
           backgroundColor: Colors.transparent,
-          body: Dialog(
-            clipBehavior: Clip.antiAlias,
-            backgroundColor: Colors.white,
-            insetPadding: const EdgeInsets.all(0),
-            shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(16)),
-            child: BlocProvider(
-              create: (context) => sl<CustomersListBloc>()..add(GetCustomersListEvent()),
+          body: BlocProvider(
+            create: (context) => sl<InvoicesListBloc>()..add(GetInvoicesListEvent()),
+            child: Dialog(
+              clipBehavior: Clip.antiAlias,
+              backgroundColor: Colors.white,
+              insetPadding: const EdgeInsets.all(0),
+              shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(16)),
               child: SizedBox(
                 width: 600,
                 height: 500,
@@ -106,7 +107,7 @@ class _CustomersListSelectionFieldState extends State<CustomersListSelectionFiel
                               padding: const EdgeInsets.symmetric(horizontal: 8),
                               child: StandardSearchInput(
                                 onSearch: (context, keyword) {
-                                  context.read<CustomersListBloc>().add(SearchInputChangedEvent(keyword: keyword));
+                                  context.read<InvoicesListBloc>().add(SearchInputChangedEvent(keyword: keyword));
                                 },
                               ),
                             ),
@@ -115,9 +116,9 @@ class _CustomersListSelectionFieldState extends State<CustomersListSelectionFiel
                       ),
                       const SizedBox(height: 16),
                       Expanded(
-                        child: BlocConsumer<CustomersListBloc, CustomersListState>(
+                        child: BlocConsumer<InvoicesListBloc, InvoicesListState>(
                           listener: (context, state) {
-                            if (state is CustomersListLoaded) {
+                            if (state is InvoicesListLoaded) {
                               state.failureOrSuccessOption.fold(
                                 () => null,
                                 (either) {
@@ -133,9 +134,9 @@ class _CustomersListSelectionFieldState extends State<CustomersListSelectionFiel
                             }
                           },
                           builder: (context, state) {
-                            if (state is CustomersListInitial) {
-                              return const Center(child: CircularProgressIndicator());
-                            } else if (state is CustomersListLoaded) {
+                            if (state is InvoicesListInitial) {
+                              return const LoadingIndicator();
+                            } else if (state is InvoicesListLoaded) {
                               if (!state.loadingPagination) hasPagination = false;
                               return Stack(
                                 children: [
@@ -143,10 +144,10 @@ class _CustomersListSelectionFieldState extends State<CustomersListSelectionFiel
                                   if (state.loading) const Positioned.fill(child: LoadingOverlay()),
                                 ],
                               );
-                            } else if (state is CustomersListError) {
+                            } else if (state is InvoicesListError) {
                               return FailureScreen(
                                 failure: state.failure,
-                                onRetryTap: () => context.read<CustomersListBloc>().add(HandleFailureEvent()),
+                                onRetryTap: () => context.read<InvoicesListBloc>().add(HandleFailureEvent()),
                               );
                             } else {
                               return const SizedBox.shrink();
@@ -177,7 +178,7 @@ class _CustomersListSelectionFieldState extends State<CustomersListSelectionFiel
       padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
       child: Row(
         children: [
-          Text('Select Customer', style: TextStyles.font20Regular),
+          Text('Select Invoice', style: TextStyles.font20Regular),
           const Spacer(),
           IconButton(
             onPressed: () => Navigator.pop(context),
@@ -189,8 +190,8 @@ class _CustomersListSelectionFieldState extends State<CustomersListSelectionFiel
     );
   }
 
-  Widget _buildList(CustomersListLoaded state, BuildContext context) {
-    if (state.customersList.isEmpty) {
+  Widget _buildList(InvoicesListLoaded state, BuildContext context) {
+    if (state.invoicesList.isEmpty) {
       return Center(
         child: Text(
           'No Results Found',
@@ -198,21 +199,22 @@ class _CustomersListSelectionFieldState extends State<CustomersListSelectionFiel
         ),
       );
     }
+
     return NotificationListener<ScrollNotification>(
       onNotification: (notification) {
         if (notification is ScrollUpdateNotification &&
             scrollController.position.pixels >= scrollController.position.maxScrollExtent * 0.9 &&
             !state.loadingPagination) {
-          context.read<CustomersListBloc>().add(LoadMoreCustomersEvent());
+          context.read<InvoicesListBloc>().add(LoadMoreInvoicesEvent());
         }
         return false;
       },
       child: ListView.separated(
         separatorBuilder: (context, index) => const Divider(height: 0),
         controller: scrollController,
-        itemCount: state.loadingPagination ? state.customersList.length + 1 : state.customersList.length,
+        itemCount: state.loadingPagination ? state.invoicesList.length + 1 : state.invoicesList.length,
         itemBuilder: (context, index) {
-          if (index == state.customersList.length) {
+          if (index == state.invoicesList.length) {
             return const Padding(
               padding: EdgeInsets.all(16),
               child: Center(
@@ -228,7 +230,7 @@ class _CustomersListSelectionFieldState extends State<CustomersListSelectionFiel
               ),
             );
           }
-          final item = state.customersList[index];
+          final item = state.invoicesList[index];
           final isSelected = item.id.toString() == widget.idController.text;
           return ListTile(
             selectedTileColor: Colors.black12,
@@ -236,10 +238,10 @@ class _CustomersListSelectionFieldState extends State<CustomersListSelectionFiel
             trailing: isSelected ? const Icon(Icons.check, color: AppColors.deepGreen) : null,
             selectedColor: Colors.black12,
             shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(8)),
-            title: Text(item.name, style: TextStyles.font16Regular),
+            title: Text(item.invoiceNumber, style: TextStyles.font16Regular),
             onTap: () {
-              Navigator.pop(context, SelectableItemModel<String>(label: item.name, value: item.id.toString()));
-              context.read<CustomersListBloc>().add(const SearchInputChangedEvent(keyword: ''));
+              Navigator.pop(context, SelectableItemModel<String>(label: item.invoiceNumber, value: item.id.toString()));
+              context.read<InvoicesListBloc>().add(const SearchInputChangedEvent(keyword: ''));
             },
           );
         },
