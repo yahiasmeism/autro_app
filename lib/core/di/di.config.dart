@@ -139,6 +139,22 @@ import 'package:autro_app/features/settings/presentation/bloc/invoice_settings/i
     as _i239;
 import 'package:autro_app/features/settings/presentation/bloc/users_list/users_list_cubit.dart'
     as _i729;
+import 'package:autro_app/features/shipping-invoices/data/data_sources/remote/shipping_invoices_remote_date_source.dart'
+    as _i515;
+import 'package:autro_app/features/shipping-invoices/data/repository_impl/shipping_invoices_repository_impl.dart'
+    as _i364;
+import 'package:autro_app/features/shipping-invoices/domin/repositories/shipping_invoices_repository.dart'
+    as _i43;
+import 'package:autro_app/features/shipping-invoices/domin/usecases/create_shipping_invoice_use_case.dart'
+    as _i163;
+import 'package:autro_app/features/shipping-invoices/domin/usecases/delete_shipping_invoice_use_case.dart'
+    as _i725;
+import 'package:autro_app/features/shipping-invoices/domin/usecases/get_shipping_invoices_list_use_case.dart'
+    as _i856;
+import 'package:autro_app/features/shipping-invoices/domin/usecases/update_shipping_invoices_use_case.dart'
+    as _i766;
+import 'package:autro_app/features/shipping-invoices/presentation/bloc/suppliers_list/shipping_invoices_list_bloc.dart'
+    as _i623;
 import 'package:autro_app/features/suppliers/data/datasources/suppliers_remote_datesourse.dart'
     as _i829;
 import 'package:autro_app/features/suppliers/data/repositories/suppliers_repository_impl.dart'
@@ -193,6 +209,9 @@ extension GetItInjectableX on _i174.GetIt {
         _i509.SettingsRemoteDataSourceImpl(client: gh<_i228.ApiClient>()));
     gh.lazySingleton<_i77.BillsRemoteDataSource>(
         () => _i77.BillsRemoteDataSourceImpl(apiClient: gh<_i228.ApiClient>()));
+    gh.lazySingleton<_i515.ShippingInvoicesRemoteDateSource>(() =>
+        _i515.ShippingInvoicesRemoteDateSourceImpl(
+            client: gh<_i228.ApiClient>()));
     gh.lazySingleton<_i438.CustomersRemoteDataSource>(() =>
         _i438.CustomersRemoteDataSourceImpl(apiClient: gh<_i228.ApiClient>()));
     gh.lazySingleton<_i388.AuthRemoteDataSource>(
@@ -222,6 +241,11 @@ extension GetItInjectableX on _i174.GetIt {
             settingsRepository: gh<_i275.SettingsRepository>()));
     gh.lazySingleton<_i829.SuppliersRemoteDataSource>(() =>
         _i829.SuppliersRemoteDataSourceImpl(apiClient: gh<_i228.ApiClient>()));
+    gh.lazySingleton<_i43.ShippingInvoicesRepository>(
+        () => _i364.ShippingInvoicesRepositoryImpl(
+              networkInfo: gh<_i646.NetworkInfo>(),
+              remoteDataSource: gh<_i515.ShippingInvoicesRemoteDateSource>(),
+            ));
     gh.lazySingleton<_i288.AuthRepo>(() => _i288.AuthRepoImpl(
           remoteDataSource: gh<_i388.AuthRemoteDataSource>(),
           appPreferences: gh<_i123.AppPreferences>(),
@@ -245,6 +269,9 @@ extension GetItInjectableX on _i174.GetIt {
               remoteDataSource: gh<_i345.InvoicesRemoteDataSource>(),
               networkInfo: gh<_i646.NetworkInfo>(),
             ));
+    gh.lazySingleton<_i766.UpdateShippingInvoicesUseCase>(() =>
+        _i766.UpdateShippingInvoicesUseCase(
+            shippingInvoiceRepository: gh<_i43.ShippingInvoicesRepository>()));
     gh.lazySingleton<_i766.AddNewUserUseCase>(() =>
         _i766.AddNewUserUseCase(repository: gh<_i275.SettingsRepository>()));
     gh.lazySingleton<_i855.ChangeCompanyInfoUseCase>(() =>
@@ -280,12 +307,29 @@ extension GetItInjectableX on _i174.GetIt {
     gh.lazySingleton<_i90.GetProformasListUseCase>(() =>
         _i90.GetProformasListUseCase(
             repository: gh<_i1050.ProformasRepository>()));
+    gh.lazySingleton<_i163.CreateShippingInvoiceUseCase>(() =>
+        _i163.CreateShippingInvoiceUseCase(
+            repository: gh<_i43.ShippingInvoicesRepository>()));
+    gh.lazySingleton<_i725.DeleteShippingInvoiceUseCase>(() =>
+        _i725.DeleteShippingInvoiceUseCase(
+            repository: gh<_i43.ShippingInvoicesRepository>()));
+    gh.lazySingleton<_i856.GetShippingInvoicesListUseCase>(() =>
+        _i856.GetShippingInvoicesListUseCase(
+            repository: gh<_i43.ShippingInvoicesRepository>()));
     gh.lazySingleton<_i426.DeleteInvoiceUseCase>(() =>
         _i426.DeleteInvoiceUseCase(
             invoicesRepository: gh<_i342.InvoicesRepository>()));
     gh.lazySingleton<_i707.UpdateInvoiceUseCase>(() =>
         _i707.UpdateInvoiceUseCase(
             invoicesRepository: gh<_i342.InvoicesRepository>()));
+    gh.factory<_i623.ShippingInvoicesListBloc>(
+        () => _i623.ShippingInvoicesListBloc(
+              gh<_i856.GetShippingInvoicesListUseCase>(),
+              gh<_i725.DeleteShippingInvoiceUseCase>(),
+              gh<_i43.ShippingInvoicesRepository>(),
+              gh<_i766.UpdateShippingInvoicesUseCase>(),
+              gh<_i163.CreateShippingInvoiceUseCase>(),
+            ));
     gh.lazySingleton<_i239.InvoiceSettingsCubit>(
         () => _i239.InvoiceSettingsCubit(
               gh<_i321.GetInvoiceSettingsUseCase>(),

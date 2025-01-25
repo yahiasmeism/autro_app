@@ -20,7 +20,7 @@ class ShippingInvoicesListBloc extends Bloc<ShippingInvoicesListEvent, ShippingI
   final GetShippingInvoicesListUseCase getShippingInvoicesListUsecase;
   final DeleteShippingInvoiceUseCase deleteShippingInvoiceUsecase;
   final ShippingInvoicesRepository shippingInvoicesRepository;
-  final UpdateShippingInvoiceUseCaseParams updateShippingInvoiceUsecase;
+  final UpdateShippingInvoicesUseCase updateShippingInvoiceUsecase;
   final CreateShippingInvoiceUseCase createShippingInvoiceUsecase;
   ShippingInvoicesListBloc(
     this.getShippingInvoicesListUsecase,
@@ -125,7 +125,7 @@ class ShippingInvoicesListBloc extends Bloc<ShippingInvoicesListEvent, ShippingI
       (_) {
         final updatedShippingInvoicesList = List.of(state.shippingInvoicesList);
         updatedShippingInvoicesList.removeWhere((element) => element.id == event.shippingInvoiceId);
-        const message = 'ShippingInvoice Deleted Successfully';
+        const message = 'Shipping Invoice Deleted Successfully';
         emit(state.copyWith(
           shippingInvoicesList: updatedShippingInvoicesList,
           failureOrSuccessOption: some(right(message)),

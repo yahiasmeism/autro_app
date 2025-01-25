@@ -1,7 +1,9 @@
 import 'package:autro_app/core/extensions/date_time_extension.dart';
+import 'package:autro_app/core/extensions/map_extension.dart';
 import 'package:autro_app/core/extensions/num_extension.dart';
 import 'package:autro_app/core/extensions/string_extension.dart';
 import 'package:autro_app/core/interfaces/mapable.dart';
+import 'package:autro_app/features/invoices/data/models/invoice_model.dart';
 import 'package:autro_app/features/shipping-invoices/domin/entities/shipping_invoice_entites.dart';
 
 class ShippingInvoiceModel extends ShippingInvoiceEntity implements BaseMapable {
@@ -10,21 +12,23 @@ class ShippingInvoiceModel extends ShippingInvoiceEntity implements BaseMapable 
     required super.invoiceId,
     required super.shippingCompanyName,
     required super.shippingCost,
-    required super.attachmentPath,
+    required super.attachmentUrl,
     required super.typeMaterialName,
     required super.currency,
     required super.shippingDate,
+    required super.invoice,
   });
 
   factory ShippingInvoiceModel.fromJson(Map<String, dynamic> json) => ShippingInvoiceModel(
         id: (json['id'] as num?).toIntOrZero,
-        invoiceId: (json['invoiceId'] as num?).toIntOrZero,
-        shippingCompanyName: (json['shippingCompanyName'] as String?).orEmpty,
-        shippingCost: (json['shippingCost'] as num?).toDoubleOrZero,
-        attachmentPath: (json['attachmentPath'] as String?).orEmpty,
-        typeMaterialName: (json['typeMaterialName'] as String?).orEmpty,
+        invoiceId: (json['invoice_id'] as num?).toIntOrZero,
+        shippingCompanyName: (json['shipping_company_name'] as String?).orEmpty,
+        shippingCost: (json['shipping_cost'] as num?).toDoubleOrZero,
+        attachmentUrl: (json['attachment'] as String?).orEmpty,
+        typeMaterialName: (json['type_material_name'] as String?).orEmpty,
         currency: (json['currency'] as String?).orEmpty,
-        shippingDate: DateTime.tryParse((json['shippingDate'] as String?).orEmpty).orDefault,
+        shippingDate: DateTime.tryParse((json['shipping_date'] as String?).orEmpty).orDefault,
+        invoice: InvoiceModel.fromJson((json['invoice'] as Map<String, dynamic>?).orEmpty),
       );
 
   @override
@@ -34,7 +38,7 @@ class ShippingInvoiceModel extends ShippingInvoiceEntity implements BaseMapable 
       'invoiceId': invoiceId,
       'shippingCompanyName': shippingCompanyName,
       'shippingCost': shippingCost,
-      'attachmentPath': attachmentPath,
+      'attachmentUrl': attachmentUrl,
       'typeMaterialName': typeMaterialName,
       'currency': currency,
       'shippingDate': shippingDate.formattedDateYYYYMMDD,
