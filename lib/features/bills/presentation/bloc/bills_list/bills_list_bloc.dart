@@ -89,9 +89,9 @@ class BillsListBloc extends Bloc<BillsListEvent, BillsListState> {
           billsList: bills,
           paginationFilterDTO: paginationFilterDto,
         ));
+        add(GetBillsSummaryEvent());
       },
     );
-    add(GetBillsSummaryEvent());
   }
 
   Future onUpdatePagination(OnUpdatePaginationEvent event, Emitter<BillsListState> emit) async {
@@ -192,10 +192,12 @@ class BillsListBloc extends Bloc<BillsListEvent, BillsListState> {
     emit(state.copyWith(loading: false));
     either.fold(
       (failure) => emit(state.copyWith(failureOrSuccessOption: some(left(failure)))),
-      (bills) => emit(state.copyWith(
-        totalCount: billsCount,
-        billsList: bills,
-      )),
+      (bills) {
+        emit(state.copyWith(
+          totalCount: billsCount,
+          billsList: bills,
+        ));
+      },
     );
     add(GetBillsSummaryEvent());
   }
@@ -227,12 +229,14 @@ class BillsListBloc extends Bloc<BillsListEvent, BillsListState> {
   }
 
   onGetBillsSummary(GetBillsSummaryEvent event, Emitter<BillsListState> emit) async {
-    final state = this.state as BillsListLoaded;
-    emit(state.copyWith(loadingSummary: true));
-    final either = await getBillsSummaryUsecase.call(NoParams());
-    either.fold(
-      (failure) => null,
-      (billsSummary) => emit(state.copyWith(billsSummary: billsSummary, loadingSummary: false)),
-    );
+    if (state is BillsListLoaded) {
+      final state = this.state as BillsListLoaded;
+      emit(state.copyWith(loadingSummary: true));
+      final either = await getBillsSummaryUsecase.call(NoParams());
+      either.fold(
+        (failure) => null,
+        (billsSummary) => emit(state.copyWith(billsSummary: billsSummary, loadingSummary: false)),
+      );
+    }
   }
 }

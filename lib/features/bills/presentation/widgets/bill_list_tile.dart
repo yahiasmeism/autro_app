@@ -1,5 +1,7 @@
+import 'package:autro_app/core/constants/enums.dart';
 import 'package:autro_app/core/theme/app_colors.dart';
 import 'package:autro_app/core/theme/text_styles.dart';
+import 'package:autro_app/core/utils/nav_util.dart';
 import 'package:autro_app/core/widgets/delete_icon_button.dart';
 import 'package:autro_app/core/widgets/edit_icon_button.dart';
 import 'package:autro_app/features/bills/domin/entities/bill_entity.dart';
@@ -7,6 +9,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 import '../bloc/bills_list/bills_list_bloc.dart';
+import '../screens/bill_form_screen.dart';
 
 class BillListTile extends StatelessWidget {
   const BillListTile({super.key, required this.billEntity});
@@ -17,7 +20,7 @@ class BillListTile extends StatelessWidget {
     return InkWell(
       borderRadius: BorderRadius.circular(8),
       onTap: () {
-        // NavUtil.push(context, BillFormScreen(formType: FormType.edit, bill: billEntity));
+        NavUtil.push(context, BillFormScreen(formType: FormType.edit, bill: billEntity));
       },
       child: Container(
         decoration: const BoxDecoration(
@@ -41,12 +44,12 @@ class BillListTile extends StatelessWidget {
             const SizedBox(width: 16),
             _buildCell(
               flex: 4,
-              text: billEntity.amount.toStringAsFixed(2),
+              text: "\$${billEntity.amount.toStringAsFixed(2)}",
             ),
             const SizedBox(width: 16),
             _buildCell(
               flex: 4,
-              text: billEntity.notes,
+              text: billEntity.notes.isEmpty ? '-' : billEntity.notes,
             ),
             const SizedBox(width: 16),
             Flexible(
@@ -56,7 +59,7 @@ class BillListTile extends StatelessWidget {
                 children: [
                   EditIconButton(
                     onPressed: () {
-                      // NavUtil.push(context, BillFormScreen(formType: FormType.edit, bill: billEntity));
+                      NavUtil.push(context, BillFormScreen(formType: FormType.edit, bill: billEntity));
                     },
                   ),
                   const SizedBox(width: 8),

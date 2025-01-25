@@ -15,7 +15,7 @@ class BillsSummaryTopSection extends StatelessWidget {
       builder: (context, state) {
         double amount = 0;
         int count = 0;
-        bool loading = false;
+        bool loading = state is BillsListInitial;
         if (state is BillsListLoaded) {
           amount = state.billsSummary?.totalAmount ?? 0.0;
           count = state.billsSummary?.totalBillsCount ?? 0;
