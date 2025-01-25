@@ -6,15 +6,16 @@ import 'package:equatable/equatable.dart';
 import 'package:injectable/injectable.dart';
 
 import '../entities/shipping_invoice_entites.dart';
-import '../repositories/shipping_invoice_repository.dart';
+import '../repositories/shipping_invoices_repository.dart';
+
 @lazySingleton
 class GetShippingInvoicesListUseCase extends UseCase<List<ShippingInvoiceEntity>, GetShippingInvoicesListUseCaseParams> {
-  final ShippingInvoiceRepository repository;
+  final ShippingInvoicesRepository repository;
 
   GetShippingInvoicesListUseCase({required this.repository});
 
   @override
-  Future<Either<Failure, List<ShippingInvoiceEntity>>> call(GetShippingInvoicesListUseCaseParams params) async{
+  Future<Either<Failure, List<ShippingInvoiceEntity>>> call(GetShippingInvoicesListUseCaseParams params) async {
     return await repository.getShippingInvoicesList(params);
   }
 }

@@ -6,7 +6,7 @@ import '../entities/shipping_invoice_entites.dart';
 import '../usecases/create_shipping_invoice_use_case.dart';
 import '../usecases/update_shipping_invoices_use_case.dart';
 
-abstract class ShippingInvoiceRepository {
+abstract class ShippingInvoicesRepository {
   Future<Either<Failure, List<ShippingInvoiceEntity>>> getShippingInvoicesList(GetShippingInvoicesListUseCaseParams params);
 
   Future<Either<Failure, ShippingInvoiceEntity>> getShippingInvoiceById(int id);
@@ -16,6 +16,6 @@ abstract class ShippingInvoiceRepository {
   Future<Either<Failure, ShippingInvoiceEntity>> updateShippingInvoice(UpdateShippingInvoiceUseCaseParams params);
 
   Future<Either<Failure, Unit>> deleteShippingInvoice(int id);
-  
+
   int get shippingInvoicesCount;
 }

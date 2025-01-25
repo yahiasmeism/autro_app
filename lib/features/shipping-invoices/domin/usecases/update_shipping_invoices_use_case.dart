@@ -5,11 +5,11 @@ import 'package:dartz/dartz.dart';
 import 'package:injectable/injectable.dart';
 
 import '../entities/shipping_invoice_entites.dart';
-import '../repositories/shipping_invoice_repository.dart';
+import '../repositories/shipping_invoices_repository.dart';
 
 @lazySingleton
 class UpdateShippingInvoicesUseCase extends UseCase<ShippingInvoiceEntity, UpdateShippingInvoiceUseCaseParams> {
-  final ShippingInvoiceRepository shippingInvoiceRepository;
+  final ShippingInvoicesRepository shippingInvoiceRepository;
 
   UpdateShippingInvoicesUseCase({required this.shippingInvoiceRepository});
   @override
