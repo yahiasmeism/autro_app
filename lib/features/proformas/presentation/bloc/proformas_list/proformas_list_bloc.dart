@@ -91,8 +91,8 @@ class ProformasListBloc extends Bloc<ProformasListEvent, ProformasListState> {
     final either = await getProformasListUsecase.call(params);
     emit(state.copyWith(loadingPagination: false));
     either.fold(
-      (failure) => emit(ProformasListError(failure: failure)),
-      (proformas) => emit(ProformasListLoaded(
+      (failure) => emit(state.copyWith(failureOrSuccessOption: some(left(failure)))),
+      (proformas) => emit(state.copyWith(
         totalCount: totalCount,
         proformasList: proformas,
         paginationFilterDTO: paginationFilterDto,
@@ -178,7 +178,7 @@ class ProformasListBloc extends Bloc<ProformasListEvent, ProformasListState> {
     final either = await getProformasListUsecase.call(params);
     emit(state.copyWith(loading: false));
     either.fold(
-      (failure) => emit(ProformasListError(failure: failure)),
+      (failure) => emit(state.copyWith(failureOrSuccessOption: some(left(failure)))),
       (proformas) => emit(state.copyWith(
         totalCount: totalCount,
         proformasList: proformas,
