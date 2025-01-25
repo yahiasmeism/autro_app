@@ -22,5 +22,33 @@ class BillEntity extends Equatable {
     required this.updatedAt,
   });
   @override
-  List<Object> get props => [];
+  List<Object> get props => [
+        id,
+        vendor,
+        amount,
+        notes,
+        date,
+        createdAt,
+        updatedAt,
+      ];
+
+  BillEntity copyWith({
+    int? id,
+    String? vendor,
+    double? amount,
+    String? notes,
+    DateTime? date,
+    DateTime? createdAt,
+    DateTime? updatedAt,
+  }) {
+    return BillEntity(
+      id: id ?? this.id,
+      vendor: vendor ?? this.vendor,
+      amount: amount ?? this.amount,
+      notes: notes ?? this.notes,
+      date: date ?? this.date,
+      createdAt: createdAt ?? this.createdAt,
+      updatedAt: updatedAt ?? this.updatedAt,
+    );
+  }
 }

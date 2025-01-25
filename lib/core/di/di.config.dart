@@ -40,6 +40,8 @@ import 'package:autro_app/features/bills/domin/use_cases/get_bills_summary_use_c
     as _i372;
 import 'package:autro_app/features/bills/domin/use_cases/update_bill_use_case.dart'
     as _i745;
+import 'package:autro_app/features/bills/presentation/bloc/bill_form/bill_form_bloc.dart'
+    as _i363;
 import 'package:autro_app/features/bills/presentation/bloc/bills_list/bills_list_bloc.dart'
     as _i813;
 import 'package:autro_app/features/customers/data/datasources/customers_remote_datesourse.dart'
@@ -362,12 +364,12 @@ extension GetItInjectableX on _i174.GetIt {
         () => _i321.DeleteBillUseCase(repository: gh<_i292.BillsRepository>()));
     gh.lazySingleton<_i218.GetBillsListUseCase>(() =>
         _i218.GetBillsListUseCase(repository: gh<_i292.BillsRepository>()));
+    gh.lazySingleton<_i372.GetBillsSummaryUseCase>(() =>
+        _i372.GetBillsSummaryUseCase(repository: gh<_i292.BillsRepository>()));
     gh.lazySingleton<_i588.GetBillUseCase>(
         () => _i588.GetBillUseCase(repository: gh<_i292.BillsRepository>()));
     gh.lazySingleton<_i745.UpdateBillUseCase>(
         () => _i745.UpdateBillUseCase(repository: gh<_i292.BillsRepository>()));
-    gh.lazySingleton<_i372.GetBillsSummaryUseCase>(() =>
-        _i372.GetBillsSummaryUseCase(repository: gh<_i292.BillsRepository>()));
     gh.factory<_i512.CustomerFormBloc>(() => _i512.CustomerFormBloc(
           gh<_i116.CreateCustomerUsecase>(),
           gh<_i134.UpdateCustomerUsecase>(),
@@ -376,6 +378,10 @@ extension GetItInjectableX on _i174.GetIt {
           gh<_i176.GetUsersListUseCase>(),
           gh<_i766.AddNewUserUseCase>(),
           gh<_i130.RemoveUserUseCase>(),
+        ));
+    gh.factory<_i363.BillFormBloc>(() => _i363.BillFormBloc(
+          gh<_i671.AddBillUseCase>(),
+          gh<_i745.UpdateBillUseCase>(),
         ));
     gh.factory<_i825.ProformaFormCubit>(() => _i825.ProformaFormCubit(
           gh<_i927.CreateProformaUseCase>(),

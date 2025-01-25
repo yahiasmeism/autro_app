@@ -1,4 +1,7 @@
+import 'package:autro_app/core/constants/enums.dart';
+import 'package:autro_app/core/utils/nav_util.dart';
 import 'package:autro_app/core/widgets/generic_pagination_bottom_bar.dart';
+import 'package:autro_app/features/bills/presentation/screens/bill_form_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
@@ -40,7 +43,7 @@ class BillPaginationBottomBar extends StatelessWidget {
           labelAddButton: 'Add New Bill',
           onAddTap: isLoaded
               ? () {
-                  // NavUtil.push(context, const BillFormScreen(formType: FormType.create));
+                  NavUtil.push(context, const BillFormScreen(formType: FormType.create));
                 }
               : null,
         );
