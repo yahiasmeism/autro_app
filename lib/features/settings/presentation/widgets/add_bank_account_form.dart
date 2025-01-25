@@ -121,8 +121,8 @@ class _AddBankAccountFormState extends State<AddBankAccountForm> {
                 Expanded(
                     child: StandardSelectableDropdown(
                   items: const [
-                    'USD(\$)',
-                    'EUR(€)',
+                    'USD',
+                    'EUR',
                   ],
                   initialValue: currencyController.text.isNotEmpty ? currencyController.text : null,
                   onChanged: (p0) => currencyController.text = p0 ?? '',
