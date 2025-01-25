@@ -77,4 +77,9 @@ class NoDataScreen extends StatelessWidget {
         text: 'No Bills',
         icon: Icons.receipt,
       );
+
+  factory NoDataScreen.shippingInvoices() => const NoDataScreen(
+        text: 'No Shipping Invoices',
+        icon: Icons.receipt,
+      );
 }

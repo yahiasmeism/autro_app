@@ -5,6 +5,7 @@ import 'package:autro_app/features/home/bloc/home_bloc.dart';
 import 'package:autro_app/features/home/widget/custom_drawer.dart';
 import 'package:autro_app/features/proformas/presentation/screens/proformas_list_screen.dart';
 import 'package:autro_app/features/settings/presentation/screens/settings_screen.dart';
+import 'package:autro_app/features/shipping-invoices/presentation/screens/shipping_invoices_list_screen.dart';
 import 'package:autro_app/features/suppliers/presentation/screens/suppliers_list_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -46,7 +47,7 @@ class HomeWrapperDesktopLayout extends StatelessWidget {
       MenuItemType.deals: _buildNavigator(const Center(child: Text('Deals'))),
       MenuItemType.proformas: _buildNavigator(const ProformasListScreen()),
       MenuItemType.customers: _buildNavigator(const CustomersListScreen()),
-      MenuItemType.shipping: _buildNavigator(const Center(child: Text('Shipping'))),
+      MenuItemType.shipping: _buildNavigator(const Center(child: ShippingInvoicesListScreen())),
       MenuItemType.settings: _buildNavigator(const SettingsScreen()),
       MenuItemType.bills: _buildNavigator(const Center(child: BillsListScreen())),
       MenuItemType.suppliers: _buildNavigator(const SuppliersListScreen()),

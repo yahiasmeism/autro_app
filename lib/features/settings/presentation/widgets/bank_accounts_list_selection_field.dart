@@ -1,6 +1,9 @@
 import 'package:autro_app/core/common/data/models/selectable_item_model.dart';
+import 'package:autro_app/core/di/di.dart';
+import 'package:autro_app/core/errors/failure_mapper.dart';
 import 'package:autro_app/core/theme/app_colors.dart';
 import 'package:autro_app/core/theme/text_styles.dart';
+import 'package:autro_app/core/utils/dialog_utils.dart';
 import 'package:autro_app/core/widgets/failure_screen.dart';
 import 'package:autro_app/features/settings/presentation/bloc/bank_accounts_list/bank_accounts_list_cubit.dart';
 
@@ -75,40 +78,62 @@ class _BankAccountsListSelectionFieldState extends State<BankAccountsListSelecti
       context: context,
       barrierColor: Colors.black.withOpacity(0.5),
       builder: (context) {
-        return Dialog(
-          clipBehavior: Clip.antiAlias,
-          backgroundColor: Colors.white,
-          shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(16)),
-          child: SizedBox(
-            width: 600,
-            height: 400,
-            child: Padding(
-              padding: const EdgeInsets.all(8.0),
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  _buildDialogHeader(context),
-                  const Divider(),
-                  const SizedBox(height: 16),
-                  Expanded(
-                    child: BlocBuilder<BankAccountsListCubit, BankAccountsListState>(
-                      builder: (context, state) {
-                        if (state is BankAccountsListInitial) {
-                          return const Center(child: CircularProgressIndicator());
-                        } else if (state is BankAccountsListLoaded) {
-                          return _buildList(state);
-                        } else if (state is BankAccountsListError) {
-                          return FailureScreen(
-                            failure: state.failure,
-                            onRetryTap: () => context.read<BankAccountsListCubit>().onHandleError(),
-                          );
-                        } else {
-                          return const SizedBox.shrink();
-                        }
-                      },
-                    ),
+        return Scaffold(
+          backgroundColor: Colors.transparent,
+          body: Dialog(
+            clipBehavior: Clip.antiAlias,
+            backgroundColor: Colors.white,
+            shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(16)),
+            child: BlocProvider(
+              create: (context) => sl<BankAccountsListCubit>()..getBankAccountList(),
+              child: SizedBox(
+                width: 600,
+                height: 400,
+                child: Padding(
+                  padding: const EdgeInsets.all(8.0),
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      _buildDialogHeader(context),
+                      const Divider(),
+                      const SizedBox(height: 16),
+                      Expanded(
+                        child: BlocConsumer<BankAccountsListCubit, BankAccountsListState>(
+                          listener: (context, state) {
+                            if (state is BankAccountsListLoaded) {
+                              state.failureOrSuccessOption.fold(
+                                () => null,
+                                (either) {
+                                  either.fold(
+                                    (failure) => DialogUtil.showErrorSnackBar(
+                                      context,
+                                      getErrorMsgFromFailure(failure),
+                                    ),
+                                    (_) => null,
+                                  );
+                                },
+                              );
+                            }
+                          },
+                          builder: (context, state) {
+                            if (state is BankAccountsListInitial) {
+                              return const Center(child: CircularProgressIndicator());
+                            } else if (state is BankAccountsListLoaded) {
+                              return _buildList(state);
+                            } else if (state is BankAccountsListError) {
+                              return FailureScreen(
+                                failure: state.failure,
+                                onRetryTap: () => context.read<BankAccountsListCubit>().onHandleError(),
+                              );
+                            } else {
+                              return const SizedBox.shrink();
+                            }
+                          },
+                        ),
+                      ),
+                    ],
                   ),
-                ],
+                ),
               ),
             ),
           ),

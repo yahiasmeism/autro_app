@@ -62,6 +62,10 @@ class InvoicesListBloc extends Bloc<InvoicesListEvent, InvoicesListState> {
     if (event is AddedUpdatedInvoiceEvent) {
       await onAddedUpdatedInvoice(event, emit);
     }
+
+    if (event is LoadMoreInvoicesEvent) {
+      await onLoadMoreInvoices(event, emit);
+    }
   }
 
   Future onGetInvoicesList(GetInvoicesListEvent event, Emitter<InvoicesListState> emit) async {
@@ -136,36 +140,38 @@ class InvoicesListBloc extends Bloc<InvoicesListEvent, InvoicesListState> {
   }
 
   onSearchInputChanged(SearchInputChangedEvent event, Emitter<InvoicesListState> emit) async {
-    final state = this.state as InvoicesListLoaded;
+    if (state is InvoicesListLoaded) {
+      final state = this.state as InvoicesListLoaded;
 
-    emit(state.copyWith(loading: true));
+      emit(state.copyWith(loading: true));
 
-    final conditions = List.of(state.paginationFilterDTO.filter.conditions);
+      final conditions = List.of(state.paginationFilterDTO.filter.conditions);
 
-    final newCondition = FilterConditionDTO.searchFilter(event.keyword);
+      final newCondition = FilterConditionDTO.searchFilter(event.keyword);
 
-    conditions.removeWhere((condition) => condition.fieldName == newCondition.fieldName);
-    if (event.keyword.isNotEmpty) conditions.add(newCondition);
+      conditions.removeWhere((condition) => condition.fieldName == newCondition.fieldName);
+      if (event.keyword.isNotEmpty) conditions.add(newCondition);
 
-    final updatedFilter = state.paginationFilterDTO.filter.copyWith(conditions: conditions);
+      final updatedFilter = state.paginationFilterDTO.filter.copyWith(conditions: conditions);
 
-    final updatedFilterPagination = PaginationFilterDTO.initial().copyWith(filter: updatedFilter);
+      final updatedFilterPagination = PaginationFilterDTO.initial().copyWith(filter: updatedFilter);
 
-    final params = GetInvoicesListUseCaseParams(dto: updatedFilterPagination);
+      final params = GetInvoicesListUseCaseParams(dto: updatedFilterPagination);
 
-    final either = await getInvoicesListUsecase.call(params);
-    emit(state.copyWith(loading: false));
+      final either = await getInvoicesListUsecase.call(params);
+      emit(state.copyWith(loading: false));
 
-    either.fold(
-      (failure) => emit(state.copyWith(failureOrSuccessOption: some(left(failure)))),
-      (invoices) {
-        emit(state.copyWith(
-          invoicesList: invoices,
-          paginationFilterDTO: updatedFilterPagination,
-          totalCount: totalCount,
-        ));
-      },
-    );
+      either.fold(
+        (failure) => emit(state.copyWith(failureOrSuccessOption: some(left(failure)))),
+        (invoices) {
+          emit(state.copyWith(
+            invoicesList: invoices,
+            paginationFilterDTO: updatedFilterPagination,
+            totalCount: totalCount,
+          ));
+        },
+      );
+    }
   }
 
   onAddedUpdatedInvoice(AddedUpdatedInvoiceEvent event, Emitter<InvoicesListState> emit) async {
@@ -180,6 +186,32 @@ class InvoicesListBloc extends Bloc<InvoicesListEvent, InvoicesListState> {
         totalCount: totalCount,
         invoicesList: invoices,
       )),
+    );
+  }
+
+  onLoadMoreInvoices(LoadMoreInvoicesEvent event, Emitter<InvoicesListState> emit) async {
+    final state = this.state as InvoicesListLoaded;
+
+    final pageNumber = state.paginationFilterDTO.pageNumber + 1;
+
+    if (pageNumber > state.totalPages) return;
+    emit(state.copyWith(loadingPagination: true));
+    final paginationFilterDto = state.paginationFilterDTO.copyWith(pageNumber: pageNumber);
+    final params = GetInvoicesListUseCaseParams(dto: paginationFilterDto);
+
+    final either = await getInvoicesListUsecase.call(params);
+    emit(state.copyWith(loadingPagination: false));
+    either.fold(
+      (failure) => emit(state.copyWith(failureOrSuccessOption: some(left(failure)))),
+      (invoices) {
+        final updatedInvoicesList = List.of(state.invoicesList);
+        updatedInvoicesList.addAll(invoices);
+        emit(state.copyWith(
+          totalCount: totalCount,
+          invoicesList: updatedInvoicesList,
+          paginationFilterDTO: paginationFilterDto,
+        ));
+      },
     );
   }
 }

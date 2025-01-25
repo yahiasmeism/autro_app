@@ -1,8 +1,12 @@
 import 'package:autro_app/core/common/data/models/selectable_item_model.dart';
+import 'package:autro_app/core/di/di.dart';
+import 'package:autro_app/core/errors/failure_mapper.dart';
 import 'package:autro_app/core/theme/app_colors.dart';
 import 'package:autro_app/core/theme/text_styles.dart';
+import 'package:autro_app/core/utils/dialog_utils.dart';
 import 'package:autro_app/core/widgets/failure_screen.dart';
 import 'package:autro_app/core/widgets/inputs/standard_search_input.dart';
+import 'package:autro_app/core/widgets/overley_loading.dart';
 import 'package:autro_app/features/customers/presentation/bloc/customers_list/customers_list_bloc.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -75,57 +79,84 @@ class _CustomersListSelectionFieldState extends State<CustomersListSelectionFiel
       context: context,
       barrierColor: Colors.black.withOpacity(0.5),
       builder: (context) {
-        return Dialog(
-          clipBehavior: Clip.antiAlias,
-          backgroundColor: Colors.white,
-          insetPadding: const EdgeInsets.all(0),
-          shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(16)),
-          child: SizedBox(
-            width: 600,
-            height: 500,
-            child: Padding(
-              padding: const EdgeInsets.all(8.0),
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Container(
-                    color: Colors.white,
-                    child: Column(
-                      children: [
-                        _buildDialogHeader(context),
-                        const Divider(),
-                        Padding(
-                          padding: const EdgeInsets.symmetric(horizontal: 8),
-                          child: StandardSearchInput(
-                            onSearch: (context, keyword) {
-                              context.read<CustomersListBloc>().add(SearchInputChangedEvent(keyword: keyword));
-                            },
-                          ),
+        return Scaffold(
+          backgroundColor: Colors.transparent,
+          body: Dialog(
+            clipBehavior: Clip.antiAlias,
+            backgroundColor: Colors.white,
+            insetPadding: const EdgeInsets.all(0),
+            shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(16)),
+            child: BlocProvider(
+              create: (context) => sl<CustomersListBloc>()..add(GetCustomersListEvent()),
+              child: SizedBox(
+                width: 600,
+                height: 500,
+                child: Padding(
+                  padding: const EdgeInsets.all(8.0),
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Container(
+                        color: Colors.white,
+                        child: Column(
+                          children: [
+                            _buildDialogHeader(context),
+                            const Divider(),
+                            Padding(
+                              padding: const EdgeInsets.symmetric(horizontal: 8),
+                              child: StandardSearchInput(
+                                onSearch: (context, keyword) {
+                                  context.read<CustomersListBloc>().add(SearchInputChangedEvent(keyword: keyword));
+                                },
+                              ),
+                            ),
+                          ],
                         ),
-                      ],
-                    ),
+                      ),
+                      const SizedBox(height: 16),
+                      Expanded(
+                        child: BlocConsumer<CustomersListBloc, CustomersListState>(
+                          listener: (context, state) {
+                            if (state is CustomersListLoaded) {
+                              state.failureOrSuccessOption.fold(
+                                () => null,
+                                (either) {
+                                  either.fold(
+                                    (failure) => DialogUtil.showErrorSnackBar(
+                                      context,
+                                      getErrorMsgFromFailure(failure),
+                                    ),
+                                    (_) => null,
+                                  );
+                                },
+                              );
+                            }
+                          },
+                          builder: (context, state) {
+                            if (state is CustomersListInitial) {
+                              return const Center(child: CircularProgressIndicator());
+                            } else if (state is CustomersListLoaded) {
+                              if (!state.loadingPagination) hasPagination = false;
+                              return Stack(
+                                children: [
+                                  _buildList(state, context),
+                                  if (state.loading) const Positioned.fill(child: LoadingOverlay()),
+                                ],
+                              );
+                            } else if (state is CustomersListError) {
+                              return FailureScreen(
+                                failure: state.failure,
+                                onRetryTap: () => context.read<CustomersListBloc>().add(HandleFailureEvent()),
+                              );
+                            } else {
+                              return const SizedBox.shrink();
+                            }
+                          },
+                        ),
+                      ),
+                    ],
                   ),
-                  const SizedBox(height: 16),
-                  Expanded(
-                    child: BlocBuilder<CustomersListBloc, CustomersListState>(
-                      builder: (context, state) {
-                        if (state is CustomersListInitial) {
-                          return const Center(child: CircularProgressIndicator());
-                        } else if (state is CustomersListLoaded) {
-                          if (!state.loadingPagination) hasPagination = false;
-                          return _buildList(state);
-                        } else if (state is CustomersListError) {
-                          return FailureScreen(
-                            failure: state.failure,
-                            onRetryTap: () => context.read<CustomersListBloc>().add(HandleFailureEvent()),
-                          );
-                        } else {
-                          return const SizedBox.shrink();
-                        }
-                      },
-                    ),
-                  ),
-                ],
+                ),
               ),
             ),
           ),
@@ -158,11 +189,15 @@ class _CustomersListSelectionFieldState extends State<CustomersListSelectionFiel
     );
   }
 
-  Widget _buildList(CustomersListLoaded state) {
+  Widget _buildList(CustomersListLoaded state, BuildContext context) {
     if (state.customersList.isEmpty) {
-      return Center(child: Text('No Results Found', style: TextStyles.font16Regular));
+      return Center(
+        child: Text(
+          'No Results Found',
+          style: TextStyles.font16Regular,
+        ),
+      );
     }
-
     return NotificationListener<ScrollNotification>(
       onNotification: (notification) {
         if (notification is ScrollUpdateNotification &&

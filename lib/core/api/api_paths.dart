@@ -41,4 +41,9 @@ abstract class ApiPaths {
   static const String bills = 'bills';
   static const String billsSummary = 'bills/summary';
   static String billById(int id) => 'bills/$id';
+
+
+  // shipping invoices
+  static const String shippingInvoices = 'shipping-invoices';
+  static String shippingInvoiceById(int id) => 'shipping-invoices/$id';
 }

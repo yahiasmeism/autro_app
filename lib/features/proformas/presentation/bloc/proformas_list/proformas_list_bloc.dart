@@ -139,36 +139,38 @@ class ProformasListBloc extends Bloc<ProformasListEvent, ProformasListState> {
   }
 
   onSearchInputChanged(SearchInputChangedEvent event, Emitter<ProformasListState> emit) async {
-    final state = this.state as ProformasListLoaded;
+    if (state is ProformasListLoaded) {
+      final state = this.state as ProformasListLoaded;
 
-    emit(state.copyWith(loading: true));
+      emit(state.copyWith(loading: true));
 
-    final conditions = List.of(state.paginationFilterDTO.filter.conditions);
+      final conditions = List.of(state.paginationFilterDTO.filter.conditions);
 
-    final newCondition = FilterConditionDTO.searchFilter(event.keyword);
+      final newCondition = FilterConditionDTO.searchFilter(event.keyword);
 
-    conditions.removeWhere((condition) => condition.fieldName == newCondition.fieldName);
-    if (event.keyword.isNotEmpty) conditions.add(newCondition);
+      conditions.removeWhere((condition) => condition.fieldName == newCondition.fieldName);
+      if (event.keyword.isNotEmpty) conditions.add(newCondition);
 
-    final updatedFilter = state.paginationFilterDTO.filter.copyWith(conditions: conditions);
+      final updatedFilter = state.paginationFilterDTO.filter.copyWith(conditions: conditions);
 
-    final updatedFilterPagination = PaginationFilterDTO.initial().copyWith(filter: updatedFilter);
+      final updatedFilterPagination = PaginationFilterDTO.initial().copyWith(filter: updatedFilter);
 
-    final params = GetProformasListUseCaseParams(dto: updatedFilterPagination);
+      final params = GetProformasListUseCaseParams(dto: updatedFilterPagination);
 
-    final either = await getProformasListUsecase.call(params);
-    emit(state.copyWith(loading: false));
+      final either = await getProformasListUsecase.call(params);
+      emit(state.copyWith(loading: false));
 
-    either.fold(
-      (failure) => emit(state.copyWith(failureOrSuccessOption: some(left(failure)))),
-      (proformas) {
-        emit(state.copyWith(
-          proformasList: proformas,
-          paginationFilterDTO: updatedFilterPagination,
-          totalCount: totalCount,
-        ));
-      },
-    );
+      either.fold(
+        (failure) => emit(state.copyWith(failureOrSuccessOption: some(left(failure)))),
+        (proformas) {
+          emit(state.copyWith(
+            proformasList: proformas,
+            paginationFilterDTO: updatedFilterPagination,
+            totalCount: totalCount,
+          ));
+        },
+      );
+    }
   }
 
   onAddedUpdatedProforma(AddedUpdatedProformaEvent event, Emitter<ProformasListState> emit) async {

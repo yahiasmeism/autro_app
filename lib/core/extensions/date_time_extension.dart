@@ -31,4 +31,5 @@ extension DateTimeX on DateTime? {
 
 extension DateOnlyX on DateTime {
   String get formattedDateYYYYMMDD => DateFormat('yyyy-MM-dd').format(this);
+  String get formattedDateMMMDDY => DateFormat('MMM d, y').format(this);
 }

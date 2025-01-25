@@ -1,0 +1,56 @@
+import 'package:autro_app/features/invoices/domin/entities/invoice_entity.dart';
+import 'package:equatable/equatable.dart';
+
+class ShippingInvoiceEntity extends Equatable {
+  final int id;
+  final int invoiceId;
+  final String shippingCompanyName;
+  final double shippingCost;
+  final String typeMaterialName;
+  final String currency;
+  final DateTime shippingDate;
+  final String attachmentUrl;
+  final InvoiceEntity invoice;
+
+  const ShippingInvoiceEntity({
+    required this.id,
+    required this.invoiceId,
+    required this.shippingCompanyName,
+    required this.shippingCost,
+    required this.attachmentUrl,
+    required this.typeMaterialName,
+    required this.currency,
+    required this.shippingDate,
+    required this.invoice,
+  });
+  @override
+  List<Object?> get props => [
+        id,
+        invoiceId,
+        shippingCompanyName,
+        shippingCost,
+        attachmentUrl,
+        typeMaterialName,
+        currency,
+        shippingDate,
+        invoice,
+      ];
+
+  String get currencySymbol {
+    switch (currency) {
+      case 'EUR':
+        return '€';
+      case 'USD':
+        return '\$';
+      default:
+        return '';
+    }
+  }
+
+  bool get hasAttachment => attachmentUrl.isNotEmpty;
+
+  bool get hasImageAttachment =>
+      attachmentUrl.split('.').last == 'jpg' || attachmentUrl.split('.').last == 'png' || attachmentUrl.split('.').last == 'jpeg';
+
+  bool get hasPdfAttachment => attachmentUrl.split('.').last == 'pdf';
+}

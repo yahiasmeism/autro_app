@@ -136,36 +136,38 @@ class SuppliersListBloc extends Bloc<SuppliersListEvent, SuppliersListState> {
   }
 
   onSearchInputChanged(SearchInputChangedSuppliersEvent event, Emitter<SuppliersListState> emit) async {
-    final state = this.state as SuppliersListLoaded;
+    if (state is SuppliersListLoaded) {
+      final state = this.state as SuppliersListLoaded;
 
-    emit(state.copyWith(loading: true));
+      emit(state.copyWith(loading: true));
 
-    final conditions = List.of(state.paginationFilterDTO.filter.conditions);
+      final conditions = List.of(state.paginationFilterDTO.filter.conditions);
 
-    final newCondition = FilterConditionDTO.searchFilter(event.keyword);
+      final newCondition = FilterConditionDTO.searchFilter(event.keyword);
 
-    conditions.removeWhere((condition) => condition.fieldName == newCondition.fieldName);
-    if (event.keyword.isNotEmpty) conditions.add(newCondition);
+      conditions.removeWhere((condition) => condition.fieldName == newCondition.fieldName);
+      if (event.keyword.isNotEmpty) conditions.add(newCondition);
 
-    final updatedFilter = state.paginationFilterDTO.filter.copyWith(conditions: conditions);
+      final updatedFilter = state.paginationFilterDTO.filter.copyWith(conditions: conditions);
 
-    final updatedFilterPagination = PaginationFilterDTO.initial().copyWith(filter: updatedFilter);
+      final updatedFilterPagination = PaginationFilterDTO.initial().copyWith(filter: updatedFilter);
 
-    final params = GetSuppliersListUsecaseParams(dto: updatedFilterPagination);
+      final params = GetSuppliersListUsecaseParams(dto: updatedFilterPagination);
 
-    final either = await getSuppliersListUsecase.call(params);
-    emit(state.copyWith(loading: false));
+      final either = await getSuppliersListUsecase.call(params);
+      emit(state.copyWith(loading: false));
 
-    either.fold(
-      (failure) => emit(state.copyWith(failureOrSuccessOption: some(left(failure)))),
-      (suppliers) {
-        emit(state.copyWith(
-          suppliersList: suppliers,
-          paginationFilterDTO: updatedFilterPagination,
-          totalCount: totalCount,
-        ));
-      },
-    );
+      either.fold(
+        (failure) => emit(state.copyWith(failureOrSuccessOption: some(left(failure)))),
+        (suppliers) {
+          emit(state.copyWith(
+            suppliersList: suppliers,
+            paginationFilterDTO: updatedFilterPagination,
+            totalCount: totalCount,
+          ));
+        },
+      );
+    }
   }
 
   onAddedUpdatedSupplier(AddedUpdatedSupplierEvent event, Emitter<SuppliersListState> emit) async {
