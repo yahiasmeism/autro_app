@@ -25,6 +25,8 @@ class ChangeCompanyInfoUseCaseParams extends Equatable {
   final String email;
   final String telephone;
   final String website;
+  final bool deleteLogo;
+  final bool deleteSignature;
 
   const ChangeCompanyInfoUseCaseParams({
     required this.name,
@@ -35,6 +37,8 @@ class ChangeCompanyInfoUseCaseParams extends Equatable {
     required this.website,
     this.logoPath,
     this.signaturePath,
+    required this.deleteLogo,
+    required this.deleteSignature ,
   });
   final String? logoPath;
   final String? signaturePath;
