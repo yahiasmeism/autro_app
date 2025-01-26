@@ -68,6 +68,7 @@ class ShippingInvoiceForm extends StatelessWidget {
                       children: [
                         Expanded(
                           child: StandardInput(
+                            showRequiredIndecator: true,
                             controller: bloc.shippingCompanyNameController,
                             labelText: 'Shipping Company Name',
                             hintText: 'Company Name',
@@ -76,6 +77,7 @@ class ShippingInvoiceForm extends StatelessWidget {
                         const SizedBox(width: 32),
                         Expanded(
                           child: StandardInput(
+                            showRequiredIndecator: true,
                             controller: bloc.shippingCostController,
                             labelText: 'Total Shipping Cost',
                             hintText: '\$1,500',
@@ -99,7 +101,7 @@ class ShippingInvoiceForm extends StatelessWidget {
                           child: StandardSelectableDropdown(
                             labelText: 'Currency',
                             hintText: 'Select currency',
-                            key: ValueKey(bloc.currencyController.text),
+                            // key: ValueKey(bloc.currencyController.text),
                             initialValue: bloc.currencyController.text.isNotEmpty ? bloc.currencyController.text : null,
                             items: const ['USD', 'EUR'],
                             onChanged: (p0) => bloc.currencyController.text = p0 ?? '',

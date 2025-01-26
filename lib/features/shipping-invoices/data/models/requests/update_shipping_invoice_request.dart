@@ -12,6 +12,7 @@ class UpdateShippingInvoiceRequest extends UpdateShippingInvoiceUseCaseParams im
     required super.typeMaterialName,
     required super.currency,
     required super.shippingDate,
+    required super.deleteAttachment,
     super.attachmentPath,
   });
 
@@ -31,6 +32,7 @@ class UpdateShippingInvoiceRequest extends UpdateShippingInvoiceUseCaseParams im
         currency: params.currency,
         shippingDate: params.shippingDate,
         attachmentPath: params.attachmentPath,
+        deleteAttachment: params.deleteAttachment,
       );
 
   @override
@@ -42,7 +44,8 @@ class UpdateShippingInvoiceRequest extends UpdateShippingInvoiceUseCaseParams im
       'shipping_cost': shippingCost,
       'type_material_name': typeMaterialName,
       'currency': currency,
-      'shipping_date': shippingDate.formattedDateYYYYMMDD
+      'shipping_date': shippingDate.formattedDateYYYYMMDD,
+      'delete_attachment': deleteAttachment,
     };
   }
 }

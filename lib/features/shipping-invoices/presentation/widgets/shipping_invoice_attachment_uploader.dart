@@ -43,7 +43,7 @@ class ShippingInvoiceAttachmentUploader extends StatelessWidget {
                       ),
                       const SizedBox(height: 8),
                       Text(
-                        'PDF, JPEG, PNG, JPG, Max 2MB',
+                        'PDF, JPEG, PNG, JPG, Max 4MB',
                         style: TextStyles.font16Regular.copyWith(color: AppColors.secondaryOpacity75),
                       ),
                     ],
@@ -74,15 +74,17 @@ class ShippingInvoiceAttachmentUploader extends StatelessWidget {
               borderRadius: BorderRadius.circular(8),
               child: state.pickedAttachment.fold(
                 () {
-                  if (state.shippingInvoice?.hasAttachment == true) {
-                    final shippingInvoice = state.shippingInvoice!;
-                    if (shippingInvoice.hasImageAttachment) {
-                      return _buildCachedNetworkImage(shippingInvoice.attachmentUrl, context);
-                    } else if (shippingInvoice.hasPdfAttachment) {
-                      return _buildNetworkPdf(state.shippingInvoice!.attachmentUrl, context);
-                    }
-                  }
-                  return _buildPlaceholder();
+                  return state.attachmentUrl.fold(
+                    () => _buildPlaceholder(),
+                    (url) {
+                      if (state.shippingInvoiceHasImageAttachment) {
+                        return _buildCachedNetworkImage(url, context);
+                      } else if (state.shippingInvoiceHasPdfAttachment) {
+                        return _buildNetworkPdf(url, context);
+                      }
+                      return _buildPlaceholder();
+                    },
+                  );
                 },
                 (file) {
                   if (file.isImage) {
@@ -98,7 +100,7 @@ class ShippingInvoiceAttachmentUploader extends StatelessWidget {
                 },
               ),
             )),
-        if (state.pickedAttachment.isSome())
+        if (state.pickedAttachment.isSome() || state.attachmentUrl.isSome())
           Positioned(
             top: -8,
             right: -8,
@@ -147,8 +149,8 @@ class ShippingInvoiceAttachmentUploader extends StatelessWidget {
 
       if (!context.mounted) return;
 
-      if (fileSizeInMB > 2) {
-        DialogUtil.showErrorSnackBar(context, 'File size exceeds 2 MB. Please choose a smaller file.');
+      if (fileSizeInMB > 4) {
+        DialogUtil.showErrorSnackBar(context, 'File size exceeds 4 MB. Please choose a smaller file.');
         return;
       }
       context.read<ShippingInvoiceFormBloc>().add(PickAttachmentEvent(file: pickedFile));

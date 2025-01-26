@@ -104,18 +104,32 @@ class ShippingInvoiceFormBloc extends Bloc<ShippingInvoiceFormEvent, ShippingInv
 
   _onShippingInvoiceFormChanged(ShippingInvoiceFormChangedEvent event, Emitter<ShippingInvoiceFormState> emit) {
     final state = this.state as ShippingInvoiceFormLoaded;
-    final formIsNotEmpty = invoiceIdController.text.isNotEmpty &&
-        invoiceNumberController.text.isNotEmpty &&
-        shippingCompanyNameController.text.isNotEmpty &&
-        shippingCostController.text.isNotEmpty &&
-        typeMaterialNameController.text.isNotEmpty &&
-        currencyController.text.isNotEmpty &&
-        shippingDateController.text.isNotEmpty &&
-        state.shippingInvoice?.attachmentUrl.isNotEmpty == true;
+    final formIsNotEmpty = [
+      invoiceIdController.text.isNotEmpty,
+      invoiceNumberController.text.isNotEmpty,
+      shippingCompanyNameController.text.isNotEmpty,
+      shippingCostController.text.isNotEmpty,
+      currencyController.text.isNotEmpty,
+      shippingDateController.text.isNotEmpty
+    ].every((element) => element);
+
+    final isAnyFieldIsNotEmpty = [
+      invoiceIdController.text.isNotEmpty,
+      invoiceNumberController.text.isNotEmpty,
+      shippingCompanyNameController.text.isNotEmpty,
+      shippingCostController.text.isNotEmpty,
+      typeMaterialNameController.text.isNotEmpty,
+      currencyController.text.isNotEmpty,
+      shippingDateController.text != DateTime.now().formattedDateYYYYMMDD,
+      state.pickedAttachment.isSome(),
+    ].any((element) => element);
 
     if (state.updatedMode) {
       final shippingInvoice = state.shippingInvoice!;
-
+      final urlChanged = state.attachmentUrl.fold(
+        () => shippingInvoice.attachmentUrl.isNotEmpty,
+        (a) => a != shippingInvoice.attachmentUrl,
+      );
       bool isFormChanged = shippingInvoice.invoice.id != int.tryParse(invoiceIdController.text) ||
           shippingInvoice.invoice.invoiceNumber != invoiceNumberController.text ||
           shippingInvoice.shippingCompanyName != shippingCompanyNameController.text ||
@@ -123,7 +137,8 @@ class ShippingInvoiceFormBloc extends Bloc<ShippingInvoiceFormEvent, ShippingInv
           shippingInvoice.typeMaterialName != typeMaterialNameController.text ||
           shippingInvoice.currency != currencyController.text ||
           shippingInvoice.shippingDate.formattedDateYYYYMMDD != shippingDateController.text ||
-          state.pickedAttachment.isSome();
+          state.pickedAttachment.isSome() ||
+          urlChanged;
 
       emit(state.copyWith(
         saveEnabled: formIsNotEmpty && isFormChanged,
@@ -131,7 +146,11 @@ class ShippingInvoiceFormBloc extends Bloc<ShippingInvoiceFormEvent, ShippingInv
         clearEnabled: formIsNotEmpty,
       ));
     } else {
-      emit(state.copyWith(saveEnabled: formIsNotEmpty, cancelEnabled: false, clearEnabled: formIsNotEmpty));
+      emit(state.copyWith(
+        saveEnabled: formIsNotEmpty,
+        cancelEnabled: false,
+        clearEnabled: isAnyFieldIsNotEmpty,
+      ));
     }
   }
 
@@ -169,7 +188,7 @@ class ShippingInvoiceFormBloc extends Bloc<ShippingInvoiceFormEvent, ShippingInv
         )),
       ),
       (shippingInvoice) {
-        emit(state.copyWith(shippingInvoice: shippingInvoice, failureOrSuccessOption: some(right('ShippingInvoice created'))));
+        emit(state.copyWith(shippingInvoice: shippingInvoice, failureOrSuccessOption: some(right('Shipping Invoice created'))));
       },
     );
   }
@@ -177,6 +196,7 @@ class ShippingInvoiceFormBloc extends Bloc<ShippingInvoiceFormEvent, ShippingInv
   Future _onUpdateShippingInvoice(UpdateShippingInvoiceFormEvent event, Emitter<ShippingInvoiceFormState> emit) async {
     final state = this.state as ShippingInvoiceFormLoaded;
 
+    final deleteAttachment = state.attachmentUrl.isNone() && state.pickedAttachment.isNone();
     final parms = UpdateShippingInvoiceUseCaseParams(
       id: state.shippingInvoice!.id,
       invoiceId: int.tryParse(invoiceIdController.text).toIntOrZero,
@@ -186,6 +206,7 @@ class ShippingInvoiceFormBloc extends Bloc<ShippingInvoiceFormEvent, ShippingInv
       currency: currencyController.text,
       shippingDate: DateTime.tryParse(shippingDateController.text).orDefault,
       attachmentPath: state.pickedAttachment.fold(() => null, (file) => file.path),
+      deleteAttachment: deleteAttachment,
     );
 
     emit(state.copyWith(loading: true));
@@ -194,7 +215,7 @@ class ShippingInvoiceFormBloc extends Bloc<ShippingInvoiceFormEvent, ShippingInv
     either.fold(
       (failure) => emit((state.copyWith(failureOrSuccessOption: some(left(failure))))),
       (shippingInvoice) {
-        emit(state.copyWith(shippingInvoice: shippingInvoice, failureOrSuccessOption: some(right('ShippingInvoice updated'))));
+        emit(state.copyWith(shippingInvoice: shippingInvoice, failureOrSuccessOption: some(right('Shipping Invoice updated'))));
         _initializeControllers();
       },
     );
@@ -208,10 +229,10 @@ class ShippingInvoiceFormBloc extends Bloc<ShippingInvoiceFormEvent, ShippingInv
     shippingCostController.clear();
     typeMaterialNameController.clear();
     currencyController.clear();
-    shippingDateController.clear();
+    shippingDateController.text = DateTime.now().formattedDateYYYYMMDD;
     if (state is ShippingInvoiceFormLoaded) {
       final state = this.state as ShippingInvoiceFormLoaded;
-      emit(state.copyWith(pickedAttachment: none()));
+      emit(state.copyWith(pickedAttachment: none(), attachmentUrl: none()));
     }
   }
 

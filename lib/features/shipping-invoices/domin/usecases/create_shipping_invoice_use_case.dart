@@ -26,8 +26,9 @@ class CreateShippingInvoiceUseCaseParams extends Equatable {
   final String currency;
   final DateTime shippingDate;
   final String? attachmentPath;
-
+  final bool deleteAttachment;
   const CreateShippingInvoiceUseCaseParams({
+    this.deleteAttachment = false,
     required this.invoiceId,
     required this.shippingCompanyName,
     required this.shippingCost,

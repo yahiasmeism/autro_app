@@ -44,6 +44,20 @@ final class ShippingInvoiceFormLoaded extends ShippingInvoiceFormState {
         attachmentUrl,
       ];
 
+  bool get shippingInvoiceHasImageAttachment {
+    final attachmentUrl = this.attachmentUrl.fold(() => '', (r) => r);
+    if (attachmentUrl.isEmpty) return false;
+    return attachmentUrl.split('.').last == 'jpg' ||
+        attachmentUrl.split('.').last == 'png' ||
+        attachmentUrl.split('.').last == 'jpeg';
+  }
+
+  bool get shippingInvoiceHasPdfAttachment {
+    final attachmentUrl = this.attachmentUrl.fold(() => '', (r) => r);
+    if (attachmentUrl.isEmpty) return false;
+    return attachmentUrl.split('.').last == 'pdf';
+  }
+
   ShippingInvoiceFormLoaded copyWith({
     ShippingInvoiceEntity? shippingInvoice,
     bool? clearEnabled,
