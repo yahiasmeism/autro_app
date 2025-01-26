@@ -27,6 +27,7 @@ class ProformaFormGoodDescriptions extends StatelessWidget {
           return Column(
             children: [
               ListView.separated(
+                physics: const NeverScrollableScrollPhysics(),
                 shrinkWrap: true,
                 itemCount: state.goodDescriptionsList.length,
                 separatorBuilder: (context, index) => Divider(
