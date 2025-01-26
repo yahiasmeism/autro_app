@@ -16,15 +16,17 @@ final class CompanyLoaded extends CompanyState {
   final bool loading;
   final Option<File> pickedLogoFile;
   final Option<File> pickedSignatureFile;
-
-  const CompanyLoaded({
-    required this.company,
-    required this.failureOrSuccessOption,
-    required this.loading,
-    required this.dataChanged,
-    required this.pickedLogoFile,
-    required this.pickedSignatureFile,
-  });
+  final Option<String> logoUrl;
+  final Option<String> signatureUrl;
+  const CompanyLoaded(
+      {required this.company,
+      required this.failureOrSuccessOption,
+      required this.loading,
+      required this.dataChanged,
+      required this.pickedLogoFile,
+      required this.pickedSignatureFile,
+      required this.logoUrl,
+      required this.signatureUrl});
 
   factory CompanyLoaded.initial(CompanyEntity company) {
     return CompanyLoaded(
@@ -34,11 +36,22 @@ final class CompanyLoaded extends CompanyState {
       dataChanged: false,
       pickedLogoFile: none(),
       pickedSignatureFile: none(),
+      logoUrl: company.logoUrl.isNotEmpty ? some(company.logoUrl) : none(),
+      signatureUrl: company.signatureUrl.isNotEmpty ? some(company.signatureUrl) : none(),
     );
   }
 
   @override
-  List<Object?> get props => [company, loading, failureOrSuccessOption, dataChanged, pickedLogoFile, pickedSignatureFile];
+  List<Object?> get props => [
+        company,
+        loading,
+        failureOrSuccessOption,
+        dataChanged,
+        pickedLogoFile,
+        pickedSignatureFile,
+        logoUrl,
+        signatureUrl,
+      ];
 
   CompanyLoaded copyWith({
     CompanyEntity? company,
@@ -48,6 +61,8 @@ final class CompanyLoaded extends CompanyState {
     final bool? dataChanged,
     Option<File>? pickedLogoFile,
     Option<File>? pickedSignatureFile,
+    Option<String>? logoUrl,
+    Option<String>? signatureUrl,
   }) {
     return CompanyLoaded(
       company: company ?? this.company,
@@ -56,6 +71,8 @@ final class CompanyLoaded extends CompanyState {
       dataChanged: dataChanged ?? this.dataChanged,
       pickedLogoFile: pickedLogoFile ?? this.pickedLogoFile,
       pickedSignatureFile: pickedSignatureFile ?? this.pickedSignatureFile,
+      logoUrl: logoUrl ?? this.logoUrl,
+      signatureUrl: signatureUrl ?? this.signatureUrl,
     );
   }
 }

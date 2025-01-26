@@ -29,6 +29,9 @@ class CompanyCubit extends Cubit<CompanyState> {
 
   void updateDataChanged() {
     final currentState = state as CompanyLoaded;
+    final initailLogo = currentState.company.logoUrl.isNotEmpty ? some(currentState.company.logoUrl) : none();
+    final initailSignature = currentState.company.signatureUrl.isNotEmpty ? some(currentState.company.signatureUrl) : none();
+
     final isEdited = currentState.company.name != companyNameController.text ||
         currentState.company.address != companyAddressController.text ||
         currentState.company.phone != companyPhoneController.text ||
@@ -36,7 +39,9 @@ class CompanyCubit extends Cubit<CompanyState> {
         currentState.company.telephone != companyTelephoneController.text ||
         currentState.company.website != companyWebsiteController.text ||
         currentState.pickedLogoFile.isSome() ||
-        currentState.pickedSignatureFile.isSome();
+        currentState.pickedSignatureFile.isSome() ||
+        currentState.logoUrl != initailLogo ||
+        currentState.signatureUrl != initailSignature;
 
     emit(currentState.copyWith(dataChanged: isEdited));
   }
@@ -65,8 +70,7 @@ class CompanyCubit extends Cubit<CompanyState> {
 
   cancelChanges() {
     final state = this.state as CompanyLoaded;
-    emit(state.copyWith(pickedLogoFile: none(), pickedSignatureFile: none()));
-    initailizeControllers();
+    emit(CompanyLoaded.initial(state.company));
   }
 
   Future<void> getCompany() async {
@@ -92,6 +96,8 @@ class CompanyCubit extends Cubit<CompanyState> {
       website: companyWebsiteController.text,
       logoPath: state.pickedLogoFile.fold(() => null, (file) => file.path),
       signaturePath: state.pickedSignatureFile.fold(() => null, (file) => file.path),
+      deleteLogo: state.pickedLogoFile.isNone() && state.logoUrl.isNone(),
+      deleteSignature: state.pickedSignatureFile.isNone() && state.signatureUrl.isNone(),
     );
     emit(state.copyWith(loading: true));
     final either = await changeCompanyInfoUseCase.call(params);
@@ -106,6 +112,8 @@ class CompanyCubit extends Cubit<CompanyState> {
           failureOrSuccessOption: some(right('Company updated successfully')),
           pickedLogoFile: none(),
           pickedSignatureFile: none(),
+          logoUrl: company.logoUrl.isNotEmpty ? some(company.logoUrl) : none(),
+          signatureUrl: company.signatureUrl.isNotEmpty ? some(company.signatureUrl) : none(),
         ));
         initailizeControllers();
       },
@@ -126,6 +134,18 @@ class CompanyCubit extends Cubit<CompanyState> {
   pickSignatureFile(File file) {
     final state = this.state as CompanyLoaded;
     emit(state.copyWith(pickedSignatureFile: some(file)));
+    updateDataChanged();
+  }
+
+  clearLogoFile() {
+    final state = this.state as CompanyLoaded;
+    emit(state.copyWith(pickedLogoFile: none(), logoUrl: none()));
+    updateDataChanged();
+  }
+
+  clearSignatureFile() {
+    final state = this.state as CompanyLoaded;
+    emit(state.copyWith(pickedSignatureFile: none(), signatureUrl: none()));
     updateDataChanged();
   }
 

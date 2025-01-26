@@ -10,6 +10,8 @@ class ChangeCompanyInfoRequest extends ChangeCompanyInfoUseCaseParams implements
     required super.email,
     required super.website,
     required super.telephone,
+    required super.deleteLogo,
+    required super.deleteSignature,
     super.logoPath,
     super.signaturePath,
   });
@@ -24,6 +26,8 @@ class ChangeCompanyInfoRequest extends ChangeCompanyInfoUseCaseParams implements
       telephone: params.telephone,
       logoPath: params.logoPath,
       signaturePath: params.signaturePath,
+      deleteLogo: params.deleteLogo,
+      deleteSignature: params.deleteSignature,
     );
   }
 
@@ -35,6 +39,8 @@ class ChangeCompanyInfoRequest extends ChangeCompanyInfoUseCaseParams implements
       'email': email,
       'website': website,
       'telephone': telephone,
+      'delete_logo': deleteLogo,
+      'delete_signature': deleteSignature,
       'logo': logoPath != null ? await MultipartFile.fromFile(logoPath!) : null,
       'signature': signaturePath != null ? await MultipartFile.fromFile(signaturePath!) : null,
     });

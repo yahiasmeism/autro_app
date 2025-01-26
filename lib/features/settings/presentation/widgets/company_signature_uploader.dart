@@ -1,16 +1,14 @@
 import 'dart:io';
 
-import 'package:autro_app/core/extensions/dartz_option_extension.dart';
 import 'package:autro_app/core/theme/app_colors.dart';
 import 'package:autro_app/core/theme/text_styles.dart';
 import 'package:autro_app/core/utils/dialog_utils.dart';
+import 'package:autro_app/features/settings/presentation/bloc/company/company_cubit.dart';
 import 'package:autro_app/features/settings/presentation/widgets/upload_button.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:file_picker/file_picker.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-
-import '../bloc/company/company_cubit.dart';
 
 class CompanySignatureUploader extends StatelessWidget {
   const CompanySignatureUploader({super.key});
@@ -30,7 +28,33 @@ class CompanySignatureUploader extends StatelessWidget {
               const SizedBox(height: 8),
               Row(
                 children: [
-                  _buildImage(state),
+                  Stack(
+                    clipBehavior: Clip.none,
+                    children: [
+                      _buildImage(state),
+                      if (state.pickedSignatureFile.isSome() || state.signatureUrl.isSome())
+                        Positioned(
+                          top: -8,
+                          right: -8,
+                          child: InkWell(
+                            borderRadius: BorderRadius.circular(16),
+                            onTap: () => context.read<CompanyCubit>().clearSignatureFile(),
+                            child: Container(
+                              padding: const EdgeInsets.all(2),
+                              decoration: BoxDecoration(
+                                shape: BoxShape.circle,
+                                color: AppColors.secondaryOpacity13,
+                              ),
+                              child: const Icon(
+                                Icons.close,
+                                color: AppColors.secondary,
+                                size: 16,
+                              ),
+                            ),
+                          ),
+                        )
+                    ],
+                  ),
                   const SizedBox(width: 16),
                   Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
@@ -59,30 +83,43 @@ class CompanySignatureUploader extends StatelessWidget {
 
   Widget _buildImage(CompanyLoaded state) {
     return Container(
-        width: 100,
-        height: 100,
-        decoration: BoxDecoration(
-          borderRadius: const BorderRadius.all(Radius.circular(8)),
-          border: Border.all(color: AppColors.secondaryOpacity13),
+      width: 100,
+      height: 100,
+      decoration: BoxDecoration(
+        borderRadius: const BorderRadius.all(Radius.circular(8)),
+        border: Border.all(color: AppColors.secondaryOpacity13),
+      ),
+      child: ClipRRect(
+        borderRadius: BorderRadius.circular(8),
+        child: state.pickedSignatureFile.fold(
+          () => state.signatureUrl.fold(
+            () => _buildPlaceholder(),
+            (url) {
+              if (state.company.signatureUrl.isNotEmpty) {
+                return CachedNetworkImage(
+                  imageUrl: state.company.signatureUrl,
+                  progressIndicatorBuilder: (context, url, progress) {
+                    return Center(child: CircularProgressIndicator(value: progress.progress));
+                  },
+                );
+              } else {
+                return _buildPlaceholder();
+              }
+            },
+          ),
+          (file) => Image.file(file),
         ),
-        child: ClipRRect(
-          borderRadius: BorderRadius.circular(8),
-          child: state.pickedSignatureFile.isSome()
-              ? Image.file(state.pickedSignatureFile.getSome())
-              : state.company.signatureUrl.isNotEmpty
-                  ? CachedNetworkImage(
-                      imageUrl: state.company.signatureUrl,
-                      progressIndicatorBuilder: (context, url, progress) {
-                        return Center(child: CircularProgressIndicator(value: progress.progress));
-                      },
-                    )
-                  : Center(
-                      child: Text(
-                        'Signature',
-                        style: TextStyles.font20Regular.copyWith(color: AppColors.hintColor),
-                      ),
-                    ),
-        ));
+      ),
+    );
+  }
+
+  _buildPlaceholder() {
+    return Center(
+      child: Text(
+        'Signature',
+        style: TextStyles.font20Regular.copyWith(color: AppColors.hintColor),
+      ),
+    );
   }
 
   Future<void> _pickSignatureFile(BuildContext context) async {
