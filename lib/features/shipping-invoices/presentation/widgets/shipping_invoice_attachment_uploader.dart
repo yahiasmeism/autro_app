@@ -6,7 +6,7 @@ import 'package:autro_app/core/theme/text_styles.dart';
 import 'package:autro_app/core/utils/dialog_utils.dart';
 import 'package:autro_app/core/utils/nav_util.dart';
 import 'package:autro_app/core/widgets/image_viewer.dart';
-import 'package:autro_app/core/widgets/pdf_network_viewer.dart';
+import 'package:autro_app/core/widgets/app_pdf_viewer.dart';
 import 'package:autro_app/features/settings/presentation/widgets/upload_button.dart';
 import 'package:autro_app/features/shipping-invoices/presentation/bloc/shipping_invoice_form/shipping_invoice_form_bloc.dart';
 import 'package:cached_network_image/cached_network_image.dart';
@@ -182,7 +182,7 @@ class ShippingInvoiceAttachmentUploader extends StatelessWidget {
   Widget _buildLocalPdf(File file, BuildContext context) {
     return InkWell(
       onTap: () {
-        NavUtil.push(context, PdfViewer(localPath: file.path));
+        NavUtil.push(context, AppPdfViewer(localPath: file.path));
       },
       child: const Icon(
         color: AppColors.primary,
@@ -195,7 +195,7 @@ class ShippingInvoiceAttachmentUploader extends StatelessWidget {
   Widget _buildNetworkPdf(String attachmentUrl, BuildContext context) {
     return InkWell(
       onTap: () {
-        NavUtil.push(context, PdfViewer(networkPath: attachmentUrl));
+        NavUtil.push(context, AppPdfViewer(networkPath: attachmentUrl));
       },
       child: const Icon(
         Icons.picture_as_pdf,

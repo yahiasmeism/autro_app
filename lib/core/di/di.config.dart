@@ -83,6 +83,8 @@ import 'package:autro_app/features/invoices/domin/use_cases/update_invoice_use_c
     as _i707;
 import 'package:autro_app/features/invoices/presentation/bloc/invoice_form/invoice_form_cubit.dart'
     as _i676;
+import 'package:autro_app/features/invoices/presentation/bloc/invoice_pdf/invoice_pdf_cubit.dart'
+    as _i43;
 import 'package:autro_app/features/invoices/presentation/bloc/invoices_list/invoices_list_bloc.dart'
     as _i654;
 import 'package:autro_app/features/proformas/data/data_sources/remote/proformas_remote_data_source.dart'
@@ -348,6 +350,8 @@ extension GetItInjectableX on _i174.GetIt {
           gh<_i232.AddBankAccountUseCase>(),
           gh<_i253.DeleteBankAccountUseCase>(),
         ));
+    gh.factory<_i43.InvoicePdfCubit>(
+        () => _i43.InvoicePdfCubit(gh<_i223.GetCompanyUseCase>()));
     gh.lazySingleton<_i116.CreateCustomerUsecase>(() =>
         _i116.CreateCustomerUsecase(
             customersRepository: gh<_i54.CustomersRepository>()));
