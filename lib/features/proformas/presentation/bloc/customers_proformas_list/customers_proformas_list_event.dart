@@ -1,4 +1,4 @@
-part of 'proformas_list_bloc.dart';
+part of 'customers_proformas_list_bloc.dart';
 
 sealed class ProformasListEvent extends Equatable {
   const ProformasListEvent();

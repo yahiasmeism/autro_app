@@ -3,17 +3,17 @@ import 'package:autro_app/core/theme/app_colors.dart';
 import 'package:autro_app/core/theme/text_styles.dart';
 import 'package:autro_app/core/widgets/delete_icon_button.dart';
 import 'package:autro_app/core/widgets/edit_icon_button.dart';
-import 'package:autro_app/features/proformas/domin/entities/proforma_entity.dart';
-import 'package:autro_app/features/proformas/presentation/screens/proforma_form_screen.dart';
+import 'package:autro_app/features/proformas/domin/entities/customer_proforma_entity.dart';
+import 'package:autro_app/features/proformas/presentation/screens/customer_proforma_form_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 import '../../../../core/utils/nav_util.dart';
-import '../bloc/proformas_list/proformas_list_bloc.dart';
+import '../bloc/customers_proformas_list/customers_proformas_list_bloc.dart';
 
 class ProformaListTile extends StatelessWidget {
   const ProformaListTile({super.key, required this.proformaEntity});
-  final ProformaEntity proformaEntity;
+  final CustomerProformaEntity proformaEntity;
 
   @override
   Widget build(BuildContext context) {
@@ -70,7 +70,7 @@ class ProformaListTile extends StatelessWidget {
                   const SizedBox(width: 8),
                   DeleteIconButton(
                     onPressed: () {
-                      context.read<ProformasListBloc>().add(DeleteProformaEvent(proformaId: proformaEntity.id));
+                      context.read<CustomersProformasListBloc>().add(DeleteProformaEvent(proformaId: proformaEntity.id));
                     },
                   ),
                 ],

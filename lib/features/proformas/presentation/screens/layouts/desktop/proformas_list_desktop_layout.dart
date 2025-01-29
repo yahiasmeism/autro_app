@@ -5,7 +5,7 @@ import 'package:autro_app/core/widgets/loading_indecator.dart';
 import 'package:autro_app/core/widgets/no_data_screen.dart';
 import 'package:autro_app/core/widgets/overley_loading.dart';
 import 'package:autro_app/core/widgets/standard_list_title.dart';
-import 'package:autro_app/features/proformas/presentation/bloc/proformas_list/proformas_list_bloc.dart';
+import 'package:autro_app/features/proformas/presentation/bloc/customers_proformas_list/customers_proformas_list_bloc.dart';
 import 'package:autro_app/features/proformas/presentation/widgets/proforma_pagination_bottom_bar.dart';
 import 'package:autro_app/features/proformas/presentation/widgets/proforma_filter_search_bar.dart';
 import 'package:autro_app/features/proformas/presentation/widgets/proformas_list.dart';
@@ -29,19 +29,19 @@ class ProformasListDesktopLayout extends StatelessWidget {
             ),
             const StandartListTitle(title: 'Proformas'),
             Expanded(
-              child: BlocConsumer<ProformasListBloc, ProformasListState>(
+              child: BlocConsumer<CustomersProformasListBloc, CustomersProformasListState>(
                 listener: listener,
                 builder: (context, state) {
-                  if (state is ProformasListInitial) {
+                  if (state is CustomersProformasListInitial) {
                     return const LoadingIndicator();
                   }
-                  if (state is ProformasListLoaded) {
+                  if (state is CustomersProformasListLoaded) {
                     return _buildLoadedBody(state);
-                  } else if (state is ProformasListError) {
+                  } else if (state is CustomersProformasListError) {
                     return FailureScreen(
                       failure: state.failure,
                       onRetryTap: () {
-                        context.read<ProformasListBloc>().add(HandleFailureEvent());
+                        context.read<CustomersProformasListBloc>().add(HandleFailureEvent());
                       },
                     );
                   }
@@ -56,7 +56,7 @@ class ProformasListDesktopLayout extends StatelessWidget {
     );
   }
 
-  Widget _buildLoadedBody(ProformasListLoaded state) {
+  Widget _buildLoadedBody(CustomersProformasListLoaded state) {
     if (state.proformasList.isEmpty) return NoDataScreen.proformas();
     return Stack(
       children: [
@@ -71,8 +71,8 @@ class ProformasListDesktopLayout extends StatelessWidget {
     );
   }
 
-  void listener(BuildContext context, ProformasListState state) {
-    if (state is ProformasListLoaded) {
+  void listener(BuildContext context, CustomersProformasListState state) {
+    if (state is CustomersProformasListLoaded) {
       state.failureOrSuccessOption.fold(
         () => null,
         (either) => either.fold(

@@ -5,11 +5,10 @@ import 'package:intl/intl.dart';
 
 import 'proforma_goods_description_entity.dart';
 
-class ProformaEntity extends Equatable {
+class CustomerProformaEntity extends Equatable {
   final int id;
   final String proformaNumber;
   final DateTime date;
-  // final String customerAddress;
   final String taxId;
   final String ports;
   final String deliveryTerms;
@@ -22,7 +21,7 @@ class ProformaEntity extends Equatable {
   final BankAccountEntity bankAccount;
   final CustomerEntity customer;
 
-  const ProformaEntity({
+  const CustomerProformaEntity({
     required this.id,
     required this.proformaNumber,
     required this.date,
@@ -71,7 +70,7 @@ class ProformaEntity extends Equatable {
 
   String get formattedTotalPrice => "$currancyCode${totalPrice.toStringAsFixed(2)}";
 
-  ProformaEntity copyWith({
+  CustomerProformaEntity copyWith({
     int? id,
     String? proformaNumber,
     DateTime? date,
@@ -88,7 +87,7 @@ class ProformaEntity extends Equatable {
     BankAccountEntity? bankAccount,
     CustomerEntity? customer,
   }) {
-    return ProformaEntity(
+    return CustomerProformaEntity(
       id: id ?? this.id,
       proformaNumber: proformaNumber ?? this.proformaNumber,
       date: date ?? this.date,

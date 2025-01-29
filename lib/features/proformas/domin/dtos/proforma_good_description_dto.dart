@@ -1,9 +1,9 @@
 import 'package:autro_app/core/extensions/packing_type_extension.dart';
 
 import '../entities/proforma_goods_description_entity.dart';
-import '../use_cases/create_proforma_use_case.dart';
+import '../use_cases/create_customer_proforma_use_case.dart';
 
-class ProformaGoodDescriptionDto extends ProformaDescriptionParams {
+class ProformaGoodDescriptionDto extends CustomerProformaDescriptionParams {
   final String uniqueKey;
   const ProformaGoodDescriptionDto({
     required super.description,

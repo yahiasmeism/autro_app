@@ -8,7 +8,7 @@ import 'package:autro_app/features/bills/presentation/bloc/bills_list/bills_list
 import 'package:autro_app/features/customers/presentation/bloc/customers_list/customers_list_bloc.dart';
 import 'package:autro_app/features/deals/presentation/bloc/deals_list/deals_list_bloc.dart';
 import 'package:autro_app/features/home/bloc/home_bloc.dart';
-import 'package:autro_app/features/proformas/presentation/bloc/proformas_list/proformas_list_bloc.dart';
+import 'package:autro_app/features/proformas/presentation/bloc/customers_proformas_list/customers_proformas_list_bloc.dart';
 import 'package:autro_app/features/settings/presentation/bloc/bank_accounts_list/bank_accounts_list_cubit.dart';
 import 'package:autro_app/features/settings/presentation/bloc/company/company_cubit.dart';
 import 'package:autro_app/features/settings/presentation/bloc/users_list/users_list_cubit.dart';
@@ -84,7 +84,7 @@ class MyApp extends StatelessWidget {
           create: (context) => sl<InvoiceSettingsCubit>(),
         ),
         BlocProvider(
-          create: (context) => sl<ProformasListBloc>(),
+          create: (context) => sl<CustomersProformasListBloc>(),
         ),
         BlocProvider(
           create: (context) => sl<InvoicesListBloc>(),

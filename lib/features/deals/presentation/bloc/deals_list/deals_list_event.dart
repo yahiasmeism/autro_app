@@ -42,3 +42,12 @@ class SearchInputChangedEvent extends DealsListEvent {
 class AddedUpdatedDealEvent extends DealsListEvent {}
 
 class LoadMoreDealsEvent extends DealsListEvent {}
+
+class CreateDealEvent extends DealsListEvent {
+  final int customerProformaId;
+
+  const CreateDealEvent({required this.customerProformaId});
+
+  @override
+  List<Object> get props => [customerProformaId];
+}

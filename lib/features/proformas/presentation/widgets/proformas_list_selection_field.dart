@@ -7,8 +7,8 @@ import 'package:autro_app/core/utils/dialog_utils.dart';
 import 'package:autro_app/core/widgets/failure_screen.dart';
 import 'package:autro_app/core/widgets/inputs/standard_search_input.dart';
 import 'package:autro_app/core/widgets/overley_loading.dart';
-import 'package:autro_app/features/proformas/domin/entities/proforma_entity.dart';
-import 'package:autro_app/features/proformas/presentation/bloc/proformas_list/proformas_list_bloc.dart';
+import 'package:autro_app/features/proformas/domin/entities/customer_proforma_entity.dart';
+import 'package:autro_app/features/proformas/presentation/bloc/customers_proformas_list/customers_proformas_list_bloc.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
@@ -21,7 +21,7 @@ class ProformasListSelectionField extends StatefulWidget {
   });
 
   final TextEditingController nameController, idController;
-  final Function(ProformaEntity proforma)? onItemTap;
+  final Function(CustomerProformaEntity proforma)? onItemTap;
 
   @override
   State createState() => _ProformasListSelectionFieldState();
@@ -75,21 +75,20 @@ class _ProformasListSelectionFieldState extends State<ProformasListSelectionFiel
     );
   }
 
-  Future<SelectableItemModel<ProformaEntity>?> showCustomDialog() async {
-    return showDialog<SelectableItemModel<ProformaEntity>?>(
+  Future<SelectableItemModel<CustomerProformaEntity>?> showCustomDialog() async {
+    return showDialog<SelectableItemModel<CustomerProformaEntity>?>(
       context: context,
       barrierColor: Colors.black.withOpacity(0.5),
       builder: (context) {
         return Scaffold(
-                    backgroundColor: Colors.transparent,
-
+          backgroundColor: Colors.transparent,
           body: Dialog(
             clipBehavior: Clip.antiAlias,
             backgroundColor: Colors.white,
             insetPadding: const EdgeInsets.all(0),
             shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(16)),
             child: BlocProvider(
-              create: (context) => sl<ProformasListBloc>()..add(GetProformasListEvent()),
+              create: (context) => sl<CustomersProformasListBloc>()..add(GetProformasListEvent()),
               child: SizedBox(
                 width: 600,
                 height: 500,
@@ -108,7 +107,7 @@ class _ProformasListSelectionFieldState extends State<ProformasListSelectionFiel
                               padding: const EdgeInsets.symmetric(horizontal: 8),
                               child: StandardSearchInput(
                                 onSearch: (context, keyword) {
-                                  context.read<ProformasListBloc>().add(SearchInputChangedEvent(keyword: keyword));
+                                  context.read<CustomersProformasListBloc>().add(SearchInputChangedEvent(keyword: keyword));
                                 },
                               ),
                             ),
@@ -117,9 +116,9 @@ class _ProformasListSelectionFieldState extends State<ProformasListSelectionFiel
                       ),
                       const SizedBox(height: 16),
                       Expanded(
-                        child: BlocConsumer<ProformasListBloc, ProformasListState>(
+                        child: BlocConsumer<CustomersProformasListBloc, CustomersProformasListState>(
                           listener: (context, state) {
-                            if (state is ProformasListLoaded) {
+                            if (state is CustomersProformasListLoaded) {
                               state.failureOrSuccessOption.fold(
                                 () => null,
                                 (either) {
@@ -135,9 +134,9 @@ class _ProformasListSelectionFieldState extends State<ProformasListSelectionFiel
                             }
                           },
                           builder: (context, state) {
-                            if (state is ProformasListInitial) {
+                            if (state is CustomersProformasListInitial) {
                               return const Center(child: CircularProgressIndicator());
-                            } else if (state is ProformasListLoaded) {
+                            } else if (state is CustomersProformasListLoaded) {
                               if (!state.loadingPagination) hasPagination = false;
                               return Stack(
                                 children: [
@@ -145,10 +144,10 @@ class _ProformasListSelectionFieldState extends State<ProformasListSelectionFiel
                                   if (state.loading) const Positioned.fill(child: LoadingOverlay()),
                                 ],
                               );
-                            } else if (state is ProformasListError) {
+                            } else if (state is CustomersProformasListError) {
                               return FailureScreen(
                                 failure: state.failure,
-                                onRetryTap: () => context.read<ProformasListBloc>().add(HandleFailureEvent()),
+                                onRetryTap: () => context.read<CustomersProformasListBloc>().add(HandleFailureEvent()),
                               );
                             } else {
                               return const SizedBox.shrink();
@@ -191,9 +190,9 @@ class _ProformasListSelectionFieldState extends State<ProformasListSelectionFiel
     );
   }
 
-  Widget _buildList(ProformasListLoaded state,BuildContext context) {
+  Widget _buildList(CustomersProformasListLoaded state, BuildContext context) {
     if (state.proformasList.isEmpty) {
-     return Center(
+      return Center(
         child: Text(
           'No Results Found',
           style: TextStyles.font16Regular,
@@ -206,7 +205,7 @@ class _ProformasListSelectionFieldState extends State<ProformasListSelectionFiel
         if (notification is ScrollUpdateNotification &&
             scrollController.position.pixels >= scrollController.position.maxScrollExtent * 0.9 &&
             !state.loadingPagination) {
-          context.read<ProformasListBloc>().add(LoadMoreProformasEvent());
+          context.read<CustomersProformasListBloc>().add(LoadMoreProformasEvent());
         }
         return false;
       },
@@ -241,8 +240,8 @@ class _ProformasListSelectionFieldState extends State<ProformasListSelectionFiel
             shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(8)),
             title: Text(item.proformaNumber, style: TextStyles.font16Regular),
             onTap: () {
-              Navigator.pop(context, SelectableItemModel<ProformaEntity>(label: item.proformaNumber, value: item));
-              context.read<ProformasListBloc>().add(const SearchInputChangedEvent(keyword: ''));
+              Navigator.pop(context, SelectableItemModel<CustomerProformaEntity>(label: item.proformaNumber, value: item));
+              context.read<CustomersProformasListBloc>().add(const SearchInputChangedEvent(keyword: ''));
             },
           );
         },

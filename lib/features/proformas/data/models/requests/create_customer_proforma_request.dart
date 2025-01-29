@@ -1,9 +1,9 @@
 import 'package:autro_app/core/interfaces/mapable.dart';
-import 'package:autro_app/features/proformas/data/models/requests/proforma_description_request.dart';
-import 'package:autro_app/features/proformas/domin/use_cases/create_proforma_use_case.dart';
+import 'package:autro_app/features/proformas/data/models/requests/customer_proforma_description_request.dart';
+import 'package:autro_app/features/proformas/domin/use_cases/create_customer_proforma_use_case.dart';
 
-class CreateProformaRequest extends CreateProformaUseCaseParams implements RequestMapable {
-  const CreateProformaRequest({
+class CreateCustomerProformaRequest extends CreateCustomerProformaUseCaseParams implements RequestMapable {
+  const CreateCustomerProformaRequest({
     required super.proformaNumber,
     required super.date,
     required super.customerId,
@@ -17,8 +17,8 @@ class CreateProformaRequest extends CreateProformaUseCaseParams implements Reque
     required super.descriptions,
   });
 
-  factory CreateProformaRequest.fromParams(CreateProformaUseCaseParams params) {
-    return CreateProformaRequest(
+  factory CreateCustomerProformaRequest.fromParams(CreateCustomerProformaUseCaseParams params) {
+    return CreateCustomerProformaRequest(
       proformaNumber: params.proformaNumber,
       date: params.date,
       customerId: params.customerId,
@@ -46,7 +46,7 @@ class CreateProformaRequest extends CreateProformaUseCaseParams implements Reque
       "payment_terms": paymentTerms,
       "bank_account_id": bankAccountId,
       "notes": notes,
-      "goods_descriptions": descriptions.map((e) => ProformaDescriptionRequest.fromParams(e).toJson()).toList(),
+      "goods_descriptions": descriptions.map((e) => CustomerProformaDescriptionRequest.fromParams(e).toJson()).toList(),
     };
   }
 }

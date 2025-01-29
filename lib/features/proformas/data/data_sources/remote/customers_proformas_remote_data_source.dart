@@ -7,39 +7,39 @@ import '../../../../../core/api/api_client.dart';
 import '../../../../../core/api/api_paths.dart';
 import '../../../../../core/errors/error_handler.dart';
 import '../../../../../core/errors/exceptions.dart';
-import '../../models/proforma_model.dart';
-import '../../models/requests/create_proforma_request.dart';
-import '../../models/requests/get_proformas_list_request.dart';
-import '../../models/requests/update_proforma_request.dart';
+import '../../models/customer_proforma_model.dart';
+import '../../models/requests/create_customer_proforma_request.dart';
+import '../../models/requests/get_customers_proformas_list_request.dart';
+import '../../models/requests/update_customer_proforma_request.dart';
 
-abstract class ProformasRemoteDataSource {
-  Future<ProformaModel> createProforma(CreateProformaRequest body);
-  Future<Unit> deleteProforma(int proformaId);
-  Future<ProformaModel> getProformaById(int proformaId);
-  Future<PaginationListResponse<ProformaModel>> getProformasList(GetProformasListRequest body);
-  Future<ProformaModel> updateProforma(UpdateProformaRequest body);
+abstract class CustomersProformasRemoteDataSource {
+  Future<CustomerProformaModel> createCustomerProforma(CreateCustomerProformaRequest body);
+  Future<Unit> deleteCustomerProformaProforma(int proformaId);
+  Future<CustomerProformaModel> getCustomerProformaById(int proformaId);
+  Future<PaginationListResponse<CustomerProformaModel>> getCustomerProformasList(GetCustomersProformasListRequest body);
+  Future<CustomerProformaModel> updateCustomerProforma(UpdateCustomerProformaRequest body);
 }
 
-@LazySingleton(as: ProformasRemoteDataSource)
-class ProformasRemoteDataSourceImpl implements ProformasRemoteDataSource {
+@LazySingleton(as: CustomersProformasRemoteDataSource)
+class CustomersProformasRemoteDataSourceImpl implements CustomersProformasRemoteDataSource {
   final ApiClient client;
 
-  ProformasRemoteDataSourceImpl({required this.client});
+  CustomersProformasRemoteDataSourceImpl({required this.client});
   @override
-  Future<ProformaModel> createProforma(CreateProformaRequest body) async {
+  Future<CustomerProformaModel> createCustomerProforma(CreateCustomerProformaRequest body) async {
     const path = ApiPaths.proformas;
     final json = body.toJson();
     final request = ApiRequest(path: path, body: json);
     final response = await client.post(request);
     if (ResponseCode.isOk(response.statusCode)) {
-      return ProformaModel.fromJson(response.data);
+      return CustomerProformaModel.fromJson(response.data);
     } else {
       throw ServerException(response.statusCode, response.statusMessage);
     }
   }
 
   @override
-  Future<Unit> deleteProforma(int proformaId) async {
+  Future<Unit> deleteCustomerProformaProforma(int proformaId) async {
     final path = ApiPaths.proformaById(proformaId);
     final request = ApiRequest(path: path);
     final response = await client.delete(request);
@@ -51,37 +51,37 @@ class ProformasRemoteDataSourceImpl implements ProformasRemoteDataSource {
   }
 
   @override
-  Future<ProformaModel> getProformaById(int proformaId) async {
+  Future<CustomerProformaModel> getCustomerProformaById(int proformaId) async {
     final path = ApiPaths.proformaById(proformaId);
     final request = ApiRequest(path: path);
     final response = await client.get(request);
     if (ResponseCode.isOk(response.statusCode)) {
-      return ProformaModel.fromJson(response.data);
+      return CustomerProformaModel.fromJson(response.data);
     } else {
       throw ServerException(response.statusCode, response.statusMessage);
     }
   }
 
   @override
-  Future<PaginationListResponse<ProformaModel>> getProformasList(GetProformasListRequest body) async {
+  Future<PaginationListResponse<CustomerProformaModel>> getCustomerProformasList(GetCustomersProformasListRequest body) async {
     const path = ApiPaths.proformas;
     final request = ApiRequest(path: path, queryParameters: body.toJson());
     final response = await client.get(request);
     if (ResponseCode.isOk(response.statusCode)) {
       final json = response.data;
-      final responseList = PaginationListResponse.fromJson(json, ProformaModel.fromJson);
+      final responseList = PaginationListResponse.fromJson(json, CustomerProformaModel.fromJson);
       return responseList;
     }
     throw ServerException(response.statusCode, response.statusMessage);
   }
 
   @override
-  Future<ProformaModel> updateProforma(UpdateProformaRequest body) async {
+  Future<CustomerProformaModel> updateCustomerProforma(UpdateCustomerProformaRequest body) async {
     final path = ApiPaths.proformaById(body.id);
     final request = ApiRequest(path: path, body: body.toJson());
     final response = await client.put(request);
     if (ResponseCode.isOk(response.statusCode)) {
-      return ProformaModel.fromJson(response.data);
+      return CustomerProformaModel.fromJson(response.data);
     } else {
       throw ServerException(response.statusCode, response.statusMessage);
     }

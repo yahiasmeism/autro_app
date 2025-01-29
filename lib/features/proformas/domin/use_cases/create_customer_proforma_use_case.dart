@@ -1,24 +1,24 @@
 import 'package:autro_app/core/errors/failures.dart';
 import 'package:autro_app/core/interfaces/use_case.dart';
-import 'package:autro_app/features/proformas/domin/entities/proforma_entity.dart';
+import 'package:autro_app/features/proformas/domin/entities/customer_proforma_entity.dart';
 import 'package:dartz/dartz.dart';
 import 'package:equatable/equatable.dart';
 import 'package:injectable/injectable.dart';
 
-import '../repositories/proformas_repository.dart';
+import '../repositories/customers_proformas_repository.dart';
 
 @lazySingleton
-class CreateProformaUseCase extends UseCase<ProformaEntity, CreateProformaUseCaseParams> {
-  final ProformasRepository repository;
+class CreateCustomerProformaUseCase extends UseCase<CustomerProformaEntity, CreateCustomerProformaUseCaseParams> {
+  final CustomersProformasRepository repository;
 
-  CreateProformaUseCase({required this.repository});
+  CreateCustomerProformaUseCase({required this.repository});
   @override
-  Future<Either<Failure, ProformaEntity>> call(CreateProformaUseCaseParams params) async {
-    return await repository.createProforma(params);
+  Future<Either<Failure, CustomerProformaEntity>> call(CreateCustomerProformaUseCaseParams params) async {
+    return await repository.createCustomerProforma(params);
   }
 }
 
-class CreateProformaUseCaseParams extends Equatable {
+class CreateCustomerProformaUseCaseParams extends Equatable {
   final String proformaNumber;
   final String date;
   final int customerId;
@@ -28,9 +28,9 @@ class CreateProformaUseCaseParams extends Equatable {
   final String paymentTerms;
   final int bankAccountId;
   final String notes;
-  final List<ProformaDescriptionParams> descriptions;
+  final List<CustomerProformaDescriptionParams> descriptions;
 
-  const CreateProformaUseCaseParams({
+  const CreateCustomerProformaUseCaseParams({
     required this.proformaNumber,
     required this.date,
     required this.customerId,
@@ -58,14 +58,14 @@ class CreateProformaUseCaseParams extends Equatable {
       ];
 }
 
-class ProformaDescriptionParams extends Equatable {
+class CustomerProformaDescriptionParams extends Equatable {
   final String description;
   final int containersCount;
   final double weight;
   final double unitPrice;
   final String packing;
 
-  const ProformaDescriptionParams({
+  const CustomerProformaDescriptionParams({
     required this.description,
     required this.containersCount,
     required this.weight,

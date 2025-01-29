@@ -1,5 +1,5 @@
 import 'package:autro_app/features/customers/domin/entities/customer_entity.dart';
-import 'package:autro_app/features/proformas/domin/entities/proforma_entity.dart';
+import 'package:autro_app/features/proformas/domin/entities/customer_proforma_entity.dart';
 import 'package:autro_app/features/settings/domin/entities/bank_account_entity.dart';
 import 'package:equatable/equatable.dart';
 import 'package:intl/intl.dart';
@@ -18,7 +18,7 @@ class InvoiceEntity extends Equatable {
   final List<InvoiceGoodsDescriptionEntity> goodsDescriptions;
   final BankAccountEntity bankAccount;
   final CustomerEntity customer;
-  final ProformaEntity proforma;
+  final CustomerProformaEntity proforma;
 
   const InvoiceEntity({
     required this.id,
@@ -79,7 +79,7 @@ class InvoiceEntity extends Equatable {
     List<InvoiceGoodsDescriptionEntity>? goodsDescriptions,
     BankAccountEntity? bankAccount,
     CustomerEntity? customer,
-    ProformaEntity? proforma,
+    CustomerProformaEntity? proforma,
   }) {
     return InvoiceEntity(
       id: id ?? this.id,

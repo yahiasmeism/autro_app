@@ -1,16 +1,16 @@
 import 'package:autro_app/core/interfaces/mapable.dart';
-import 'package:autro_app/features/proformas/domin/use_cases/create_proforma_use_case.dart';
+import 'package:autro_app/features/proformas/domin/use_cases/create_customer_proforma_use_case.dart';
 
-class ProformaDescriptionRequest extends ProformaDescriptionParams implements RequestMapable {
-  const ProformaDescriptionRequest(
+class CustomerProformaDescriptionRequest extends CustomerProformaDescriptionParams implements RequestMapable {
+  const CustomerProformaDescriptionRequest(
       {required super.description,
       required super.containersCount,
       required super.weight,
       required super.unitPrice,
       required super.packing});
 
-  factory ProformaDescriptionRequest.fromParams(ProformaDescriptionParams params) {
-    return ProformaDescriptionRequest(
+  factory CustomerProformaDescriptionRequest.fromParams(CustomerProformaDescriptionParams params) {
+    return CustomerProformaDescriptionRequest(
       description: params.description,
       containersCount: params.containersCount,
       weight: params.weight,

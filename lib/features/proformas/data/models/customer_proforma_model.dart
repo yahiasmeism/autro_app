@@ -8,10 +8,10 @@ import 'package:autro_app/features/customers/data/models/customer_model.dart';
 import 'package:autro_app/features/proformas/data/models/proforma_goods_description_model.dart';
 import 'package:autro_app/features/settings/data/models/bank_account_model.dart';
 
-import '../../domin/entities/proforma_entity.dart';
+import '../../domin/entities/customer_proforma_entity.dart';
 
-class ProformaModel extends ProformaEntity implements BaseMapable {
-  const ProformaModel({
+class CustomerProformaModel extends CustomerProformaEntity implements BaseMapable {
+  const CustomerProformaModel({
     required super.id,
     required super.proformaNumber,
     required super.date,
@@ -29,8 +29,8 @@ class ProformaModel extends ProformaEntity implements BaseMapable {
     required super.totalPrice,
   });
 
-  factory ProformaModel.fromParams(ProformaEntity entity) {
-    return ProformaModel(
+  factory CustomerProformaModel.fromParams(CustomerProformaEntity entity) {
+    return CustomerProformaModel(
       id: entity.id,
       proformaNumber: entity.proformaNumber,
       date: entity.date,
@@ -49,8 +49,8 @@ class ProformaModel extends ProformaEntity implements BaseMapable {
     );
   }
 
-  factory ProformaModel.fromJson(Map<String, dynamic> json) {
-    return ProformaModel(
+  factory CustomerProformaModel.fromJson(Map<String, dynamic> json) {
+    return CustomerProformaModel(
       id: (json['id'] as int?).toIntOrZero,
       proformaNumber: (json['proforma_number'] as String?).orEmpty,
       date: DateTime.tryParse((json['date'] as String?).orEmpty).orDefault,

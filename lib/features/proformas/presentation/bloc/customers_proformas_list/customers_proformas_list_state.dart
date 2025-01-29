@@ -1,22 +1,22 @@
-part of 'proformas_list_bloc.dart';
+part of 'customers_proformas_list_bloc.dart';
 
-sealed class ProformasListState extends Equatable {
-  const ProformasListState();
+sealed class CustomersProformasListState extends Equatable {
+  const CustomersProformasListState();
 
   @override
   List<Object> get props => [];
 }
 
-final class ProformasListInitial extends ProformasListState {}
+final class CustomersProformasListInitial extends CustomersProformasListState {}
 
-final class ProformasListLoaded extends ProformasListState {
-  final List<ProformaEntity> proformasList;
+final class CustomersProformasListLoaded extends CustomersProformasListState {
+  final List<CustomerProformaEntity> proformasList;
   final PaginationFilterDTO paginationFilterDTO;
   final int totalCount;
   final bool loading;
   final bool loadingPagination;
   final Option<Either<Failure, String>> failureOrSuccessOption;
-  const ProformasListLoaded({
+  const CustomersProformasListLoaded({
     required this.proformasList,
     required this.totalCount,
     required this.paginationFilterDTO,
@@ -34,15 +34,15 @@ final class ProformasListLoaded extends ProformasListState {
         loadingPagination,
       ];
 
-  ProformasListLoaded copyWith({
-    List<ProformaEntity>? proformasList,
+  CustomersProformasListLoaded copyWith({
+    List<CustomerProformaEntity>? proformasList,
     PaginationFilterDTO? paginationFilterDTO,
     int? totalCount,
     bool? loading,
     Option<Either<Failure, String>>? failureOrSuccessOption,
     bool? loadingPagination,
   }) {
-    return ProformasListLoaded(
+    return CustomersProformasListLoaded(
       proformasList: proformasList ?? this.proformasList,
       paginationFilterDTO: paginationFilterDTO ?? this.paginationFilterDTO,
       totalCount: totalCount ?? this.totalCount,
@@ -57,10 +57,10 @@ final class ProformasListLoaded extends ProformasListState {
   bool get canGoPreviousPage => paginationFilterDTO.pageNumber > 1 && !loadingPagination;
 }
 
-class ProformasListError extends ProformasListState {
+class CustomersProformasListError extends CustomersProformasListState {
   final Failure failure;
 
-  const ProformasListError({required this.failure});
+  const CustomersProformasListError({required this.failure});
 
   @override
   List<Object> get props => [failure];

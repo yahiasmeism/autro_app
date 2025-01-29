@@ -8,7 +8,7 @@ import 'package:autro_app/features/customers/data/models/customer_model.dart';
 import 'package:autro_app/features/invoices/data/models/invoice_goods_description_model.dart';
 import 'package:autro_app/features/settings/data/models/bank_account_model.dart';
 
-import '../../../proformas/data/models/proforma_model.dart';
+import '../../../proformas/data/models/customer_proforma_model.dart';
 import '../../domin/entities/invoice_entity.dart';
 
 class InvoiceModel extends InvoiceEntity implements BaseMapable {
@@ -51,7 +51,7 @@ class InvoiceModel extends InvoiceEntity implements BaseMapable {
       invoiceNumber: (json['invoice_number'] as String?).orEmpty,
       date: DateTime.tryParse((json['date'] as String?).orEmpty).orDefault,
       taxId: (json['tax_id'] as String?).orEmpty,
-      proforma: ProformaModel.fromJson((json['proforma'] as Map<String, dynamic>?).orEmpty),
+      proforma: CustomerProformaModel.fromJson((json['proforma'] as Map<String, dynamic>?).orEmpty),
       notes: (json['notes'] as String?).orEmpty,
       createdAt: DateTime.tryParse((json['created_at'] as String?).orEmpty).orDefault,
       updatedAt: DateTime.tryParse((json['updated_at'] as String?).orEmpty).orDefault,

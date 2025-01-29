@@ -52,12 +52,23 @@ class DealListTile extends StatelessWidget {
               text: dealEntity.customerProforma.goodsDescriptions.firstOrNull?.description ?? '-',
             ),
             const SizedBox(width: 16),
+            _buildCell(
+              flex: 4,
+              text: dealEntity.isComplete ? 'Completed' : 'Incomplete',
+              textColor: dealEntity.isComplete ? AppColors.deepGreen : AppColors.orange,
+            ),
+            const SizedBox(width: 16),
             Flexible(
               flex: 4,
-              child: DeleteIconButton(
-                onPressed: () {
-                  context.read<DealsListBloc>().add(DeleteDealEvent(dealId: dealEntity.id));
-                },
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  DeleteIconButton(
+                    onPressed: () {
+                      context.read<DealsListBloc>().add(DeleteDealEvent(dealId: dealEntity.id));
+                    },
+                  ),
+                ],
               ),
             ),
           ],
@@ -66,14 +77,14 @@ class DealListTile extends StatelessWidget {
     );
   }
 
-  Widget _buildCell({required String text, required int flex, TextStyle? style}) {
+  Widget _buildCell({required String text, required int flex, TextStyle? style, Color? textColor}) {
     return Expanded(
       flex: flex,
       child: Text(
         text,
         style: style ??
             TextStyles.font16Regular.copyWith(
-              color: AppColors.secondaryOpacity50,
+              color: textColor ?? AppColors.secondaryOpacity50,
             ),
         overflow: TextOverflow.ellipsis,
         maxLines: 2,

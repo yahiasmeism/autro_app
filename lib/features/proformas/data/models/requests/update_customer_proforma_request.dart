@@ -1,10 +1,10 @@
 import 'package:autro_app/core/interfaces/mapable.dart';
-import 'package:autro_app/features/proformas/domin/use_cases/update_proforma_use_case.dart';
+import 'package:autro_app/features/proformas/domin/use_cases/update_customer_proforma_use_case.dart';
 
-import 'proforma_description_request.dart';
+import 'customer_proforma_description_request.dart';
 
-class UpdateProformaRequest extends UpdateProformaUseCaseParams implements RequestMapable {
-  const UpdateProformaRequest({
+class UpdateCustomerProformaRequest extends UpdateCustomerProformaUseCaseParams implements RequestMapable {
+  const UpdateCustomerProformaRequest({
     required super.id,
     required super.proformaNumber,
     required super.date,
@@ -18,7 +18,7 @@ class UpdateProformaRequest extends UpdateProformaUseCaseParams implements Reque
     required super.descriptions,
   });
 
-  factory UpdateProformaRequest.fromParams(UpdateProformaUseCaseParams params) => UpdateProformaRequest(
+  factory UpdateCustomerProformaRequest.fromParams(UpdateCustomerProformaUseCaseParams params) => UpdateCustomerProformaRequest(
         id: params.id,
         proformaNumber: params.proformaNumber,
         date: params.date,
@@ -44,7 +44,7 @@ class UpdateProformaRequest extends UpdateProformaUseCaseParams implements Reque
       "payment_terms": paymentTerms,
       "bank_account_id": bankAccountId,
       "notes": notes,
-      "goods_descriptions": descriptions.map((e) => ProformaDescriptionRequest.fromParams(e).toJson()).toList(),
+      "goods_descriptions": descriptions.map((e) => CustomerProformaDescriptionRequest.fromParams(e).toJson()).toList(),
     };
   }
 }

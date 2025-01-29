@@ -1,7 +1,9 @@
+import 'package:autro_app/core/di/di.dart';
 import 'package:autro_app/core/errors/failures.dart';
 import 'package:autro_app/features/deals/domin/repositories/deals_repository.dart';
 import 'package:autro_app/features/deals/domin/use_cases/delete_deal_use_case.dart';
 import 'package:autro_app/features/deals/domin/use_cases/get_deals_list_use_case.dart';
+import 'package:autro_app/features/proformas/presentation/bloc/customers_proformas_list/customers_proformas_list_bloc.dart';
 import 'package:bloc/bloc.dart';
 import 'package:dartz/dartz.dart';
 import 'package:equatable/equatable.dart';
@@ -15,7 +17,7 @@ import '../../../domin/use_cases/update_deal_use_case.dart';
 part 'deals_list_event.dart';
 part 'deals_list_state.dart';
 
-@injectable
+@lazySingleton
 class DealsListBloc extends Bloc<DealsListEvent, DealsListState> {
   final GetDealsListUseCase getDealsListUsecase;
   final DeleteDealUseCase deleteDealUsecase;
@@ -64,6 +66,9 @@ class DealsListBloc extends Bloc<DealsListEvent, DealsListState> {
     }
     if (event is LoadMoreDealsEvent) {
       await onLoadMoreDeals(event, emit);
+    }
+    if (event is CreateDealEvent) {
+      await _onCreateNewDeal(event, emit);
     }
   }
 
@@ -136,6 +141,8 @@ class DealsListBloc extends Bloc<DealsListEvent, DealsListState> {
         ));
       },
     );
+
+    sl<CustomersProformasListBloc>().add(GetProformasListEvent());
   }
 
   onSearchInputChanged(SearchInputChangedEvent event, Emitter<DealsListState> emit) async {
@@ -210,6 +217,34 @@ class DealsListBloc extends Bloc<DealsListEvent, DealsListState> {
           dealsList: updatedDealsList,
           paginationFilterDTO: paginationFilterDto,
         ));
+      },
+    );
+  }
+
+  _onCreateNewDeal(CreateDealEvent event, Emitter<DealsListState> emit) async {
+    if (this.state is! DealsListLoaded) {
+      final paginationFilterDto = PaginationFilterDTO.initial();
+      final params = GetDealsListUseCaseParams(dto: paginationFilterDto);
+      final either = await getDealsListUsecase.call(params);
+      either.fold(
+        (failure) => emit(DealsListError(failure: failure)),
+        (deals) => emit(DealsListLoaded(
+          totalCount: totalCount,
+          dealsList: deals,
+          paginationFilterDTO: paginationFilterDto,
+        )),
+      );
+    }
+
+    final state = this.state as DealsListLoaded;
+    final params = CreateDealUseCaseParams(customerProformaId: event.customerProformaId);
+    final either = await createDealUsecase.call(params);
+
+    either.fold(
+      (l) => emit(state.copyWith(failureOrSuccessOption: some(left(l)))),
+      (deal) {
+        final updateDealsList = List.of(state.dealsList)..insert(0, deal);
+        emit(state.copyWith(dealsList: updateDealsList));
       },
     );
   }

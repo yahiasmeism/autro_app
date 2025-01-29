@@ -1,5 +1,5 @@
 import 'package:autro_app/core/widgets/buttons/save_outline_button.dart';
-import 'package:autro_app/features/proformas/presentation/bloc/cubit/proforma_form_cubit.dart';
+import 'package:autro_app/features/proformas/presentation/bloc/customer_proforma_form_cubit/customer_proforma_form_cubit.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
@@ -10,12 +10,12 @@ class ProformaFormActions extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return BlocBuilder<ProformaFormCubit, ProformaFormState>(
+    return BlocBuilder<ProformaFormCubit, CustomerProformaFormState>(
       builder: (context, state) {
         bool saveEnabled = false;
         bool updateMode = false;
         bool cancelEnabled = false;
-        if (state is ProformaFormLoaded) {
+        if (state is CustomerProformaFormLoaded) {
           saveEnabled = state.saveEnabled;
           updateMode = state.updatedMode;
           cancelEnabled = state.cancelEnabled;

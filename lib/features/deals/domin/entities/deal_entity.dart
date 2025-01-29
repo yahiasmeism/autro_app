@@ -1,11 +1,10 @@
 import 'package:autro_app/features/invoices/domin/entities/invoice_entity.dart';
-import 'package:autro_app/features/proformas/domin/entities/proforma_entity.dart';
+import 'package:autro_app/features/proformas/domin/entities/customer_proforma_entity.dart';
 import 'package:autro_app/features/shipping-invoices/domin/entities/shipping_invoice_entites.dart';
 import 'package:equatable/equatable.dart';
 
 class DealEntity extends Equatable {
   final int id;
-  final int customerProformaId;
   final DateTime createdAt;
   final DateTime updatedAt;
   final String notes;
@@ -14,13 +13,12 @@ class DealEntity extends Equatable {
   final DateTime? deliveryDate;
   final DateTime etaDate;
   final String seriesNumber;
-  final ProformaEntity customerProforma;
+  final CustomerProformaEntity customerProforma;
   final InvoiceEntity? customerInvoice;
   final ShippingInvoiceEntity? shippingInvoice;
 
   const DealEntity({
     required this.id,
-    required this.customerProformaId,
     required this.createdAt,
     required this.updatedAt,
     required this.notes,
@@ -40,7 +38,6 @@ class DealEntity extends Equatable {
   @override
   List<Object?> get props => [
         id,
-        customerProformaId,
         createdAt,
         updatedAt,
         notes,

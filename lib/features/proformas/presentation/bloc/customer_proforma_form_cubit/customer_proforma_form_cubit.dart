@@ -1,23 +1,23 @@
 import 'package:autro_app/core/errors/failures.dart';
 import 'package:autro_app/core/extensions/date_time_extension.dart';
 import 'package:autro_app/features/proformas/domin/dtos/proforma_good_description_dto.dart';
-import 'package:autro_app/features/proformas/domin/entities/proforma_entity.dart';
+import 'package:autro_app/features/proformas/domin/entities/customer_proforma_entity.dart';
 import 'package:bloc/bloc.dart';
 import 'package:dartz/dartz.dart';
 import 'package:equatable/equatable.dart';
 import 'package:flutter/material.dart';
 import 'package:injectable/injectable.dart';
 
-import '../../../domin/use_cases/create_proforma_use_case.dart';
-import '../../../domin/use_cases/update_proforma_use_case.dart';
+import '../../../domin/use_cases/create_customer_proforma_use_case.dart';
+import '../../../domin/use_cases/update_customer_proforma_use_case.dart';
 
-part 'proforma_form_state.dart';
+part 'customer_proforma_form_state.dart';
 
 @injectable
-class ProformaFormCubit extends Cubit<ProformaFormState> {
-  final CreateProformaUseCase createProformaUsecase;
-  final UpdateProformaUseCase updateProformaUsecase;
-  ProformaFormCubit(this.createProformaUsecase, this.updateProformaUsecase) : super(ProformaFormInitial());
+class ProformaFormCubit extends Cubit<CustomerProformaFormState> {
+  final CreateCustomerProformaUseCase createProformaUsecase;
+  final UpdateCustomerProformaUseCase updateProformaUsecase;
+  ProformaFormCubit(this.createProformaUsecase, this.updateProformaUsecase) : super(CustomerProformaFormInitial());
 
   // Goods Descriptions
   final descriptionController = TextEditingController();
@@ -41,9 +41,9 @@ class ProformaFormCubit extends Cubit<ProformaFormState> {
   final bankNameController = TextEditingController();
   final notesController = TextEditingController();
 
-  Future init({required ProformaEntity? proforma}) async {
+  Future init({required CustomerProformaEntity? proforma}) async {
     final goodsDescriptions = proforma?.goodsDescriptions.map((e) => ProformaGoodDescriptionDto.fromEntity(e)).toList() ?? [];
-    emit(ProformaFormLoaded(
+    emit(CustomerProformaFormLoaded(
       proforma: proforma,
       goodDescriptionsList: goodsDescriptions,
       updatedMode: proforma != null,
@@ -52,7 +52,7 @@ class ProformaFormCubit extends Cubit<ProformaFormState> {
   }
 
   _initializeControllers() {
-    final state = this.state as ProformaFormLoaded;
+    final state = this.state as CustomerProformaFormLoaded;
     formKey.currentState?.reset();
     proformaNumberController.text = state.proforma?.proformaNumber ?? '';
     proformaDateController.text = state.proforma?.date.formattedDateYYYYMMDD ?? DateTime.now().formattedDateYYYYMMDD;
@@ -108,7 +108,7 @@ class ProformaFormCubit extends Cubit<ProformaFormState> {
       totalPriceController,
     ].every((controller) => controller.text.isNotEmpty);
 
-    final state = this.state as ProformaFormLoaded;
+    final state = this.state as CustomerProformaFormLoaded;
     emit(state.copyWith(addGoodDescriptionEnabled: addGoodDescriptionIsActive));
 
     // Calculate total price
@@ -119,7 +119,7 @@ class ProformaFormCubit extends Cubit<ProformaFormState> {
   }
 
   _onProformaFormChanged() {
-    final state = this.state as ProformaFormLoaded;
+    final state = this.state as CustomerProformaFormLoaded;
     final formIsNotEmpty = [
       // proformaDateController,
       proformaNumberController,
@@ -175,7 +175,7 @@ class ProformaFormCubit extends Cubit<ProformaFormState> {
   }
 
   addGoodDescription() {
-    final state = this.state as ProformaFormLoaded;
+    final state = this.state as CustomerProformaFormLoaded;
     final goodDescription = ProformaGoodDescriptionDto(
       description: descriptionController.text,
       containersCount: int.parse(containersCountController.text),
@@ -190,7 +190,7 @@ class ProformaFormCubit extends Cubit<ProformaFormState> {
   }
 
   removeGoodDescription(ProformaGoodDescriptionDto dto) {
-    final state = this.state as ProformaFormLoaded;
+    final state = this.state as CustomerProformaFormLoaded;
     final updatedList = List.of(state.goodDescriptionsList)..remove(dto);
     emit(state.copyWith(descriptionList: updatedList));
     _onProformaFormChanged();
@@ -212,10 +212,10 @@ class ProformaFormCubit extends Cubit<ProformaFormState> {
   }
 
   Future createProforma() async {
-    final state = this.state as ProformaFormLoaded;
+    final state = this.state as CustomerProformaFormLoaded;
     emit(state.copyWith(loading: true));
 
-    final params = CreateProformaUseCaseParams(
+    final params = CreateCustomerProformaUseCaseParams(
       proformaNumber: proformaNumberController.text,
       date: proformaDateController.text,
       customerId: int.parse(customerIdController.text),
@@ -244,10 +244,10 @@ class ProformaFormCubit extends Cubit<ProformaFormState> {
   }
 
   Future updateProforma() async {
-    final state = this.state as ProformaFormLoaded;
+    final state = this.state as CustomerProformaFormLoaded;
 
     emit(state.copyWith(loading: true));
-    final params = UpdateProformaUseCaseParams(
+    final params = UpdateCustomerProformaUseCaseParams(
       id: state.proforma!.id,
       proformaNumber: proformaNumberController.text,
       date: proformaDateController.text,
@@ -273,7 +273,7 @@ class ProformaFormCubit extends Cubit<ProformaFormState> {
   }
 
   updateGoodDescription(ProformaGoodDescriptionDto dto) {
-    final state = this.state as ProformaFormLoaded;
+    final state = this.state as CustomerProformaFormLoaded;
     final index = state.goodDescriptionsList.indexWhere((element) => element.uniqueKey == dto.uniqueKey);
 
     if (index != -1) {
@@ -285,7 +285,7 @@ class ProformaFormCubit extends Cubit<ProformaFormState> {
   }
 
   cancelChanges() {
-    final state = this.state as ProformaFormLoaded;
+    final state = this.state as CustomerProformaFormLoaded;
     init(proforma: state.proforma);
   }
 }

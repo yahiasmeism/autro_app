@@ -1,16 +1,16 @@
-part of 'proforma_form_cubit.dart';
+part of 'customer_proforma_form_cubit.dart';
 
-sealed class ProformaFormState extends Equatable {
-  const ProformaFormState();
+sealed class CustomerProformaFormState extends Equatable {
+  const CustomerProformaFormState();
 
   @override
   List<Object?> get props => [];
 }
 
-final class ProformaFormInitial extends ProformaFormState {}
+final class CustomerProformaFormInitial extends CustomerProformaFormState {}
 
-final class ProformaFormLoaded extends ProformaFormState {
-  final ProformaEntity? proforma;
+final class CustomerProformaFormLoaded extends CustomerProformaFormState {
+  final CustomerProformaEntity? proforma;
   final bool loading;
   final Option<Either<Failure, String>> failureOrSuccessOption;
   final bool updatedMode;
@@ -19,7 +19,7 @@ final class ProformaFormLoaded extends ProformaFormState {
   final bool cancelEnabled;
   final bool clearEnabled;
   final List<ProformaGoodDescriptionDto> goodDescriptionsList;
-  const ProformaFormLoaded({
+  const CustomerProformaFormLoaded({
     this.proforma,
     this.loading = false,
     this.failureOrSuccessOption = const None(),
@@ -43,9 +43,9 @@ final class ProformaFormLoaded extends ProformaFormState {
         addGoodDescriptionEnabled,
       ];
 
-  ProformaFormLoaded copyWith({
+  CustomerProformaFormLoaded copyWith({
     List<ProformaGoodDescriptionDto>? descriptionList,
-    ProformaEntity? proforma,
+    CustomerProformaEntity? proforma,
     bool? clearEnabled,
     bool? updatedMode,
     bool? saveEnabled,
@@ -54,7 +54,7 @@ final class ProformaFormLoaded extends ProformaFormState {
     Option<Either<Failure, String>>? failureOrSuccessOption,
     bool? addGoodDescriptionEnabled,
   }) {
-    return ProformaFormLoaded(
+    return CustomerProformaFormLoaded(
       addGoodDescriptionEnabled: addGoodDescriptionEnabled ?? this.addGoodDescriptionEnabled,
       goodDescriptionsList: descriptionList ?? goodDescriptionsList,
       updatedMode: updatedMode ?? this.updatedMode,

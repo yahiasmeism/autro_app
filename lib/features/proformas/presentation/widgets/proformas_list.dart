@@ -1,11 +1,11 @@
-import 'package:autro_app/features/proformas/domin/entities/proforma_entity.dart';
+import 'package:autro_app/features/proformas/domin/entities/customer_proforma_entity.dart';
 import 'package:flutter/material.dart';
 
 import 'proforma_list_tile.dart';
 
 class ProformasList extends StatelessWidget {
   const ProformasList({super.key, required this.proformas});
-  final List<ProformaEntity> proformas;
+  final List<CustomerProformaEntity> proformas;
   @override
   Widget build(BuildContext context) {
     return ListView.separated(

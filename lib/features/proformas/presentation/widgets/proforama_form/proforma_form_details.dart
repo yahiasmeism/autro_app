@@ -4,7 +4,7 @@ import 'package:autro_app/core/widgets/standard_card.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
-import '../../bloc/cubit/proforma_form_cubit.dart';
+import '../../bloc/customer_proforma_form_cubit/customer_proforma_form_cubit.dart';
 
 class ProformaFormDetails extends StatelessWidget {
   const ProformaFormDetails({super.key});

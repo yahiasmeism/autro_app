@@ -10,7 +10,7 @@ import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/svg.dart';
 
-import '../../bloc/cubit/proforma_form_cubit.dart';
+import '../../bloc/customer_proforma_form_cubit/customer_proforma_form_cubit.dart';
 
 class ProformaFormGoodDescriptions extends StatelessWidget {
   const ProformaFormGoodDescriptions({super.key});
@@ -20,10 +20,10 @@ class ProformaFormGoodDescriptions extends StatelessWidget {
     return StandardCard(
       padding: const EdgeInsets.all(0),
       title: 'Good Descriptions',
-      child: BlocBuilder<ProformaFormCubit, ProformaFormState>(
-        buildWhen: (previous, current) => current is ProformaFormLoaded,
+      child: BlocBuilder<ProformaFormCubit, CustomerProformaFormState>(
+        buildWhen: (previous, current) => current is CustomerProformaFormLoaded,
         builder: (context, state) {
-          if (state is! ProformaFormLoaded) return const SizedBox.shrink();
+          if (state is! CustomerProformaFormLoaded) return const SizedBox.shrink();
           return Column(
             children: [
               ListView.separated(
@@ -142,7 +142,7 @@ class ProformaFormGoodDescriptions extends StatelessWidget {
     );
   }
 
-  Widget _buildGoodDescriptionInputs(BuildContext context, ProformaFormLoaded state) {
+  Widget _buildGoodDescriptionInputs(BuildContext context, CustomerProformaFormLoaded state) {
     final bloc = context.read<ProformaFormCubit>();
     return Padding(
       padding: const EdgeInsets.symmetric(horizontal: 28, vertical: 14),
@@ -237,7 +237,7 @@ class ProformaFormGoodDescriptions extends StatelessWidget {
     );
   }
 
-  Widget _buildAddButton(ProformaFormLoaded state, BuildContext context) {
+  Widget _buildAddButton(CustomerProformaFormLoaded state, BuildContext context) {
     return InkWell(
       splashColor: Colors.transparent,
       onTap: state.addGoodDescriptionEnabled
@@ -261,7 +261,7 @@ class ProformaFormGoodDescriptions extends StatelessWidget {
     );
   }
 
-  Widget _buildGoodDesciriptionSummary(ProformaFormLoaded state) {
+  Widget _buildGoodDesciriptionSummary(CustomerProformaFormLoaded state) {
     return Padding(
       padding: const EdgeInsets.symmetric(horizontal: 28, vertical: 14),
       child: Row(

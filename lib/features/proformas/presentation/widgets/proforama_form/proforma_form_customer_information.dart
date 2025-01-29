@@ -1,6 +1,6 @@
 import 'package:autro_app/core/widgets/inputs/standard_input.dart';
 import 'package:autro_app/core/widgets/standard_card.dart';
-import 'package:autro_app/features/proformas/presentation/bloc/cubit/proforma_form_cubit.dart';
+import 'package:autro_app/features/proformas/presentation/bloc/customer_proforma_form_cubit/customer_proforma_form_cubit.dart';
 import 'package:autro_app/features/customers/presentation/widgets/customers_list_selection_field.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
