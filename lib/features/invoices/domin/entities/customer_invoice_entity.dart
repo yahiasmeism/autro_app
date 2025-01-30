@@ -1,13 +1,14 @@
 import 'package:autro_app/features/customers/domin/entities/customer_entity.dart';
-import 'package:autro_app/features/proformas/domin/entities/customer_proforma_entity.dart';
 import 'package:autro_app/features/settings/domin/entities/bank_account_entity.dart';
 import 'package:equatable/equatable.dart';
 import 'package:intl/intl.dart';
 
 import 'invoice_goods_description_entity.dart';
 
-class InvoiceEntity extends Equatable {
+class CustomerInvoiceEntity extends Equatable {
   final int id;
+  final int dealId;
+  final String dealSeriesNumber;
   final String invoiceNumber;
   final DateTime date;
   final String taxId;
@@ -18,9 +19,8 @@ class InvoiceEntity extends Equatable {
   final List<InvoiceGoodsDescriptionEntity> goodsDescriptions;
   final BankAccountEntity bankAccount;
   final CustomerEntity customer;
-  final CustomerProformaEntity proforma;
 
-  const InvoiceEntity({
+  const CustomerInvoiceEntity({
     required this.id,
     required this.invoiceNumber,
     required this.date,
@@ -32,7 +32,8 @@ class InvoiceEntity extends Equatable {
     required this.bankAccount,
     required this.customer,
     required this.totalPrice,
-    required this.proforma,
+    required this.dealSeriesNumber,
+    required this.dealId,
   });
 
   @override
@@ -48,9 +49,11 @@ class InvoiceEntity extends Equatable {
         bankAccount,
         customer,
         totalPrice,
-        proforma,
+        dealId,
+        dealSeriesNumber,
       ];
 
+  String get formattedSeriesNumber => "Deal#$dealSeriesNumber";
   String get formattedDate => DateFormat('MMM d, y').format(date);
   String get currancyCode {
     if (bankAccount.currency == "USD") {
@@ -63,7 +66,7 @@ class InvoiceEntity extends Equatable {
 
   String get formattedTotalPrice => "$currancyCode${totalPrice.toStringAsFixed(2)}";
 
-  InvoiceEntity copyWith({
+  CustomerInvoiceEntity copyWith({
     int? id,
     String? invoiceNumber,
     DateTime? date,
@@ -79,9 +82,10 @@ class InvoiceEntity extends Equatable {
     List<InvoiceGoodsDescriptionEntity>? goodsDescriptions,
     BankAccountEntity? bankAccount,
     CustomerEntity? customer,
-    CustomerProformaEntity? proforma,
+    int? dealId,
+    String? dealSeriesNumber,
   }) {
-    return InvoiceEntity(
+    return CustomerInvoiceEntity(
       id: id ?? this.id,
       invoiceNumber: invoiceNumber ?? this.invoiceNumber,
       date: date ?? this.date,
@@ -93,7 +97,8 @@ class InvoiceEntity extends Equatable {
       goodsDescriptions: goodsDescriptions ?? this.goodsDescriptions,
       bankAccount: bankAccount ?? this.bankAccount,
       customer: customer ?? this.customer,
-      proforma: proforma ?? this.proforma,
+      dealId: dealId ?? this.dealId,
+      dealSeriesNumber: dealSeriesNumber ?? this.dealSeriesNumber,
     );
   }
 }

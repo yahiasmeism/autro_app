@@ -1,26 +1,26 @@
 import 'package:autro_app/core/errors/failures.dart';
 import 'package:autro_app/core/interfaces/use_case.dart';
-import 'package:autro_app/features/invoices/domin/entities/invoice_entity.dart';
+import 'package:autro_app/features/invoices/domin/entities/customer_invoice_entity.dart';
 import 'package:dartz/dartz.dart';
 import 'package:equatable/equatable.dart';
 import 'package:injectable/injectable.dart';
 
-import '../repositories/invoices_repository.dart';
+import '../repositories/customer_invoices_repository.dart';
 
 @lazySingleton
-class CreateInvoiceUseCase extends UseCase<InvoiceEntity, CreateInvoiceUseCaseParams> {
-  final InvoicesRepository repository;
+class CreateCustomerInvoiceUseCase extends UseCase<CustomerInvoiceEntity, CreateCustomerInvoiceUseCaseParams> {
+  final CustomerInvoicesRepository repository;
 
-  CreateInvoiceUseCase({required this.repository});
+  CreateCustomerInvoiceUseCase({required this.repository});
   @override
-  Future<Either<Failure, InvoiceEntity>> call(CreateInvoiceUseCaseParams params) async {
+  Future<Either<Failure, CustomerInvoiceEntity>> call(CreateCustomerInvoiceUseCaseParams params) async {
     return await repository.createInvoice(params);
   }
 }
 
-class CreateInvoiceUseCaseParams extends Equatable {
+class CreateCustomerInvoiceUseCaseParams extends Equatable {
   final int customerId;
-  final int proformaId;
+  final int dealId;
   final int bankAccountId;
   final String invoiceNumber;
   final String date;
@@ -28,7 +28,7 @@ class CreateInvoiceUseCaseParams extends Equatable {
   final String notes;
   final List<InvoiceGoodDescriptionParams> descriptions;
 
-  const CreateInvoiceUseCaseParams({
+  const CreateCustomerInvoiceUseCaseParams({
     required this.invoiceNumber,
     required this.date,
     required this.customerId,
@@ -36,7 +36,7 @@ class CreateInvoiceUseCaseParams extends Equatable {
     required this.bankAccountId,
     required this.notes,
     required this.descriptions,
-    required this.proformaId,
+    required this.dealId,
   });
   @override
   List<Object?> get props => [
@@ -47,6 +47,7 @@ class CreateInvoiceUseCaseParams extends Equatable {
         bankAccountId,
         notes,
         descriptions,
+        dealId,
       ];
 }
 

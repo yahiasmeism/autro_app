@@ -1,11 +1,11 @@
-import 'package:autro_app/features/invoices/domin/entities/invoice_entity.dart';
+import 'package:autro_app/features/invoices/domin/entities/customer_invoice_entity.dart';
 import 'package:flutter/material.dart';
 
 import 'invoice_list_tile.dart';
 
-class InvoicesList extends StatelessWidget {
-  const InvoicesList({super.key, required this.invoices});
-  final List<InvoiceEntity> invoices;
+class CustomersInvoicesList extends StatelessWidget {
+  const CustomersInvoicesList({super.key, required this.invoices});
+  final List<CustomerInvoiceEntity> invoices;
   @override
   Widget build(BuildContext context) {
     return ListView.separated(
@@ -15,7 +15,7 @@ class InvoicesList extends StatelessWidget {
       },
       itemCount: invoices.length,
       itemBuilder: (context, index) {
-        return InvoiceListTile(invoiceEntity: invoices[index]);
+        return CustomerInvoiceListTile(invoiceEntity: invoices[index]);
       },
     );
   }

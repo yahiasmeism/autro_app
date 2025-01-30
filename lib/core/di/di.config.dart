@@ -48,27 +48,27 @@ import 'package:autro_app/features/deals/domin/use_cases/get_deals_list_use_case
 import 'package:autro_app/features/deals/domin/use_cases/update_deal_use_case.dart' as _i473;
 import 'package:autro_app/features/deals/presentation/bloc/deals_list/deals_list_bloc.dart' as _i594;
 import 'package:autro_app/features/home/bloc/home_bloc.dart' as _i80;
-import 'package:autro_app/features/invoices/data/data_sources/remote/invoices_remote_data_source.dart' as _i345;
-import 'package:autro_app/features/invoices/data/repositories_impl/invoices_repository_impl.dart' as _i943;
-import 'package:autro_app/features/invoices/domin/repositories/invoices_repository.dart' as _i342;
-import 'package:autro_app/features/invoices/domin/use_cases/create_invoice_use_case.dart' as _i303;
-import 'package:autro_app/features/invoices/domin/use_cases/delete_invoice_use_case.dart' as _i426;
-import 'package:autro_app/features/invoices/domin/use_cases/get_invoices_list_use_case.dart' as _i39;
-import 'package:autro_app/features/invoices/domin/use_cases/update_invoice_use_case.dart' as _i707;
-import 'package:autro_app/features/invoices/presentation/bloc/invoice_form/invoice_form_cubit.dart' as _i676;
+import 'package:autro_app/features/invoices/data/data_sources/remote/customers_invoices_remote_data_source.dart' as _i345;
+import 'package:autro_app/features/invoices/data/repositories_impl/customers_invoices_repository_impl.dart' as _i943;
+import 'package:autro_app/features/invoices/domin/repositories/customer_invoices_repository.dart' as _i342;
+import 'package:autro_app/features/invoices/domin/use_cases/create_customer_invoice_use_case.dart' as _i303;
+import 'package:autro_app/features/invoices/domin/use_cases/delete_customer_invoice_use_case.dart' as _i426;
+import 'package:autro_app/features/invoices/domin/use_cases/get_customers_invoices_list_use_case.dart' as _i39;
+import 'package:autro_app/features/invoices/domin/use_cases/update_customer_invoice_use_case.dart' as _i707;
+import 'package:autro_app/features/invoices/presentation/bloc/customer_invoice_form/customer_invoice_form_cubit.dart' as _i676;
 import 'package:autro_app/features/invoices/presentation/bloc/invoice_pdf/invoice_pdf_cubit.dart' as _i43;
-import 'package:autro_app/features/invoices/presentation/bloc/invoices_list/invoices_list_bloc.dart' as _i654;
-import 'package:autro_app/features/proformas/data/data_sources/remote/customers_proformas_remote_data_source.dart' as _i154;
-import 'package:autro_app/features/proformas/data/repositories_impl/customers_proformas_repository_impl.dart' as _i264;
-import 'package:autro_app/features/proformas/domin/repositories/customers_proformas_repository.dart' as _i1050;
-import 'package:autro_app/features/proformas/domin/use_cases/create_customer_proforma_use_case.dart' as _i927;
-import 'package:autro_app/features/proformas/domin/use_cases/delete_customer_proforma_use_case.dart' as _i1;
-import 'package:autro_app/features/proformas/domin/use_cases/get_customers_proformas_list_use_case.dart' as _i90;
-import 'package:autro_app/features/proformas/domin/use_cases/update_customer_proforma_use_case.dart' as _i635;
+import 'package:autro_app/features/invoices/presentation/bloc/customers_invoices_list/customers_invoices_list_bloc.dart' as _i654;
+import 'package:autro_app/features/proformas/data/data_sources/remote/customers_proformas_remote_data_source.dart' as _i336;
+import 'package:autro_app/features/proformas/data/repositories_impl/customers_proformas_repository_impl.dart' as _i981;
+import 'package:autro_app/features/proformas/domin/repositories/customers_proformas_repository.dart' as _i5;
+import 'package:autro_app/features/proformas/domin/use_cases/create_customer_proforma_use_case.dart' as _i70;
+import 'package:autro_app/features/proformas/domin/use_cases/delete_customer_proforma_use_case.dart' as _i360;
+import 'package:autro_app/features/proformas/domin/use_cases/get_customers_proformas_list_use_case.dart' as _i330;
+import 'package:autro_app/features/proformas/domin/use_cases/update_customer_proforma_use_case.dart' as _i42;
 import 'package:autro_app/features/proformas/presentation/bloc/customer_proforma_form_cubit/customer_proforma_form_cubit.dart'
-    as _i825;
+    as _i1045;
 import 'package:autro_app/features/proformas/presentation/bloc/customers_proformas_list/customers_proformas_list_bloc.dart'
-    as _i55;
+    as _i612;
 import 'package:autro_app/features/settings/data/datasources/settings_remote_data_source.dart' as _i509;
 import 'package:autro_app/features/settings/data/repositories_impl/settings_repository_impl.dart' as _i923;
 import 'package:autro_app/features/settings/domin/repositories/settings_repository.dart' as _i275;
@@ -135,8 +135,14 @@ extension GetItInjectableX on _i174.GetIt {
     gh.lazySingleton<_i646.NetworkInfo>(() => _i646.NetworkInfoImpl());
     gh.lazySingleton<_i123.AppPreferences>(() => _i123.AppPreferencesImpl(sharedPreferences: gh<_i460.SharedPreferences>()));
     gh.lazySingleton<_i228.ApiClient>(() => _i228.DioClient(gh<_i123.AppPreferences>()));
+    gh.lazySingleton<_i336.CustomersProformasRemoteDataSource>(
+        () => _i336.CustomersProformasRemoteDataSourceImpl(client: gh<_i228.ApiClient>()));
     gh.lazySingleton<_i509.SettingsRemoteDataSource>(() => _i509.SettingsRemoteDataSourceImpl(client: gh<_i228.ApiClient>()));
     gh.lazySingleton<_i77.BillsRemoteDataSource>(() => _i77.BillsRemoteDataSourceImpl(apiClient: gh<_i228.ApiClient>()));
+    gh.lazySingleton<_i5.CustomersProformasRepository>(() => _i981.CustomersProformasRepositoryImpl(
+          remoteDataSource: gh<_i336.CustomersProformasRemoteDataSource>(),
+          networkInfo: gh<_i646.NetworkInfo>(),
+        ));
     gh.lazySingleton<_i515.ShippingInvoicesRemoteDateSource>(
         () => _i515.ShippingInvoicesRemoteDateSourceImpl(client: gh<_i228.ApiClient>()));
     gh.lazySingleton<_i438.CustomersRemoteDataSource>(
@@ -146,9 +152,8 @@ extension GetItInjectableX on _i174.GetIt {
           networkInfo: gh<_i646.NetworkInfo>(),
           remoteDataSource: gh<_i509.SettingsRemoteDataSource>(),
         ));
-    gh.lazySingleton<_i154.CustomersProformasRemoteDataSource>(
-        () => _i154.CustomersProformasRemoteDataSourceImpl(client: gh<_i228.ApiClient>()));
-    gh.lazySingleton<_i345.InvoicesRemoteDataSource>(() => _i345.InvoicesRemoteDataSourceImpl(client: gh<_i228.ApiClient>()));
+    gh.lazySingleton<_i345.CustomersInvoicesRemoteDataSource>(
+        () => _i345.CustomersInvoicesRemoteDataSourceImpl(client: gh<_i228.ApiClient>()));
     gh.lazySingleton<_i232.AddBankAccountUseCase>(
         () => _i232.AddBankAccountUseCase(settingsRepository: gh<_i275.SettingsRepository>()));
     gh.lazySingleton<_i253.DeleteBankAccountUseCase>(
@@ -180,12 +185,16 @@ extension GetItInjectableX on _i174.GetIt {
         ));
     gh.lazySingleton<_i884.GetSuppliersListUsecase>(
         () => _i884.GetSuppliersListUsecase(supplierRepository: gh<_i712.SuppliersRepository>()));
-    gh.lazySingleton<_i342.InvoicesRepository>(() => _i943.InvoicesRepositoryImpl(
-          remoteDataSource: gh<_i345.InvoicesRemoteDataSource>(),
+    gh.lazySingleton<_i342.CustomerInvoicesRepository>(() => _i943.CustomersInvoicesRepositoryImpl(
+          remoteDataSource: gh<_i345.CustomersInvoicesRemoteDataSource>(),
           networkInfo: gh<_i646.NetworkInfo>(),
         ));
     gh.lazySingleton<_i766.UpdateShippingInvoicesUseCase>(
         () => _i766.UpdateShippingInvoicesUseCase(shippingInvoiceRepository: gh<_i43.ShippingInvoicesRepository>()));
+    gh.lazySingleton<_i70.CreateCustomerProformaUseCase>(
+        () => _i70.CreateCustomerProformaUseCase(repository: gh<_i5.CustomersProformasRepository>()));
+    gh.lazySingleton<_i330.GetCustomersProformasListUseCase>(
+        () => _i330.GetCustomersProformasListUseCase(repository: gh<_i5.CustomersProformasRepository>()));
     gh.lazySingleton<_i343.DealsRepository>(() => _i976.DealsRepositoryImpl(
           remoteDataSource: gh<_i1017.DealsRemoteDataSource>(),
           networkInfo: gh<_i646.NetworkInfo>(),
@@ -201,28 +210,30 @@ extension GetItInjectableX on _i174.GetIt {
           billsRemoteDataSource: gh<_i77.BillsRemoteDataSource>(),
           networkInfo: gh<_i646.NetworkInfo>(),
         ));
-    gh.lazySingleton<_i1050.CustomersProformasRepository>(() => _i264.CustomersProformasRepositoryImpl(
-          remoteDataSource: gh<_i154.CustomersProformasRemoteDataSource>(),
-          networkInfo: gh<_i646.NetworkInfo>(),
-        ));
-    gh.lazySingleton<_i303.CreateInvoiceUseCase>(() => _i303.CreateInvoiceUseCase(repository: gh<_i342.InvoicesRepository>()));
-    gh.lazySingleton<_i39.GetInvoicesListUseCase>(() => _i39.GetInvoicesListUseCase(repository: gh<_i342.InvoicesRepository>()));
+    gh.lazySingleton<_i360.DeleteCustomerProformaUseCase>(
+        () => _i360.DeleteCustomerProformaUseCase(proformasRepository: gh<_i5.CustomersProformasRepository>()));
+    gh.lazySingleton<_i42.UpdateCustomerProformaUseCase>(
+        () => _i42.UpdateCustomerProformaUseCase(proformasRepository: gh<_i5.CustomersProformasRepository>()));
+    gh.lazySingleton<_i303.CreateCustomerInvoiceUseCase>(
+        () => _i303.CreateCustomerInvoiceUseCase(repository: gh<_i342.CustomerInvoicesRepository>()));
+    gh.lazySingleton<_i39.GetCustomersInvoicesListUseCase>(
+        () => _i39.GetCustomersInvoicesListUseCase(repository: gh<_i342.CustomerInvoicesRepository>()));
     gh.lazySingleton<_i57.CreateSupplierUsecase>(
         () => _i57.CreateSupplierUsecase(suplliersRepository: gh<_i712.SuppliersRepository>()));
-    gh.lazySingleton<_i927.CreateCustomerProformaUseCase>(
-        () => _i927.CreateCustomerProformaUseCase(repository: gh<_i1050.CustomersProformasRepository>()));
-    gh.lazySingleton<_i90.GetCustomersProformasListUseCase>(
-        () => _i90.GetCustomersProformasListUseCase(repository: gh<_i1050.CustomersProformasRepository>()));
+    gh.factory<_i1045.ProformaFormCubit>(() => _i1045.ProformaFormCubit(
+          gh<_i70.CreateCustomerProformaUseCase>(),
+          gh<_i42.UpdateCustomerProformaUseCase>(),
+        ));
     gh.lazySingleton<_i163.CreateShippingInvoiceUseCase>(
         () => _i163.CreateShippingInvoiceUseCase(repository: gh<_i43.ShippingInvoicesRepository>()));
     gh.lazySingleton<_i725.DeleteShippingInvoiceUseCase>(
         () => _i725.DeleteShippingInvoiceUseCase(repository: gh<_i43.ShippingInvoicesRepository>()));
     gh.lazySingleton<_i856.GetShippingInvoicesListUseCase>(
         () => _i856.GetShippingInvoicesListUseCase(repository: gh<_i43.ShippingInvoicesRepository>()));
-    gh.lazySingleton<_i426.DeleteInvoiceUseCase>(
-        () => _i426.DeleteInvoiceUseCase(invoicesRepository: gh<_i342.InvoicesRepository>()));
-    gh.lazySingleton<_i707.UpdateInvoiceUseCase>(
-        () => _i707.UpdateInvoiceUseCase(invoicesRepository: gh<_i342.InvoicesRepository>()));
+    gh.lazySingleton<_i426.DeleteCustomerInvoiceUseCase>(
+        () => _i426.DeleteCustomerInvoiceUseCase(invoicesRepository: gh<_i342.CustomerInvoicesRepository>()));
+    gh.lazySingleton<_i707.UpdateCustomerInvoiceUseCase>(
+        () => _i707.UpdateCustomerInvoiceUseCase(invoicesRepository: gh<_i342.CustomerInvoicesRepository>()));
     gh.factory<_i1020.ShippingInvoicesListBloc>(() => _i1020.ShippingInvoicesListBloc(
           gh<_i856.GetShippingInvoicesListUseCase>(),
           gh<_i725.DeleteShippingInvoiceUseCase>(),
@@ -255,9 +266,9 @@ extension GetItInjectableX on _i174.GetIt {
         () => _i832.GetCustomerUsecase(customersRepository: gh<_i54.CustomersRepository>()));
     gh.lazySingleton<_i134.UpdateCustomerUsecase>(
         () => _i134.UpdateCustomerUsecase(customersRepository: gh<_i54.CustomersRepository>()));
-    gh.factory<_i676.InvoiceFormCubit>(() => _i676.InvoiceFormCubit(
-          gh<_i303.CreateInvoiceUseCase>(),
-          gh<_i707.UpdateInvoiceUseCase>(),
+    gh.factory<_i676.CustomerInvoiceFormCubit>(() => _i676.CustomerInvoiceFormCubit(
+          gh<_i303.CreateCustomerInvoiceUseCase>(),
+          gh<_i707.UpdateCustomerInvoiceUseCase>(),
         ));
     gh.lazySingleton<_i226.DeleteSupplierUsecase>(
         () => _i226.DeleteSupplierUsecase(suppliersRepository: gh<_i712.SuppliersRepository>()));
@@ -267,20 +278,16 @@ extension GetItInjectableX on _i174.GetIt {
         () => _i428.UpdateSupplierUsecase(suppliersRepository: gh<_i712.SuppliersRepository>()));
     gh.factory<_i173.RegisterCubit>(() => _i173.RegisterCubit(gh<_i288.AuthRepo>()));
     gh.lazySingleton<_i51.AppAuthBloc>(() => _i51.AppAuthBloc(gh<_i288.AuthRepo>()));
-    gh.factory<_i654.InvoicesListBloc>(() => _i654.InvoicesListBloc(
-          gh<_i39.GetInvoicesListUseCase>(),
-          gh<_i342.InvoicesRepository>(),
-          gh<_i426.DeleteInvoiceUseCase>(),
-          gh<_i707.UpdateInvoiceUseCase>(),
-          gh<_i303.CreateInvoiceUseCase>(),
+    gh.factory<_i654.CustomersInvoicesListBloc>(() => _i654.CustomersInvoicesListBloc(
+          gh<_i39.GetCustomersInvoicesListUseCase>(),
+          gh<_i342.CustomerInvoicesRepository>(),
+          gh<_i426.DeleteCustomerInvoiceUseCase>(),
+          gh<_i707.UpdateCustomerInvoiceUseCase>(),
+          gh<_i303.CreateCustomerInvoiceUseCase>(),
         ));
     gh.lazySingleton<_i776.CreateDealUseCase>(() => _i776.CreateDealUseCase(repository: gh<_i343.DealsRepository>()));
     gh.lazySingleton<_i419.GetDealsListUseCase>(() => _i419.GetDealsListUseCase(repository: gh<_i343.DealsRepository>()));
     gh.lazySingleton<_i473.UpdateDealUseCase>(() => _i473.UpdateDealUseCase(repository: gh<_i343.DealsRepository>()));
-    gh.lazySingleton<_i1.DeleteCustomerProformaUseCase>(
-        () => _i1.DeleteCustomerProformaUseCase(proformasRepository: gh<_i1050.CustomersProformasRepository>()));
-    gh.lazySingleton<_i635.UpdateCustomerProformaUseCase>(
-        () => _i635.UpdateCustomerProformaUseCase(proformasRepository: gh<_i1050.CustomersProformasRepository>()));
     gh.factory<_i815.CustomersListBloc>(() => _i815.CustomersListBloc(
           gh<_i486.GetCustomersListUsecase>(),
           gh<_i54.CustomersRepository>(),
@@ -289,13 +296,6 @@ extension GetItInjectableX on _i174.GetIt {
           gh<_i116.CreateCustomerUsecase>(),
         ));
     gh.lazySingleton<_i223.DeleteDealUseCase>(() => _i223.DeleteDealUseCase(dealsRepository: gh<_i343.DealsRepository>()));
-    gh.lazySingleton<_i55.CustomersProformasListBloc>(() => _i55.CustomersProformasListBloc(
-          gh<_i90.GetCustomersProformasListUseCase>(),
-          gh<_i1050.CustomersProformasRepository>(),
-          gh<_i1.DeleteCustomerProformaUseCase>(),
-          gh<_i635.UpdateCustomerProformaUseCase>(),
-          gh<_i927.CreateCustomerProformaUseCase>(),
-        ));
     gh.lazySingleton<_i671.AddBillUseCase>(() => _i671.AddBillUseCase(repository: gh<_i292.BillsRepository>()));
     gh.lazySingleton<_i321.DeleteBillUseCase>(() => _i321.DeleteBillUseCase(repository: gh<_i292.BillsRepository>()));
     gh.lazySingleton<_i218.GetBillsListUseCase>(() => _i218.GetBillsListUseCase(repository: gh<_i292.BillsRepository>()));
@@ -315,15 +315,18 @@ extension GetItInjectableX on _i174.GetIt {
           gh<_i671.AddBillUseCase>(),
           gh<_i745.UpdateBillUseCase>(),
         ));
-    gh.factory<_i825.ProformaFormCubit>(() => _i825.ProformaFormCubit(
-          gh<_i927.CreateCustomerProformaUseCase>(),
-          gh<_i635.UpdateCustomerProformaUseCase>(),
+    gh.factory<_i612.CustomersProformasListBloc>(() => _i612.CustomersProformasListBloc(
+          gh<_i330.GetCustomersProformasListUseCase>(),
+          gh<_i5.CustomersProformasRepository>(),
+          gh<_i360.DeleteCustomerProformaUseCase>(),
+          gh<_i42.UpdateCustomerProformaUseCase>(),
+          gh<_i70.CreateCustomerProformaUseCase>(),
         ));
     gh.factory<_i839.ShippingInvoiceFormBloc>(() => _i839.ShippingInvoiceFormBloc(
           gh<_i163.CreateShippingInvoiceUseCase>(),
           gh<_i766.UpdateShippingInvoicesUseCase>(),
         ));
-    gh.lazySingleton<_i594.DealsListBloc>(() => _i594.DealsListBloc(
+    gh.factory<_i594.DealsListBloc>(() => _i594.DealsListBloc(
           gh<_i419.GetDealsListUseCase>(),
           gh<_i343.DealsRepository>(),
           gh<_i223.DeleteDealUseCase>(),

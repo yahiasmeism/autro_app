@@ -1,16 +1,16 @@
-part of 'invoice_form_cubit.dart';
+part of 'customer_invoice_form_cubit.dart';
 
-sealed class InvoiceFormState extends Equatable {
-  const InvoiceFormState();
+sealed class CustomerInvoiceFormState extends Equatable {
+  const CustomerInvoiceFormState();
 
   @override
   List<Object?> get props => [];
 }
 
-final class InvoiceFormInitial extends InvoiceFormState {}
+final class CustomerInvoiceFormInitial extends CustomerInvoiceFormState {}
 
-final class InvoiceFormLoaded extends InvoiceFormState {
-  final InvoiceEntity? invoice;
+final class CustomerInvoiceFormLoaded extends CustomerInvoiceFormState {
+  final CustomerInvoiceEntity? invoice;
   final bool loading;
   final Option<Either<Failure, String>> failureOrSuccessOption;
   final bool updatedMode;
@@ -19,7 +19,7 @@ final class InvoiceFormLoaded extends InvoiceFormState {
   final bool cancelEnabled;
   final bool clearEnabled;
   final List<InvoiceGoodDescriptionDto> goodDescriptionsList;
-  const InvoiceFormLoaded({
+  const CustomerInvoiceFormLoaded({
     this.invoice,
     this.loading = false,
     this.failureOrSuccessOption = const None(),
@@ -43,9 +43,9 @@ final class InvoiceFormLoaded extends InvoiceFormState {
         addGoodDescriptionEnabled,
       ];
 
-  InvoiceFormLoaded copyWith({
+  CustomerInvoiceFormLoaded copyWith({
     List<InvoiceGoodDescriptionDto>? descriptionList,
-    InvoiceEntity? invoice,
+    CustomerInvoiceEntity? invoice,
     bool? clearEnabled,
     bool? updatedMode,
     bool? saveEnabled,
@@ -54,7 +54,7 @@ final class InvoiceFormLoaded extends InvoiceFormState {
     Option<Either<Failure, String>>? failureOrSuccessOption,
     bool? addGoodDescriptionEnabled,
   }) {
-    return InvoiceFormLoaded(
+    return CustomerInvoiceFormLoaded(
       addGoodDescriptionEnabled: addGoodDescriptionEnabled ?? this.addGoodDescriptionEnabled,
       goodDescriptionsList: descriptionList ?? goodDescriptionsList,
       updatedMode: updatedMode ?? this.updatedMode,
@@ -66,8 +66,6 @@ final class InvoiceFormLoaded extends InvoiceFormState {
       failureOrSuccessOption: failureOrSuccessOption ?? none(),
     );
   }
-
-
 
   double get allWeight {
     double weight = 0;

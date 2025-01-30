@@ -25,7 +25,6 @@ class CustomerProformaEntity extends Equatable {
     required this.id,
     required this.proformaNumber,
     required this.date,
-    // required this.customerAddress,
     required this.taxId,
     required this.ports,
     required this.deliveryTerms,

@@ -1,23 +1,26 @@
 import 'package:autro_app/core/errors/failures.dart';
 import 'package:autro_app/core/extensions/date_time_extension.dart';
 import 'package:autro_app/features/invoices/domin/dtos/invoice_good_description_dto.dart';
-import 'package:autro_app/features/invoices/domin/entities/invoice_entity.dart';
+import 'package:autro_app/features/invoices/domin/entities/customer_invoice_entity.dart';
 import 'package:bloc/bloc.dart';
 import 'package:dartz/dartz.dart';
 import 'package:equatable/equatable.dart';
 import 'package:flutter/material.dart';
 import 'package:injectable/injectable.dart';
 
-import '../../../domin/use_cases/create_invoice_use_case.dart';
-import '../../../domin/use_cases/update_invoice_use_case.dart';
+import '../../../domin/use_cases/create_customer_invoice_use_case.dart';
+import '../../../domin/use_cases/update_customer_invoice_use_case.dart';
 
-part 'invoice_form_state.dart';
+part 'customer_invoice_form_state.dart';
 
 @injectable
-class InvoiceFormCubit extends Cubit<InvoiceFormState> {
-  final CreateInvoiceUseCase createInvoiceUsecase;
-  final UpdateInvoiceUseCase updateInvoiceUsecase;
-  InvoiceFormCubit(this.createInvoiceUsecase, this.updateInvoiceUsecase) : super(InvoiceFormInitial());
+class CustomerInvoiceFormCubit extends Cubit<CustomerInvoiceFormState> {
+  final CreateCustomerInvoiceUseCase createInvoiceUsecase;
+  final UpdateCustomerInvoiceUseCase updateInvoiceUsecase;
+  CustomerInvoiceFormCubit(
+    this.createInvoiceUsecase,
+    this.updateInvoiceUsecase,
+  ) : super(CustomerInvoiceFormInitial());
 
   // Goods Descriptions
   final descriptionController = TextEditingController();
@@ -36,12 +39,13 @@ class InvoiceFormCubit extends Cubit<InvoiceFormState> {
   final bankIdController = TextEditingController();
   final bankNameController = TextEditingController();
   final notesController = TextEditingController();
-  final proformaIdController = TextEditingController();
   final proformaNameController = TextEditingController();
+  final dealSeriesNumberController = TextEditingController();
+  final dealIdController = TextEditingController();
 
-  Future init({required InvoiceEntity? invoice}) async {
+  Future init({required CustomerInvoiceEntity? invoice}) async {
     final goodsDescriptions = invoice?.goodsDescriptions.map((e) => InvoiceGoodDescriptionDto.fromEntity(e)).toList() ?? [];
-    emit(InvoiceFormLoaded(
+    emit(CustomerInvoiceFormLoaded(
       invoice: invoice,
       goodDescriptionsList: goodsDescriptions,
       updatedMode: invoice != null,
@@ -50,7 +54,7 @@ class InvoiceFormCubit extends Cubit<InvoiceFormState> {
   }
 
   _initializeControllers() {
-    final state = this.state as InvoiceFormLoaded;
+    final state = this.state as CustomerInvoiceFormLoaded;
     formKey.currentState?.reset();
     invoiceNumberController.text = state.invoice?.invoiceNumber ?? '';
     invoiceDateController.text = state.invoice?.date.formattedDateYYYYMMDD ?? DateTime.now().formattedDateYYYYMMDD;
@@ -60,9 +64,8 @@ class InvoiceFormCubit extends Cubit<InvoiceFormState> {
     bankIdController.text = state.invoice?.bankAccount.id.toString() ?? '';
     bankNameController.text = state.invoice?.bankAccount.formattedLabel ?? '';
     notesController.text = state.invoice?.notes ?? '';
-    proformaIdController.text = state.invoice?.proforma.id.toString() ?? '';
-    proformaNameController.text = state.invoice?.proforma.proformaNumber ?? '';
-
+    dealIdController.text = state.invoice?.dealId.toString() ?? '';
+    dealSeriesNumberController.text = state.invoice?.formattedSeriesNumber ?? '';
     _setupControllersListeners();
     _onInvoiceFormChanged();
   }
@@ -76,6 +79,8 @@ class InvoiceFormCubit extends Cubit<InvoiceFormState> {
       taxIdController,
       bankIdController,
       notesController,
+      dealIdController,
+      dealSeriesNumberController,
     ]) {
       controller.addListener(() => _onInvoiceFormChanged());
     }
@@ -100,7 +105,7 @@ class InvoiceFormCubit extends Cubit<InvoiceFormState> {
       totalPriceController,
     ].every((controller) => controller.text.isNotEmpty);
 
-    final state = this.state as InvoiceFormLoaded;
+    final state = this.state as CustomerInvoiceFormLoaded;
     emit(state.copyWith(addGoodDescriptionEnabled: addGoodDescriptionIsActive));
 
     // Calculate total price
@@ -111,7 +116,7 @@ class InvoiceFormCubit extends Cubit<InvoiceFormState> {
   }
 
   _onInvoiceFormChanged() {
-    final state = this.state as InvoiceFormLoaded;
+    final state = this.state as CustomerInvoiceFormLoaded;
     final formIsNotEmpty = [
       invoiceNumberController,
       customerIdController,
@@ -132,6 +137,7 @@ class InvoiceFormCubit extends Cubit<InvoiceFormState> {
           invoice.taxId != taxIdController.text ||
           invoice.bankAccount.id.toString() != bankIdController.text ||
           invoice.notes != notesController.text ||
+          invoice.dealId.toString() != dealIdController.text ||
           isGoodsDescriptionChanged;
 
       emit(state.copyWith(
@@ -157,7 +163,7 @@ class InvoiceFormCubit extends Cubit<InvoiceFormState> {
   }
 
   addGoodDescription() {
-    final state = this.state as InvoiceFormLoaded;
+    final state = this.state as CustomerInvoiceFormLoaded;
     final goodDescription = InvoiceGoodDescriptionDto(
       containerNumber: containerNumberController.text,
       description: descriptionController.text,
@@ -171,7 +177,7 @@ class InvoiceFormCubit extends Cubit<InvoiceFormState> {
   }
 
   removeGoodDescription(InvoiceGoodDescriptionDto dto) {
-    final state = this.state as InvoiceFormLoaded;
+    final state = this.state as CustomerInvoiceFormLoaded;
     final updatedList = List.of(state.goodDescriptionsList)..remove(dto);
     emit(state.copyWith(descriptionList: updatedList));
     _onInvoiceFormChanged();
@@ -190,15 +196,15 @@ class InvoiceFormCubit extends Cubit<InvoiceFormState> {
   }
 
   Future createInvoice() async {
-    final state = this.state as InvoiceFormLoaded;
+    final state = this.state as CustomerInvoiceFormLoaded;
     emit(state.copyWith(loading: true));
 
-    final params = CreateInvoiceUseCaseParams(
+    final params = CreateCustomerInvoiceUseCaseParams(
+      dealId: int.parse(dealIdController.text),
       invoiceNumber: invoiceNumberController.text,
       date: invoiceDateController.text,
       customerId: int.parse(customerIdController.text),
       taxId: taxIdController.text,
-      proformaId: int.parse(proformaIdController.text),
       descriptions: state.goodDescriptionsList,
       bankAccountId: int.parse(bankIdController.text),
       notes: notesController.text,
@@ -220,19 +226,19 @@ class InvoiceFormCubit extends Cubit<InvoiceFormState> {
   }
 
   Future updateInvoice() async {
-    final state = this.state as InvoiceFormLoaded;
+    final state = this.state as CustomerInvoiceFormLoaded;
 
     emit(state.copyWith(loading: true));
-    final params = UpdateInvoiceUseCaseParams(
+    final params = UpdateCustomerInvoiceUseCaseParams(
       id: state.invoice!.id,
       invoiceNumber: invoiceNumberController.text,
       date: invoiceDateController.text,
       customerId: int.parse(customerIdController.text),
       taxId: taxIdController.text,
-      proformaId: int.parse(proformaIdController.text),
       descriptions: state.goodDescriptionsList,
       bankAccountId: int.parse(bankIdController.text),
       notes: notesController.text,
+      dealId: int.parse(dealIdController.text),
     );
 
     final either = await updateInvoiceUsecase.call(params);
@@ -247,7 +253,7 @@ class InvoiceFormCubit extends Cubit<InvoiceFormState> {
   }
 
   updateGoodDescription(InvoiceGoodDescriptionDto dto) {
-    final state = this.state as InvoiceFormLoaded;
+    final state = this.state as CustomerInvoiceFormLoaded;
     final index = state.goodDescriptionsList.indexWhere((element) => element.uniqueKey == dto.uniqueKey);
 
     if (index != -1) {
@@ -259,7 +265,7 @@ class InvoiceFormCubit extends Cubit<InvoiceFormState> {
   }
 
   cancelChanges() {
-    final state = this.state as InvoiceFormLoaded;
+    final state = this.state as CustomerInvoiceFormLoaded;
     init(invoice: state.invoice);
   }
 }

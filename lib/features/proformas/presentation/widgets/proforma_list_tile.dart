@@ -70,7 +70,9 @@ class ProformaListTile extends StatelessWidget {
                   const SizedBox(width: 8),
                   DeleteIconButton(
                     onPressed: () {
-                      context.read<CustomersProformasListBloc>().add(DeleteProformaEvent(proformaId: proformaEntity.id));
+                      context
+                          .read<CustomersProformasListBloc>()
+                          .add(DeleteProformaEvent(proformaId: proformaEntity.id, context: context));
                     },
                   ),
                 ],

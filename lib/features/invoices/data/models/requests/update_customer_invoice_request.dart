@@ -1,24 +1,24 @@
 import 'package:autro_app/core/interfaces/mapable.dart';
 import 'package:autro_app/features/invoices/data/models/requests/invoice_good_description_request.dart';
 
-import '../../../domin/use_cases/update_invoice_use_case.dart';
+import '../../../domin/use_cases/update_customer_invoice_use_case.dart';
 
-class UpdateInvoiceRequest extends UpdateInvoiceUseCaseParams implements RequestMapable {
-  const UpdateInvoiceRequest({
+class UpdateCustomerInvoiceRequest extends UpdateCustomerInvoiceUseCaseParams implements RequestMapable {
+  const UpdateCustomerInvoiceRequest({
     required super.id,
     required super.invoiceNumber,
     required super.date,
     required super.customerId,
     required super.taxId,
-    required super.proformaId,
+    required super.dealId,
     required super.bankAccountId,
     required super.notes,
     required super.descriptions,
   });
 
-  factory UpdateInvoiceRequest.fromParams(UpdateInvoiceUseCaseParams params) => UpdateInvoiceRequest(
+  factory UpdateCustomerInvoiceRequest.fromParams(UpdateCustomerInvoiceUseCaseParams params) => UpdateCustomerInvoiceRequest(
         invoiceNumber: params.invoiceNumber,
-        proformaId: params.proformaId,
+        dealId: params.dealId,
         id: params.id,
         date: params.date,
         customerId: params.customerId,
@@ -35,7 +35,7 @@ class UpdateInvoiceRequest extends UpdateInvoiceUseCaseParams implements Request
       "date": date,
       "customer_id": customerId,
       "tax_id": taxId,
-      "proforma_id": proformaId,
+      "deal_id": dealId,
       "bank_account_id": bankAccountId,
       "notes": notes,
       "goods_descriptions": descriptions.map((e) => InvoiceGoodDescriptionRequest.fromParams(e).toJson()).toList(),

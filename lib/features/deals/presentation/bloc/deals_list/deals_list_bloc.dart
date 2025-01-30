@@ -1,15 +1,16 @@
-import 'package:autro_app/core/di/di.dart';
 import 'package:autro_app/core/errors/failures.dart';
 import 'package:autro_app/features/deals/domin/repositories/deals_repository.dart';
 import 'package:autro_app/features/deals/domin/use_cases/delete_deal_use_case.dart';
 import 'package:autro_app/features/deals/domin/use_cases/get_deals_list_use_case.dart';
 import 'package:autro_app/features/proformas/presentation/bloc/customers_proformas_list/customers_proformas_list_bloc.dart';
-import 'package:bloc/bloc.dart';
 import 'package:dartz/dartz.dart';
 import 'package:equatable/equatable.dart';
+import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:injectable/injectable.dart';
 
 import '../../../../../core/common/domin/dto/pagination_query_payload_dto.dart';
+import '../../../../invoices/presentation/bloc/customers_invoices_list/customers_invoices_list_bloc.dart';
 import '../../../domin/entities/deal_entity.dart';
 import '../../../domin/use_cases/create_deal_use_case.dart';
 import '../../../domin/use_cases/update_deal_use_case.dart';
@@ -17,7 +18,7 @@ import '../../../domin/use_cases/update_deal_use_case.dart';
 part 'deals_list_event.dart';
 part 'deals_list_state.dart';
 
-@lazySingleton
+@injectable
 class DealsListBloc extends Bloc<DealsListEvent, DealsListState> {
   final GetDealsListUseCase getDealsListUsecase;
   final DeleteDealUseCase deleteDealUsecase;
@@ -31,7 +32,7 @@ class DealsListBloc extends Bloc<DealsListEvent, DealsListState> {
     this.updateDealUsecase,
     this.createDealUsecase,
   ) : super(DealsListInitial()) {
-    on<DealsListEvent>(_mapEvents);
+    on<DealsListEvent>(_mapEvents, transformer: (events, mapper) => events.asyncExpand(mapper));
   }
 
   int get totalCount => dealsRepository.totalCount;
@@ -142,7 +143,10 @@ class DealsListBloc extends Bloc<DealsListEvent, DealsListState> {
       },
     );
 
-    sl<CustomersProformasListBloc>().add(GetProformasListEvent());
+    if (event.context.mounted) {
+      event.context.read<CustomersProformasListBloc>().add(GetProformasListEvent());
+      event.context.read<CustomersInvoicesListBloc>().add(GetCustomersInvoicesListEvent());
+    }
   }
 
   onSearchInputChanged(SearchInputChangedEvent event, Emitter<DealsListState> emit) async {

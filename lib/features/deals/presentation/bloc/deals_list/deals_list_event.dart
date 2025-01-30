@@ -24,8 +24,9 @@ class NextPageEvent extends DealsListEvent {}
 class PreviousPageEvent extends DealsListEvent {}
 
 class DeleteDealEvent extends DealsListEvent {
+  final BuildContext context;
   final int dealId;
-  const DeleteDealEvent({required this.dealId});
+  const DeleteDealEvent({required this.dealId,required this.context});
 
   @override
   List<Object> get props => [dealId];

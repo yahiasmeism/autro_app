@@ -10,8 +10,8 @@ import 'package:autro_app/features/invoices/presentation/widgets/invoice_filter_
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
-import '../../bloc/invoices_list/invoices_list_bloc.dart';
-import '../../widgets/invoice_list.dart';
+import '../../bloc/customers_invoices_list/customers_invoices_list_bloc.dart';
+import '../../widgets/customers_invoices_list.dart';
 import '../../widgets/invoice_list_headers_row.dart';
 
 class InvoicesListDesktopLayout extends StatelessWidget {
@@ -30,19 +30,19 @@ class InvoicesListDesktopLayout extends StatelessWidget {
             ),
             const StandartListTitle(title: 'Invoices'),
             Expanded(
-              child: BlocConsumer<InvoicesListBloc, InvoicesListState>(
+              child: BlocConsumer<CustomersInvoicesListBloc, CustomersInvoicesListState>(
                 listener: listener,
                 builder: (context, state) {
-                  if (state is InvoicesListInitial) {
+                  if (state is CustomersInvoicesListInitial) {
                     return const LoadingIndicator();
                   }
-                  if (state is InvoicesListLoaded) {
+                  if (state is CustomersInvoicesListLoaded) {
                     return _buildLoadedBody(state);
-                  } else if (state is InvoicesListError) {
+                  } else if (state is CustomersInvoicesListError) {
                     return FailureScreen(
                       failure: state.failure,
                       onRetryTap: () {
-                        context.read<InvoicesListBloc>().add(HandleFailureEvent());
+                        context.read<CustomersInvoicesListBloc>().add(HandleFailureEvent());
                       },
                     );
                   }
@@ -57,14 +57,14 @@ class InvoicesListDesktopLayout extends StatelessWidget {
     );
   }
 
-  Widget _buildLoadedBody(InvoicesListLoaded state) {
+  Widget _buildLoadedBody(CustomersInvoicesListLoaded state) {
     if (state.invoicesList.isEmpty) return NoDataScreen.invoices();
     return Stack(
       children: [
         Column(
           children: [
             const InvoicesListHeadersRow(),
-            Expanded(child: InvoicesList(invoices: state.invoicesList)),
+            Expanded(child: CustomersInvoicesList(invoices: state.invoicesList)),
           ],
         ),
         if (state.loading) const LoadingOverlay(),
@@ -72,8 +72,8 @@ class InvoicesListDesktopLayout extends StatelessWidget {
     );
   }
 
-  void listener(BuildContext context, InvoicesListState state) {
-    if (state is InvoicesListLoaded) {
+  void listener(BuildContext context, CustomersInvoicesListState state) {
+    if (state is CustomersInvoicesListLoaded) {
       state.failureOrSuccessOption.fold(
         () => null,
         (either) => either.fold(

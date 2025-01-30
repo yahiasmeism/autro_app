@@ -4,19 +4,19 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 
 import '../../../../core/constants/enums.dart';
 import '../../../../core/utils/nav_util.dart';
-import '../bloc/invoices_list/invoices_list_bloc.dart';
-import '../screens/invoice_form_screen.dart';
+import '../bloc/customers_invoices_list/customers_invoices_list_bloc.dart';
+import '../screens/custoemr_invoice_form_screen.dart';
 
 class InvoicePaginationBottomBar extends StatelessWidget {
   const InvoicePaginationBottomBar({super.key});
 
   @override
   Widget build(BuildContext context) {
-    return BlocBuilder<InvoicesListBloc, InvoicesListState>(
+    return BlocBuilder<CustomersInvoicesListBloc, CustomersInvoicesListState>(
       builder: (context, state) {
         int currentPage = 0;
         int totalPages = 0;
-        bool isLoaded = state is InvoicesListLoaded;
+        bool isLoaded = state is CustomersInvoicesListLoaded;
         final loadingPagination = isLoaded && state.loadingPagination;
         bool canNext = false;
         bool canPrevious = false;
@@ -32,18 +32,18 @@ class InvoicePaginationBottomBar extends StatelessWidget {
           currentPage: currentPage,
           onPreviousTap: canPrevious
               ? () {
-                  context.read<InvoicesListBloc>().add(PreviousPageEvent());
+                  context.read<CustomersInvoicesListBloc>().add(PreviousPageEvent());
                 }
               : null,
           onNextTap: canNext
               ? () {
-                  context.read<InvoicesListBloc>().add(NextPageEvent());
+                  context.read<CustomersInvoicesListBloc>().add(NextPageEvent());
                 }
               : null,
           labelAddButton: 'Add New Invoice',
           onAddTap: isLoaded
               ? () {
-                  NavUtil.push(context, const InvoiceFormScreen(formType: FormType.create));
+                  NavUtil.push(context, const CustomerInvoiceFormScreen(formType: FormType.create));
                 }
               : null,
         );

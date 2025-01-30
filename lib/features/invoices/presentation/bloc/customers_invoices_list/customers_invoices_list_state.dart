@@ -1,22 +1,22 @@
-part of 'invoices_list_bloc.dart';
+part of 'customers_invoices_list_bloc.dart';
 
-sealed class InvoicesListState extends Equatable {
-  const InvoicesListState();
+sealed class CustomersInvoicesListState extends Equatable {
+  const CustomersInvoicesListState();
 
   @override
   List<Object> get props => [];
 }
 
-final class InvoicesListInitial extends InvoicesListState {}
+final class CustomersInvoicesListInitial extends CustomersInvoicesListState {}
 
-final class InvoicesListLoaded extends InvoicesListState {
-  final List<InvoiceEntity> invoicesList;
+final class CustomersInvoicesListLoaded extends CustomersInvoicesListState {
+  final List<CustomerInvoiceEntity> invoicesList;
   final PaginationFilterDTO paginationFilterDTO;
   final int totalCount;
   final bool loading;
   final bool loadingPagination;
   final Option<Either<Failure, String>> failureOrSuccessOption;
-  const InvoicesListLoaded({
+  const CustomersInvoicesListLoaded({
     required this.invoicesList,
     required this.totalCount,
     required this.paginationFilterDTO,
@@ -34,15 +34,15 @@ final class InvoicesListLoaded extends InvoicesListState {
         loadingPagination,
       ];
 
-  InvoicesListLoaded copyWith({
-    List<InvoiceEntity>? invoicesList,
+  CustomersInvoicesListLoaded copyWith({
+    List<CustomerInvoiceEntity>? invoicesList,
     PaginationFilterDTO? paginationFilterDTO,
     int? totalCount,
     bool? loading,
     Option<Either<Failure, String>>? failureOrSuccessOption,
     bool? loadingPagination,
   }) {
-    return InvoicesListLoaded(
+    return CustomersInvoicesListLoaded(
       invoicesList: invoicesList ?? this.invoicesList,
       paginationFilterDTO: paginationFilterDTO ?? this.paginationFilterDTO,
       totalCount: totalCount ?? this.totalCount,
@@ -52,16 +52,16 @@ final class InvoicesListLoaded extends InvoicesListState {
     );
   }
 
-  int get totalPages => (totalCount / paginationFilterDTO.pageSize).ceil(); 
+  int get totalPages => (totalCount / paginationFilterDTO.pageSize).ceil();
 
   bool get canGoNextPage => paginationFilterDTO.pageNumber < totalCount / paginationFilterDTO.pageSize && !loadingPagination;
   bool get canGoPreviousPage => paginationFilterDTO.pageNumber > 1 && !loadingPagination;
 }
 
-class InvoicesListError extends InvoicesListState {
+class CustomersInvoicesListError extends CustomersInvoicesListState {
   final Failure failure;
 
-  const InvoicesListError({required this.failure});
+  const CustomersInvoicesListError({required this.failure});
 
   @override
   List<Object> get props => [failure];

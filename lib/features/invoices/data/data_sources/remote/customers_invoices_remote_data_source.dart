@@ -7,32 +7,32 @@ import '../../../../../core/api/api_client.dart';
 import '../../../../../core/api/api_paths.dart';
 import '../../../../../core/errors/error_handler.dart';
 import '../../../../../core/errors/exceptions.dart';
-import '../../models/invoice_model.dart';
-import '../../models/requests/create_invoice_request.dart';
-import '../../models/requests/get_invoices_list_request.dart';
-import '../../models/requests/update_invoice_request.dart';
+import '../../models/customer_invoice_model.dart';
+import '../../models/requests/create_customer_invoice_request.dart';
+import '../../models/requests/get_customers_invoices_list_request.dart';
+import '../../models/requests/update_customer_invoice_request.dart';
 
-abstract class InvoicesRemoteDataSource {
-  Future<InvoiceModel> createInvoice(CreateInvoiceRequest body);
+abstract class CustomersInvoicesRemoteDataSource {
+  Future<CustomerInvoiceModel> createInvoice(CreateCustomerInvoiceRequest body);
   Future<Unit> deleteInvoice(int invoiceId);
-  Future<InvoiceModel> getInvoiceById(int invoiceId);
-  Future<PaginationListResponse<InvoiceModel>> getInvoicesList(GetInvoicesListRequest body);
-  Future<InvoiceModel> updateInvoice(UpdateInvoiceRequest body);
+  Future<CustomerInvoiceModel> getInvoiceById(int invoiceId);
+  Future<PaginationListResponse<CustomerInvoiceModel>> getInvoicesList(GetCustomersInvoicesListRequest body);
+  Future<CustomerInvoiceModel> updateInvoice(UpdateCustomerInvoiceRequest body);
 }
 
-@LazySingleton(as: InvoicesRemoteDataSource)
-class InvoicesRemoteDataSourceImpl implements InvoicesRemoteDataSource {
+@LazySingleton(as: CustomersInvoicesRemoteDataSource)
+class CustomersInvoicesRemoteDataSourceImpl implements CustomersInvoicesRemoteDataSource {
   final ApiClient client;
 
-  InvoicesRemoteDataSourceImpl({required this.client});
+  CustomersInvoicesRemoteDataSourceImpl({required this.client});
   @override
-  Future<InvoiceModel> createInvoice(CreateInvoiceRequest body) async {
+  Future<CustomerInvoiceModel> createInvoice(CreateCustomerInvoiceRequest body) async {
     const path = ApiPaths.invoices;
     final json = body.toJson();
     final request = ApiRequest(path: path, body: json);
     final response = await client.post(request);
     if (ResponseCode.isOk(response.statusCode)) {
-      return InvoiceModel.fromJson(response.data);
+      return CustomerInvoiceModel.fromJson(response.data);
     } else {
       throw ServerException(response.statusCode, response.statusMessage);
     }
@@ -51,37 +51,37 @@ class InvoicesRemoteDataSourceImpl implements InvoicesRemoteDataSource {
   }
 
   @override
-  Future<InvoiceModel> getInvoiceById(int invoiceId) async {
+  Future<CustomerInvoiceModel> getInvoiceById(int invoiceId) async {
     final path = ApiPaths.invoiceById(invoiceId);
     final request = ApiRequest(path: path);
     final response = await client.get(request);
     if (ResponseCode.isOk(response.statusCode)) {
-      return InvoiceModel.fromJson(response.data);
+      return CustomerInvoiceModel.fromJson(response.data);
     } else {
       throw ServerException(response.statusCode, response.statusMessage);
     }
   }
 
   @override
-  Future<PaginationListResponse<InvoiceModel>> getInvoicesList(GetInvoicesListRequest body) async {
+  Future<PaginationListResponse<CustomerInvoiceModel>> getInvoicesList(GetCustomersInvoicesListRequest body) async {
     const path = ApiPaths.invoices;
     final request = ApiRequest(path: path, queryParameters: body.toJson());
     final response = await client.get(request);
     if (ResponseCode.isOk(response.statusCode)) {
       final json = response.data;
-      final responseList = PaginationListResponse.fromJson(json, InvoiceModel.fromJson);
+      final responseList = PaginationListResponse.fromJson(json, CustomerInvoiceModel.fromJson);
       return responseList;
     }
     throw ServerException(response.statusCode, response.statusMessage);
   }
 
   @override
-  Future<InvoiceModel> updateInvoice(UpdateInvoiceRequest body) async {
+  Future<CustomerInvoiceModel> updateInvoice(UpdateCustomerInvoiceRequest body) async {
     final path = ApiPaths.invoiceById(body.id);
     final request = ApiRequest(path: path, body: body.toJson());
     final response = await client.put(request);
     if (ResponseCode.isOk(response.statusCode)) {
-      return InvoiceModel.fromJson(response.data);
+      return CustomerInvoiceModel.fromJson(response.data);
     } else {
       throw ServerException(response.statusCode, response.statusMessage);
     }

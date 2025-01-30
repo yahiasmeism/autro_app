@@ -1,5 +1,5 @@
 import '../entities/invoice_goods_description_entity.dart';
-import '../use_cases/create_invoice_use_case.dart';
+import '../use_cases/create_customer_invoice_use_case.dart';
 
 class InvoiceGoodDescriptionDto extends InvoiceGoodDescriptionParams {
   final String uniqueKey;

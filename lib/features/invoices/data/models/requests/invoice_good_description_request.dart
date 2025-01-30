@@ -1,5 +1,5 @@
 import 'package:autro_app/core/interfaces/mapable.dart';
-import 'package:autro_app/features/invoices/domin/use_cases/create_invoice_use_case.dart';
+import 'package:autro_app/features/invoices/domin/use_cases/create_customer_invoice_use_case.dart';
 
 class InvoiceGoodDescriptionRequest extends InvoiceGoodDescriptionParams implements RequestMapable {
   const InvoiceGoodDescriptionRequest({

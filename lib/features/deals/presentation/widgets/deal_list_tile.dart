@@ -28,7 +28,7 @@ class DealListTile extends StatelessWidget {
           crossAxisAlignment: CrossAxisAlignment.center,
           children: [
             _buildCell(
-              text: "Deal${dealEntity.seriesNumber}",
+              text: dealEntity.formattedSeriesNumber,
               flex: 4,
             ),
             const SizedBox(width: 16),
@@ -39,7 +39,7 @@ class DealListTile extends StatelessWidget {
             const SizedBox(width: 16),
             _buildCell(
               flex: 4,
-              text: dealEntity.customerProforma.customer.name,
+              text: dealEntity.customerProforma?.customer.name ?? '-',
             ),
             const SizedBox(width: 16),
             _buildCell(
@@ -49,7 +49,7 @@ class DealListTile extends StatelessWidget {
             const SizedBox(width: 16),
             _buildCell(
               flex: 4,
-              text: dealEntity.customerProforma.goodsDescriptions.firstOrNull?.description ?? '-',
+              text: dealEntity.customerProforma?.goodsDescriptions.firstOrNull?.description ?? '-',
             ),
             const SizedBox(width: 16),
             _buildCell(
@@ -65,7 +65,7 @@ class DealListTile extends StatelessWidget {
                 children: [
                   DeleteIconButton(
                     onPressed: () {
-                      context.read<DealsListBloc>().add(DeleteDealEvent(dealId: dealEntity.id));
+                      context.read<DealsListBloc>().add(DeleteDealEvent(dealId: dealEntity.id, context: context));
                     },
                   ),
                 ],

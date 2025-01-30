@@ -15,13 +15,15 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 class DealsListSelectionField extends StatefulWidget {
   const DealsListSelectionField({
     super.key,
-    required this.nameController,
+    required this.seriesNumberController,
     required this.idController,
     this.onItemTap,
+    this.enabled = true,
   });
 
-  final TextEditingController nameController, idController;
+  final TextEditingController seriesNumberController, idController;
   final Function(DealEntity deal)? onItemTap;
+  final bool enabled;
 
   @override
   State createState() => _DealsListSelectionFieldState();
@@ -52,24 +54,29 @@ class _DealsListSelectionFieldState extends State<DealsListSelectionField> {
   Widget _buildField() {
     return InkWell(
       borderRadius: BorderRadius.circular(8),
-      onTap: () async {
-        final value = await showCustomDialog();
-        if (value != null) {
-          widget.nameController.text = value.label;
-          widget.idController.text = value.value.id.toString();
-          widget.onItemTap?.call(value.value);
-        }
-      },
+      onTap: widget.enabled
+          ? () async {
+              final value = await showCustomDialog();
+              if (value != null) {
+                widget.seriesNumberController.text = value.label;
+                widget.idController.text = value.value.id.toString();
+                widget.onItemTap?.call(value.value);
+              }
+            }
+          : null,
       child: TextFormField(
         style: TextStyles.font16Regular,
         readOnly: true,
         textAlignVertical: TextAlignVertical.center,
-        controller: widget.nameController,
-        decoration: const InputDecoration(
-          contentPadding: EdgeInsets.all(16),
-          hintText: 'Select Deal',
-          suffixIcon: Icon(Icons.keyboard_arrow_down),
-        ),
+        controller: widget.seriesNumberController,
+        decoration: widget.enabled
+            ? InputDecoration(
+                enabled: widget.enabled,
+                contentPadding: const EdgeInsets.all(16),
+                hintText: 'Select Deal',
+                suffixIcon: const Icon(Icons.keyboard_arrow_down),
+              )
+            : null,
         enabled: false,
       ),
     );
@@ -238,9 +245,9 @@ class _DealsListSelectionFieldState extends State<DealsListSelectionField> {
             trailing: isSelected ? const Icon(Icons.check, color: AppColors.deepGreen) : null,
             selectedColor: Colors.black12,
             shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(8)),
-            title: Text(item.seriesNumber, style: TextStyles.font16Regular),
+            title: Text(item.formattedSeriesNumber, style: TextStyles.font16Regular),
             onTap: () {
-              Navigator.pop(context, SelectableItemModel<DealEntity>(label: item.seriesNumber, value: item));
+              Navigator.pop(context, SelectableItemModel<DealEntity>(label: item.formattedSeriesNumber, value: item));
               context.read<DealsListBloc>().add(const SearchInputChangedEvent(keyword: ''));
             },
           );

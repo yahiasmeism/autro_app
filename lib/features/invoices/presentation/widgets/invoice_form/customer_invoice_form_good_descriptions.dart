@@ -9,20 +9,20 @@ import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/svg.dart';
 
-import '../../bloc/invoice_form/invoice_form_cubit.dart';
+import '../../bloc/customer_invoice_form/customer_invoice_form_cubit.dart';
 
-class InvoiceFormGoodDescriptions extends StatelessWidget {
-  const InvoiceFormGoodDescriptions({super.key});
+class CustomerInvoiceFormGoodDescriptions extends StatelessWidget {
+  const CustomerInvoiceFormGoodDescriptions({super.key});
 
   @override
   Widget build(BuildContext context) {
     return StandardCard(
       padding: const EdgeInsets.all(0),
       title: 'Good Descriptions',
-      child: BlocBuilder<InvoiceFormCubit, InvoiceFormState>(
-        buildWhen: (previous, current) => current is InvoiceFormLoaded,
+      child: BlocBuilder<CustomerInvoiceFormCubit, CustomerInvoiceFormState>(
+        buildWhen: (previous, current) => current is CustomerInvoiceFormLoaded,
         builder: (context, state) {
-          if (state is! InvoiceFormLoaded) return const SizedBox.shrink();
+          if (state is! CustomerInvoiceFormLoaded) return const SizedBox.shrink();
           return Column(
             children: [
               ListView.separated(
@@ -57,7 +57,7 @@ class InvoiceFormGoodDescriptions extends StatelessWidget {
   }
 
   Widget _buildGoodDescription(BuildContext context, InvoiceGoodDescriptionDto dto, {bool isLast = false}) {
-    final cubit = context.read<InvoiceFormCubit>();
+    final cubit = context.read<CustomerInvoiceFormCubit>();
     return Padding(
       padding: const EdgeInsets.symmetric(horizontal: 28, vertical: 14),
       child: Row(
@@ -141,8 +141,8 @@ class InvoiceFormGoodDescriptions extends StatelessWidget {
     );
   }
 
-  Widget _buildGoodDescriptionInputs(BuildContext context, InvoiceFormLoaded state) {
-    final bloc = context.read<InvoiceFormCubit>();
+  Widget _buildGoodDescriptionInputs(BuildContext context, CustomerInvoiceFormLoaded state) {
+    final bloc = context.read<CustomerInvoiceFormCubit>();
     return Padding(
       padding: const EdgeInsets.symmetric(horizontal: 28, vertical: 14),
       child: Row(
@@ -219,7 +219,7 @@ class InvoiceFormGoodDescriptions extends StatelessWidget {
 
   Widget _buildDeleteButton(BuildContext context, InvoiceGoodDescriptionDto dto) {
     return InkWell(
-      onTap: () => context.read<InvoiceFormCubit>().removeGoodDescription(dto),
+      onTap: () => context.read<CustomerInvoiceFormCubit>().removeGoodDescription(dto),
       borderRadius: const BorderRadius.all(Radius.circular(8)),
       child: Container(
           height: 70,
@@ -235,12 +235,12 @@ class InvoiceFormGoodDescriptions extends StatelessWidget {
     );
   }
 
-  Widget _buildAddButton(InvoiceFormLoaded state, BuildContext context) {
+  Widget _buildAddButton(CustomerInvoiceFormLoaded state, BuildContext context) {
     return InkWell(
       splashColor: Colors.transparent,
       onTap: state.addGoodDescriptionEnabled
           ? () {
-              context.read<InvoiceFormCubit>().addGoodDescription();
+              context.read<CustomerInvoiceFormCubit>().addGoodDescription();
             }
           : null,
       borderRadius: const BorderRadius.all(Radius.circular(8)),
@@ -259,7 +259,7 @@ class InvoiceFormGoodDescriptions extends StatelessWidget {
     );
   }
 
-  Widget _buildGoodDesciriptionSummary(InvoiceFormLoaded state) {
+  Widget _buildGoodDesciriptionSummary(CustomerInvoiceFormLoaded state) {
     return Padding(
       padding: const EdgeInsets.symmetric(horizontal: 28, vertical: 14),
       child: Row(

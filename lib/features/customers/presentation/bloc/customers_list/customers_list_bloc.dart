@@ -29,7 +29,7 @@ class CustomersListBloc extends Bloc<CustomersListEvent, CustomersListState> {
     this.updateCustomerUsecase,
     this.createCustomerUsecase,
   ) : super(CustomersListInitial()) {
-    on<CustomersListEvent>(_mapEvents);
+    on<CustomersListEvent>(_mapEvents, transformer: (events, mapper) => events.asyncExpand(mapper));
   }
 
   int get totalCount => customersRepository.totalCount;

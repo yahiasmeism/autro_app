@@ -5,20 +5,20 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 import '../../../../../core/widgets/buttons/cancel_outline_button.dart';
-import '../../bloc/invoice_form/invoice_form_cubit.dart';
+import '../../bloc/customer_invoice_form/customer_invoice_form_cubit.dart';
 import '../../screens/invoice_pdf_screen.dart';
 
-class InvoiceFormActions extends StatelessWidget {
-  const InvoiceFormActions({super.key});
+class CustomerInvoiceFormActions extends StatelessWidget {
+  const CustomerInvoiceFormActions({super.key});
 
   @override
   Widget build(BuildContext context) {
-    return BlocBuilder<InvoiceFormCubit, InvoiceFormState>(
+    return BlocBuilder<CustomerInvoiceFormCubit, CustomerInvoiceFormState>(
       builder: (context, state) {
         bool saveEnabled = false;
         bool updateMode = false;
         bool cancelEnabled = false;
-        if (state is InvoiceFormLoaded) {
+        if (state is CustomerInvoiceFormLoaded) {
           saveEnabled = state.saveEnabled;
           updateMode = state.updatedMode;
           cancelEnabled = state.cancelEnabled;
@@ -28,16 +28,16 @@ class InvoiceFormActions extends StatelessWidget {
             const Spacer(),
             if (cancelEnabled)
               CancelOutlineButton(
-                onPressed: context.read<InvoiceFormCubit>().cancelChanges,
+                onPressed: context.read<CustomerInvoiceFormCubit>().cancelChanges,
               ),
             const SizedBox(width: 8),
             SaveOutLineButton(
                 onPressed: saveEnabled
                     ? () {
                         if (updateMode) {
-                          context.read<InvoiceFormCubit>().updateInvoice();
+                          context.read<CustomerInvoiceFormCubit>().updateInvoice();
                         } else {
-                          context.read<InvoiceFormCubit>().createInvoice();
+                          context.read<CustomerInvoiceFormCubit>().createInvoice();
                         }
                       }
                     : null),

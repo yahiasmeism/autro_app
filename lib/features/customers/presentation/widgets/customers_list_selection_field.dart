@@ -63,10 +63,10 @@ class _CustomersListSelectionFieldState extends State<CustomersListSelectionFiel
           readOnly: true,
           textAlignVertical: TextAlignVertical.center,
           controller: widget.nameController,
-          decoration: const InputDecoration(
-            contentPadding: EdgeInsets.all(16),
+          decoration: InputDecoration(
+            contentPadding: const EdgeInsets.all(16),
             hintText: 'Select Customer',
-            suffixIcon: Icon(Icons.keyboard_arrow_down),
+            suffixIcon: widget.enableOpenDialog ? const Icon(Icons.keyboard_arrow_down) : null,
           ),
           enabled: !widget.enableOpenDialog,
         ),

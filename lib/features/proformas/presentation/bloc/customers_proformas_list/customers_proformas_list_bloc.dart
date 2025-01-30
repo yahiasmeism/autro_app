@@ -2,12 +2,14 @@ import 'package:autro_app/core/errors/failures.dart';
 import 'package:autro_app/features/proformas/domin/repositories/customers_proformas_repository.dart';
 import 'package:autro_app/features/proformas/domin/use_cases/delete_customer_proforma_use_case.dart';
 import 'package:autro_app/features/proformas/domin/use_cases/get_customers_proformas_list_use_case.dart';
-import 'package:bloc/bloc.dart';
 import 'package:dartz/dartz.dart';
 import 'package:equatable/equatable.dart';
+import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:injectable/injectable.dart';
 
 import '../../../../../core/common/domin/dto/pagination_query_payload_dto.dart';
+import '../../../../deals/presentation/bloc/deals_list/deals_list_bloc.dart';
 import '../../../domin/entities/customer_proforma_entity.dart';
 import '../../../domin/use_cases/create_customer_proforma_use_case.dart';
 import '../../../domin/use_cases/update_customer_proforma_use_case.dart';
@@ -15,7 +17,7 @@ import '../../../domin/use_cases/update_customer_proforma_use_case.dart';
 part 'customers_proformas_list_event.dart';
 part 'customers_proformas_list_state.dart';
 
-@lazySingleton
+@injectable
 class CustomersProformasListBloc extends Bloc<ProformasListEvent, CustomersProformasListState> {
   final GetCustomersProformasListUseCase getProformasListUsecase;
   final DeleteCustomerProformaUseCase deleteProformaUsecase;
@@ -29,7 +31,7 @@ class CustomersProformasListBloc extends Bloc<ProformasListEvent, CustomersProfo
     this.updateProformaUsecase,
     this.createProformaUsecase,
   ) : super(CustomersProformasListInitial()) {
-    on<ProformasListEvent>(_mapEvents);
+    on<ProformasListEvent>(_mapEvents,transformer: (events, mapper) => events.asyncExpand(mapper));
   }
 
   int get totalCount => proformasRepository.totalCount;
@@ -136,6 +138,9 @@ class CustomersProformasListBloc extends Bloc<ProformasListEvent, CustomersProfo
         ));
       },
     );
+    if (event.context.mounted) {
+      event.context.read<DealsListBloc>().add(GetDealsListEvent());
+    }
   }
 
   onSearchInputChanged(SearchInputChangedEvent event, Emitter<CustomersProformasListState> emit) async {

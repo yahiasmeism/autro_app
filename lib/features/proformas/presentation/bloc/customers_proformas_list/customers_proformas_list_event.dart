@@ -24,11 +24,12 @@ class NextPageEvent extends ProformasListEvent {}
 class PreviousPageEvent extends ProformasListEvent {}
 
 class DeleteProformaEvent extends ProformasListEvent {
+  final BuildContext context;
   final int proformaId;
-  const DeleteProformaEvent({required this.proformaId});
+  const DeleteProformaEvent({required this.proformaId, required this.context});
 
   @override
-  List<Object> get props => [proformaId];
+  List<Object> get props => [proformaId, context];
 }
 
 class SearchInputChangedEvent extends ProformasListEvent {

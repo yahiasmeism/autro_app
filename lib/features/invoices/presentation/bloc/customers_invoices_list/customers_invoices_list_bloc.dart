@@ -1,41 +1,43 @@
 import 'package:autro_app/core/errors/failures.dart';
-import 'package:autro_app/features/invoices/domin/repositories/invoices_repository.dart';
-import 'package:autro_app/features/invoices/domin/use_cases/delete_invoice_use_case.dart';
-import 'package:autro_app/features/invoices/domin/use_cases/get_invoices_list_use_case.dart';
-import 'package:bloc/bloc.dart';
+import 'package:autro_app/features/deals/presentation/bloc/deals_list/deals_list_bloc.dart';
+import 'package:autro_app/features/invoices/domin/repositories/customer_invoices_repository.dart';
+import 'package:autro_app/features/invoices/domin/use_cases/delete_customer_invoice_use_case.dart';
+import 'package:autro_app/features/invoices/domin/use_cases/get_customers_invoices_list_use_case.dart';
 import 'package:dartz/dartz.dart';
 import 'package:equatable/equatable.dart';
+import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:injectable/injectable.dart';
 
 import '../../../../../core/common/domin/dto/pagination_query_payload_dto.dart';
-import '../../../domin/entities/invoice_entity.dart';
-import '../../../domin/use_cases/create_invoice_use_case.dart';
-import '../../../domin/use_cases/update_invoice_use_case.dart';
+import '../../../domin/entities/customer_invoice_entity.dart';
+import '../../../domin/use_cases/create_customer_invoice_use_case.dart';
+import '../../../domin/use_cases/update_customer_invoice_use_case.dart';
 
-part 'invoices_list_event.dart';
-part 'invoices_list_state.dart';
+part 'customers_invoices_list_event.dart';
+part 'customers_invoices_list_state.dart';
 
 @injectable
-class InvoicesListBloc extends Bloc<InvoicesListEvent, InvoicesListState> {
-  final GetInvoicesListUseCase getInvoicesListUsecase;
-  final DeleteInvoiceUseCase deleteInvoiceUsecase;
-  final InvoicesRepository invoicesRepository;
-  final UpdateInvoiceUseCase updateInvoiceUsecase;
-  final CreateInvoiceUseCase createInvoiceUsecase;
-  InvoicesListBloc(
+class CustomersInvoicesListBloc extends Bloc<CustomersInvoicesListEvent, CustomersInvoicesListState> {
+  final GetCustomersInvoicesListUseCase getInvoicesListUsecase;
+  final DeleteCustomerInvoiceUseCase deleteInvoiceUsecase;
+  final CustomerInvoicesRepository invoicesRepository;
+  final UpdateCustomerInvoiceUseCase updateInvoiceUsecase;
+  final CreateCustomerInvoiceUseCase createInvoiceUsecase;
+  CustomersInvoicesListBloc(
     this.getInvoicesListUsecase,
     this.invoicesRepository,
     this.deleteInvoiceUsecase,
     this.updateInvoiceUsecase,
     this.createInvoiceUsecase,
-  ) : super(InvoicesListInitial()) {
-    on<InvoicesListEvent>(_mapEvents);
+  ) : super(CustomersInvoicesListInitial()) {
+    on<CustomersInvoicesListEvent>(_mapEvents, transformer: (events, mapper) => events.asyncExpand(mapper));
   }
 
   int get totalCount => invoicesRepository.totalCount;
 
-  Future _mapEvents(InvoicesListEvent event, Emitter<InvoicesListState> emit) async {
-    if (event is GetInvoicesListEvent) {
+  Future _mapEvents(CustomersInvoicesListEvent event, Emitter<CustomersInvoicesListState> emit) async {
+    if (event is GetCustomersInvoicesListEvent) {
       await onGetInvoicesList(event, emit);
     }
 
@@ -59,23 +61,23 @@ class InvoicesListBloc extends Bloc<InvoicesListEvent, InvoicesListState> {
     if (event is SearchInputChangedEvent) {
       await onSearchInputChanged(event, emit);
     }
-    if (event is AddedUpdatedInvoiceEvent) {
+    if (event is AddedUpdatedCustomersInvoiceEvent) {
       await onAddedUpdatedInvoice(event, emit);
     }
 
-    if (event is LoadMoreInvoicesEvent) {
+    if (event is LoadMoreCustomersInvoicesEvent) {
       await onLoadMoreInvoices(event, emit);
     }
   }
 
-  Future onGetInvoicesList(GetInvoicesListEvent event, Emitter<InvoicesListState> emit) async {
-    emit(InvoicesListInitial());
+  Future onGetInvoicesList(GetCustomersInvoicesListEvent event, Emitter<CustomersInvoicesListState> emit) async {
+    emit(CustomersInvoicesListInitial());
     final paginationFilterDto = PaginationFilterDTO.initial();
-    final params = GetInvoicesListUseCaseParams(dto: paginationFilterDto);
+    final params = GetCustomersInvoicesListUseCaseParams(dto: paginationFilterDto);
     final either = await getInvoicesListUsecase.call(params);
     either.fold(
-      (failure) => emit(InvoicesListError(failure: failure)),
-      (invoices) => emit(InvoicesListLoaded(
+      (failure) => emit(CustomersInvoicesListError(failure: failure)),
+      (invoices) => emit(CustomersInvoicesListLoaded(
         totalCount: totalCount,
         invoicesList: invoices,
         paginationFilterDTO: paginationFilterDto,
@@ -83,10 +85,10 @@ class InvoicesListBloc extends Bloc<InvoicesListEvent, InvoicesListState> {
     );
   }
 
-  Future onUpdatePagination(OnUpdatePaginationEvent event, Emitter<InvoicesListState> emit) async {
-    final state = this.state as InvoicesListLoaded;
+  Future onUpdatePagination(OnUpdatePaginationEvent event, Emitter<CustomersInvoicesListState> emit) async {
+    final state = this.state as CustomersInvoicesListLoaded;
     final paginationFilterDto = state.paginationFilterDTO.copyWith(pageNumber: event.pageNumber);
-    final params = GetInvoicesListUseCaseParams(dto: paginationFilterDto);
+    final params = GetCustomersInvoicesListUseCaseParams(dto: paginationFilterDto);
 
     emit(state.copyWith(loadingPagination: true));
     final either = await getInvoicesListUsecase.call(params);
@@ -101,26 +103,26 @@ class InvoicesListBloc extends Bloc<InvoicesListEvent, InvoicesListState> {
     );
   }
 
-  onHandleFailure(HandleFailureEvent event, Emitter<InvoicesListState> emit) async {
-    emit(InvoicesListInitial());
+  onHandleFailure(HandleFailureEvent event, Emitter<CustomersInvoicesListState> emit) async {
+    emit(CustomersInvoicesListInitial());
     await Future.delayed(const Duration(milliseconds: 300));
-    add(GetInvoicesListEvent());
+    add(GetCustomersInvoicesListEvent());
   }
 
-  onNextPage(NextPageEvent event, Emitter<InvoicesListState> emit) {
-    final state = this.state as InvoicesListLoaded;
+  onNextPage(NextPageEvent event, Emitter<CustomersInvoicesListState> emit) {
+    final state = this.state as CustomersInvoicesListLoaded;
     final pageNumber = state.paginationFilterDTO.pageNumber + 1;
     add(OnUpdatePaginationEvent(pageNumber: pageNumber));
   }
 
-  onPreviousPage(PreviousPageEvent event, Emitter<InvoicesListState> emit) {
-    final state = this.state as InvoicesListLoaded;
+  onPreviousPage(PreviousPageEvent event, Emitter<CustomersInvoicesListState> emit) {
+    final state = this.state as CustomersInvoicesListLoaded;
     final pageNumber = state.paginationFilterDTO.pageNumber - 1;
     add(OnUpdatePaginationEvent(pageNumber: pageNumber));
   }
 
-  onDeleteInvoice(DeleteInvoiceEvent event, Emitter<InvoicesListState> emit) async {
-    final state = this.state as InvoicesListLoaded;
+  onDeleteInvoice(DeleteInvoiceEvent event, Emitter<CustomersInvoicesListState> emit) async {
+    final state = this.state as CustomersInvoicesListLoaded;
     emit(state.copyWith(loading: true));
     final either = await deleteInvoiceUsecase.call(event.invoiceId);
     emit(state.copyWith(loading: false));
@@ -137,11 +139,14 @@ class InvoicesListBloc extends Bloc<InvoicesListEvent, InvoicesListState> {
         ));
       },
     );
+    if (event.context.mounted) {
+      event.context.read<DealsListBloc>().add(GetDealsListEvent());
+    }
   }
 
-  onSearchInputChanged(SearchInputChangedEvent event, Emitter<InvoicesListState> emit) async {
-    if (state is InvoicesListLoaded) {
-      final state = this.state as InvoicesListLoaded;
+  onSearchInputChanged(SearchInputChangedEvent event, Emitter<CustomersInvoicesListState> emit) async {
+    if (state is CustomersInvoicesListLoaded) {
+      final state = this.state as CustomersInvoicesListLoaded;
 
       emit(state.copyWith(loading: true));
 
@@ -156,7 +161,7 @@ class InvoicesListBloc extends Bloc<InvoicesListEvent, InvoicesListState> {
 
       final updatedFilterPagination = PaginationFilterDTO.initial().copyWith(filter: updatedFilter);
 
-      final params = GetInvoicesListUseCaseParams(dto: updatedFilterPagination);
+      final params = GetCustomersInvoicesListUseCaseParams(dto: updatedFilterPagination);
 
       final either = await getInvoicesListUsecase.call(params);
       emit(state.copyWith(loading: false));
@@ -174,9 +179,9 @@ class InvoicesListBloc extends Bloc<InvoicesListEvent, InvoicesListState> {
     }
   }
 
-  onAddedUpdatedInvoice(AddedUpdatedInvoiceEvent event, Emitter<InvoicesListState> emit) async {
-    final state = this.state as InvoicesListLoaded;
-    final params = GetInvoicesListUseCaseParams(dto: state.paginationFilterDTO);
+  onAddedUpdatedInvoice(AddedUpdatedCustomersInvoiceEvent event, Emitter<CustomersInvoicesListState> emit) async {
+    final state = this.state as CustomersInvoicesListLoaded;
+    final params = GetCustomersInvoicesListUseCaseParams(dto: state.paginationFilterDTO);
     emit(state.copyWith(loading: true));
     final either = await getInvoicesListUsecase.call(params);
     emit(state.copyWith(loading: false));
@@ -189,15 +194,15 @@ class InvoicesListBloc extends Bloc<InvoicesListEvent, InvoicesListState> {
     );
   }
 
-  onLoadMoreInvoices(LoadMoreInvoicesEvent event, Emitter<InvoicesListState> emit) async {
-    final state = this.state as InvoicesListLoaded;
+  onLoadMoreInvoices(LoadMoreCustomersInvoicesEvent event, Emitter<CustomersInvoicesListState> emit) async {
+    final state = this.state as CustomersInvoicesListLoaded;
 
     final pageNumber = state.paginationFilterDTO.pageNumber + 1;
 
     if (pageNumber > state.totalPages) return;
     emit(state.copyWith(loadingPagination: true));
     final paginationFilterDto = state.paginationFilterDTO.copyWith(pageNumber: pageNumber);
-    final params = GetInvoicesListUseCaseParams(dto: paginationFilterDto);
+    final params = GetCustomersInvoicesListUseCaseParams(dto: paginationFilterDto);
 
     final either = await getInvoicesListUsecase.call(params);
     emit(state.copyWith(loadingPagination: false));
