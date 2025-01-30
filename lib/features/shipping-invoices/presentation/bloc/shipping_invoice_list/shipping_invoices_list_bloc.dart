@@ -29,7 +29,7 @@ class ShippingInvoicesListBloc extends Bloc<ShippingInvoicesListEvent, ShippingI
     this.updateShippingInvoiceUsecase,
     this.createShippingInvoiceUsecase,
   ) : super(ShippingInvoicesListInitial()) {
-    on<ShippingInvoicesListEvent>(_mapEvents);
+    on<ShippingInvoicesListEvent>(_mapEvents, transformer: (events, mapper) => events.asyncExpand(mapper));
   }
 
   int get totalCount => shippingInvoicesRepository.shippingInvoicesCount;

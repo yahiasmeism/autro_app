@@ -1,4 +1,4 @@
-import 'package:autro_app/features/invoices/domin/entities/invoice_entity.dart';
+import 'package:autro_app/features/invoices/domin/entities/customer_invoice_entity.dart';
 import 'package:equatable/equatable.dart';
 
 class ShippingInvoiceEntity extends Equatable {
@@ -10,7 +10,7 @@ class ShippingInvoiceEntity extends Equatable {
   final String currency;
   final DateTime shippingDate;
   final String attachmentUrl;
-  final InvoiceEntity invoice;
+  final CustomerInvoiceEntity invoice;
 
   const ShippingInvoiceEntity({
     required this.id,

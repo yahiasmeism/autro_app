@@ -34,7 +34,7 @@ class BillsListBloc extends Bloc<BillsListEvent, BillsListState> {
     this.createBillUsecase,
     this.getBillsSummaryUsecase,
   ) : super(BillsListInitial()) {
-    on<BillsListEvent>(_mapEvents);
+    on<BillsListEvent>(_mapEvents,transformer: (events, mapper) => events.asyncExpand(mapper));
   }
 
   int get billsCount => billsRepository.billsCount;

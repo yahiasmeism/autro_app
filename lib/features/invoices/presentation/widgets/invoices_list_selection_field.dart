@@ -8,7 +8,7 @@ import 'package:autro_app/core/widgets/failure_screen.dart';
 import 'package:autro_app/core/widgets/inputs/standard_search_input.dart';
 import 'package:autro_app/core/widgets/loading_indecator.dart';
 import 'package:autro_app/core/widgets/overley_loading.dart';
-import 'package:autro_app/features/invoices/presentation/bloc/invoices_list/invoices_list_bloc.dart';
+import 'package:autro_app/features/invoices/presentation/bloc/customers_invoices_list/customers_invoices_list_bloc.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
@@ -83,7 +83,7 @@ class _InvoicesListSelectionFieldState extends State<InvoicesListSelectionField>
         return Scaffold(
           backgroundColor: Colors.transparent,
           body: BlocProvider(
-            create: (context) => sl<InvoicesListBloc>()..add(GetInvoicesListEvent()),
+            create: (context) => sl<CustomersInvoicesListBloc>()..add(GetCustomersInvoicesListEvent()),
             child: Dialog(
               clipBehavior: Clip.antiAlias,
               backgroundColor: Colors.white,
@@ -107,7 +107,7 @@ class _InvoicesListSelectionFieldState extends State<InvoicesListSelectionField>
                               padding: const EdgeInsets.symmetric(horizontal: 8),
                               child: StandardSearchInput(
                                 onSearch: (context, keyword) {
-                                  context.read<InvoicesListBloc>().add(SearchInputChangedEvent(keyword: keyword));
+                                  context.read<CustomersInvoicesListBloc>().add(SearchInputChangedEvent(keyword: keyword));
                                 },
                               ),
                             ),
@@ -116,9 +116,9 @@ class _InvoicesListSelectionFieldState extends State<InvoicesListSelectionField>
                       ),
                       const SizedBox(height: 16),
                       Expanded(
-                        child: BlocConsumer<InvoicesListBloc, InvoicesListState>(
+                        child: BlocConsumer<CustomersInvoicesListBloc, CustomersInvoicesListState>(
                           listener: (context, state) {
-                            if (state is InvoicesListLoaded) {
+                            if (state is CustomersInvoicesListLoaded) {
                               state.failureOrSuccessOption.fold(
                                 () => null,
                                 (either) {
@@ -134,9 +134,9 @@ class _InvoicesListSelectionFieldState extends State<InvoicesListSelectionField>
                             }
                           },
                           builder: (context, state) {
-                            if (state is InvoicesListInitial) {
+                            if (state is CustomersInvoicesListInitial) {
                               return const LoadingIndicator();
-                            } else if (state is InvoicesListLoaded) {
+                            } else if (state is CustomersInvoicesListLoaded) {
                               if (!state.loadingPagination) hasPagination = false;
                               return Stack(
                                 children: [
@@ -144,10 +144,10 @@ class _InvoicesListSelectionFieldState extends State<InvoicesListSelectionField>
                                   if (state.loading) const Positioned.fill(child: LoadingOverlay()),
                                 ],
                               );
-                            } else if (state is InvoicesListError) {
+                            } else if (state is CustomersInvoicesListError) {
                               return FailureScreen(
                                 failure: state.failure,
-                                onRetryTap: () => context.read<InvoicesListBloc>().add(HandleFailureEvent()),
+                                onRetryTap: () => context.read<CustomersInvoicesListBloc>().add(HandleFailureEvent()),
                               );
                             } else {
                               return const SizedBox.shrink();
@@ -190,7 +190,7 @@ class _InvoicesListSelectionFieldState extends State<InvoicesListSelectionField>
     );
   }
 
-  Widget _buildList(InvoicesListLoaded state, BuildContext context) {
+  Widget _buildList(CustomersInvoicesListLoaded state, BuildContext context) {
     if (state.invoicesList.isEmpty) {
       return Center(
         child: Text(
@@ -205,7 +205,7 @@ class _InvoicesListSelectionFieldState extends State<InvoicesListSelectionField>
         if (notification is ScrollUpdateNotification &&
             scrollController.position.pixels >= scrollController.position.maxScrollExtent * 0.9 &&
             !state.loadingPagination) {
-          context.read<InvoicesListBloc>().add(LoadMoreInvoicesEvent());
+          context.read<CustomersInvoicesListBloc>().add(LoadMoreCustomersInvoicesEvent());
         }
         return false;
       },
@@ -241,7 +241,7 @@ class _InvoicesListSelectionFieldState extends State<InvoicesListSelectionField>
             title: Text(item.invoiceNumber, style: TextStyles.font16Regular),
             onTap: () {
               Navigator.pop(context, SelectableItemModel<String>(label: item.invoiceNumber, value: item.id.toString()));
-              context.read<InvoicesListBloc>().add(const SearchInputChangedEvent(keyword: ''));
+              context.read<CustomersInvoicesListBloc>().add(const SearchInputChangedEvent(keyword: ''));
             },
           );
         },

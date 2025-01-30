@@ -6,8 +6,9 @@ import 'package:autro_app/core/theme/theme_data.dart';
 import 'package:autro_app/features/authentication/screens/auth_wrapper.dart';
 import 'package:autro_app/features/bills/presentation/bloc/bills_list/bills_list_bloc.dart';
 import 'package:autro_app/features/customers/presentation/bloc/customers_list/customers_list_bloc.dart';
+import 'package:autro_app/features/deals/presentation/bloc/deals_list/deals_list_bloc.dart';
 import 'package:autro_app/features/home/bloc/home_bloc.dart';
-import 'package:autro_app/features/proformas/presentation/bloc/proformas_list/proformas_list_bloc.dart';
+import 'package:autro_app/features/proformas/presentation/bloc/customers_proformas_list/customers_proformas_list_bloc.dart';
 import 'package:autro_app/features/settings/presentation/bloc/bank_accounts_list/bank_accounts_list_cubit.dart';
 import 'package:autro_app/features/settings/presentation/bloc/company/company_cubit.dart';
 import 'package:autro_app/features/settings/presentation/bloc/users_list/users_list_cubit.dart';
@@ -21,7 +22,7 @@ import 'package:injectable/injectable.dart';
 import 'core/di/di.dart';
 import 'core/storage/hive_box_manager.dart';
 import 'features/authentication/bloc/app_auth/app_auth_bloc.dart';
-import 'features/invoices/presentation/bloc/invoices_list/invoices_list_bloc.dart';
+import 'features/invoices/presentation/bloc/customers_invoices_list/customers_invoices_list_bloc.dart';
 import 'features/settings/presentation/bloc/invoice_settings/invoice_settings_cubit.dart';
 
 void main() async {
@@ -83,16 +84,19 @@ class MyApp extends StatelessWidget {
           create: (context) => sl<InvoiceSettingsCubit>(),
         ),
         BlocProvider(
-          create: (context) => sl<ProformasListBloc>(),
+          create: (context) => sl<CustomersProformasListBloc>(),
         ),
         BlocProvider(
-          create: (context) => sl<InvoicesListBloc>(),
+          create: (context) => sl<CustomersInvoicesListBloc>(),
         ),
         BlocProvider(
           create: (context) => sl<BillsListBloc>(),
         ),
         BlocProvider(
           create: (context) => sl<ShippingInvoicesListBloc>(),
+        ),
+        BlocProvider(
+          create: (context) => sl<DealsListBloc>(),
         ),
       ],
       child: MaterialApp(

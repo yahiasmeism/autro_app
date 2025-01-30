@@ -3,16 +3,15 @@ import 'package:autro_app/core/errors/failure_mapper.dart';
 import 'package:autro_app/core/utils/dialog_utils.dart';
 import 'package:autro_app/core/utils/nav_util.dart';
 import 'package:autro_app/core/widgets/overley_loading.dart';
-import 'package:autro_app/features/invoices/presentation/bloc/invoices_list/invoices_list_bloc.dart';
+import 'package:autro_app/features/invoices/presentation/bloc/customers_invoices_list/customers_invoices_list_bloc.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
-import '../../bloc/invoice_form/invoice_form_cubit.dart';
-import '../../widgets/invoice_form/invoice_form.dart';
+import '../../bloc/customer_invoice_form/customer_invoice_form_cubit.dart';
+import '../../widgets/invoice_form/customer_invoice_form.dart';
 
-
-class InvoiceFormDesktopLayout extends StatelessWidget {
-  const InvoiceFormDesktopLayout({super.key, required this.formType});
+class CustomerInvoiceFormDesktopLayout extends StatelessWidget {
+  const CustomerInvoiceFormDesktopLayout({super.key, required this.formType});
   final FormType formType;
   @override
   Widget build(BuildContext context) {
@@ -20,16 +19,16 @@ class InvoiceFormDesktopLayout extends StatelessWidget {
       appBar: AppBar(
         title: Text(title),
       ),
-      body: BlocConsumer<InvoiceFormCubit, InvoiceFormState>(
+      body: BlocConsumer<CustomerInvoiceFormCubit, CustomerInvoiceFormState>(
         listener: (context, state) {
-          if (state is InvoiceFormLoaded) {
+          if (state is CustomerInvoiceFormLoaded) {
             state.failureOrSuccessOption.fold(
               () => null,
               (either) {
                 either.fold(
                   (failure) => DialogUtil.showErrorSnackBar(context, getErrorMsgFromFailure(failure)),
                   (message) {
-                    if (state.invoice != null) context.read<InvoicesListBloc>().add(AddedUpdatedInvoiceEvent());
+                    if (state.invoice != null) context.read<CustomersInvoicesListBloc>().add(AddedUpdatedCustomersInvoiceEvent());
                     NavUtil.pop(context, state.invoice);
                     return DialogUtil.showSuccessSnackBar(context, message);
                   },
@@ -39,14 +38,14 @@ class InvoiceFormDesktopLayout extends StatelessWidget {
           }
         },
         builder: (context, state) {
-          if (state is InvoiceFormLoaded) {
+          if (state is CustomerInvoiceFormLoaded) {
             return Stack(
               children: [
                 const Positioned.fill(
                   child: SingleChildScrollView(
                     child: Padding(
                       padding: EdgeInsets.all(24),
-                      child: InvoiceForm(),
+                      child: CustomerInvoiceForm(),
                     ),
                   ),
                 ),

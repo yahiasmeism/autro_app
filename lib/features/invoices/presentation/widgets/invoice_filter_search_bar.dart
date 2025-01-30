@@ -3,7 +3,7 @@ import 'package:autro_app/core/widgets/inputs/standard_search_input.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
-import '../bloc/invoices_list/invoices_list_bloc.dart';
+import '../bloc/customers_invoices_list/customers_invoices_list_bloc.dart';
 
 class InvoiceSearchBar extends StatelessWidget {
   const InvoiceSearchBar({super.key});
@@ -19,7 +19,7 @@ class InvoiceSearchBar extends StatelessWidget {
       child: Row(children: [
         Expanded(child: StandardSearchInput(
           onSearch: (context, keyword) {
-            context.read<InvoicesListBloc>().add(SearchInputChangedEvent(keyword: keyword));
+            context.read<CustomersInvoicesListBloc>().add(SearchInputChangedEvent(keyword: keyword));
           },
         )),
       ]),

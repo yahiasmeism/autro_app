@@ -63,10 +63,10 @@ class _BankAccountsListSelectionFieldState extends State<BankAccountsListSelecti
         readOnly: true,
         textAlignVertical: TextAlignVertical.center,
         controller: widget.nameController,
-        decoration: const InputDecoration(
-          contentPadding: EdgeInsets.all(16),
+        decoration: InputDecoration(
+          contentPadding: const EdgeInsets.all(16),
           hintText: 'Select Bank Account',
-          suffixIcon: Icon(Icons.keyboard_arrow_down),
+          suffixIcon: widget.canOpenDialog ? const Icon(Icons.keyboard_arrow_down) : null,
         ),
         enabled: !widget.canOpenDialog,
       ),

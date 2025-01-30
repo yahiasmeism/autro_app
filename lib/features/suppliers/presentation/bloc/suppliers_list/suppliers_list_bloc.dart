@@ -29,7 +29,7 @@ class SuppliersListBloc extends Bloc<SuppliersListEvent, SuppliersListState> {
     this.updateSupplierUsecase,
     this.createSupplierUsecase,
   ) : super(SuppliersListInitial()) {
-    on<SuppliersListEvent>(_mapEvents);
+    on<SuppliersListEvent>(_mapEvents,transformer: (events, mapper) => events.asyncExpand(mapper));
   }
 
   int get totalCount => suppliersRepository.totalCount;

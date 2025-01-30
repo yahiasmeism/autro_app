@@ -4,19 +4,19 @@ import 'package:autro_app/core/widgets/generic_pagination_bottom_bar.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
-import '../bloc/proformas_list/proformas_list_bloc.dart';
-import '../screens/proforma_form_screen.dart';
+import '../bloc/customers_proformas_list/customers_proformas_list_bloc.dart';
+import '../screens/customer_proforma_form_screen.dart';
 
 class ProformaPaginationBottomBar extends StatelessWidget {
   const ProformaPaginationBottomBar({super.key});
 
   @override
   Widget build(BuildContext context) {
-    return BlocBuilder<ProformasListBloc, ProformasListState>(
+    return BlocBuilder<CustomersProformasListBloc, CustomersProformasListState>(
       builder: (context, state) {
         int currentPage = 0;
         int totalPages = 0;
-        bool isLoaded = state is ProformasListLoaded;
+        bool isLoaded = state is CustomersProformasListLoaded;
         final loadingPagination = isLoaded && state.loadingPagination;
         bool canNext = false;
         bool canPrevious = false;
@@ -32,12 +32,12 @@ class ProformaPaginationBottomBar extends StatelessWidget {
           currentPage: currentPage,
           onPreviousTap: canPrevious
               ? () {
-                  context.read<ProformasListBloc>().add(PreviousPageEvent());
+                  context.read<CustomersProformasListBloc>().add(PreviousPageEvent());
                 }
               : null,
           onNextTap: canNext
               ? () {
-                  context.read<ProformasListBloc>().add(NextPageEvent());
+                  context.read<CustomersProformasListBloc>().add(NextPageEvent());
                 }
               : null,
           labelAddButton: 'Add New Proforma',

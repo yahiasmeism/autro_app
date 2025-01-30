@@ -9,17 +9,18 @@ class GenericPaginationBottomBar extends StatelessWidget {
     required this.labelAddButton,
     this.onNextTap,
     this.onPreviousTap,
-    required this.onAddTap,
+    this.onAddTap,
     required this.currentPage,
     required this.pagesCount,
     this.isLoading = false,
+    this.withAddTap = true,
   });
 
   final String labelAddButton;
   final int currentPage, pagesCount;
   final Function()? onNextTap, onPreviousTap, onAddTap;
   final bool isLoading;
-
+  final bool withAddTap;
   @override
   Widget build(BuildContext context) {
     return Container(
@@ -30,7 +31,7 @@ class GenericPaginationBottomBar extends StatelessWidget {
       padding: const EdgeInsets.all(16),
       child: Row(
         children: [
-          _buildGenericAddButton(),
+          if (withAddTap) _buildGenericAddButton(),
           const Spacer(),
           _buildPageInfoWithLoading(),
           const SizedBox(width: 16),

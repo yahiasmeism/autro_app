@@ -3,7 +3,7 @@ import 'package:autro_app/core/extensions/map_extension.dart';
 import 'package:autro_app/core/extensions/num_extension.dart';
 import 'package:autro_app/core/extensions/string_extension.dart';
 import 'package:autro_app/core/interfaces/mapable.dart';
-import 'package:autro_app/features/invoices/data/models/invoice_model.dart';
+import 'package:autro_app/features/invoices/data/models/customer_invoice_model.dart';
 import 'package:autro_app/features/shipping-invoices/domin/entities/shipping_invoice_entites.dart';
 
 class ShippingInvoiceModel extends ShippingInvoiceEntity implements BaseMapable {
@@ -28,7 +28,7 @@ class ShippingInvoiceModel extends ShippingInvoiceEntity implements BaseMapable 
         typeMaterialName: (json['type_material_name'] as String?).orEmpty,
         currency: (json['currency'] as String?).orEmpty,
         shippingDate: DateTime.tryParse((json['shipping_date'] as String?).orEmpty).orDefault,
-        invoice: InvoiceModel.fromJson((json['invoice'] as Map<String, dynamic>?).orEmpty),
+        invoice: CustomerInvoiceModel.fromJson((json['invoice'] as Map<String, dynamic>?).orEmpty),
       );
 
   @override
