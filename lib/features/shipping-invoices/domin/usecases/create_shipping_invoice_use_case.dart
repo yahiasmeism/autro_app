@@ -1,6 +1,6 @@
 import 'package:autro_app/core/errors/failures.dart';
 import 'package:autro_app/core/interfaces/use_case.dart';
-import 'package:autro_app/features/shipping-invoices/domin/entities/shipping_invoice_entites.dart';
+import 'package:autro_app/features/shipping-invoices/domin/entities/shipping_invoice_entity.dart';
 import 'package:dartz/dartz.dart';
 import 'package:equatable/equatable.dart';
 import 'package:injectable/injectable.dart';
@@ -19,7 +19,7 @@ class CreateShippingInvoiceUseCase extends UseCase<ShippingInvoiceEntity, Create
 }
 
 class CreateShippingInvoiceUseCaseParams extends Equatable {
-  final int invoiceId;
+  final int dealId;
   final String shippingCompanyName;
   final double shippingCost;
   final String typeMaterialName;
@@ -29,7 +29,7 @@ class CreateShippingInvoiceUseCaseParams extends Equatable {
   final bool deleteAttachment;
   const CreateShippingInvoiceUseCaseParams({
     this.deleteAttachment = false,
-    required this.invoiceId,
+    required this.dealId,
     required this.shippingCompanyName,
     required this.shippingCost,
     required this.typeMaterialName,
@@ -39,7 +39,7 @@ class CreateShippingInvoiceUseCaseParams extends Equatable {
   });
   @override
   List<Object?> get props => [
-        invoiceId,
+        dealId,
         shippingCompanyName,
         shippingCost,
         typeMaterialName,

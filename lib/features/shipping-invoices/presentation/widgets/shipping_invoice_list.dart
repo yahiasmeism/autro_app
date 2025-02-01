@@ -1,4 +1,4 @@
-import 'package:autro_app/features/shipping-invoices/domin/entities/shipping_invoice_entites.dart';
+import 'package:autro_app/features/shipping-invoices/domin/entities/shipping_invoice_entity.dart';
 import 'package:flutter/material.dart';
 
 import 'shipping_invoice_list_tile.dart';

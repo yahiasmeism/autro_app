@@ -1,6 +1,6 @@
 import 'package:autro_app/features/invoices/domin/entities/customer_invoice_entity.dart';
 import 'package:autro_app/features/proformas/domin/entities/customer_proforma_entity.dart';
-import 'package:autro_app/features/shipping-invoices/domin/entities/shipping_invoice_entites.dart';
+import 'package:autro_app/features/shipping-invoices/domin/entities/shipping_invoice_entity.dart';
 import 'package:equatable/equatable.dart';
 
 class DealEntity extends Equatable {
@@ -12,7 +12,6 @@ class DealEntity extends Equatable {
   final DateTime shippingDate;
   final DateTime? deliveryDate;
   final DateTime etaDate;
-  final String seriesNumber;
   final CustomerProformaEntity? customerProforma;
   final CustomerInvoiceEntity? customerInvoice;
   final ShippingInvoiceEntity? shippingInvoice;
@@ -26,7 +25,6 @@ class DealEntity extends Equatable {
     required this.shippingDate,
     required this.deliveryDate,
     required this.etaDate,
-    required this.seriesNumber,
     required this.customerProforma,
     required this.customerInvoice,
     required this.shippingInvoice,
@@ -35,7 +33,7 @@ class DealEntity extends Equatable {
   bool get hasInvoice => customerInvoice != null;
   bool get hasShippingInvoice => shippingInvoice != null;
 
-  String get formattedSeriesNumber => 'Deal#$seriesNumber';
+  String get formattedSeriesNumber => "#Deal${id.toString().padLeft(4, '0')}";
   @override
   List<Object?> get props => [
         id,
@@ -46,25 +44,8 @@ class DealEntity extends Equatable {
         shippingDate,
         deliveryDate,
         etaDate,
-        seriesNumber,
         customerProforma,
         customerInvoice,
         shippingInvoice,
       ];
 }
-
-// {
-//     "id": 3,
-//     "customer_proforma_id": 4,
-//     "created_at": "2025-01-28T21:08:30.000000Z",
-//     "updated_at": "2025-01-28T21:08:30.000000Z",
-//     "notes": "notes",
-//     "is_complete": false,
-//     "shipping_date": "2025-01-01T00:00:00.000000Z",
-//     "delivery_date": null,
-//     "eta_date": "2025-02-02T00:00:00.000000Z",
-//     "series_number": "0003",
-//     "customer_proforma": null,
-//     "customer_invoice": null,
-//     "shipping_invoice": null,
-// }

@@ -5,7 +5,7 @@ import 'package:dio/dio.dart';
 
 class CreateShippingInvoiceRequest extends CreateShippingInvoiceUseCaseParams implements RequestMapable {
   const CreateShippingInvoiceRequest({
-    required super.invoiceId,
+    required super.dealId,
     required super.shippingCompanyName,
     required super.shippingCost,
     required super.typeMaterialName,
@@ -16,7 +16,7 @@ class CreateShippingInvoiceRequest extends CreateShippingInvoiceUseCaseParams im
 
   factory CreateShippingInvoiceRequest.fromParams(CreateShippingInvoiceUseCaseParams params) {
     return CreateShippingInvoiceRequest(
-      invoiceId: params.invoiceId,
+      dealId: params.dealId,
       shippingCompanyName: params.shippingCompanyName,
       shippingCost: params.shippingCost,
       typeMaterialName: params.typeMaterialName,
@@ -36,7 +36,7 @@ class CreateShippingInvoiceRequest extends CreateShippingInvoiceUseCaseParams im
   @override
   Map<String, dynamic> toJson() {
     return {
-      'invoice_id': invoiceId,
+      'deal_id': dealId,
       'shipping_company_name': shippingCompanyName,
       'shipping_cost': shippingCost,
       'type_material_name': typeMaterialName,

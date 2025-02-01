@@ -3,7 +3,7 @@ import 'package:equatable/equatable.dart';
 
 class ShippingInvoiceEntity extends Equatable {
   final int id;
-  final int invoiceId;
+  final int dealId;
   final String shippingCompanyName;
   final double shippingCost;
   final String typeMaterialName;
@@ -14,7 +14,7 @@ class ShippingInvoiceEntity extends Equatable {
 
   const ShippingInvoiceEntity({
     required this.id,
-    required this.invoiceId,
+    required this.dealId,
     required this.shippingCompanyName,
     required this.shippingCost,
     required this.attachmentUrl,
@@ -23,10 +23,12 @@ class ShippingInvoiceEntity extends Equatable {
     required this.shippingDate,
     required this.invoice,
   });
+
+  String get formattedDealSeriesNumber => '#Deal${dealId.toString().padLeft(4, '0')}';
   @override
   List<Object?> get props => [
         id,
-        invoiceId,
+        dealId,
         shippingCompanyName,
         shippingCost,
         attachmentUrl,

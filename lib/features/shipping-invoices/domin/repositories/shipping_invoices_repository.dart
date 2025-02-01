@@ -2,7 +2,7 @@ import 'package:autro_app/core/errors/failures.dart';
 import 'package:autro_app/features/shipping-invoices/domin/usecases/get_shipping_invoices_list_use_case.dart';
 import 'package:dartz/dartz.dart';
 
-import '../entities/shipping_invoice_entites.dart';
+import '../entities/shipping_invoice_entity.dart';
 import '../usecases/create_shipping_invoice_use_case.dart';
 import '../usecases/update_shipping_invoices_use_case.dart';
 

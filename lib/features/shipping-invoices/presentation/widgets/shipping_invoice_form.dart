@@ -8,7 +8,7 @@ import 'package:autro_app/core/widgets/buttons/save_outline_button.dart';
 import 'package:autro_app/core/widgets/inputs/standard_input.dart';
 import 'package:autro_app/core/widgets/overley_loading.dart';
 import 'package:autro_app/core/widgets/standard_selection_dropdown.dart';
-import 'package:autro_app/features/invoices/presentation/widgets/invoices_list_selection_field.dart';
+import 'package:autro_app/features/deals/presentation/widgets/deals_list_selection_field.dart';
 import 'package:autro_app/features/shipping-invoices/presentation/widgets/shipping_invoice_attachment_uploader.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -35,9 +35,9 @@ class ShippingInvoiceForm extends StatelessWidget {
                     Row(
                       children: [
                         Expanded(
-                          child: InvoicesListSelectionField(
-                            idController: bloc.invoiceIdController,
-                            invoiceNumberController: bloc.invoiceNumberController,
+                          child: DealsListSelectionField(
+                            seriesNumberController: bloc.dealSeriesNumberController,
+                            idController: bloc.dealIdController,
                           ),
                         ),
                         const SizedBox(width: 32),

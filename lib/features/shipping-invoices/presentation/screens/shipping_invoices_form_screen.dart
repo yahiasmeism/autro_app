@@ -4,7 +4,7 @@ import 'package:autro_app/core/widgets/adaptive_layout.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
-import '../../domin/entities/shipping_invoice_entites.dart';
+import '../../domin/entities/shipping_invoice_entity.dart';
 import '../bloc/shipping_invoice_form/shipping_invoice_form_bloc.dart';
 import 'layouts/shipping_invoices_form_desktop_layout.dart';
 

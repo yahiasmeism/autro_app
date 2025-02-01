@@ -5,7 +5,7 @@ import 'package:dartz/dartz.dart';
 import 'package:equatable/equatable.dart';
 import 'package:injectable/injectable.dart';
 
-import '../entities/shipping_invoice_entites.dart';
+import '../entities/shipping_invoice_entity.dart';
 import '../repositories/shipping_invoices_repository.dart';
 
 @lazySingleton

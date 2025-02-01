@@ -4,7 +4,7 @@ import 'package:autro_app/features/shipping-invoices/domin/usecases/create_shipp
 import 'package:dartz/dartz.dart';
 import 'package:injectable/injectable.dart';
 
-import '../entities/shipping_invoice_entites.dart';
+import '../entities/shipping_invoice_entity.dart';
 import '../repositories/shipping_invoices_repository.dart';
 
 @lazySingleton
@@ -22,7 +22,7 @@ class UpdateShippingInvoiceUseCaseParams extends CreateShippingInvoiceUseCasePar
   final int id;
   const UpdateShippingInvoiceUseCaseParams({
     required this.id,
-    required super.invoiceId,
+    required super.dealId,
     required super.shippingCompanyName,
     required super.shippingCost,
     required super.typeMaterialName,
@@ -35,7 +35,7 @@ class UpdateShippingInvoiceUseCaseParams extends CreateShippingInvoiceUseCasePar
   @override
   List<Object?> get props => [
         id,
-        invoiceId,
+        dealId,
         shippingCompanyName,
         shippingCost,
         typeMaterialName,

@@ -15,8 +15,8 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 class DealsListSelectionField extends StatefulWidget {
   const DealsListSelectionField({
     super.key,
-    required this.seriesNumberController,
     required this.idController,
+    required this.seriesNumberController,
     this.onItemTap,
     this.enabled = true,
   });

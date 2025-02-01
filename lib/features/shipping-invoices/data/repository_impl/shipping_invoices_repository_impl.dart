@@ -4,7 +4,7 @@ import 'package:autro_app/core/network_info/network_info.dart';
 import 'package:autro_app/features/shipping-invoices/data/models/requests/create_shipping_invoice_request.dart';
 import 'package:autro_app/features/shipping-invoices/data/models/requests/update_shipping_invoice_request.dart';
 
-import 'package:autro_app/features/shipping-invoices/domin/entities/shipping_invoice_entites.dart';
+import 'package:autro_app/features/shipping-invoices/domin/entities/shipping_invoice_entity.dart';
 
 import 'package:autro_app/features/shipping-invoices/domin/usecases/create_shipping_invoice_use_case.dart';
 
