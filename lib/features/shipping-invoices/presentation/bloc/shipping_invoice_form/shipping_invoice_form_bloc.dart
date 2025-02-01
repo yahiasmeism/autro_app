@@ -10,7 +10,7 @@ import 'package:equatable/equatable.dart';
 import 'package:flutter/material.dart';
 import 'package:injectable/injectable.dart';
 
-import '../../../domin/entities/shipping_invoice_entites.dart';
+import '../../../domin/entities/shipping_invoice_entity.dart';
 import '../../../domin/usecases/create_shipping_invoice_use_case.dart';
 
 part 'shipping_invoice_form_event.dart';
@@ -60,8 +60,8 @@ class ShippingInvoiceFormBloc extends Bloc<ShippingInvoiceFormEvent, ShippingInv
   }
 
   final formKey = GlobalKey<FormState>();
-  final invoiceIdController = TextEditingController();
-  final invoiceNumberController = TextEditingController();
+  final dealIdController = TextEditingController();
+  final dealSeriesNumberController = TextEditingController();
   final shippingCompanyNameController = TextEditingController();
   final shippingCostController = TextEditingController();
   final typeMaterialNameController = TextEditingController();
@@ -81,8 +81,8 @@ class ShippingInvoiceFormBloc extends Bloc<ShippingInvoiceFormEvent, ShippingInv
   _initializeControllers() {
     final state = this.state as ShippingInvoiceFormLoaded;
     formKey.currentState?.reset();
-    invoiceIdController.text = state.shippingInvoice?.invoice.id.toString() ?? '';
-    invoiceNumberController.text = state.shippingInvoice?.invoice.invoiceNumber ?? '';
+    dealIdController.text = state.shippingInvoice?.dealId.toString() ?? '';
+    dealSeriesNumberController.text = state.shippingInvoice?.formattedDealSeriesNumber ?? '';
     shippingCompanyNameController.text = state.shippingInvoice?.shippingCompanyName ?? '';
     shippingCostController.text = state.shippingInvoice?.shippingCost.toString() ?? '';
     typeMaterialNameController.text = state.shippingInvoice?.typeMaterialName ?? '';
@@ -93,8 +93,8 @@ class ShippingInvoiceFormBloc extends Bloc<ShippingInvoiceFormEvent, ShippingInv
   }
 
   setupControllersListeners() {
-    invoiceIdController.addListener(() => add(ShippingInvoiceFormChangedEvent()));
-    invoiceNumberController.addListener(() => add(ShippingInvoiceFormChangedEvent()));
+    dealIdController.addListener(() => add(ShippingInvoiceFormChangedEvent()));
+    dealSeriesNumberController.addListener(() => add(ShippingInvoiceFormChangedEvent()));
     shippingCompanyNameController.addListener(() => add(ShippingInvoiceFormChangedEvent()));
     shippingCostController.addListener(() => add(ShippingInvoiceFormChangedEvent()));
     typeMaterialNameController.addListener(() => add(ShippingInvoiceFormChangedEvent()));
@@ -105,8 +105,8 @@ class ShippingInvoiceFormBloc extends Bloc<ShippingInvoiceFormEvent, ShippingInv
   _onShippingInvoiceFormChanged(ShippingInvoiceFormChangedEvent event, Emitter<ShippingInvoiceFormState> emit) {
     final state = this.state as ShippingInvoiceFormLoaded;
     final formIsNotEmpty = [
-      invoiceIdController.text.isNotEmpty,
-      invoiceNumberController.text.isNotEmpty,
+      dealIdController.text.isNotEmpty,
+      dealSeriesNumberController.text.isNotEmpty,
       shippingCompanyNameController.text.isNotEmpty,
       shippingCostController.text.isNotEmpty,
       currencyController.text.isNotEmpty,
@@ -114,8 +114,8 @@ class ShippingInvoiceFormBloc extends Bloc<ShippingInvoiceFormEvent, ShippingInv
     ].every((element) => element);
 
     final isAnyFieldIsNotEmpty = [
-      invoiceIdController.text.isNotEmpty,
-      invoiceNumberController.text.isNotEmpty,
+      dealIdController.text.isNotEmpty,
+      dealSeriesNumberController.text.isNotEmpty,
       shippingCompanyNameController.text.isNotEmpty,
       shippingCostController.text.isNotEmpty,
       typeMaterialNameController.text.isNotEmpty,
@@ -130,8 +130,8 @@ class ShippingInvoiceFormBloc extends Bloc<ShippingInvoiceFormEvent, ShippingInv
         () => shippingInvoice.attachmentUrl.isNotEmpty,
         (a) => a != shippingInvoice.attachmentUrl,
       );
-      bool isFormChanged = shippingInvoice.invoice.id != int.tryParse(invoiceIdController.text) ||
-          shippingInvoice.invoice.invoiceNumber != invoiceNumberController.text ||
+      bool isFormChanged = shippingInvoice.formattedDealSeriesNumber != dealSeriesNumberController.text ||
+          shippingInvoice.dealId != int.tryParse(dealIdController.text) ||
           shippingInvoice.shippingCompanyName != shippingCompanyNameController.text ||
           shippingInvoice.shippingCost != double.tryParse(shippingCostController.text) ||
           shippingInvoice.typeMaterialName != typeMaterialNameController.text ||
@@ -169,7 +169,7 @@ class ShippingInvoiceFormBloc extends Bloc<ShippingInvoiceFormEvent, ShippingInv
     emit(state.copyWith(loading: true));
 
     final params = CreateShippingInvoiceUseCaseParams(
-      invoiceId: int.tryParse(invoiceIdController.text).toIntOrZero,
+      dealId: int.tryParse(dealIdController.text).toIntOrZero,
       shippingCompanyName: shippingCompanyNameController.text,
       shippingCost: double.tryParse(shippingCostController.text).toDoubleOrZero,
       typeMaterialName: typeMaterialNameController.text,
@@ -199,7 +199,7 @@ class ShippingInvoiceFormBloc extends Bloc<ShippingInvoiceFormEvent, ShippingInv
     final deleteAttachment = state.attachmentUrl.isNone() && state.pickedAttachment.isNone();
     final parms = UpdateShippingInvoiceUseCaseParams(
       id: state.shippingInvoice!.id,
-      invoiceId: int.tryParse(invoiceIdController.text).toIntOrZero,
+      dealId: int.tryParse(dealIdController.text).toIntOrZero,
       shippingCompanyName: shippingCompanyNameController.text,
       shippingCost: double.tryParse(shippingCostController.text).toDoubleOrZero,
       typeMaterialName: typeMaterialNameController.text,
@@ -223,8 +223,8 @@ class ShippingInvoiceFormBloc extends Bloc<ShippingInvoiceFormEvent, ShippingInv
 
   _onClearShippingInvoiceForm(ClearShippingInvoiceFormEvent event, Emitter<ShippingInvoiceFormState> emit) {
     formKey.currentState?.reset();
-    invoiceIdController.clear();
-    invoiceNumberController.clear();
+    dealIdController.clear();
+    dealSeriesNumberController.clear();
     shippingCompanyNameController.clear();
     shippingCostController.clear();
     typeMaterialNameController.clear();
@@ -243,8 +243,8 @@ class ShippingInvoiceFormBloc extends Bloc<ShippingInvoiceFormEvent, ShippingInv
 
   @override
   Future<void> close() {
-    invoiceIdController.dispose();
-    invoiceNumberController.dispose();
+    dealIdController.dispose();
+    dealSeriesNumberController.dispose();
     shippingCompanyNameController.dispose();
     shippingCostController.dispose();
     typeMaterialNameController.dispose();

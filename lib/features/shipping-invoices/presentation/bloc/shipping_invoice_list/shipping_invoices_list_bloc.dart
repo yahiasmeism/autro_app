@@ -7,7 +7,7 @@ import 'package:equatable/equatable.dart';
 import 'package:injectable/injectable.dart';
 
 import '../../../../../core/common/domin/dto/pagination_query_payload_dto.dart';
-import '../../../domin/entities/shipping_invoice_entites.dart';
+import '../../../domin/entities/shipping_invoice_entity.dart';
 import '../../../domin/repositories/shipping_invoices_repository.dart';
 import '../../../domin/usecases/create_shipping_invoice_use_case.dart';
 import '../../../domin/usecases/delete_shipping_invoice_use_case.dart';

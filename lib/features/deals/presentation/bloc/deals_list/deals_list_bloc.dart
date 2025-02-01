@@ -48,7 +48,7 @@ class DealsListBloc extends Bloc<DealsListEvent, DealsListState> {
 
     if (event is HandleFailureEvent) {
       await onHandleFailure(event, emit);
-    }
+  }
 
     if (event is NextPageEvent) {
       await onNextPage(event, emit);

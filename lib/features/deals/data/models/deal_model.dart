@@ -19,7 +19,6 @@ class DealModel extends DealEntity implements BaseMapable {
     required super.shippingDate,
     required super.deliveryDate,
     required super.etaDate,
-    required super.seriesNumber,
     required super.customerProforma,
     required super.customerInvoice,
     required super.shippingInvoice,
@@ -29,7 +28,6 @@ class DealModel extends DealEntity implements BaseMapable {
         id: (json['id'] as int?).toIntOrZero,
         createdAt: (DateTime.tryParse((json['created_at'] as String?).orEmpty)).orDefault,
         updatedAt: (DateTime.tryParse((json['updated_at'] as String?).orEmpty)).orDefault,
-        seriesNumber: (json['series_number'] as String?).orEmpty,
         deliveryDate: (DateTime.tryParse((json['delivery_date'] as String?).orEmpty)),
         customerInvoice: json['customer_invoice'] == null
             ? null

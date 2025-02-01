@@ -10,7 +10,7 @@ import 'package:autro_app/features/shipping-invoices/presentation/screens/shippi
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
-import '../../domin/entities/shipping_invoice_entites.dart';
+import '../../domin/entities/shipping_invoice_entity.dart';
 import '../bloc/shipping_invoice_list/shipping_invoices_list_bloc.dart';
 
 class ShippingInvoiceListTile extends StatelessWidget {
@@ -35,18 +35,23 @@ class ShippingInvoiceListTile extends StatelessWidget {
           crossAxisAlignment: CrossAxisAlignment.center,
           children: [
             _buildCell(
-              text: shippingInvoiceEntity.invoice.invoiceNumber,
-              flex: 5,
-            ),
-            const SizedBox(width: 24),
-            _buildCell(
+              text: shippingInvoiceEntity.formattedDealSeriesNumber,
               flex: 4,
-              text: shippingInvoiceEntity.shippingDate.formattedDateMMMDDY,
+            ),
+            const SizedBox(width: 16),
+            _buildCell(
+              text: shippingInvoiceEntity.invoice.invoiceNumber,
+              flex: 4,
             ),
             const SizedBox(width: 16),
             _buildCell(
               flex: 4,
               text: shippingInvoiceEntity.shippingCompanyName,
+            ),
+            const SizedBox(width: 16),
+            _buildCell(
+              flex: 4,
+              text: shippingInvoiceEntity.shippingDate.formattedDateMMMDDY,
             ),
             const SizedBox(width: 16),
             _buildCell(

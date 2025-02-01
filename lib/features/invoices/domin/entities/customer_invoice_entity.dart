@@ -8,7 +8,6 @@ import 'invoice_goods_description_entity.dart';
 class CustomerInvoiceEntity extends Equatable {
   final int id;
   final int dealId;
-  final String dealSeriesNumber;
   final String invoiceNumber;
   final DateTime date;
   final String taxId;
@@ -32,7 +31,6 @@ class CustomerInvoiceEntity extends Equatable {
     required this.bankAccount,
     required this.customer,
     required this.totalPrice,
-    required this.dealSeriesNumber,
     required this.dealId,
   });
 
@@ -50,10 +48,9 @@ class CustomerInvoiceEntity extends Equatable {
         customer,
         totalPrice,
         dealId,
-        dealSeriesNumber,
       ];
 
-  String get formattedSeriesNumber => "Deal#$dealSeriesNumber";
+  String get formattedSeriesNumber => "#Deal${dealId.toString().padLeft(4, '0')}";
   String get formattedDate => DateFormat('MMM d, y').format(date);
   String get currancyCode {
     if (bankAccount.currency == "USD") {
@@ -98,7 +95,6 @@ class CustomerInvoiceEntity extends Equatable {
       bankAccount: bankAccount ?? this.bankAccount,
       customer: customer ?? this.customer,
       dealId: dealId ?? this.dealId,
-      dealSeriesNumber: dealSeriesNumber ?? this.dealSeriesNumber,
     );
   }
 }
