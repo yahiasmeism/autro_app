@@ -20,13 +20,11 @@ class AddBankAccountUseCaseParams extends Equatable {
   final String accountNumber;
   final String bankName;
   final String swiftCode;
-  final String currency;
 
   const AddBankAccountUseCaseParams({
     required this.accountNumber,
     required this.bankName,
     required this.swiftCode,
-    required this.currency,
   });
 
   @override
@@ -34,6 +32,5 @@ class AddBankAccountUseCaseParams extends Equatable {
         accountNumber,
         bankName,
         swiftCode,
-        currency,
       ];
 }

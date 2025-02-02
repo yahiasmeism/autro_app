@@ -1,8 +1,10 @@
 import 'package:autro_app/core/extensions/date_time_extension.dart';
 import 'package:autro_app/core/theme/app_colors.dart';
 import 'package:autro_app/core/theme/text_styles.dart';
+import 'package:autro_app/core/utils/nav_util.dart';
 import 'package:autro_app/core/widgets/delete_icon_button.dart';
 import 'package:autro_app/features/deals/domin/entities/deal_entity.dart';
+import 'package:autro_app/features/deals/presentation/screens/deal_details_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
@@ -16,7 +18,9 @@ class DealListTile extends StatelessWidget {
   Widget build(BuildContext context) {
     return InkWell(
       borderRadius: BorderRadius.circular(8),
-      onTap: () {},
+      onTap: () {
+        NavUtil.push(context, DealDetailsScreen(deal: dealEntity));
+      },
       child: Container(
         decoration: const BoxDecoration(
           borderRadius: BorderRadius.all(Radius.circular(8)),
@@ -28,7 +32,7 @@ class DealListTile extends StatelessWidget {
           crossAxisAlignment: CrossAxisAlignment.center,
           children: [
             _buildCell(
-              text: dealEntity.formattedSeriesNumber,
+              text: dealEntity.dealNumber,
               flex: 4,
             ),
             const SizedBox(width: 16),
@@ -39,17 +43,19 @@ class DealListTile extends StatelessWidget {
             const SizedBox(width: 16),
             _buildCell(
               flex: 4,
-              text: dealEntity.customerProforma?.customer.name ?? '-',
+              text: dealEntity.customer?.name ?? '-',
             ),
             const SizedBox(width: 16),
             _buildCell(
               flex: 4,
-              text: 'supplier',
+              text: dealEntity.supplier?.name ?? '-',
             ),
             const SizedBox(width: 16),
             _buildCell(
               flex: 4,
-              text: dealEntity.customerProforma?.goodsDescriptions.firstOrNull?.description ?? '-',
+              text: dealEntity.customerInvoice?.goodsDescriptions.firstOrNull?.description ??
+                  dealEntity.customerProforma?.goodsDescriptions.firstOrNull?.description ??
+                  '-',
             ),
             const SizedBox(width: 16),
             _buildCell(

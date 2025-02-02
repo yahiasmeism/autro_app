@@ -36,7 +36,7 @@ class CreateCustomerProformaRequest extends CreateCustomerProformaUseCaseParams 
   @override
   Map<String, dynamic> toJson() {
     return {
-      "proforma_number": proformaNumber,
+    if(proformaNumber != null)  "proforma_number": proformaNumber,
       "date": date,
       "customer_id": customerId,
       // "customer_address": customerAddress,

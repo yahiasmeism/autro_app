@@ -10,7 +10,6 @@ class UpdateShippingInvoiceRequest extends UpdateShippingInvoiceUseCaseParams im
     required super.shippingCompanyName,
     required super.shippingCost,
     required super.typeMaterialName,
-    required super.currency,
     required super.shippingDate,
     required super.deleteAttachment,
     super.attachmentPath,
@@ -29,7 +28,6 @@ class UpdateShippingInvoiceRequest extends UpdateShippingInvoiceUseCaseParams im
         shippingCompanyName: params.shippingCompanyName,
         shippingCost: params.shippingCost,
         typeMaterialName: params.typeMaterialName,
-        currency: params.currency,
         shippingDate: params.shippingDate,
         attachmentPath: params.attachmentPath,
         deleteAttachment: params.deleteAttachment,
@@ -43,7 +41,6 @@ class UpdateShippingInvoiceRequest extends UpdateShippingInvoiceUseCaseParams im
       'shipping_company_name': shippingCompanyName,
       'shipping_cost': shippingCost,
       'type_material_name': typeMaterialName,
-      'currency': currency,
       'shipping_date': shippingDate.formattedDateYYYYMMDD,
       'delete_attachment': deleteAttachment,
     };

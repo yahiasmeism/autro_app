@@ -65,7 +65,7 @@ class CustomerInvoiceFormCubit extends Cubit<CustomerInvoiceFormState> {
     bankNameController.text = state.invoice?.bankAccount.formattedLabel ?? '';
     notesController.text = state.invoice?.notes ?? '';
     dealIdController.text = state.invoice?.dealId.toString() ?? '';
-    dealSeriesNumberController.text = state.invoice?.formattedSeriesNumber ?? '';
+    dealSeriesNumberController.text = state.invoice?.invoiceNumber ?? '';
     _setupControllersListeners();
     _onInvoiceFormChanged();
   }

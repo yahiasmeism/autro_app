@@ -5,14 +5,12 @@ class BankAccountEntity extends Equatable {
   final String accountNumber;
   final String bankName;
   final String swiftCode;
-  final String currency;
 
   const BankAccountEntity({
     required this.id,
     required this.accountNumber,
     required this.bankName,
     required this.swiftCode,
-    required this.currency,
   });
 
   @override
@@ -21,8 +19,7 @@ class BankAccountEntity extends Equatable {
         accountNumber,
         bankName,
         swiftCode,
-        currency,
       ];
 
-  String get formattedLabel => '$bankName - $accountNumber $currency';
+  String get formattedLabel => '$bankName - $accountNumber';
 }

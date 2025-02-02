@@ -7,13 +7,14 @@ import 'package:autro_app/core/widgets/buttons/clear_all_button.dart';
 import 'package:autro_app/core/widgets/buttons/save_outline_button.dart';
 import 'package:autro_app/core/widgets/inputs/standard_input.dart';
 import 'package:autro_app/core/widgets/overley_loading.dart';
-import 'package:autro_app/core/widgets/standard_selection_dropdown.dart';
+import 'package:autro_app/features/deals/presentation/bloc/deals_list/deals_list_bloc.dart';
 import 'package:autro_app/features/deals/presentation/widgets/deals_list_selection_field.dart';
 import 'package:autro_app/features/shipping-invoices/presentation/widgets/shipping_invoice_attachment_uploader.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
+import '../../../deals/presentation/bloc/deal_details/deal_details_cubit.dart';
 import '../bloc/shipping_invoice_form/shipping_invoice_form_bloc.dart';
 import '../bloc/shipping_invoice_list/shipping_invoices_list_bloc.dart';
 
@@ -80,7 +81,7 @@ class ShippingInvoiceForm extends StatelessWidget {
                             showRequiredIndecator: true,
                             controller: bloc.shippingCostController,
                             labelText: 'Total Shipping Cost',
-                            hintText: '\$1,500',
+                            hintText: '€1,500',
                             inputFormatters: [FilteringTextInputFormatter.allow(RegExp(r'^\d+\.?\d{0,2}'))],
                           ),
                         ),
@@ -97,16 +98,12 @@ class ShippingInvoiceForm extends StatelessWidget {
                           hintText: 'HPDE.',
                         )),
                         const SizedBox(width: 32),
-                        Expanded(
-                          child: StandardSelectableDropdown(
-                            labelText: 'Currency',
-                            hintText: 'Select currency',
-                            // key: ValueKey(bloc.currencyController.text),
-                            initialValue: bloc.currencyController.text.isNotEmpty ? bloc.currencyController.text : null,
-                            items: const ['USD', 'EUR'],
-                            onChanged: (p0) => bloc.currencyController.text = p0 ?? '',
-                          ),
-                        )
+                        const Expanded(
+                            child: StandardInput(
+                          labelText: 'Currency',
+                          initialValue: 'EUR',
+                          readOnly: true,
+                        ))
                       ],
                     ),
                     const SizedBox(height: 24),
@@ -156,7 +153,11 @@ class ShippingInvoiceForm extends StatelessWidget {
         (either) => either.fold(
           (failure) => DialogUtil.showErrorSnackBar(context, getErrorMsgFromFailure(failure)),
           (message) {
-            if (state.shippingInvoice != null) context.read<ShippingInvoicesListBloc>().add(AddedUpdatedShippingInvoiceEvent());
+            if (state.shippingInvoice != null) {
+              context.read<ShippingInvoicesListBloc>().add(AddedUpdatedShippingInvoiceEvent());
+              context.read<DealsListBloc>().add(GetDealsListEvent());
+              context.read<DealDetailsCubit>().refresh();
+            }
             NavUtil.pop(context, state.shippingInvoice);
             DialogUtil.showSuccessSnackBar(context, message);
           },

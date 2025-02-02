@@ -142,7 +142,7 @@ class BankAccountsList extends StatelessWidget {
             Expanded(
               flex: 3,
               child: Text(
-                bankAccount.currency,
+                'EUR',
                 style: TextStyles.font16Regular.copyWith(
                   color: AppColors.secondaryOpacity50,
                 ),

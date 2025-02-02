@@ -27,15 +27,15 @@ class CustomerInvoiceFormProformaDetails extends StatelessWidget {
                   DialogUtil.showErrorSnackBar(context, 'Deal has no proforma,please add one');
                   return;
                 }
-                bloc.customerIdController.text = proforma.customer.id.toString();
-                bloc.customerNameController.text = proforma.customer.name;
+                bloc.customerIdController.text = deal.customer?.id.toString() ?? '';
+                bloc.customerNameController.text = deal.customer?.name ?? '';
                 bloc.taxIdController.text = proforma.taxId;
-                bloc.bankIdController.text = proforma.bankAccount.id.toString();
-                bloc.bankNameController.text = proforma.bankAccount.formattedLabel;
+                bloc.bankIdController.text = deal.bankAccount?.id.toString() ?? '';
+                bloc.bankNameController.text = deal.bankAccount?.formattedLabel ?? '';
                 bloc.notesController.text = proforma.notes;
-                bloc.invoiceNumberController.text = proforma.proformaNumber;
+                bloc.invoiceNumberController.text = deal.dealNumber;
                 bloc.dealIdController.text = deal.id.toString();
-                bloc.dealSeriesNumberController.text = deal.formattedSeriesNumber;
+                bloc.dealSeriesNumberController.text = deal.dealNumber;
               },
             ),
           ),

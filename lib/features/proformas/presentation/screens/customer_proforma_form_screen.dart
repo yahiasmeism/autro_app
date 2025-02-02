@@ -15,7 +15,7 @@ class ProformaFormScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return BlocProvider(
-      create: (context) => sl<ProformaFormCubit>()..init(proforma: proforma),
+      create: (context) => sl<CustomerProformaFormCubit>()..init(proforma: proforma),
       child: AdaptiveLayout(
         mobile: (context) => const Center(
           child: Text('Proformas Mobile Layout'),

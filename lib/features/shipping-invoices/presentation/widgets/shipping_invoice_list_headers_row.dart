@@ -17,7 +17,7 @@ class ShippingInvoiceListHeadersRow extends StatelessWidget {
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         crossAxisAlignment: CrossAxisAlignment.center,
         children: [
-          _buildHeaderCell('Deal Number', 4),
+          _buildHeaderCell('Connected Deal', 4),
           const SizedBox(width: 16),
           _buildHeaderCell('Invoice Number', 4),
           const SizedBox(width: 16),

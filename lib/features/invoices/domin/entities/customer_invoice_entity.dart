@@ -52,16 +52,8 @@ class CustomerInvoiceEntity extends Equatable {
 
   String get formattedSeriesNumber => "Deal: ${dealId.toString().padLeft(4, '0')}";
   String get formattedDate => DateFormat('MMM d, y').format(date);
-  String get currancyCode {
-    if (bankAccount.currency == "USD") {
-      return "\$";
-    } else if (bankAccount.currency == "EUR") {
-      return "€";
-    }
-    return "";
-  }
 
-  String get formattedTotalPrice => "$currancyCode${totalPrice.toStringAsFixed(2)}";
+  String get formattedTotalPrice => "€${totalPrice.toStringAsFixed(2)}";
 
   CustomerInvoiceEntity copyWith({
     int? id,

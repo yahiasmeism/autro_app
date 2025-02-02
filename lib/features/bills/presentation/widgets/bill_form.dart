@@ -66,8 +66,8 @@ class BillForm extends StatelessWidget {
                     Expanded(
                       child: StandardInput(
                         showRequiredIndecator: true,
-                        hintText: 'e.g \$100.00',
-                        labelText: 'Amount(USD)',
+                        hintText: 'e.g €100.00',
+                        labelText: 'Amount(EUR)',
                         inputFormatters: [FilteringTextInputFormatter.allow(RegExp(r'^\d+\.?\d{0,2}'))],
                         controller: bloc.amountController,
                       ),

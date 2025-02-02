@@ -27,8 +27,8 @@ class UpdateDealRequest extends UpdateDealUseCaseParams implements RequestMapabl
       "is_complete": isComplete,
       if (notes != null) "notes": notes,
       if (shippingDate != null) "shipping_date": shippingDate?.formattedDateMMMDDY,
-      if (etaDate != null) "eta_date": "2025-02-02",
-      if (delivaryDate != null) "delivary_date": "2025-02-02"
+      if (etaDate != null) "eta_date": etaDate?.formattedDateMMMDDY,
+      if (delivaryDate != null) "delivery_date": delivaryDate?.formattedDateMMMDDY,
     };
   }
 }

@@ -20,7 +20,7 @@ class ProformaFormGoodDescriptions extends StatelessWidget {
     return StandardCard(
       padding: const EdgeInsets.all(0),
       title: 'Good Descriptions',
-      child: BlocBuilder<ProformaFormCubit, CustomerProformaFormState>(
+      child: BlocBuilder<CustomerProformaFormCubit, CustomerProformaFormState>(
         buildWhen: (previous, current) => current is CustomerProformaFormLoaded,
         builder: (context, state) {
           if (state is! CustomerProformaFormLoaded) return const SizedBox.shrink();
@@ -58,7 +58,7 @@ class ProformaFormGoodDescriptions extends StatelessWidget {
   }
 
   Widget _buildGoodDescription(BuildContext context, ProformaGoodDescriptionDto dto, {bool isLast = false}) {
-    final cubit = context.read<ProformaFormCubit>();
+    final cubit = context.read<CustomerProformaFormCubit>();
     return Padding(
       padding: const EdgeInsets.symmetric(horizontal: 28, vertical: 14),
       child: Row(
@@ -99,7 +99,7 @@ class ProformaFormGoodDescriptions extends StatelessWidget {
             child: StandardInput(
               // readOnly: true,
               inputFormatters: [FilteringTextInputFormatter.allow(RegExp(r'^\d+\.?\d{0,2}'))],
-              hintText: 'e.g 80\$',
+              hintText: 'e.g 80€',
               labelText: 'Unit price',
               onChanged: (p0) => cubit.updateGoodDescription(dto.copyWith(unitPrice: double.tryParse(p0) ?? 0)),
               controller: TextEditingController(text: dto.unitPrice.toStringAsFixed(2)),
@@ -108,6 +108,8 @@ class ProformaFormGoodDescriptions extends StatelessWidget {
           const SizedBox(width: 20),
           Expanded(
             child: StandardSelectableDropdown(
+              key: ValueKey(dto.packing),
+              initialValue: dto.packing,
               // readOnly: true,
               items: const ['Bales', 'Loose', 'Bults', 'Rollosm', 'Packing', 'Lot'],
               labelText: 'Packing',
@@ -126,7 +128,7 @@ class ProformaFormGoodDescriptions extends StatelessWidget {
                 ]),
               ),
               controller: TextEditingController(text: dto.totalPrice.toStringAsFixed(2)),
-              hintText: 'e.g 80\$',
+              hintText: 'e.g 80€',
             ),
           ),
           const SizedBox(width: 20),
@@ -143,7 +145,7 @@ class ProformaFormGoodDescriptions extends StatelessWidget {
   }
 
   Widget _buildGoodDescriptionInputs(BuildContext context, CustomerProformaFormLoaded state) {
-    final bloc = context.read<ProformaFormCubit>();
+    final bloc = context.read<CustomerProformaFormCubit>();
     return Padding(
       padding: const EdgeInsets.symmetric(horizontal: 28, vertical: 14),
       child: Row(
@@ -182,7 +184,7 @@ class ProformaFormGoodDescriptions extends StatelessWidget {
               controller: bloc.unitPriceController,
               labelText: 'Unit Price',
               keyboardType: TextInputType.number,
-              hintText: 'e.g 80\$',
+              hintText: 'e.g 80€',
               inputFormatters: [FilteringTextInputFormatter.allow(RegExp(r'^\d*\.?\d{0,9}$'))],
             ),
           ),
@@ -209,7 +211,7 @@ class ProformaFormGoodDescriptions extends StatelessWidget {
                   TextSpan(text: 'auto', style: TextStyles.font16Regular.copyWith(color: AppColors.primary)),
                 ]),
               ),
-              hintText: 'e.g 80\$',
+              hintText: 'e.g 80€',
             ),
           ),
           const SizedBox(width: 20),
@@ -221,7 +223,7 @@ class ProformaFormGoodDescriptions extends StatelessWidget {
 
   Widget _buildDeleteButton(BuildContext context, ProformaGoodDescriptionDto dto) {
     return InkWell(
-      onTap: () => context.read<ProformaFormCubit>().removeGoodDescription(dto),
+      onTap: () => context.read<CustomerProformaFormCubit>().removeGoodDescription(dto),
       borderRadius: const BorderRadius.all(Radius.circular(8)),
       child: Container(
           height: 70,
@@ -242,7 +244,7 @@ class ProformaFormGoodDescriptions extends StatelessWidget {
       splashColor: Colors.transparent,
       onTap: state.addGoodDescriptionEnabled
           ? () {
-              context.read<ProformaFormCubit>().addGoodDescription();
+              context.read<CustomerProformaFormCubit>().addGoodDescription();
             }
           : null,
       borderRadius: const BorderRadius.all(Radius.circular(8)),

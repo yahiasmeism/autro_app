@@ -3,7 +3,8 @@ import 'package:autro_app/core/interfaces/use_case.dart';
 import 'package:autro_app/features/deals/domin/entities/deal_entity.dart';
 import 'package:autro_app/features/deals/domin/repositories/deals_repository.dart';
 import 'package:dartz/dartz.dart';
-
+import 'package:injectable/injectable.dart';
+@lazySingleton
 class GetDealUseCase extends UseCase<DealEntity, int> {
   final DealsRepository dealsRepository;
 

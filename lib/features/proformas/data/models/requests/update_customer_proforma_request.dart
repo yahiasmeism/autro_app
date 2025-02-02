@@ -35,7 +35,6 @@ class UpdateCustomerProformaRequest extends UpdateCustomerProformaUseCaseParams 
   @override
   Map<String, dynamic> toJson() {
     return {
-      "proforma_number": proformaNumber,
       "date": date,
       "customer_id": customerId,
       "tax_id": taxId,

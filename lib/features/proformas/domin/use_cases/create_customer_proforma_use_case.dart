@@ -19,7 +19,7 @@ class CreateCustomerProformaUseCase extends UseCase<CustomerProformaEntity, Crea
 }
 
 class CreateCustomerProformaUseCaseParams extends Equatable {
-  final String proformaNumber;
+  final String? proformaNumber;
   final String date;
   final int customerId;
   final String taxId;

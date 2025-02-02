@@ -3,10 +3,12 @@ import 'package:autro_app/core/errors/failure_mapper.dart';
 import 'package:autro_app/core/utils/dialog_utils.dart';
 import 'package:autro_app/core/utils/nav_util.dart';
 import 'package:autro_app/core/widgets/overley_loading.dart';
+import 'package:autro_app/features/deals/presentation/bloc/deals_list/deals_list_bloc.dart';
 import 'package:autro_app/features/invoices/presentation/bloc/customers_invoices_list/customers_invoices_list_bloc.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
+import '../../../../deals/presentation/bloc/deal_details/deal_details_cubit.dart';
 import '../../bloc/customer_invoice_form/customer_invoice_form_cubit.dart';
 import '../../widgets/invoice_form/customer_invoice_form.dart';
 
@@ -28,7 +30,11 @@ class CustomerInvoiceFormDesktopLayout extends StatelessWidget {
                 either.fold(
                   (failure) => DialogUtil.showErrorSnackBar(context, getErrorMsgFromFailure(failure)),
                   (message) {
-                    if (state.invoice != null) context.read<CustomersInvoicesListBloc>().add(AddedUpdatedCustomersInvoiceEvent());
+                    if (state.invoice != null) {
+                      context.read<CustomersInvoicesListBloc>().add(AddedUpdatedCustomersInvoiceEvent());
+                      context.read<DealsListBloc>().add(GetDealsListEvent());
+                      context.read<DealDetailsCubit>().refresh();
+                    }
                     NavUtil.pop(context, state.invoice);
                     return DialogUtil.showSuccessSnackBar(context, message);
                   },

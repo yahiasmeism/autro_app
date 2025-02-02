@@ -10,6 +10,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:injectable/injectable.dart';
 
 import '../../../../../core/common/domin/dto/pagination_query_payload_dto.dart';
+import '../../../../deals/presentation/bloc/deal_details/deal_details_cubit.dart';
 import '../../../domin/entities/customer_invoice_entity.dart';
 import '../../../domin/use_cases/create_customer_invoice_use_case.dart';
 import '../../../domin/use_cases/update_customer_invoice_use_case.dart';
@@ -141,6 +142,7 @@ class CustomersInvoicesListBloc extends Bloc<CustomersInvoicesListEvent, Custome
     );
     if (event.context.mounted) {
       event.context.read<DealsListBloc>().add(GetDealsListEvent());
+      event.context.read<DealDetailsCubit>().refresh();
     }
   }
 

@@ -119,6 +119,7 @@ class _StandardInputState extends State<StandardInput> {
         TextFormField(
           onTap: widget.onTap,
           decoration: InputDecoration(
+            suffixStyle: inputDecoration.suffixStyle,
             iconColor: AppColors.iconColor,
             enabled: widget.enabled,
             contentPadding: widget.contentPadding ?? const EdgeInsets.all(16),

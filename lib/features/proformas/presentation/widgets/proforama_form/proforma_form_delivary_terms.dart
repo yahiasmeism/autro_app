@@ -11,7 +11,7 @@ class ProformaFormDelivaryTerms extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final bloc = context.read<ProformaFormCubit>();
+    final bloc = context.read<CustomerProformaFormCubit>();
     return StandardCard(
         title: 'Delivary Terms',
         child: Row(

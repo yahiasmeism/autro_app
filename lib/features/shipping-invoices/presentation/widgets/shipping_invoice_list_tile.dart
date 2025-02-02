@@ -35,13 +35,13 @@ class ShippingInvoiceListTile extends StatelessWidget {
           crossAxisAlignment: CrossAxisAlignment.center,
           children: [
             _buildCell(
-              text: shippingInvoiceEntity.formattedDealSeriesNumber,
+              text: shippingInvoiceEntity.shippingInvoiceNumber,
               flex: 4,
             ),
             const SizedBox(width: 16),
             _buildCell(
-              text: shippingInvoiceEntity.invoice.invoiceNumber,
               flex: 4,
+              text: shippingInvoiceEntity.shippingInvoiceNumber,
             ),
             const SizedBox(width: 16),
             _buildCell(
@@ -56,7 +56,7 @@ class ShippingInvoiceListTile extends StatelessWidget {
             const SizedBox(width: 16),
             _buildCell(
               flex: 4,
-              text: "${shippingInvoiceEntity.currencySymbol}${shippingInvoiceEntity.shippingCost.toStringAsFixed(2)}",
+              text: shippingInvoiceEntity.formmatedShippingCost,
             ),
             const SizedBox(width: 16),
             _buildCell(

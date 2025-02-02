@@ -10,7 +10,7 @@ class ProformaFormBankDetails extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final cubit = context.read<ProformaFormCubit>();
+    final cubit = context.read<CustomerProformaFormCubit>();
 
     return StandardCard(
       title: 'Bank Details',

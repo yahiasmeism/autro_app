@@ -13,7 +13,7 @@ import '../bloc/invoice_pdf/invoice_pdf_cubit.dart';
 class InvoicePdfScreen extends StatelessWidget {
   const InvoicePdfScreen._();
 
-  static create(BuildContext context,InvoicePdfDto dto) {
+  static create(BuildContext context, InvoicePdfDto dto) {
     NavUtil.push(
       context,
       BlocProvider<InvoicePdfCubit>(
@@ -137,8 +137,8 @@ class InvoicePdfScreen extends StatelessWidget {
       'Description',
       'Container Number',
       'Weight (MT)',
-      'Unit Price (\$)',
-      'Total Value (\$)',
+      'Unit Price (€)',
+      'Total Value (€)',
     ];
 
     final data = List.generate(
