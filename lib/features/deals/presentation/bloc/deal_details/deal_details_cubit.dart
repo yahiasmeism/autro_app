@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:autro_app/core/errors/failures.dart';
 import 'package:autro_app/core/extensions/date_time_extension.dart';
 import 'package:autro_app/features/deals/domin/use_cases/delete_deal_use_case.dart';
@@ -25,6 +27,7 @@ class DealDetailsCubit extends Cubit<DealDetailsState> {
   final shippingDateController = TextEditingController();
   final deliveryDateController = TextEditingController();
   final etaDateController = TextEditingController();
+  Timer? progressTimer;
 
   init(int dealId) async {
     await getDeal(dealId);
@@ -37,7 +40,7 @@ class DealDetailsCubit extends Cubit<DealDetailsState> {
     etaDateController.text = deal.etaDate?.formattedDateYYYYMMDD ?? '';
   }
 
-  getDeal(int dealId) async {
+  Future getDeal(int dealId) async {
     emit(DealDetailsInitial());
     final dealEither = await getDealUseCase.call(dealId);
     dealEither.fold(
@@ -45,6 +48,7 @@ class DealDetailsCubit extends Cubit<DealDetailsState> {
       (deal) {
         emit(DealDetailsLoaded(deal: deal));
         _initilizeController(deal);
+        _initProgressValue();
       },
     );
   }
@@ -97,6 +101,7 @@ class DealDetailsCubit extends Cubit<DealDetailsState> {
       (failure) => emit(state.copyWith(updateFailureOrSuccessOption: some(left(failure)), updatedMode: false)),
       (deal) => emit(state.copyWith(deal: deal, updatedMode: false, updateFailureOrSuccessOption: some(right('Deal updated')))),
     );
+    _initProgressValue();
   }
 
   bool _checkFormIsChanged() {
@@ -113,6 +118,74 @@ class DealDetailsCubit extends Cubit<DealDetailsState> {
         notesController.text.trim() != originalNotes;
 
     return formChanged;
+  }
+
+  void _initProgressValue() {
+    final state = this.state as DealDetailsLoaded;
+    emit(state.copyWith(progress: state.deal.isComplete ? 1.0 : 0.0));
+    _startProgressUpdates();
+  }
+
+  void _startProgressUpdates() {
+    progressTimer?.cancel();
+
+    progressTimer = Timer.periodic(
+      const Duration(seconds: 1),
+      (Timer t) {
+        final state = this.state as DealDetailsLoaded;
+        if (!state.isProgressDurationValid) {
+          t.cancel();
+          return;
+        }
+        final newProgress = _calculateProgress(state.deal.shippingDate!, state.deal.etaDate!);
+
+        emit(state.copyWith(progress: newProgress));
+
+        if (newProgress >= 1.0) {
+          t.cancel();
+          updateDealStatus(true);
+        }
+      },
+    );
+  }
+
+  double _calculateProgress(DateTime startDate, DateTime endDate) {
+    final currentDate = DateTime.now();
+
+    if (startDate.isAfter(endDate)) {
+      return 1.0;
+    }
+
+    if (currentDate.isBefore(startDate)) return 0.0;
+    if (currentDate.isAfter(endDate)) return 1.0;
+
+    final totalDuration = endDate.difference(startDate).inMilliseconds;
+    final elapsedDuration = currentDate.difference(startDate).inMilliseconds;
+
+    final progress = elapsedDuration / totalDuration;
+
+    return progress.clamp(0.0, 1.0);
+  }
+
+  updateDealStatus(bool isCompleted) async {
+    final state = this.state as DealDetailsLoaded;
+    if (isCompleted == state.deal.isComplete) return;
+    emit(state.copyWith(loading: true));
+    final params = UpdateDealUseCaseParams(
+      dealId: state.deal.id,
+      delivaryDate: state.deal.deliveryDate,
+      etaDate: state.deal.etaDate,
+      shippingDate: state.deal.shippingDate,
+      notes: state.deal.notes,
+      isComplete: isCompleted,
+    );
+
+    final either = await updateDealUseCase.call(params);
+    emit(state.copyWith(loading: false));
+    either.fold(
+      (failure) => emit(state.copyWith(updateFailureOrSuccessOption: some(left(failure)))),
+      (deal) => emit(state.copyWith(deal: deal, updateFailureOrSuccessOption: some(right('Deal status updated')))),
+    );
   }
 
   deleteDeal() async {

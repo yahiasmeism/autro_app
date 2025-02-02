@@ -29,8 +29,10 @@ class DealOverviewTab extends StatelessWidget {
     if (state is DealDetailsLoaded) {
       state.updateFailureOrSuccessOption.fold(
         () => null,
-        (either) => either.fold((failure) => DialogUtil.showErrorSnackBar(context, getErrorMsgFromFailure(failure)),
-            (message) => DialogUtil.showSuccessSnackBar(context, message)),
+        (either) => either.fold((failure) => DialogUtil.showErrorSnackBar(context, getErrorMsgFromFailure(failure)), (message) {
+          DialogUtil.showSuccessSnackBar(context, message);
+          context.read<DealsListBloc>().add(GetDealsListEvent());
+        }),
       );
 
       state.deleteFailureOrSuccessOption.fold(
