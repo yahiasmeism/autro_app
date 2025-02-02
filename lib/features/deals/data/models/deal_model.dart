@@ -22,6 +22,9 @@ class DealModel extends DealEntity implements BaseMapable {
     required super.customerProforma,
     required super.customerInvoice,
     required super.shippingInvoice,
+    required super.totalRevenue,
+    required super.totalExpenses,
+    required super.netProfit,
   });
 
   factory DealModel.fromJson(Map<String, dynamic> json) => DealModel(
@@ -42,6 +45,9 @@ class DealModel extends DealEntity implements BaseMapable {
         shippingInvoice: json['shipping_invoice'] == null
             ? null
             : ShippingInvoiceModel.fromJson((json['shipping_invoice'] as Map<String, dynamic>?).orEmpty),
+        totalExpenses: (json['total_expenses'] as num?).toDoubleOrZero,
+        totalRevenue: (json['total_revenue'] as num?).toDoubleOrZero,
+        netProfit: (json['net_profit'] as num?).toDoubleOrZero,
       );
 
   @override

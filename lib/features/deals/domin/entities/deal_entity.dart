@@ -15,6 +15,9 @@ class DealEntity extends Equatable {
   final CustomerProformaEntity? customerProforma;
   final CustomerInvoiceEntity? customerInvoice;
   final ShippingInvoiceEntity? shippingInvoice;
+  final double totalRevenue;
+  final double totalExpenses;
+  final double netProfit;
 
   const DealEntity({
     required this.id,
@@ -28,12 +31,15 @@ class DealEntity extends Equatable {
     required this.customerProforma,
     required this.customerInvoice,
     required this.shippingInvoice,
+    required this.totalRevenue,
+    required this.totalExpenses,
+    required this.netProfit,
   });
 
   bool get hasInvoice => customerInvoice != null;
   bool get hasShippingInvoice => shippingInvoice != null;
 
-  String get formattedSeriesNumber => "#Deal${id.toString().padLeft(4, '0')}";
+  String get formattedSeriesNumber => "Deal: ${id.toString().padLeft(4, '0')}";
   @override
   List<Object?> get props => [
         id,
@@ -47,5 +53,8 @@ class DealEntity extends Equatable {
         customerProforma,
         customerInvoice,
         shippingInvoice,
+        totalRevenue,
+        totalExpenses,
+        netProfit,
       ];
 }

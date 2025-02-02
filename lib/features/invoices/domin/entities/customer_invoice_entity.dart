@@ -50,7 +50,7 @@ class CustomerInvoiceEntity extends Equatable {
         dealId,
       ];
 
-  String get formattedSeriesNumber => "#Deal${dealId.toString().padLeft(4, '0')}";
+  String get formattedSeriesNumber => "Deal: ${dealId.toString().padLeft(4, '0')}";
   String get formattedDate => DateFormat('MMM d, y').format(date);
   String get currancyCode {
     if (bankAccount.currency == "USD") {
