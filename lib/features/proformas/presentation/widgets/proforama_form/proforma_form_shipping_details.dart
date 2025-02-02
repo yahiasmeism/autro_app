@@ -17,7 +17,7 @@ class ProformaFormShippingDetails extends StatelessWidget {
         hintText:
             'e.g INVO0149 HDPE PLASTIC SCRAP HS CODE 39151020 -CFR MERSIN PORT- TURKEY CONSIGNEE: OZ BESLENEN TARIMURUNLERI NAK. PET.TEKS. SAN VE TIC LTD STİ. AKCATAS MAH. 1CAD, NO:11-1 VIRANSEHIR/SANLIURFA)',
         minLines: 3,
-        controller: context.read<ProformaFormCubit>().notesController,
+        controller: context.read<CustomerProformaFormCubit>().notesController,
       ),
     );
   }

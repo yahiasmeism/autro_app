@@ -65,7 +65,6 @@ class ShippingInvoiceFormBloc extends Bloc<ShippingInvoiceFormEvent, ShippingInv
   final shippingCompanyNameController = TextEditingController();
   final shippingCostController = TextEditingController();
   final typeMaterialNameController = TextEditingController();
-  final currencyController = TextEditingController();
   final shippingDateController = TextEditingController();
 
   _initial(InitialShippingInvoiceFormEvent event, Emitter<ShippingInvoiceFormState> emit) {
@@ -82,11 +81,10 @@ class ShippingInvoiceFormBloc extends Bloc<ShippingInvoiceFormEvent, ShippingInv
     final state = this.state as ShippingInvoiceFormLoaded;
     formKey.currentState?.reset();
     dealIdController.text = state.shippingInvoice?.dealId.toString() ?? '';
-    dealSeriesNumberController.text = state.shippingInvoice?.formattedDealSeriesNumber ?? '';
+    dealSeriesNumberController.text = state.shippingInvoice?.shippingInvoiceNumber ?? '';
     shippingCompanyNameController.text = state.shippingInvoice?.shippingCompanyName ?? '';
     shippingCostController.text = state.shippingInvoice?.shippingCost.toString() ?? '';
     typeMaterialNameController.text = state.shippingInvoice?.typeMaterialName ?? '';
-    currencyController.text = state.shippingInvoice?.currency ?? '';
     shippingDateController.text = (state.shippingInvoice?.shippingDate ?? DateTime.now()).formattedDateYYYYMMDD;
     setupControllersListeners();
     add(ShippingInvoiceFormChangedEvent());
@@ -98,7 +96,6 @@ class ShippingInvoiceFormBloc extends Bloc<ShippingInvoiceFormEvent, ShippingInv
     shippingCompanyNameController.addListener(() => add(ShippingInvoiceFormChangedEvent()));
     shippingCostController.addListener(() => add(ShippingInvoiceFormChangedEvent()));
     typeMaterialNameController.addListener(() => add(ShippingInvoiceFormChangedEvent()));
-    currencyController.addListener(() => add(ShippingInvoiceFormChangedEvent()));
     shippingDateController.addListener(() => add(ShippingInvoiceFormChangedEvent()));
   }
 
@@ -109,7 +106,6 @@ class ShippingInvoiceFormBloc extends Bloc<ShippingInvoiceFormEvent, ShippingInv
       dealSeriesNumberController.text.isNotEmpty,
       shippingCompanyNameController.text.isNotEmpty,
       shippingCostController.text.isNotEmpty,
-      currencyController.text.isNotEmpty,
       shippingDateController.text.isNotEmpty
     ].every((element) => element);
 
@@ -119,7 +115,6 @@ class ShippingInvoiceFormBloc extends Bloc<ShippingInvoiceFormEvent, ShippingInv
       shippingCompanyNameController.text.isNotEmpty,
       shippingCostController.text.isNotEmpty,
       typeMaterialNameController.text.isNotEmpty,
-      currencyController.text.isNotEmpty,
       shippingDateController.text != DateTime.now().formattedDateYYYYMMDD,
       state.pickedAttachment.isSome(),
     ].any((element) => element);
@@ -130,12 +125,11 @@ class ShippingInvoiceFormBloc extends Bloc<ShippingInvoiceFormEvent, ShippingInv
         () => shippingInvoice.attachmentUrl.isNotEmpty,
         (a) => a != shippingInvoice.attachmentUrl,
       );
-      bool isFormChanged = shippingInvoice.formattedDealSeriesNumber != dealSeriesNumberController.text ||
+      bool isFormChanged = shippingInvoice.shippingInvoiceNumber != dealSeriesNumberController.text ||
           shippingInvoice.dealId != int.tryParse(dealIdController.text) ||
           shippingInvoice.shippingCompanyName != shippingCompanyNameController.text ||
           shippingInvoice.shippingCost != double.tryParse(shippingCostController.text) ||
           shippingInvoice.typeMaterialName != typeMaterialNameController.text ||
-          shippingInvoice.currency != currencyController.text ||
           shippingInvoice.shippingDate.formattedDateYYYYMMDD != shippingDateController.text ||
           state.pickedAttachment.isSome() ||
           urlChanged;
@@ -173,7 +167,6 @@ class ShippingInvoiceFormBloc extends Bloc<ShippingInvoiceFormEvent, ShippingInv
       shippingCompanyName: shippingCompanyNameController.text,
       shippingCost: double.tryParse(shippingCostController.text).toDoubleOrZero,
       typeMaterialName: typeMaterialNameController.text,
-      currency: currencyController.text,
       shippingDate: DateTime.tryParse(shippingDateController.text).orDefault,
       attachmentPath: state.pickedAttachment.fold(() => null, (file) => file.path),
     );
@@ -203,7 +196,6 @@ class ShippingInvoiceFormBloc extends Bloc<ShippingInvoiceFormEvent, ShippingInv
       shippingCompanyName: shippingCompanyNameController.text,
       shippingCost: double.tryParse(shippingCostController.text).toDoubleOrZero,
       typeMaterialName: typeMaterialNameController.text,
-      currency: currencyController.text,
       shippingDate: DateTime.tryParse(shippingDateController.text).orDefault,
       attachmentPath: state.pickedAttachment.fold(() => null, (file) => file.path),
       deleteAttachment: deleteAttachment,
@@ -228,7 +220,6 @@ class ShippingInvoiceFormBloc extends Bloc<ShippingInvoiceFormEvent, ShippingInv
     shippingCompanyNameController.clear();
     shippingCostController.clear();
     typeMaterialNameController.clear();
-    currencyController.clear();
     shippingDateController.text = DateTime.now().formattedDateYYYYMMDD;
     if (state is ShippingInvoiceFormLoaded) {
       final state = this.state as ShippingInvoiceFormLoaded;
@@ -248,7 +239,6 @@ class ShippingInvoiceFormBloc extends Bloc<ShippingInvoiceFormEvent, ShippingInv
     shippingCompanyNameController.dispose();
     shippingCostController.dispose();
     typeMaterialNameController.dispose();
-    currencyController.dispose();
     shippingDateController.dispose();
     return super.close();
   }

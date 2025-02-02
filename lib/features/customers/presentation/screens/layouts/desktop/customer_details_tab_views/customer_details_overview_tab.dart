@@ -264,7 +264,7 @@ class CustomerDetailsOverviewTab extends StatelessWidget {
                 style: TextStyles.font20SemiBold,
               ),
               Text(
-                '\$2342',
+                '€2342',
                 style: TextStyles.font24SemiBold,
               ),
             ],

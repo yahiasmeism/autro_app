@@ -8,8 +8,6 @@ import 'package:autro_app/features/settings/presentation/bloc/bank_accounts_list
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
-import '../../../../core/widgets/standard_selection_dropdown.dart';
-
 class AddBankAccountForm extends StatefulWidget {
   const AddBankAccountForm({super.key});
 
@@ -30,7 +28,6 @@ class _AddBankAccountFormState extends State<AddBankAccountForm> {
     accountNumberController.addListener(updateOnChanged);
     bankNameController.addListener(updateOnChanged);
     swiftCodeController.addListener(updateOnChanged);
-    currencyController.addListener(updateOnChanged);
   }
 
   updateOnChanged() {
@@ -39,10 +36,8 @@ class _AddBankAccountFormState extends State<AddBankAccountForm> {
   }
 
   updateSavedEnabled() {
-    bool isChanged = accountNumberController.text.isNotEmpty &&
-        bankNameController.text.isNotEmpty &&
-        swiftCodeController.text.isNotEmpty &&
-        currencyController.text.isNotEmpty;
+    bool isChanged =
+        accountNumberController.text.isNotEmpty && bankNameController.text.isNotEmpty && swiftCodeController.text.isNotEmpty;
 
     if (isChanged != addBankAccountEnabled) {
       addBankAccountEnabled = isChanged;
@@ -51,10 +46,8 @@ class _AddBankAccountFormState extends State<AddBankAccountForm> {
   }
 
   updateClearAllEnabled() {
-    bool isChanged = accountNumberController.text.isNotEmpty ||
-        bankNameController.text.isNotEmpty ||
-        swiftCodeController.text.isNotEmpty ||
-        currencyController.text.isNotEmpty;
+    bool isChanged =
+        accountNumberController.text.isNotEmpty || bankNameController.text.isNotEmpty || swiftCodeController.text.isNotEmpty;
 
     if (isChanged != clearAllEnabled) {
       clearAllEnabled = isChanged;
@@ -66,7 +59,6 @@ class _AddBankAccountFormState extends State<AddBankAccountForm> {
   final accountNumberController = TextEditingController();
   final bankNameController = TextEditingController();
   final swiftCodeController = TextEditingController();
-  final currencyController = TextEditingController();
 
   Future<void> addBankAccount() async {
     if (formKey.currentState?.validate() == true) {
@@ -74,7 +66,6 @@ class _AddBankAccountFormState extends State<AddBankAccountForm> {
         accountNumber: accountNumberController.text,
         bankName: bankNameController.text,
         swiftCode: swiftCodeController.text,
-        currency: currencyController.text,
       );
       context.read<BankAccountsListCubit>().addNewBankAccount(params: params);
     }
@@ -118,16 +109,11 @@ class _AddBankAccountFormState extends State<AddBankAccountForm> {
                   hintText: 'Enter SWIFT code',
                 )),
                 const SizedBox(width: 32),
-                Expanded(
-                    child: StandardSelectableDropdown(
-                  items: const [
-                    'USD',
-                    'EUR',
-                  ],
-                  initialValue: currencyController.text.isNotEmpty ? currencyController.text : null,
-                  onChanged: (p0) => currencyController.text = p0 ?? '',
+                const Expanded(
+                    child: StandardInput(
+                  readOnly: true,
+                  initialValue: 'EUR(€)',
                   labelText: 'Currency',
-                  hintText: 'Select currency',
                 )),
               ],
             ),
@@ -140,7 +126,6 @@ class _AddBankAccountFormState extends State<AddBankAccountForm> {
                         accountNumberController.clear();
                         bankNameController.clear();
                         swiftCodeController.clear();
-                        currencyController.clear();
                         setState(() {});
                       }
                     : null,
@@ -166,7 +151,6 @@ class _AddBankAccountFormState extends State<AddBankAccountForm> {
     accountNumberController.dispose();
     bankNameController.dispose();
     swiftCodeController.dispose();
-    currencyController.dispose();
     super.dispose();
   }
 }

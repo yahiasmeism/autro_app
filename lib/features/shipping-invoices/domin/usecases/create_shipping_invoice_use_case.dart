@@ -23,7 +23,6 @@ class CreateShippingInvoiceUseCaseParams extends Equatable {
   final String shippingCompanyName;
   final double shippingCost;
   final String typeMaterialName;
-  final String currency;
   final DateTime shippingDate;
   final String? attachmentPath;
   final bool deleteAttachment;
@@ -33,7 +32,6 @@ class CreateShippingInvoiceUseCaseParams extends Equatable {
     required this.shippingCompanyName,
     required this.shippingCost,
     required this.typeMaterialName,
-    required this.currency,
     required this.shippingDate,
     this.attachmentPath,
   });
@@ -43,7 +41,6 @@ class CreateShippingInvoiceUseCaseParams extends Equatable {
         shippingCompanyName,
         shippingCost,
         typeMaterialName,
-        currency,
         shippingDate,
         attachmentPath,
       ];

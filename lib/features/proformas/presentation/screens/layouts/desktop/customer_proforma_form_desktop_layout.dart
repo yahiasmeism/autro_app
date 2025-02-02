@@ -8,6 +8,7 @@ import 'package:autro_app/features/proformas/presentation/bloc/customers_proform
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
+import '../../../../../deals/presentation/bloc/deal_details/deal_details_cubit.dart';
 import '../../../../../deals/presentation/bloc/deals_list/deals_list_bloc.dart';
 import '../../../widgets/proforama_form/proforma_form.dart';
 
@@ -20,7 +21,7 @@ class CustomerProformaFormDesktopLayout extends StatelessWidget {
       appBar: AppBar(
         title: Text(title),
       ),
-      body: BlocConsumer<ProformaFormCubit, CustomerProformaFormState>(
+      body: BlocConsumer<CustomerProformaFormCubit, CustomerProformaFormState>(
         listener: (context, state) {
           if (state is CustomerProformaFormLoaded) {
             state.failureOrSuccessOption.fold(
@@ -32,6 +33,7 @@ class CustomerProformaFormDesktopLayout extends StatelessWidget {
                     if (state.proforma != null) {
                       context.read<CustomersProformasListBloc>().add(AddedUpdatedProformaEvent());
                       context.read<DealsListBloc>().add(GetDealsListEvent());
+                      context.read<DealDetailsCubit>().refresh();
                     }
                     NavUtil.pop(context, state.proforma);
                     return DialogUtil.showSuccessSnackBar(context, message);
@@ -45,9 +47,10 @@ class CustomerProformaFormDesktopLayout extends StatelessWidget {
           if (state is CustomerProformaFormLoaded) {
             return Stack(
               children: [
-                const Positioned.fill(
+                Positioned.fill(
                   child: SingleChildScrollView(
-                    child: Padding(
+                    controller: context.read<CustomerProformaFormCubit>().scrollController,
+                    child: const Padding(
                       padding: EdgeInsets.all(24),
                       child: ProformaForm(),
                     ),

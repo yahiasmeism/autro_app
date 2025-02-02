@@ -14,10 +14,10 @@ import '../../../domin/use_cases/update_customer_proforma_use_case.dart';
 part 'customer_proforma_form_state.dart';
 
 @injectable
-class ProformaFormCubit extends Cubit<CustomerProformaFormState> {
+class CustomerProformaFormCubit extends Cubit<CustomerProformaFormState> {
   final CreateCustomerProformaUseCase createProformaUsecase;
   final UpdateCustomerProformaUseCase updateProformaUsecase;
-  ProformaFormCubit(this.createProformaUsecase, this.updateProformaUsecase) : super(CustomerProformaFormInitial());
+  CustomerProformaFormCubit(this.createProformaUsecase, this.updateProformaUsecase) : super(CustomerProformaFormInitial());
 
   // Goods Descriptions
   final descriptionController = TextEditingController();
@@ -29,6 +29,7 @@ class ProformaFormCubit extends Cubit<CustomerProformaFormState> {
 
   // Proforma
   final formKey = GlobalKey<FormState>();
+  final scrollController = ScrollController();
   final proformaNumberController = TextEditingController();
   final proformaDateController = TextEditingController();
   final customerIdController = TextEditingController();
@@ -122,7 +123,7 @@ class ProformaFormCubit extends Cubit<CustomerProformaFormState> {
     final state = this.state as CustomerProformaFormLoaded;
     final formIsNotEmpty = [
       // proformaDateController,
-      proformaNumberController,
+      if (!state.isGenerateAutoProformaNumber) proformaNumberController,
       customerIdController,
       // taxIdController,
       portsController,
@@ -213,10 +214,17 @@ class ProformaFormCubit extends Cubit<CustomerProformaFormState> {
 
   Future createProforma() async {
     final state = this.state as CustomerProformaFormLoaded;
+
+    final isFormValid = formKey.currentState!.validate();
+
+    if (!isFormValid) {
+      scrollController.jumpTo(0);
+      return;
+    }
     emit(state.copyWith(loading: true));
 
     final params = CreateCustomerProformaUseCaseParams(
-      proformaNumber: proformaNumberController.text,
+      proformaNumber: state.isGenerateAutoProformaNumber ? null : proformaNumberController.text,
       date: proformaDateController.text,
       customerId: int.parse(customerIdController.text),
       taxId: taxIdController.text,
@@ -287,5 +295,10 @@ class ProformaFormCubit extends Cubit<CustomerProformaFormState> {
   cancelChanges() {
     final state = this.state as CustomerProformaFormLoaded;
     init(proforma: state.proforma);
+  }
+
+  toggleGenerateAutoProformaNumber() {
+    final state = this.state as CustomerProformaFormLoaded;
+    emit(state.copyWith(isGenerateAutoProformaNumber: !state.isGenerateAutoProformaNumber));
   }
 }

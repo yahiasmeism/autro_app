@@ -44,7 +44,7 @@ class BillListTile extends StatelessWidget {
             const SizedBox(width: 16),
             _buildCell(
               flex: 4,
-              text: "\$${billEntity.amount.toStringAsFixed(2)}",
+              text: "€${billEntity.amount.toStringAsFixed(2)}",
             ),
             const SizedBox(width: 16),
             _buildCell(

@@ -64,7 +64,7 @@ class BillsSummaryTopSection extends StatelessWidget {
                       child: SkeletonContainer.rounded(width: 100, height: 16),
                     )
                   : Text(
-                      '\$${amount.toStringAsFixed(2)}',
+                      '€${amount.toStringAsFixed(2)}',
                       style: const TextStyle(
                         fontSize: 16,
                         fontWeight: FontWeight.bold,

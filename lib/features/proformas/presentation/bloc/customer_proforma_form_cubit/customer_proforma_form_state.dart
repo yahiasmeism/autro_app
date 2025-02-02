@@ -18,6 +18,7 @@ final class CustomerProformaFormLoaded extends CustomerProformaFormState {
   final bool addGoodDescriptionEnabled;
   final bool cancelEnabled;
   final bool clearEnabled;
+  final bool isGenerateAutoProformaNumber;
   final List<ProformaGoodDescriptionDto> goodDescriptionsList;
   const CustomerProformaFormLoaded({
     this.proforma,
@@ -29,6 +30,7 @@ final class CustomerProformaFormLoaded extends CustomerProformaFormState {
     this.clearEnabled = false,
     this.goodDescriptionsList = const [],
     this.addGoodDescriptionEnabled = false,
+    this.isGenerateAutoProformaNumber = false,
   });
   @override
   List<Object?> get props => [
@@ -41,6 +43,7 @@ final class CustomerProformaFormLoaded extends CustomerProformaFormState {
         clearEnabled,
         goodDescriptionsList,
         addGoodDescriptionEnabled,
+        isGenerateAutoProformaNumber,
       ];
 
   CustomerProformaFormLoaded copyWith({
@@ -53,6 +56,7 @@ final class CustomerProformaFormLoaded extends CustomerProformaFormState {
     bool? loading,
     Option<Either<Failure, String>>? failureOrSuccessOption,
     bool? addGoodDescriptionEnabled,
+    bool? isGenerateAutoProformaNumber,
   }) {
     return CustomerProformaFormLoaded(
       addGoodDescriptionEnabled: addGoodDescriptionEnabled ?? this.addGoodDescriptionEnabled,
@@ -64,6 +68,7 @@ final class CustomerProformaFormLoaded extends CustomerProformaFormState {
       clearEnabled: clearEnabled ?? this.clearEnabled,
       loading: loading ?? this.loading,
       failureOrSuccessOption: failureOrSuccessOption ?? none(),
+      isGenerateAutoProformaNumber: isGenerateAutoProformaNumber ?? this.isGenerateAutoProformaNumber,
     );
   }
 

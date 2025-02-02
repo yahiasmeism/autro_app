@@ -14,6 +14,10 @@ class Assets {
   /// assets/icons/contact-details.svg
   static const String iconsContactDetails = "assets/icons/contact-details.svg";
 
+  /// Assets for iconsDate
+  /// assets/icons/date.svg
+  static const String iconsDate = "assets/icons/date.svg";
+
   /// Assets for iconsDeal
   /// assets/icons/deal.svg
   static const String iconsDeal = "assets/icons/deal.svg";
@@ -34,6 +38,10 @@ class Assets {
   /// assets/icons/email.svg
   static const String iconsEmail = "assets/icons/email.svg";
 
+  /// Assets for iconsExpenses
+  /// assets/icons/expenses.svg
+  static const String iconsExpenses = "assets/icons/expenses.svg";
+
   /// Assets for iconsEye
   /// assets/icons/eye.svg
   static const String iconsEye = "assets/icons/eye.svg";
@@ -50,6 +58,10 @@ class Assets {
   /// assets/icons/location.svg
   static const String iconsLocation = "assets/icons/location.svg";
 
+  /// Assets for iconsNetProfit
+  /// assets/icons/net_profit.svg
+  static const String iconsNetProfit = "assets/icons/net_profit.svg";
+
   /// Assets for iconsNotes
   /// assets/icons/notes.svg
   static const String iconsNotes = "assets/icons/notes.svg";
@@ -58,9 +70,21 @@ class Assets {
   /// assets/icons/phone.svg
   static const String iconsPhone = "assets/icons/phone.svg";
 
+  /// Assets for iconsProduct
+  /// assets/icons/product.svg
+  static const String iconsProduct = "assets/icons/product.svg";
+
   /// Assets for iconsSave
   /// assets/icons/save.svg
   static const String iconsSave = "assets/icons/save.svg";
+
+  /// Assets for iconsStatus
+  /// assets/icons/status.svg
+  static const String iconsStatus = "assets/icons/status.svg";
+
+  /// Assets for iconsTime
+  /// assets/icons/time.svg
+  static const String iconsTime = "assets/icons/time.svg";
 
   /// Assets for iconsTimeHalf
   /// assets/icons/time-half.svg

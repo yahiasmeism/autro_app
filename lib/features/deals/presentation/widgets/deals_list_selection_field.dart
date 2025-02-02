@@ -245,9 +245,9 @@ class _DealsListSelectionFieldState extends State<DealsListSelectionField> {
             trailing: isSelected ? const Icon(Icons.check, color: AppColors.deepGreen) : null,
             selectedColor: Colors.black12,
             shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(8)),
-            title: Text(item.formattedSeriesNumber, style: TextStyles.font16Regular),
+            title: Text(item.dealNumber, style: TextStyles.font16Regular),
             onTap: () {
-              Navigator.pop(context, SelectableItemModel<DealEntity>(label: item.formattedSeriesNumber, value: item));
+              Navigator.pop(context, SelectableItemModel<DealEntity>(label: item.dealNumber, value: item));
               context.read<DealsListBloc>().add(const SearchInputChangedEvent(keyword: ''));
             },
           );

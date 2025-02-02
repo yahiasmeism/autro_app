@@ -4,10 +4,10 @@ import 'package:equatable/equatable.dart';
 class ShippingInvoiceEntity extends Equatable {
   final int id;
   final int dealId;
+  final String shippingInvoiceNumber;
   final String shippingCompanyName;
   final double shippingCost;
   final String typeMaterialName;
-  final String currency;
   final DateTime shippingDate;
   final String attachmentUrl;
   final CustomerInvoiceEntity invoice;
@@ -19,12 +19,12 @@ class ShippingInvoiceEntity extends Equatable {
     required this.shippingCost,
     required this.attachmentUrl,
     required this.typeMaterialName,
-    required this.currency,
     required this.shippingDate,
     required this.invoice,
+    required this.shippingInvoiceNumber,
   });
 
-  String get formattedDealSeriesNumber => '#Deal${dealId.toString().padLeft(4, '0')}';
+  String get formmatedShippingCost => "€${shippingCost.toStringAsFixed(2)}";
   @override
   List<Object?> get props => [
         id,
@@ -33,21 +33,10 @@ class ShippingInvoiceEntity extends Equatable {
         shippingCost,
         attachmentUrl,
         typeMaterialName,
-        currency,
         shippingDate,
         invoice,
+        shippingInvoiceNumber,
       ];
-
-  String get currencySymbol {
-    switch (currency) {
-      case 'EUR':
-        return '€';
-      case 'USD':
-        return '\$';
-      default:
-        return '';
-    }
-  }
 
   bool get hasAttachment => attachmentUrl.isNotEmpty;
 

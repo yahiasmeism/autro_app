@@ -4,10 +4,19 @@ import 'package:flutter/material.dart';
 
 ThemeData getTheme() {
   return ThemeData(
+    scrollbarTheme: ScrollbarThemeData(
+      thumbColor: WidgetStateProperty.all(AppColors.secondaryOpacity25),
+      trackColor: WidgetStateProperty.all(AppColors.secondaryOpacity25),
+      interactive: true,
+      radius: Radius.zero,
+      thickness: WidgetStateProperty.all(10),
+    ),
     appBarTheme: AppBarTheme(
       titleTextStyle: TextStyles.font24SemiBold,
       titleSpacing: 24,
     ),
+    useMaterial3: true,
+    dividerTheme: DividerThemeData(color: AppColors.secondaryOpacity13, indent: 0, endIndent: 0),
     iconTheme: const IconThemeData(color: AppColors.iconColor),
     scaffoldBackgroundColor: AppColors.scaffoldBackgroundColor,
     colorScheme: ColorScheme.fromSeed(

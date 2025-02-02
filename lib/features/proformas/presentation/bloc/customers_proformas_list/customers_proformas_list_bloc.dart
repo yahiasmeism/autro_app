@@ -9,6 +9,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:injectable/injectable.dart';
 
 import '../../../../../core/common/domin/dto/pagination_query_payload_dto.dart';
+import '../../../../deals/presentation/bloc/deal_details/deal_details_cubit.dart';
 import '../../../../deals/presentation/bloc/deals_list/deals_list_bloc.dart';
 import '../../../domin/entities/customer_proforma_entity.dart';
 import '../../../domin/use_cases/create_customer_proforma_use_case.dart';
@@ -31,7 +32,7 @@ class CustomersProformasListBloc extends Bloc<ProformasListEvent, CustomersProfo
     this.updateProformaUsecase,
     this.createProformaUsecase,
   ) : super(CustomersProformasListInitial()) {
-    on<ProformasListEvent>(_mapEvents,transformer: (events, mapper) => events.asyncExpand(mapper));
+    on<ProformasListEvent>(_mapEvents, transformer: (events, mapper) => events.asyncExpand(mapper));
   }
 
   int get totalCount => proformasRepository.totalCount;
@@ -140,6 +141,7 @@ class CustomersProformasListBloc extends Bloc<ProformasListEvent, CustomersProfo
     );
     if (event.context.mounted) {
       event.context.read<DealsListBloc>().add(GetDealsListEvent());
+      event.context.read<DealDetailsCubit>().refresh();
     }
   }
 

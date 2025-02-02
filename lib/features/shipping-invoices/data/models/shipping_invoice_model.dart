@@ -14,9 +14,9 @@ class ShippingInvoiceModel extends ShippingInvoiceEntity implements BaseMapable 
     required super.shippingCost,
     required super.attachmentUrl,
     required super.typeMaterialName,
-    required super.currency,
     required super.shippingDate,
     required super.invoice,
+    required super.shippingInvoiceNumber,
   });
 
   factory ShippingInvoiceModel.fromJson(Map<String, dynamic> json) => ShippingInvoiceModel(
@@ -26,9 +26,9 @@ class ShippingInvoiceModel extends ShippingInvoiceEntity implements BaseMapable 
         shippingCost: (json['shipping_cost'] as num?).toDoubleOrZero,
         attachmentUrl: (json['attachment'] as String?).orEmpty,
         typeMaterialName: (json['type_material_name'] as String?).orEmpty,
-        currency: (json['currency'] as String?).orEmpty,
         shippingDate: DateTime.tryParse((json['shipping_date'] as String?).orEmpty).orDefault,
         invoice: CustomerInvoiceModel.fromJson((json['customer_invoice'] as Map<String, dynamic>?).orEmpty),
+        shippingInvoiceNumber: (json['shipping_invoice_number'] as String?).orEmpty,
       );
 
   @override
@@ -40,7 +40,6 @@ class ShippingInvoiceModel extends ShippingInvoiceEntity implements BaseMapable 
       'shippingCost': shippingCost,
       'attachmentUrl': attachmentUrl,
       'typeMaterialName': typeMaterialName,
-      'currency': currency,
       'shippingDate': shippingDate.formattedDateYYYYMMDD,
     };
   }

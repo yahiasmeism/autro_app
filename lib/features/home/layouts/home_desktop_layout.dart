@@ -45,7 +45,7 @@ class HomeWrapperDesktopLayout extends StatelessWidget {
     final screens = <MenuItemType, Widget>{
       MenuItemType.dashboard: _buildNavigator(const Center(child: Text('Dashboard'))),
       MenuItemType.invoices: _buildNavigator(const InvoicesListScreen()),
-      MenuItemType.deals: _buildNavigator(const Center(child: DealsListScreen())),
+      MenuItemType.deals: _buildNavigator(Center(child: DealsListScreen(key: UniqueKey()))),
       MenuItemType.proformas: _buildNavigator(const ProformasListScreen()),
       MenuItemType.customers: _buildNavigator(const CustomersListScreen()),
       MenuItemType.shipping: _buildNavigator(const Center(child: ShippingInvoicesListScreen())),
@@ -54,8 +54,8 @@ class HomeWrapperDesktopLayout extends StatelessWidget {
       MenuItemType.suppliers: _buildNavigator(const SuppliersListScreen()),
       MenuItemType.messages: _buildNavigator(const Center(child: Text('Messages'))),
     };
-
     return IndexedStack(
+      sizing: StackFit.expand,
       index: screens.keys.toList().indexOf(state.selectedItem.type),
       children: screens.values.toList(),
     );

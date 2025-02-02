@@ -10,7 +10,7 @@ class ProformaFormActions extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return BlocBuilder<ProformaFormCubit, CustomerProformaFormState>(
+    return BlocBuilder<CustomerProformaFormCubit, CustomerProformaFormState>(
       builder: (context, state) {
         bool saveEnabled = false;
         bool updateMode = false;
@@ -25,16 +25,16 @@ class ProformaFormActions extends StatelessWidget {
             const Spacer(),
             if (cancelEnabled)
               CancelOutlineButton(
-                onPressed: context.read<ProformaFormCubit>().cancelChanges,
+                onPressed: context.read<CustomerProformaFormCubit>().cancelChanges,
               ),
             const SizedBox(width: 8),
             SaveOutLineButton(
                 onPressed: saveEnabled
                     ? () {
                         if (updateMode) {
-                          context.read<ProformaFormCubit>().updateProforma();
+                          context.read<CustomerProformaFormCubit>().updateProforma();
                         } else {
-                          context.read<ProformaFormCubit>().createProforma();
+                          context.read<CustomerProformaFormCubit>().createProforma();
                         }
                       }
                     : null),

@@ -26,7 +26,6 @@ class UpdateShippingInvoiceUseCaseParams extends CreateShippingInvoiceUseCasePar
     required super.shippingCompanyName,
     required super.shippingCost,
     required super.typeMaterialName,
-    required super.currency,
     required super.shippingDate,
     super.deleteAttachment,
     super.attachmentPath,
@@ -39,7 +38,6 @@ class UpdateShippingInvoiceUseCaseParams extends CreateShippingInvoiceUseCasePar
         shippingCompanyName,
         shippingCost,
         typeMaterialName,
-        currency,
         shippingDate,
         attachmentPath,
       ];
