@@ -49,4 +49,9 @@ abstract class ApiPaths {
   // deals
   static const String deals = 'deals';
   static String dealById(int id) => 'deals/$id';
+
+  // deal bills
+  static String dealBillById(int billId) => 'deals/bills/$billId';
+  static String dealBillsByDealId(int dealId) => 'deals/$dealId/bills';
+  static String dealBills = 'deals/bills';
 }
