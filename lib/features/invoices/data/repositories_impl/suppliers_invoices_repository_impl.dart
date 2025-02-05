@@ -70,15 +70,15 @@ class SuppliersInvoicesRepositoryImpl extends SupplierInvoicesRepository {
   @override
   Future<Either<Failure, List<SupplierInvoiceEntity>>> getInvoicesList(GetSupplierInvoicesListUseCaseParams params) async {
     if (await networkInfo.isConnected) {
-      // try {
+      try {
       final paginationFilterBody = PaginationFilterRequest.fromDTO(params.dto);
       final body = GetSuppliersInvoicesListRequest(paginationFilterRequest: paginationFilterBody);
       final paginationList = await remoteDataSource.getInvoicesList(body);
       _totalCount = paginationList.total;
       return Right(paginationList.data);
-      // } catch (e) {
-      //   return Left(ErrorHandler.handle(e));
-      // }
+      } catch (e) {
+        return Left(ErrorHandler.handle(e));
+      }
     } else {
       return Left(ErrorHandler.noInternet());
     }
