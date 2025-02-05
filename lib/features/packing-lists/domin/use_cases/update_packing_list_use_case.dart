@@ -12,7 +12,7 @@ class UpdatePackingListUseCase extends UseCase<PackingListEntity, UpdatePackingL
   UpdatePackingListUseCase({required this.packingListsRepository});
   @override
   Future<Either<Failure, PackingListEntity>> call(UpdatePackingListUseCaseParams params) async {
-    return await packingListsRepository.updatePackingList();
+    return await packingListsRepository.updatePackingList(params);
   }
 }
 

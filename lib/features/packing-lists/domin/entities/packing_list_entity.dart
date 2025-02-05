@@ -2,11 +2,12 @@ import 'package:autro_app/features/packing-lists/domin/entities/packing_list_ent
 import 'package:equatable/equatable.dart';
 
 class PackingListEntity extends Equatable {
+  final int id;
   final String details;
-  final List<PackingListEntityDescirption> descriptions;
+  final List<PackingListDescriptionEntity> descriptions;
 
-  const PackingListEntity({required this.details, required this.descriptions});
+  const PackingListEntity({required this.details, required this.descriptions, required this.id});
 
   @override
-  List<Object?> get props => [details, descriptions];
+  List<Object?> get props => [details, descriptions, id];
 }
