@@ -1,10 +1,10 @@
 import 'package:autro_app/features/proformas/domin/entities/customer_proforma_entity.dart';
 import 'package:flutter/material.dart';
 
-import 'proforma_list_tile.dart';
+import 'customer_proforma_list_tile.dart';
 
-class ProformasList extends StatelessWidget {
-  const ProformasList({super.key, required this.proformas});
+class CustomerProformasList extends StatelessWidget {
+  const CustomerProformasList({super.key, required this.proformas});
   final List<CustomerProformaEntity> proformas;
   @override
   Widget build(BuildContext context) {
@@ -15,7 +15,7 @@ class ProformasList extends StatelessWidget {
       },
       itemCount: proformas.length,
       itemBuilder: (context, index) {
-        return ProformaListTile(proformaEntity: proformas[index]);
+        return CustomerProformaListTile(proformaEntity: proformas[index]);
       },
     );
   }

@@ -13,6 +13,7 @@ import 'package:autro_app/features/suppliers/presentation/bloc/suppliers_list/su
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import '../../home/screens/home_wrapper.dart';
+import '../../proformas/presentation/bloc/suppliers_proformas_list/suppliers_proformas_list_bloc.dart';
 import '../../settings/presentation/bloc/invoice_settings/invoice_settings_cubit.dart';
 import '../bloc/app_auth/app_auth_bloc.dart';
 import 'login_screen.dart';
@@ -69,6 +70,7 @@ class AuthWrapper extends StatelessWidget {
       context.read<ShippingInvoicesListBloc>().add(GetShippingInvoicesListEvent());
       context.read<DealsListBloc>().add(GetDealsListEvent());
       context.read<SuppliersInvoicesListBloc>().add(GetSuppliersInvoicesListEvent());
+      context.read<SuppliersProformasListBloc>().add(GetSuppliersProformasListEvent());
     }
   }
 }

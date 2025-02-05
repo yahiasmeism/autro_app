@@ -11,6 +11,7 @@ import 'package:autro_app/features/deals/presentation/bloc/deal_details/deal_det
 import 'package:autro_app/features/deals/presentation/bloc/deals_list/deals_list_bloc.dart';
 import 'package:autro_app/features/home/bloc/home_bloc.dart';
 import 'package:autro_app/features/proformas/presentation/bloc/customers_proformas_list/customers_proformas_list_bloc.dart';
+import 'package:autro_app/features/proformas/presentation/bloc/suppliers_proformas_list/suppliers_proformas_list_bloc.dart';
 import 'package:autro_app/features/settings/presentation/bloc/bank_accounts_list/bank_accounts_list_cubit.dart';
 import 'package:autro_app/features/settings/presentation/bloc/company/company_cubit.dart';
 import 'package:autro_app/features/settings/presentation/bloc/users_list/users_list_cubit.dart';
@@ -109,6 +110,9 @@ class MyApp extends StatelessWidget {
         ),
         BlocProvider(
           create: (context) => sl<SuppliersInvoicesListBloc>(),
+        ),
+        BlocProvider(
+          create: (context) => sl<SuppliersProformasListBloc>(),
         ),
       ],
       child: MaterialApp(

@@ -4,8 +4,8 @@ import 'package:autro_app/features/proformas/presentation/bloc/customers_proform
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
-class ProformaSearchBar extends StatelessWidget {
-  const ProformaSearchBar({super.key});
+class CustomerProformaSearchBar extends StatelessWidget {
+  const CustomerProformaSearchBar({super.key});
 
   @override
   Widget build(BuildContext context) {

@@ -11,8 +11,8 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import '../../../../core/utils/nav_util.dart';
 import '../bloc/customers_proformas_list/customers_proformas_list_bloc.dart';
 
-class ProformaListTile extends StatelessWidget {
-  const ProformaListTile({super.key, required this.proformaEntity});
+class CustomerProformaListTile extends StatelessWidget {
+  const CustomerProformaListTile({super.key, required this.proformaEntity});
   final CustomerProformaEntity proformaEntity;
 
   @override

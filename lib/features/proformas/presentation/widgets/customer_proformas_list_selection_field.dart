@@ -12,8 +12,8 @@ import 'package:autro_app/features/proformas/presentation/bloc/customers_proform
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
-class ProformasListSelectionField extends StatefulWidget {
-  const ProformasListSelectionField({
+class CustomerProformasListSelectionField extends StatefulWidget {
+  const CustomerProformasListSelectionField({
     super.key,
     required this.nameController,
     required this.idController,
@@ -24,10 +24,10 @@ class ProformasListSelectionField extends StatefulWidget {
   final Function(CustomerProformaEntity proforma)? onItemTap;
 
   @override
-  State createState() => _ProformasListSelectionFieldState();
+  State createState() => _CustomerProformasListSelectionFieldState();
 }
 
-class _ProformasListSelectionFieldState extends State<ProformasListSelectionField> {
+class _CustomerProformasListSelectionFieldState extends State<CustomerProformasListSelectionField> {
   final ScrollController scrollController = ScrollController();
   bool hasPagination = false;
 

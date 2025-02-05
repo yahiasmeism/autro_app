@@ -7,8 +7,8 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import '../bloc/customers_proformas_list/customers_proformas_list_bloc.dart';
 import '../screens/customer_proforma_form_screen.dart';
 
-class ProformaPaginationBottomBar extends StatelessWidget {
-  const ProformaPaginationBottomBar({super.key});
+class CustomerProformaPaginationBottomBar extends StatelessWidget {
+  const CustomerProformaPaginationBottomBar({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -40,7 +40,7 @@ class ProformaPaginationBottomBar extends StatelessWidget {
                   context.read<CustomersProformasListBloc>().add(NextPageEvent());
                 }
               : null,
-          labelAddButton: 'Add New Proforma',
+          labelAddButton: 'Add New Customer Proforma',
           onAddTap: isLoaded
               ? () {
                   NavUtil.push(context, const ProformaFormScreen(formType: FormType.create));
