@@ -6,15 +6,19 @@ import 'package:autro_app/features/packing-lists/data/model/packing_list_descrip
 
 import '../../domin/entities/packing_list_entity.dart';
 
-class PackingListModel extends PackingListEntity implements BaseMapable{
+class PackingListModel extends PackingListEntity implements BaseMapable {
   const PackingListModel({
     required super.details,
     required super.descriptions,
     required super.id,
+    required super.dealId,
+    required super.number,
   });
 
   factory PackingListModel.fromJson(Map<String, dynamic> json) {
     return PackingListModel(
+      dealId: (json['dealId'] as int?).toIntOrZero,
+      number: (json['number'] as String?).orEmpty,
       details: (json['details'] as String?).orEmpty,
       descriptions: List<PackingListDescriptionModel>.of(
         (json['descriptions'] as List<dynamic>?).orEmpty.map((e) => PackingListDescriptionModel.fromJson(e)),
@@ -22,7 +26,7 @@ class PackingListModel extends PackingListEntity implements BaseMapable{
       id: (json['id'] as int?).toIntOrZero,
     );
   }
-  
+
   @override
   Map<String, dynamic> toJson() {
     return {};

@@ -143,6 +143,22 @@ import 'package:autro_app/features/invoices/presentation/bloc/supplier_invoice_f
     as _i254;
 import 'package:autro_app/features/invoices/presentation/bloc/suppliers_invoices_list/suppliers_invoices_list_bloc.dart'
     as _i519;
+import 'package:autro_app/features/packing-lists/data/data_sources/packing_lists_remote_data_source.dart'
+    as _i486;
+import 'package:autro_app/features/packing-lists/data/repositories/packing_lists_repository_impl.dart'
+    as _i306;
+import 'package:autro_app/features/packing-lists/domin/reposetories/packing_lists_repository.dart'
+    as _i331;
+import 'package:autro_app/features/packing-lists/domin/use_cases/create_packing_list_use_case.dart'
+    as _i945;
+import 'package:autro_app/features/packing-lists/domin/use_cases/delete_packing_list_use_case.dart'
+    as _i328;
+import 'package:autro_app/features/packing-lists/domin/use_cases/get_all_packing_lists_use_case.dart'
+    as _i3;
+import 'package:autro_app/features/packing-lists/domin/use_cases/update_packing_list_use_case.dart'
+    as _i494;
+import 'package:autro_app/features/packing-lists/presentation/bloc/packing_lists/packing_lists_bloc.dart'
+    as _i79;
 import 'package:autro_app/features/proformas/data/data_sources/remote/customers_proformas_remote_data_source.dart'
     as _i336;
 import 'package:autro_app/features/proformas/data/data_sources/remote/suppliers_invoices_remote_data_source.dart'
@@ -288,6 +304,9 @@ extension GetItInjectableX on _i174.GetIt {
             client: gh<_i228.ApiClient>()));
     gh.lazySingleton<_i509.SettingsRemoteDataSource>(() =>
         _i509.SettingsRemoteDataSourceImpl(client: gh<_i228.ApiClient>()));
+    gh.lazySingleton<_i486.PackingListsRemoteDataSource>(() =>
+        _i486.PackingListsRemoteDataSourceImpl(
+            apiClient: gh<_i228.ApiClient>()));
     gh.lazySingleton<_i77.BillsRemoteDataSource>(
         () => _i77.BillsRemoteDataSourceImpl(apiClient: gh<_i228.ApiClient>()));
     gh.lazySingleton<_i514.SuppliersInvoicesRemoteDataSource>(() =>
@@ -362,6 +381,12 @@ extension GetItInjectableX on _i174.GetIt {
     gh.lazySingleton<_i920.GetCustomersInvoicesListUseCase>(() =>
         _i920.GetCustomersInvoicesListUseCase(
             repository: gh<_i936.CustomerInvoicesRepository>()));
+    gh.lazySingleton<_i331.PackingListsRepository>(
+        () => _i306.PackingListsRepositoryImpl(
+              packingListsRemoteDataSource:
+                  gh<_i486.PackingListsRemoteDataSource>(),
+              networkInfo: gh<_i646.NetworkInfo>(),
+            ));
     gh.lazySingleton<_i712.SuppliersRepository>(
         () => _i903.SuppliersRepositoryImpl(
               remoteDataSource: gh<_i829.SuppliersRemoteDataSource>(),
@@ -532,6 +557,18 @@ extension GetItInjectableX on _i174.GetIt {
         _i419.GetDealsListUseCase(repository: gh<_i343.DealsRepository>()));
     gh.lazySingleton<_i473.UpdateDealUseCase>(
         () => _i473.UpdateDealUseCase(repository: gh<_i343.DealsRepository>()));
+    gh.lazySingleton<_i945.CreatePackingListUseCase>(() =>
+        _i945.CreatePackingListUseCase(
+            packingListsRepository: gh<_i331.PackingListsRepository>()));
+    gh.lazySingleton<_i328.DeletePackingListUseCase>(() =>
+        _i328.DeletePackingListUseCase(
+            packingListsRepository: gh<_i331.PackingListsRepository>()));
+    gh.lazySingleton<_i3.GetAllPackingListsUseCase>(() =>
+        _i3.GetAllPackingListsUseCase(
+            packingListsRepository: gh<_i331.PackingListsRepository>()));
+    gh.lazySingleton<_i494.UpdatePackingListUseCase>(() =>
+        _i494.UpdatePackingListUseCase(
+            packingListsRepository: gh<_i331.PackingListsRepository>()));
     gh.factory<_i962.CustomersInvoicesListBloc>(
         () => _i962.CustomersInvoicesListBloc(
               gh<_i920.GetCustomersInvoicesListUseCase>(),
@@ -615,6 +652,14 @@ extension GetItInjectableX on _i174.GetIt {
               gh<_i163.CreateShippingInvoiceUseCase>(),
               gh<_i766.UpdateShippingInvoicesUseCase>(),
             ));
+    gh.factory<_i79.PackingListsBloc>(() => _i79.PackingListsBloc(
+          gh<_i3.GetAllPackingListsUseCase>(),
+          gh<_i331.PackingListsRepository>(),
+          gh<_i328.DeletePackingListUseCase>(),
+          gh<_i494.UpdatePackingListUseCase>(),
+          gh<_i945.CreatePackingListUseCase>(),
+          gh<_i3.GetAllPackingListsUseCase>(),
+        ));
     gh.factory<_i594.DealsListBloc>(() => _i594.DealsListBloc(
           gh<_i419.GetDealsListUseCase>(),
           gh<_i343.DealsRepository>(),

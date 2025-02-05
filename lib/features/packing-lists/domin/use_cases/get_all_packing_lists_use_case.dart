@@ -4,9 +4,10 @@ import 'package:autro_app/core/interfaces/use_case.dart';
 import 'package:autro_app/features/packing-lists/domin/entities/packing_list_entity.dart';
 import 'package:dartz/dartz.dart';
 import 'package:equatable/equatable.dart';
+import 'package:injectable/injectable.dart';
 
 import '../reposetories/packing_lists_repository.dart';
-
+@lazySingleton
 class GetAllPackingListsUseCase extends UseCase<List<PackingListEntity>, GetAllPackingListsUseCaseParams> {
   final PackingListsRepository packingListsRepository;
 

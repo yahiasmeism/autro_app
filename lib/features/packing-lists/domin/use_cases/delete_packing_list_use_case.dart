@@ -1,9 +1,10 @@
 import 'package:autro_app/core/errors/failures.dart';
 import 'package:autro_app/core/interfaces/use_case.dart';
 import 'package:dartz/dartz.dart';
+import 'package:injectable/injectable.dart';
 
 import '../reposetories/packing_lists_repository.dart';
-
+@lazySingleton
 class DeletePackingListUseCase extends UseCase<Unit, int> {
   final PackingListsRepository packingListsRepository;
 

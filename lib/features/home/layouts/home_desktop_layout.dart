@@ -4,6 +4,7 @@ import 'package:autro_app/features/customers/presentation/screens/customers_list
 import 'package:autro_app/features/deals/presentation/screens/deals_list_screen.dart';
 import 'package:autro_app/features/home/bloc/home_bloc.dart';
 import 'package:autro_app/features/home/widget/custom_drawer.dart';
+import 'package:autro_app/features/packing-lists/presentation/screen/packing_lists_screen.dart';
 import 'package:autro_app/features/settings/presentation/screens/settings_screen.dart';
 import 'package:autro_app/features/shipping-invoices/presentation/screens/shipping_invoices_list_screen.dart';
 import 'package:autro_app/features/suppliers/presentation/screens/suppliers_list_screen.dart';
@@ -52,6 +53,7 @@ class HomeWrapperDesktopLayout extends StatelessWidget {
       MenuItemType.settings: _buildNavigator(const SettingsScreen()),
       MenuItemType.bills: _buildNavigator(const Center(child: BillsListScreen())),
       MenuItemType.suppliers: _buildNavigator(const SuppliersListScreen()),
+      MenuItemType.packingLists: _buildNavigator(const PackingListsScreen()),
       MenuItemType.messages: _buildNavigator(const Center(child: Text('Messages'))),
     };
     return IndexedStack(

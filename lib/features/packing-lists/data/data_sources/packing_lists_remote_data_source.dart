@@ -5,6 +5,7 @@ import 'package:autro_app/core/common/data/responses/pagination_list_response.da
 import 'package:autro_app/core/errors/error_handler.dart';
 import 'package:autro_app/core/errors/exceptions.dart';
 import 'package:autro_app/features/packing-lists/data/model/requests/get_all_packing_lists_request.dart';
+import 'package:injectable/injectable.dart';
 
 import '../model/packing_list_model.dart';
 import '../model/requests/create_packing_list_request.dart';
@@ -18,6 +19,7 @@ abstract class PackingListsRemoteDataSource {
   Future<PackingListModel> deletePackingList(int id);
 }
 
+@LazySingleton(as: PackingListsRemoteDataSource)
 class PackingListsRemoteDataSourceImpl implements PackingListsRemoteDataSource {
   final ApiClient apiClient;
 
