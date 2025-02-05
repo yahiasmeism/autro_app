@@ -27,7 +27,7 @@ class CustomersInvoicesRemoteDataSourceImpl implements CustomersInvoicesRemoteDa
   CustomersInvoicesRemoteDataSourceImpl({required this.client});
   @override
   Future<CustomerInvoiceModel> createInvoice(CreateCustomerInvoiceRequest body) async {
-    const path = ApiPaths.invoices;
+    const path = ApiPaths.customerInvoices;
     final json = body.toJson();
     final request = ApiRequest(path: path, body: json);
     final response = await client.post(request);
@@ -40,7 +40,7 @@ class CustomersInvoicesRemoteDataSourceImpl implements CustomersInvoicesRemoteDa
 
   @override
   Future<Unit> deleteInvoice(int invoiceId) async {
-    final path = ApiPaths.invoiceById(invoiceId);
+    final path = ApiPaths.customerInvoiceById(invoiceId);
     final request = ApiRequest(path: path);
     final response = await client.delete(request);
     if (ResponseCode.isOk(response.statusCode)) {
@@ -52,7 +52,7 @@ class CustomersInvoicesRemoteDataSourceImpl implements CustomersInvoicesRemoteDa
 
   @override
   Future<CustomerInvoiceModel> getInvoiceById(int invoiceId) async {
-    final path = ApiPaths.invoiceById(invoiceId);
+    final path = ApiPaths.customerInvoiceById(invoiceId);
     final request = ApiRequest(path: path);
     final response = await client.get(request);
     if (ResponseCode.isOk(response.statusCode)) {
@@ -64,7 +64,7 @@ class CustomersInvoicesRemoteDataSourceImpl implements CustomersInvoicesRemoteDa
 
   @override
   Future<PaginationListResponse<CustomerInvoiceModel>> getInvoicesList(GetCustomersInvoicesListRequest body) async {
-    const path = ApiPaths.invoices;
+    const path = ApiPaths.customerInvoices;
     final request = ApiRequest(path: path, queryParameters: body.toJson());
     final response = await client.get(request);
     if (ResponseCode.isOk(response.statusCode)) {
@@ -77,7 +77,7 @@ class CustomersInvoicesRemoteDataSourceImpl implements CustomersInvoicesRemoteDa
 
   @override
   Future<CustomerInvoiceModel> updateInvoice(UpdateCustomerInvoiceRequest body) async {
-    final path = ApiPaths.invoiceById(body.id);
+    final path = ApiPaths.customerInvoiceById(body.id);
     final request = ApiRequest(path: path, body: body.toJson());
     final response = await client.put(request);
     if (ResponseCode.isOk(response.statusCode)) {

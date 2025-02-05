@@ -1,6 +1,8 @@
 import 'package:autro_app/features/customers/domin/entities/customer_entity.dart';
 import 'package:autro_app/features/invoices/domin/entities/customer_invoice_entity.dart';
+import 'package:autro_app/features/invoices/domin/entities/supplier_invoice_entity.dart';
 import 'package:autro_app/features/proformas/domin/entities/customer_proforma_entity.dart';
+import 'package:autro_app/features/proformas/domin/entities/supplier_proforma_entity.dart';
 import 'package:autro_app/features/settings/domin/entities/bank_account_entity.dart';
 import 'package:autro_app/features/shipping-invoices/domin/entities/shipping_invoice_entity.dart';
 import 'package:autro_app/features/suppliers/domin/entities/supplier_entity.dart';
@@ -17,6 +19,8 @@ class DealEntity extends Equatable {
   final DateTime? deliveryDate;
   final DateTime? etaDate;
   final CustomerProformaEntity? customerProforma;
+  final SupplierInvoiceEntity? supplierInvoiceEntity;
+  final SupplierProformaEntity? supplierProformaEntity;
   final CustomerInvoiceEntity? customerInvoice;
   final ShippingInvoiceEntity? shippingInvoice;
   final double totalRevenue;
@@ -45,6 +49,8 @@ class DealEntity extends Equatable {
     required this.supplier,
     required this.dealNumber,
     required this.bankAccount,
+    required this.supplierInvoiceEntity,
+    required this.supplierProformaEntity,
   });
 
   String get formattedTotalRevenue => "€${totalRevenue.toStringAsFixed(2)}";
@@ -74,5 +80,7 @@ class DealEntity extends Equatable {
         supplier,
         dealNumber,
         bankAccount,
+        supplierInvoiceEntity,
+        supplierProformaEntity,
       ];
 }

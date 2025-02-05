@@ -30,12 +30,18 @@ abstract class ApiPaths {
   static const String invoiceSettings = 'invoice-settings';
 
   // customers proformas
-  static const String proformas = 'customers-proformas';
-  static String proformaById(int id) => 'customers-proformas/$id';
+  static const String customerProformas = 'customers-proformas';
+  static String customerProformaById(int id) => 'customers-proformas/$id';
+  // supplier proformas
+  static const String supplierProformas = 'suppliers-proformas';
+  static String supplierProformasById(int id) => 'suppliers-proformas/$id';
 
   // invoices
-  static const String invoices = 'customers-invoices';
-  static String invoiceById(int id) => 'customers-invoices/$id';
+  static const String customerInvoices = 'customers-invoices';
+  static String customerInvoiceById(int id) => 'customers-invoices/$id';
+  // invoices
+  static const String supplierInvoices = 'suppliers-invoices';
+  static String supplierInvoicesById(int id) => 'suppliers-invoices/$id';
 
   // bills
   static const String bills = 'bills';
@@ -49,4 +55,8 @@ abstract class ApiPaths {
   // deals
   static const String deals = 'deals';
   static String dealById(int id) => 'deals/$id';
+
+  // deal bills
+  static String dealBillById(int billId) => 'deals/bills/$billId';
+  static String dealBills(int dealId) => 'deals/$dealId/bills';
 }

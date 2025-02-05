@@ -40,3 +40,6 @@ class SearchInputChangedSuppliersEvent extends SuppliersListEvent {
 }
 
 class AddedUpdatedSupplierEvent extends SuppliersListEvent {}
+
+
+class LoadMoreSuppliersEvent extends SuppliersListEvent {}

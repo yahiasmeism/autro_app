@@ -1,17 +1,17 @@
 import 'package:autro_app/core/constants/enums.dart';
-import 'package:autro_app/features/bills/presentation/screens/proformas_list_screen.dart';
+import 'package:autro_app/features/bills/presentation/screens/bills_list_screen.dart';
 import 'package:autro_app/features/customers/presentation/screens/customers_list_screen.dart';
 import 'package:autro_app/features/deals/presentation/screens/deals_list_screen.dart';
 import 'package:autro_app/features/home/bloc/home_bloc.dart';
 import 'package:autro_app/features/home/widget/custom_drawer.dart';
-import 'package:autro_app/features/proformas/presentation/screens/proformas_list_screen.dart';
 import 'package:autro_app/features/settings/presentation/screens/settings_screen.dart';
 import 'package:autro_app/features/shipping-invoices/presentation/screens/shipping_invoices_list_screen.dart';
 import 'package:autro_app/features/suppliers/presentation/screens/suppliers_list_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
-import '../../invoices/presentation/screens/invoices_list_screen.dart';
+import '../../invoices/presentation/screens/invoices_list_wrapper_screen.dart';
+import '../../proformas/presentation/screens/proformas_list_wrapper_screen.dart';
 
 class HomeWrapperDesktopLayout extends StatelessWidget {
   const HomeWrapperDesktopLayout({super.key});
@@ -44,9 +44,9 @@ class HomeWrapperDesktopLayout extends StatelessWidget {
   Widget _buildSelectedScreen(BuildContext context, HomeLoaded state) {
     final screens = <MenuItemType, Widget>{
       MenuItemType.dashboard: _buildNavigator(const Center(child: Text('Dashboard'))),
-      MenuItemType.invoices: _buildNavigator(const InvoicesListScreen()),
+      MenuItemType.invoices: _buildNavigator(const InvoicesListWrapperScreen()),
       MenuItemType.deals: _buildNavigator(Center(child: DealsListScreen(key: UniqueKey()))),
-      MenuItemType.proformas: _buildNavigator(const ProformasListScreen()),
+      MenuItemType.proformas: _buildNavigator(const ProformasListWrapperScreen()),
       MenuItemType.customers: _buildNavigator(const CustomersListScreen()),
       MenuItemType.shipping: _buildNavigator(const Center(child: ShippingInvoicesListScreen())),
       MenuItemType.settings: _buildNavigator(const SettingsScreen()),

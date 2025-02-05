@@ -81,7 +81,7 @@ class BillsRemoteDataSourceImpl implements BillsRemoteDataSource {
   Future<BillModel> updateBill(UpdateBillRequest body) async {
     final path = ApiPaths.billById(body.id);
     final request = ApiRequest(path: path, body: body.toJson());
-    final response = await apiClient.put(request);
+    final response = await apiClient.post(request);
     if (ResponseCode.isOk(response.statusCode)) {
       final json = response.data;
       return BillModel.fromJson(json);
@@ -89,9 +89,9 @@ class BillsRemoteDataSourceImpl implements BillsRemoteDataSource {
       throw ServerException(response.statusCode, response.statusMessage);
     }
   }
-  
+
   @override
-  Future<BillsSummaryModel> getBillsSummary()async {
+  Future<BillsSummaryModel> getBillsSummary() async {
     const path = ApiPaths.billsSummary;
     final request = ApiRequest(path: path);
     final response = await apiClient.get(request);

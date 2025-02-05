@@ -1,7 +1,7 @@
 import 'package:autro_app/features/invoices/domin/entities/customer_invoice_entity.dart';
 import 'package:flutter/material.dart';
 
-import 'invoice_list_tile.dart';
+import 'customer_invoice_list_tile.dart';
 
 class CustomersInvoicesList extends StatelessWidget {
   const CustomersInvoicesList({super.key, required this.invoices});

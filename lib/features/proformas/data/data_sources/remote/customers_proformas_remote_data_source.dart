@@ -27,7 +27,7 @@ class CustomersProformasRemoteDataSourceImpl implements CustomersProformasRemote
   CustomersProformasRemoteDataSourceImpl({required this.client});
   @override
   Future<CustomerProformaModel> createCustomerProforma(CreateCustomerProformaRequest body) async {
-    const path = ApiPaths.proformas;
+    const path = ApiPaths.customerProformas;
     final json = body.toJson();
     final request = ApiRequest(path: path, body: json);
     final response = await client.post(request);
@@ -40,7 +40,7 @@ class CustomersProformasRemoteDataSourceImpl implements CustomersProformasRemote
 
   @override
   Future<Unit> deleteCustomerProformaProforma(int proformaId) async {
-    final path = ApiPaths.proformaById(proformaId);
+    final path = ApiPaths.customerProformaById(proformaId);
     final request = ApiRequest(path: path);
     final response = await client.delete(request);
     if (ResponseCode.isOk(response.statusCode)) {
@@ -52,7 +52,7 @@ class CustomersProformasRemoteDataSourceImpl implements CustomersProformasRemote
 
   @override
   Future<CustomerProformaModel> getCustomerProformaById(int proformaId) async {
-    final path = ApiPaths.proformaById(proformaId);
+    final path = ApiPaths.customerProformaById(proformaId);
     final request = ApiRequest(path: path);
     final response = await client.get(request);
     if (ResponseCode.isOk(response.statusCode)) {
@@ -64,7 +64,7 @@ class CustomersProformasRemoteDataSourceImpl implements CustomersProformasRemote
 
   @override
   Future<PaginationListResponse<CustomerProformaModel>> getCustomerProformasList(GetCustomersProformasListRequest body) async {
-    const path = ApiPaths.proformas;
+    const path = ApiPaths.customerProformas;
     final request = ApiRequest(path: path, queryParameters: body.toJson());
     final response = await client.get(request);
     if (ResponseCode.isOk(response.statusCode)) {
@@ -77,7 +77,7 @@ class CustomersProformasRemoteDataSourceImpl implements CustomersProformasRemote
 
   @override
   Future<CustomerProformaModel> updateCustomerProforma(UpdateCustomerProformaRequest body) async {
-    final path = ApiPaths.proformaById(body.id);
+    final path = ApiPaths.customerProformaById(body.id);
     final request = ApiRequest(path: path, body: body.toJson());
     final response = await client.put(request);
     if (ResponseCode.isOk(response.statusCode)) {

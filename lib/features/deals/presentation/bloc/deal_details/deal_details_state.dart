@@ -53,7 +53,8 @@ final class DealDetailsLoaded extends DealDetailsState {
     );
   }
 
-  bool get isEtaDateBeforeShippingDate => isProgressDurationValid && deal.etaDate!.isBefore(deal.shippingDate!);
+  bool get isEtaDateBeforeShippingDate =>
+      isProgressDurationValid && deal.etaDate!.isBefore(deal.shippingDate!.subtract(const Duration(days: 1)));
   bool get isProgressDurationValid => deal.etaDate != null && deal.shippingDate != null;
 }
 

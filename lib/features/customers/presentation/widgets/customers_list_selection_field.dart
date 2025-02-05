@@ -239,7 +239,6 @@ class _CustomersListSelectionFieldState extends State<CustomersListSelectionFiel
             title: Text(item.name, style: TextStyles.font16Regular),
             onTap: () {
               Navigator.pop(context, SelectableItemModel<String>(label: item.name, value: item.id.toString()));
-              context.read<CustomersListBloc>().add(const SearchInputChangedEvent(keyword: ''));
             },
           );
         },

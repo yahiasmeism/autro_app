@@ -27,7 +27,6 @@ class DealDetailsCubit extends Cubit<DealDetailsState> {
   final shippingDateController = TextEditingController();
   final deliveryDateController = TextEditingController();
   final etaDateController = TextEditingController();
-  Timer? progressTimer;
 
   init(int dealId) async {
     await getDeal(dealId);
@@ -63,10 +62,16 @@ class DealDetailsCubit extends Cubit<DealDetailsState> {
     );
   }
 
-  refresh() {
+  refresh() async {
     if (this.state is! DealDetailsLoaded) return;
     final state = this.state as DealDetailsLoaded;
-    getDeal(state.deal.id);
+    emit(state.copyWith(loading: true));
+
+    final dealEither = await getDealUseCase.call(state.deal.id);
+    dealEither.fold(
+      (failure) => null,
+      (deal) => emit(state.copyWith(deal: deal, loading: false)),
+    );
   }
 
   editDeal() {
@@ -76,6 +81,17 @@ class DealDetailsCubit extends Cubit<DealDetailsState> {
 
   saveDeal() async {
     final state = this.state as DealDetailsLoaded;
+
+    final etaDate = DateTime.tryParse(etaDateController.text.trim());
+    final shippingDate = DateTime.tryParse(shippingDateController.text.trim());
+
+    if (etaDate != null && shippingDate != null) {
+      if (etaDate.isBefore(shippingDate)) {
+        emit(state.copyWith(
+            updateFailureOrSuccessOption: some(left(const GeneralFailure(message: 'ETA date must be after shipping date')))));
+        return;
+      }
+    }
 
     if (!_checkFormIsChanged()) {
       emit(state.copyWith(updatedMode: false));
@@ -122,39 +138,26 @@ class DealDetailsCubit extends Cubit<DealDetailsState> {
 
   void _initProgressValue() {
     final state = this.state as DealDetailsLoaded;
-    emit(state.copyWith(progress: state.deal.isComplete ? 1.0 : 0.0));
-    _startProgressUpdates();
-  }
 
-  void _startProgressUpdates() {
-    progressTimer?.cancel();
+    if (state.deal.isComplete) {
+      emit(state.copyWith(progress: 1));
+    } else {
+      final state = this.state as DealDetailsLoaded;
+      if (!state.isProgressDurationValid) {
+        return;
+      }
+      final newProgress = _calculateProgress(state.deal.shippingDate!, state.deal.etaDate!);
 
-    progressTimer = Timer.periodic(
-      const Duration(seconds: 1),
-      (Timer t) {
-        final state = this.state as DealDetailsLoaded;
-        if (!state.isProgressDurationValid) {
-          t.cancel();
-          return;
-        }
-        final newProgress = _calculateProgress(state.deal.shippingDate!, state.deal.etaDate!);
+      emit(state.copyWith(progress: newProgress));
 
-        emit(state.copyWith(progress: newProgress));
-
-        if (newProgress >= 1.0) {
-          t.cancel();
-          updateDealStatus(true);
-        }
-      },
-    );
+      if (newProgress >= 1.0) {
+        updateDealStatus(true);
+      }
+    }
   }
 
   double _calculateProgress(DateTime startDate, DateTime endDate) {
     final currentDate = DateTime.now();
-
-    if (startDate.isAfter(endDate)) {
-      return 1.0;
-    }
 
     if (currentDate.isBefore(startDate)) return 0.0;
     if (currentDate.isAfter(endDate)) return 1.0;
