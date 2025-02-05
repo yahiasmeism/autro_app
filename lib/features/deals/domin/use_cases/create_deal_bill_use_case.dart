@@ -18,29 +18,32 @@ class CreateDealBillUseCase extends UseCase<DealBillEntity, CreateDealBillUseCas
 }
 
 class CreateDealBillUseCaseParams extends Equatable {
-  final String number;
+  final int dealId;
+  // final String number;
   final String vendor;
   final double amount;
   final String notes;
   final DateTime date;
   final String? attachmentPath;
   const CreateDealBillUseCaseParams({
-    required this.number,
+    // required this.number,
     required this.vendor,
     required this.amount,
     required this.notes,
     required this.date,
     required this.attachmentPath,
+    required this.dealId,
   });
 
   @override
   List<Object?> get props => [
-        number,
+        // number,
         vendor,
         amount,
         notes,
         date,
         attachmentPath,
+        dealId,
       ];
 }
 

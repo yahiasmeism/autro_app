@@ -28,7 +28,7 @@ class DealsBillsRemoteDataSourceImpl implements DealsBillsRemoteDataSource {
   DealsBillsRemoteDataSourceImpl({required this.apiClient});
   @override
   Future<DealBillModel> createDealBill(CreateDealBillRequest body) async {
-    final path = ApiPaths.dealBills;
+    final path = ApiPaths.dealBills(body.dealId);
     final request = ApiRequest(path: path, body: await body.toFormData());
     final response = await apiClient.post(request);
     if (ResponseCode.isOk(response.statusCode)) {
@@ -52,7 +52,7 @@ class DealsBillsRemoteDataSourceImpl implements DealsBillsRemoteDataSource {
 
   @override
   Future<PaginationListResponse<DealBillModel>> getDealsBillsList(GetDealBillsListRequest body) async {
-    final path = ApiPaths.dealBillsByDealId(body.dealId);
+    final path = ApiPaths.dealBills(body.dealId);
     final request = ApiRequest(path: path, queryParameters: body.toJson());
     final response = await apiClient.get(request);
     if (ResponseCode.isOk(response.statusCode)) {
@@ -67,7 +67,7 @@ class DealsBillsRemoteDataSourceImpl implements DealsBillsRemoteDataSource {
   Future<DealBillModel> updateDealBill(UpdateDealBillRequest body) async {
     final path = ApiPaths.dealBillById(body.id);
     final request = ApiRequest(path: path, body: await body.toFormData());
-    final response = await apiClient.put(request);
+    final response = await apiClient.post(request);
     if (ResponseCode.isOk(response.statusCode)) {
       return DealBillModel.fromJson(response.data);
     } else {

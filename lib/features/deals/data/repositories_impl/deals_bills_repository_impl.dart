@@ -86,5 +86,5 @@ class DealBillRepositoryImpl extends DealsBillsRepository {
   }
 
   @override
-  int get dealsBillsCount => _count;
+  int get dealBillsCount => _count;
 }

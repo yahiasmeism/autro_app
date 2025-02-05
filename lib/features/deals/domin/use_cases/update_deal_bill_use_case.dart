@@ -23,23 +23,26 @@ class UpdateDealBillUseCaseParams extends CreateDealBillUseCaseParams {
   final bool deleteAttachemnt;
   const UpdateDealBillUseCaseParams({
     required this.id,
-    required super.number,
+    // required super.number,
     required super.vendor,
     required super.amount,
     required super.notes,
     required super.date,
     required this.deleteAttachemnt,
     required super.attachmentPath,
+    required super.dealId,
   });
 
   @override
   List<Object?> get props => [
-        number,
+        // number,
         vendor,
         amount,
         notes,
         date,
         attachmentPath,
         deleteAttachemnt,
+        dealId,
+        id,
       ];
 }

@@ -15,6 +15,5 @@ abstract class DealsBillsRepository {
 
   Future<Either<Failure, List<DealBillEntity>>> getDealsBillsList(GetDealsBillsListUseCaseParams params);
 
-
-  int get dealsBillsCount;
+  int get dealBillsCount;
 }

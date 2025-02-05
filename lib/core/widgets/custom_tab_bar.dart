@@ -3,8 +3,9 @@ import 'package:autro_app/core/theme/text_styles.dart';
 import 'package:flutter/material.dart';
 
 class CustomTabBar extends StatefulWidget {
-  const CustomTabBar({super.key, required this.tabs});
+  const CustomTabBar({super.key, required this.tabs, this.controller});
   final List<String> tabs;
+  final TabController? controller;
 
   @override
   State<CustomTabBar> createState() => _CustomTabBarState();
@@ -17,7 +18,7 @@ class _CustomTabBarState extends State<CustomTabBar> {
   void didChangeDependencies() {
     super.didChangeDependencies();
     _tabController?.removeListener(_handleTabSelection);
-    _tabController = DefaultTabController.of(context);
+    _tabController = widget.controller ?? DefaultTabController.of(context);
     _tabController?.addListener(_handleTabSelection);
   }
 

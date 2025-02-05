@@ -1,43 +1,123 @@
+import 'package:autro_app/core/errors/failure_mapper.dart';
+import 'package:autro_app/core/utils/dialog_utils.dart';
+import 'package:autro_app/core/utils/nav_util.dart';
 import 'package:autro_app/core/widgets/custom_tab_bar.dart';
+import 'package:autro_app/core/widgets/failure_screen.dart';
+import 'package:autro_app/features/deals/presentation/bloc/deals_list/deals_list_bloc.dart';
+import 'package:autro_app/features/deals/presentation/widgets/tabs/deal_bills_tab.dart';
+import 'package:autro_app/features/invoices/presentation/bloc/customers_invoices_list/customers_invoices_list_bloc.dart';
+import 'package:autro_app/features/proformas/presentation/bloc/customers_proformas_list/customers_proformas_list_bloc.dart';
+import 'package:autro_app/features/shipping-invoices/presentation/bloc/shipping_invoice_list/shipping_invoices_list_bloc.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 
+import '../../../../../../core/widgets/loading_indecator.dart';
+import '../../../bloc/deal_details/deal_details_cubit.dart';
 import '../../../widgets/tabs/deal_overview_tab.dart';
 
-class DealDetailsDesktopLayout extends StatelessWidget {
+class DealDetailsDesktopLayout extends StatefulWidget {
   const DealDetailsDesktopLayout({super.key});
+
+  @override
+  State createState() => _DealDetailsDesktopLayoutState();
+}
+
+class _DealDetailsDesktopLayoutState extends State<DealDetailsDesktopLayout> with SingleTickerProviderStateMixin {
+  late TabController _tabController;
+
+  @override
+  void initState() {
+    super.initState();
+    _tabController = TabController(length: 5, vsync: this);
+    _tabController.addListener(() {
+      setState(() {});
+    });
+  }
+
+  @override
+  void dispose() {
+    _tabController.dispose();
+    super.dispose();
+  }
+
+  void blocListener(BuildContext context, DealDetailsState state) {
+    if (state is DealDetailsLoaded) {
+      state.updateFailureOrSuccessOption.fold(
+        () => null,
+        (either) => either.fold(
+          (failure) => DialogUtil.showErrorSnackBar(context, getErrorMsgFromFailure(failure)),
+          (message) {
+            DialogUtil.showSuccessSnackBar(context, message);
+            context.read<DealsListBloc>().add(GetDealsListEvent());
+          },
+        ),
+      );
+
+      state.deleteFailureOrSuccessOption.fold(
+        () => null,
+        (either) => either.fold(
+          (failure) => DialogUtil.showErrorSnackBar(context, getErrorMsgFromFailure(failure)),
+          (message) {
+            DialogUtil.showSuccessSnackBar(context, message);
+            NavUtil.pop(context);
+            context.read<DealsListBloc>().add(GetDealsListEvent());
+            context.read<CustomersProformasListBloc>().add(GetProformasListEvent());
+            context.read<CustomersInvoicesListBloc>().add(GetCustomersInvoicesListEvent());
+            context.read<ShippingInvoicesListBloc>().add(GetShippingInvoicesListEvent());
+          },
+        ),
+      );
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(title: const Text('Deal Details')),
-      body: const DefaultTabController(
-        length: 5,
-        child: Padding(
-          padding: EdgeInsets.all(24),
-          child: Column(
-            children: [
-              CustomTabBar(
-                tabs: [
-                  'Overview',
-                  'Proformas',
-                  'Invoices',
-                  'Packing Lists',
-                  'Bills',
-                ],
+      body: Padding(
+        padding: const EdgeInsets.all(24),
+        child: Column(
+          children: [
+            CustomTabBar(
+              tabs: const [
+                'Overview',
+                'Bills',
+                'Proformas',
+                'Invoices',
+                'Packing Lists',
+              ],
+              controller: _tabController,
+            ),
+            Expanded(
+              child: BlocConsumer<DealDetailsCubit, DealDetailsState>(
+                listener: blocListener,
+                buildWhen: (previous, current) {
+                  return current is DealDetailsInitial || current is DealDetailsLoaded || current is DealDetailsError;
+                },
+                builder: (context, state) {
+                  if (state is DealDetailsInitial) {
+                    return const LoadingIndicator();
+                  }
+                  if (state is DealDetailsLoaded) {
+                    return IndexedStack(
+                      index: _tabController.index,
+                      children: [
+                        DealOverviewTab(state: state),
+                        DealBillsListTab.create(context, state.deal.id),
+                        const Center(child: Text('Proformas')),
+                        const Center(child: Text('Invoices')),
+                        const Center(child: Text('Packing Lists')),
+                      ],
+                    );
+                  } else if (state is DealDetailsError) {
+                    return Center(child: FailureScreen(failure: state.failure));
+                  } else {
+                    return const SizedBox.shrink();
+                  }
+                },
               ),
-              Expanded(
-                child: TabBarView(
-                  children: [
-                    DealOverviewTab(),
-                    Center(child: Text('Proformas')),
-                    Center(child: Text('Invoices')),
-                    Center(child: Text('Packing Lists')),
-                    Center(child: Text('Bills')),
-                  ],
-                ),
-              )
-            ],
-          ),
+            ),
+          ],
         ),
       ),
     );

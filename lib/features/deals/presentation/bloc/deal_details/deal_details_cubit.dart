@@ -62,10 +62,16 @@ class DealDetailsCubit extends Cubit<DealDetailsState> {
     );
   }
 
-  refresh() {
+  refresh() async {
     if (this.state is! DealDetailsLoaded) return;
     final state = this.state as DealDetailsLoaded;
-    getDeal(state.deal.id);
+    emit(state.copyWith(loading: true));
+
+    final dealEither = await getDealUseCase.call(state.deal.id);
+    dealEither.fold(
+      (failure) => null,
+      (deal) => emit(state.copyWith(deal: deal, loading: false)),
+    );
   }
 
   editDeal() {

@@ -5,27 +5,29 @@ import 'package:dio/dio.dart';
 
 class CreateDealBillRequest extends CreateDealBillUseCaseParams implements RequestMapable {
   const CreateDealBillRequest({
-    required super.number,
+    // required super.number,
     required super.vendor,
     required super.amount,
     required super.notes,
     required super.date,
     required super.attachmentPath,
+    required super.dealId,
   });
 
   factory CreateDealBillRequest.fromParams(CreateDealBillUseCaseParams params) => CreateDealBillRequest(
-        number: params.number,
+        // number: params.number,
         vendor: params.vendor,
         amount: params.amount,
         notes: params.notes,
         date: params.date,
         attachmentPath: params.attachmentPath,
+        dealId: params.dealId,
       );
 
   @override
   Map<String, dynamic> toJson() {
     return {
-      "number": number,
+      // "number": number,
       "vendor": vendor,
       "amount": amount,
       "notes": notes,

@@ -52,6 +52,5 @@ abstract class ApiPaths {
 
   // deal bills
   static String dealBillById(int billId) => 'deals/bills/$billId';
-  static String dealBillsByDealId(int dealId) => 'deals/$dealId/bills';
-  static String dealBills = 'deals/bills';
+  static String dealBills(int dealId) => 'deals/$dealId/bills';
 }
