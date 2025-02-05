@@ -1,8 +1,8 @@
-import 'package:autro_app/core/di/di.dart';
 import 'package:autro_app/core/theme/app_colors.dart';
 import 'package:autro_app/core/widgets/inputs/standard_search_input.dart';
 import 'package:autro_app/features/suppliers/presentation/bloc/suppliers_list/suppliers_list_bloc.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 
 class SupplierFilterSearchBar extends StatelessWidget {
   const SupplierFilterSearchBar({super.key});
@@ -18,7 +18,7 @@ class SupplierFilterSearchBar extends StatelessWidget {
       child: Row(children: [
         Expanded(child: StandardSearchInput(
           onSearch: (context, keyword) {
-            sl<SuppliersListBloc>().add(SearchInputChangedSuppliersEvent(keyword: keyword));
+            context.read<SuppliersListBloc>().add(SearchInputChangedSuppliersEvent(keyword: keyword));
           },
         )),
       ]),

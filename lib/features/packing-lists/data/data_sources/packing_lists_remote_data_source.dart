@@ -62,7 +62,7 @@ class PackingListsRemoteDataSourceImpl implements PackingListsRemoteDataSource {
   @override
   Future<PaginationListResponse<PackingListModel>> getPackingLists(GetAllPackingListsRequest body) async {
     const path = ApiPaths.packingLists;
-    final request = ApiRequest(path: path, body: body.toJson());
+    final request = ApiRequest(path: path, queryParameters: body.toJson());
     final response = await apiClient.get(request);
     if (ResponseCode.isOk(response.statusCode)) {
       return PaginationListResponse.fromJson(response.data, (json) => PackingListModel.fromJson(json));

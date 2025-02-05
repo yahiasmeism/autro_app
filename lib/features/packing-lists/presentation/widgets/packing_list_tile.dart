@@ -47,12 +47,12 @@ class PackingListListTile extends StatelessWidget {
             const SizedBox(width: 16),
             _buildCell(
               flex: 4,
-              text: packingListEntity.details.isEmpty ? '-' : packingListEntity.details,
+              text: packingListEntity.descriptions.length.toString(),
             ),
             const SizedBox(width: 16),
             _buildCell(
               flex: 4,
-              text: packingListEntity.descriptions.length.toString(),
+              text: packingListEntity.details.isEmpty ? '-' : packingListEntity.details,
             ),
             const SizedBox(width: 16),
             Flexible(

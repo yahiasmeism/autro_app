@@ -31,7 +31,7 @@ class PackingListsDesktopLayout extends StatelessWidget {
             const SizedBox(
               height: 24,
             ),
-            const StandartListTitle(title: 'PackingLists'),
+            const StandartListTitle(title: 'Packing Lists'),
             Expanded(
               child: BlocConsumer<PackingListsBloc, PackingListsState>(
                 listener: listener,
