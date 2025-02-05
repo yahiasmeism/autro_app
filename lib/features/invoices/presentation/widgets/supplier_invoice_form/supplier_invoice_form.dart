@@ -15,6 +15,7 @@ import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 import '../../../../deals/presentation/bloc/deal_details/deal_details_cubit.dart';
+import '../../../../suppliers/presentation/widgets/supplier_list_selection_field.dart';
 import '../../bloc/supplier_invoice_form/supplier_invoice_form_bloc.dart';
 import '../supplier_invoice_attachment_uploader.dart';
 
@@ -40,18 +41,16 @@ class SupplierInvoiceForm extends StatelessWidget {
                             seriesNumberController: bloc.dealNumberController,
                             idController: bloc.dealIdController,
                             onItemTap: (deal) {
-                              //TODO should be check if has proforma
-                              // if (deal.supplierProforma == null) {
-                              //   DialogUtil.showErrorDialog(context, content: 'This deal has not proforma');
-                              //   return;
-                              // }
-
-                              if (deal.customerInvoice != null) {
+                              if (deal.supplierInvoiceEntity != null) {
                                 DialogUtil.showErrorDialog(context,
                                     content: 'This deal connected with another invoice , please select another deal');
                               }
                               bloc.supplierIdController.text = deal.supplier?.id.toString() ?? '';
                               bloc.supplierNameController.text = deal.supplier?.name ?? '';
+                              if (deal.supplier != null) {
+                                bloc.supplierIdController.text = deal.supplier!.id.toString();
+                                bloc.supplierNameController.text = deal.supplier!.name;
+                              }
                             },
                           ),
                         ),
@@ -82,11 +81,9 @@ class SupplierInvoiceForm extends StatelessWidget {
                     Row(
                       children: [
                         Expanded(
-                          child: StandardInput(
-                            controller: bloc.supplierNameController,
-                            labelText: 'Supplier (Auto from deal)',
-                            hintText: 'e.g john deo',
-                            readOnly: true,
+                          child: SuppliersListSelectionField(
+                            idController: bloc.supplierIdController,
+                            nameController: bloc.supplierNameController,
                           ),
                         ),
                         const SizedBox(width: 32),

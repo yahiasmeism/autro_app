@@ -8,6 +8,7 @@ import 'package:autro_app/features/deals/domin/entities/deal_entity.dart';
 import 'package:autro_app/features/invoices/data/models/customer_invoice_model.dart';
 import 'package:autro_app/features/invoices/data/models/supplier_invoice_model.dart';
 import 'package:autro_app/features/proformas/data/models/customer_proforma_model.dart';
+import 'package:autro_app/features/proformas/data/models/supplier_proforma_model.dart';
 import 'package:autro_app/features/shipping-invoices/data/models/shipping_invoice_model.dart';
 import 'package:autro_app/features/suppliers/data/models/supplier_model.dart';
 
@@ -35,38 +36,43 @@ class DealModel extends DealEntity implements BaseMapable {
     required super.customer,
     required super.bankAccount,
     required super.supplierInvoiceEntity,
+    required super.supplierProformaEntity,
   });
 
   factory DealModel.fromJson(Map<String, dynamic> json) => DealModel(
-      id: (json['id'] as int?).toIntOrZero,
-      createdAt: (DateTime.tryParse((json['created_at'] as String?).orEmpty)).orDefault,
-      updatedAt: (DateTime.tryParse((json['updated_at'] as String?).orEmpty)).orDefault,
-      deliveryDate: (DateTime.tryParse((json['delivery_date'] as String?).orEmpty)),
-      customerInvoice: json['customer_proforma'] == null
-          ? null
-          : CustomerInvoiceModel.fromJson((json['customer_invoice'] as Map<String, dynamic>?).orEmpty),
-      customerProforma: json['customer_proforma'] == null
-          ? null
-          : CustomerProformaModel.fromJson((json['customer_proforma'] as Map<String, dynamic>?).orEmpty),
-      etaDate: (DateTime.tryParse((json['eta_date'] as String?).orEmpty)),
-      isComplete: (json['is_complete'] as bool?).orFalse,
-      notes: (json['notes'] as String?).orEmpty,
-      shippingDate: (DateTime.tryParse((json['shipping_date'] as String?).orEmpty)),
-      shippingInvoice: json['shipping_invoice'] == null
-          ? null
-          : ShippingInvoiceModel.fromJson((json['shipping_invoice'] as Map<String, dynamic>?).orEmpty),
-      totalExpenses: (json['total_expenses'] as num?).toDoubleOrZero,
-      totalRevenue: (json['total_revenue'] as num?).toDoubleOrZero,
-      netProfit: (json['net_profit'] as num?).toDoubleOrZero,
-      dealNumber: (json['deal_number'] as String?).orEmpty,
-      supplier: json['supplier'] == null ? null : SupplierModel.fromJson((json['supplier'] as Map<String, dynamic>?).orEmpty),
-      customer: json['customer'] == null ? null : CustomerModel.fromJson((json['customer'] as Map<String, dynamic>?).orEmpty),
-      bankAccount: json['bank_account'] == null
-          ? null
-          : BankAccountModel.fromJson((json['bank_account'] as Map<String, dynamic>?).orEmpty),
-      supplierInvoiceEntity: json['supplier_invoice'] == null
-          ? null
-          : SupplierInvoiceModel.fromJson(json['supplier_invoice'] as Map<String, dynamic>));
+        id: (json['id'] as int?).toIntOrZero,
+        createdAt: (DateTime.tryParse((json['created_at'] as String?).orEmpty)).orDefault,
+        updatedAt: (DateTime.tryParse((json['updated_at'] as String?).orEmpty)).orDefault,
+        deliveryDate: (DateTime.tryParse((json['delivery_date'] as String?).orEmpty)),
+        customerInvoice: json['customer_proforma'] == null
+            ? null
+            : CustomerInvoiceModel.fromJson((json['customer_invoice'] as Map<String, dynamic>?).orEmpty),
+        customerProforma: json['customer_proforma'] == null
+            ? null
+            : CustomerProformaModel.fromJson((json['customer_proforma'] as Map<String, dynamic>?).orEmpty),
+        etaDate: (DateTime.tryParse((json['eta_date'] as String?).orEmpty)),
+        isComplete: (json['is_complete'] as bool?).orFalse,
+        notes: (json['notes'] as String?).orEmpty,
+        shippingDate: (DateTime.tryParse((json['shipping_date'] as String?).orEmpty)),
+        shippingInvoice: json['shipping_invoice'] == null
+            ? null
+            : ShippingInvoiceModel.fromJson((json['shipping_invoice'] as Map<String, dynamic>?).orEmpty),
+        totalExpenses: (json['total_expenses'] as num?).toDoubleOrZero,
+        totalRevenue: (json['total_revenue'] as num?).toDoubleOrZero,
+        netProfit: (json['net_profit'] as num?).toDoubleOrZero,
+        dealNumber: (json['deal_number'] as String?).orEmpty,
+        supplier: json['supplier'] == null ? null : SupplierModel.fromJson((json['supplier'] as Map<String, dynamic>?).orEmpty),
+        customer: json['customer'] == null ? null : CustomerModel.fromJson((json['customer'] as Map<String, dynamic>?).orEmpty),
+        bankAccount: json['bank_account'] == null
+            ? null
+            : BankAccountModel.fromJson((json['bank_account'] as Map<String, dynamic>?).orEmpty),
+        supplierInvoiceEntity: json['supplier_invoice'] == null
+            ? null
+            : SupplierInvoiceModel.fromJson(json['supplier_invoice'] as Map<String, dynamic>),
+        supplierProformaEntity: json['supplier_proforma'] == null
+            ? null
+            : SupplierProformaModel.fromJson(json['supplier_proforma'] as Map<String, dynamic>),
+      );
 
   @override
   Map<String, dynamic> toJson() {

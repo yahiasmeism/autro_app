@@ -10,6 +10,7 @@ import 'package:autro_app/core/widgets/overley_loading.dart';
 import 'package:autro_app/features/deals/presentation/bloc/deals_list/deals_list_bloc.dart';
 import 'package:autro_app/features/deals/presentation/widgets/deals_list_selection_field.dart';
 import 'package:autro_app/features/proformas/presentation/bloc/suppliers_proformas_list/suppliers_proformas_list_bloc.dart';
+import 'package:autro_app/features/suppliers/presentation/widgets/supplier_list_selection_field.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -40,18 +41,16 @@ class SupplierProformaForm extends StatelessWidget {
                             seriesNumberController: bloc.dealNumberController,
                             idController: bloc.dealIdController,
                             onItemTap: (deal) {
-                              //TODO should be check if has proforma
-                              // if (deal.supplierProforma == null) {
-                              //   DialogUtil.showErrorDialog(context, content: 'This deal has not proforma');
-                              //   return;
-                              // }
-
-                              if (deal.customerProforma != null) {
+                              if (deal.supplierProformaEntity != null) {
                                 DialogUtil.showErrorDialog(context,
                                     content: 'This deal connected with another proforma , please select another deal');
                               }
                               bloc.supplierIdController.text = deal.supplier?.id.toString() ?? '';
                               bloc.supplierNameController.text = deal.supplier?.name ?? '';
+                              if (deal.supplier != null) {
+                                bloc.supplierIdController.text = deal.supplier!.id.toString();
+                                bloc.supplierNameController.text = deal.supplier!.name;
+                              }
                             },
                           ),
                         ),
@@ -82,11 +81,9 @@ class SupplierProformaForm extends StatelessWidget {
                     Row(
                       children: [
                         Expanded(
-                          child: StandardInput(
-                            controller: bloc.supplierNameController,
-                            labelText: 'Supplier (Auto from deal)',
-                            hintText: 'e.g john deo',
-                            readOnly: true,
+                          child: SuppliersListSelectionField(
+                            idController: bloc.supplierIdController,
+                            nameController: bloc.supplierNameController,
                           ),
                         ),
                         const SizedBox(width: 32),
