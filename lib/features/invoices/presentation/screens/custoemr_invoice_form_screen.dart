@@ -6,7 +6,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 import '../bloc/customer_invoice_form/customer_invoice_form_cubit.dart';
-import 'layouts/invoice_form_desktop_layout.dart';
+import 'layouts/customer_invoice_form_desktop_layout.dart';
 
 class CustomerInvoiceFormScreen extends StatelessWidget {
   const CustomerInvoiceFormScreen({super.key, this.invoice, required this.formType});

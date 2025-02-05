@@ -248,7 +248,6 @@ class _DealsListSelectionFieldState extends State<DealsListSelectionField> {
             title: Text(item.dealNumber, style: TextStyles.font16Regular),
             onTap: () {
               Navigator.pop(context, SelectableItemModel<DealEntity>(label: item.dealNumber, value: item));
-              context.read<DealsListBloc>().add(const SearchInputChangedEvent(keyword: ''));
             },
           );
         },

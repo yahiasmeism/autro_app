@@ -5,8 +5,8 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 
 import '../bloc/customers_invoices_list/customers_invoices_list_bloc.dart';
 
-class InvoiceSearchBar extends StatelessWidget {
-  const InvoiceSearchBar({super.key});
+class CustomerInvoiceFilterSearchBar extends StatelessWidget {
+  const CustomerInvoiceFilterSearchBar({super.key});
 
   @override
   Widget build(BuildContext context) {

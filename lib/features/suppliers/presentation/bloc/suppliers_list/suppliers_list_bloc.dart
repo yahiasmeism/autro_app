@@ -29,7 +29,7 @@ class SuppliersListBloc extends Bloc<SuppliersListEvent, SuppliersListState> {
     this.updateSupplierUsecase,
     this.createSupplierUsecase,
   ) : super(SuppliersListInitial()) {
-    on<SuppliersListEvent>(_mapEvents,transformer: (events, mapper) => events.asyncExpand(mapper));
+    on<SuppliersListEvent>(_mapEvents, transformer: (events, mapper) => events.asyncExpand(mapper));
   }
 
   int get totalCount => suppliersRepository.totalCount;
@@ -61,6 +61,10 @@ class SuppliersListBloc extends Bloc<SuppliersListEvent, SuppliersListState> {
     }
     if (event is AddedUpdatedSupplierEvent) {
       await onAddedUpdatedSupplier(event, emit);
+    }
+
+    if (event is LoadMoreSuppliersEvent) {
+      await onLoadMoreSuppliers(event, emit);
     }
   }
 
@@ -182,6 +186,32 @@ class SuppliersListBloc extends Bloc<SuppliersListEvent, SuppliersListState> {
         totalCount: totalCount,
         suppliersList: suppliers,
       )),
+    );
+  }
+
+  onLoadMoreSuppliers(LoadMoreSuppliersEvent event, Emitter<SuppliersListState> emit) async {
+    final state = this.state as SuppliersListLoaded;
+
+    final pageNumber = state.paginationFilterDTO.pageNumber + 1;
+
+    if (pageNumber > state.totalPages) return;
+    emit(state.copyWith(loadingPagination: true));
+    final paginationFilterDto = state.paginationFilterDTO.copyWith(pageNumber: pageNumber);
+    final params = GetSuppliersListUsecaseParams(dto: paginationFilterDto);
+
+    final either = await getSuppliersListUsecase.call(params);
+    emit(state.copyWith(loadingPagination: false));
+    either.fold(
+      (failure) => emit(state.copyWith(failureOrSuccessOption: some(left(failure)))),
+      (customers) {
+        final updatedCustomersList = List.of(state.suppliersList);
+        updatedCustomersList.addAll(customers);
+        emit(state.copyWith(
+          totalCount: totalCount,
+          suppliersList: updatedCustomersList,
+          paginationFilterDTO: paginationFilterDto,
+        ));
+      },
     );
   }
 }

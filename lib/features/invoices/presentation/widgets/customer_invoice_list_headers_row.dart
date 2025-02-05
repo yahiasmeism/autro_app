@@ -2,8 +2,8 @@ import 'package:autro_app/core/theme/app_colors.dart';
 import 'package:autro_app/core/theme/text_styles.dart';
 import 'package:flutter/material.dart';
 
-class InvoicesListHeadersRow extends StatelessWidget {
-  const InvoicesListHeadersRow({super.key});
+class CustomerInvoiceListHeadersRow extends StatelessWidget {
+  const CustomerInvoiceListHeadersRow({super.key});
 
   @override
   Widget build(BuildContext context) {

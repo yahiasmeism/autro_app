@@ -7,22 +7,22 @@ import 'package:autro_app/core/utils/dialog_utils.dart';
 import 'package:autro_app/core/widgets/failure_screen.dart';
 import 'package:autro_app/core/widgets/inputs/standard_search_input.dart';
 import 'package:autro_app/core/widgets/overley_loading.dart';
-import 'package:autro_app/features/customers/presentation/bloc/customers_list/customers_list_bloc.dart';
+import 'package:autro_app/features/suppliers/presentation/bloc/suppliers_list/suppliers_list_bloc.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
-class CustomersListSelectionField extends StatefulWidget {
-  const CustomersListSelectionField(
+class SuppliersListSelectionField extends StatefulWidget {
+  const SuppliersListSelectionField(
       {super.key, required this.nameController, required this.idController, this.enableOpenDialog = true});
 
   final TextEditingController nameController, idController;
   final bool enableOpenDialog;
 
   @override
-  State createState() => _CustomersListSelectionFieldState();
+  State createState() => _SuppliersListSelectionFieldState();
 }
 
-class _CustomersListSelectionFieldState extends State<CustomersListSelectionField> {
+class _SuppliersListSelectionFieldState extends State<SuppliersListSelectionField> {
   final ScrollController scrollController = ScrollController();
   bool hasPagination = false;
 
@@ -40,7 +40,7 @@ class _CustomersListSelectionFieldState extends State<CustomersListSelectionFiel
   Widget _buildLabel() {
     return Padding(
       padding: const EdgeInsets.only(bottom: 8),
-      child: Text('Customer Name', style: TextStyles.font16Regular),
+      child: Text('Supplier Name', style: TextStyles.font16Regular),
     );
   }
 
@@ -65,7 +65,7 @@ class _CustomersListSelectionFieldState extends State<CustomersListSelectionFiel
           controller: widget.nameController,
           decoration: InputDecoration(
             contentPadding: const EdgeInsets.all(16),
-            hintText: 'Select Customer',
+            hintText: 'Select Supplier',
             suffixIcon: widget.enableOpenDialog ? const Icon(Icons.keyboard_arrow_down) : null,
           ),
           enabled: !widget.enableOpenDialog,
@@ -87,7 +87,7 @@ class _CustomersListSelectionFieldState extends State<CustomersListSelectionFiel
             insetPadding: const EdgeInsets.all(0),
             shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(16)),
             child: BlocProvider(
-              create: (context) => sl<CustomersListBloc>()..add(GetCustomersListEvent()),
+              create: (context) => sl<SuppliersListBloc>()..add(GetSuppliersListEvent()),
               child: SizedBox(
                 width: 600,
                 height: 500,
@@ -106,7 +106,7 @@ class _CustomersListSelectionFieldState extends State<CustomersListSelectionFiel
                               padding: const EdgeInsets.symmetric(horizontal: 8),
                               child: StandardSearchInput(
                                 onSearch: (context, keyword) {
-                                  context.read<CustomersListBloc>().add(SearchInputChangedEvent(keyword: keyword));
+                                  context.read<SuppliersListBloc>().add(SearchInputChangedSuppliersEvent(keyword: keyword));
                                 },
                               ),
                             ),
@@ -115,9 +115,9 @@ class _CustomersListSelectionFieldState extends State<CustomersListSelectionFiel
                       ),
                       const SizedBox(height: 16),
                       Expanded(
-                        child: BlocConsumer<CustomersListBloc, CustomersListState>(
+                        child: BlocConsumer<SuppliersListBloc, SuppliersListState>(
                           listener: (context, state) {
-                            if (state is CustomersListLoaded) {
+                            if (state is SuppliersListLoaded) {
                               state.failureOrSuccessOption.fold(
                                 () => null,
                                 (either) {
@@ -133,9 +133,9 @@ class _CustomersListSelectionFieldState extends State<CustomersListSelectionFiel
                             }
                           },
                           builder: (context, state) {
-                            if (state is CustomersListInitial) {
+                            if (state is SuppliersListInitial) {
                               return const Center(child: CircularProgressIndicator());
-                            } else if (state is CustomersListLoaded) {
+                            } else if (state is SuppliersListLoaded) {
                               if (!state.loadingPagination) hasPagination = false;
                               return Stack(
                                 children: [
@@ -143,10 +143,10 @@ class _CustomersListSelectionFieldState extends State<CustomersListSelectionFiel
                                   if (state.loading) const Positioned.fill(child: LoadingOverlay()),
                                 ],
                               );
-                            } else if (state is CustomersListError) {
+                            } else if (state is SuppliersListError) {
                               return FailureScreen(
                                 failure: state.failure,
-                                onRetryTap: () => context.read<CustomersListBloc>().add(HandleFailureEvent()),
+                                onRetryTap: () => context.read<SuppliersListBloc>().add(HandleFailureSuppliersEvent()),
                               );
                             } else {
                               return const SizedBox.shrink();
@@ -177,7 +177,7 @@ class _CustomersListSelectionFieldState extends State<CustomersListSelectionFiel
       padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
       child: Row(
         children: [
-          Text('Select Customer', style: TextStyles.font20Regular),
+          Text('Select Supplier', style: TextStyles.font20Regular),
           const Spacer(),
           IconButton(
             onPressed: () => Navigator.pop(context),
@@ -189,8 +189,8 @@ class _CustomersListSelectionFieldState extends State<CustomersListSelectionFiel
     );
   }
 
-  Widget _buildList(CustomersListLoaded state, BuildContext context) {
-    if (state.customersList.isEmpty) {
+  Widget _buildList(SuppliersListLoaded state, BuildContext context) {
+    if (state.suppliersList.isEmpty) {
       return Center(
         child: Text(
           'No Results Found',
@@ -203,16 +203,16 @@ class _CustomersListSelectionFieldState extends State<CustomersListSelectionFiel
         if (notification is ScrollUpdateNotification &&
             scrollController.position.pixels >= scrollController.position.maxScrollExtent * 0.9 &&
             !state.loadingPagination) {
-          context.read<CustomersListBloc>().add(LoadMoreCustomersEvent());
+          context.read<SuppliersListBloc>().add(LoadMoreSuppliersEvent());
         }
         return false;
       },
       child: ListView.separated(
         separatorBuilder: (context, index) => const Divider(height: 0),
         controller: scrollController,
-        itemCount: state.loadingPagination ? state.customersList.length + 1 : state.customersList.length,
+        itemCount: state.loadingPagination ? state.suppliersList.length + 1 : state.suppliersList.length,
         itemBuilder: (context, index) {
-          if (index == state.customersList.length) {
+          if (index == state.suppliersList.length) {
             return const Padding(
               padding: EdgeInsets.all(16),
               child: Center(
@@ -228,7 +228,7 @@ class _CustomersListSelectionFieldState extends State<CustomersListSelectionFiel
               ),
             );
           }
-          final item = state.customersList[index];
+          final item = state.suppliersList[index];
           final isSelected = item.id.toString() == widget.idController.text;
           return ListTile(
             selectedTileColor: Colors.black12,

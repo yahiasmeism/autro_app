@@ -10,7 +10,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 
 import '../../../../deals/presentation/bloc/deal_details/deal_details_cubit.dart';
 import '../../bloc/customer_invoice_form/customer_invoice_form_cubit.dart';
-import '../../widgets/invoice_form/customer_invoice_form.dart';
+import '../../widgets/customr_invoice_form/customer_invoice_form.dart';
 
 class CustomerInvoiceFormDesktopLayout extends StatelessWidget {
   const CustomerInvoiceFormDesktopLayout({super.key, required this.formType});

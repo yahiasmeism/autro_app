@@ -7,8 +7,8 @@ import '../../../../core/utils/nav_util.dart';
 import '../bloc/customers_invoices_list/customers_invoices_list_bloc.dart';
 import '../screens/custoemr_invoice_form_screen.dart';
 
-class InvoicePaginationBottomBar extends StatelessWidget {
-  const InvoicePaginationBottomBar({super.key});
+class CustomerInvoicePaginationBottomBar extends StatelessWidget {
+  const CustomerInvoicePaginationBottomBar({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -40,7 +40,7 @@ class InvoicePaginationBottomBar extends StatelessWidget {
                   context.read<CustomersInvoicesListBloc>().add(NextPageEvent());
                 }
               : null,
-          labelAddButton: 'Add New Invoice',
+          labelAddButton: 'Add New Customer Invoice',
           onAddTap: isLoaded
               ? () {
                   NavUtil.push(context, const CustomerInvoiceFormScreen(formType: FormType.create));

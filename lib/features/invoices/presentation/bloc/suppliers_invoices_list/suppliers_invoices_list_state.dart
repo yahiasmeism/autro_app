@@ -1,23 +1,23 @@
-part of 'suppliers_list_bloc.dart';
+part of 'suppliers_invoices_list_bloc.dart';
 
-sealed class SuppliersListState extends Equatable {
-  const SuppliersListState();
+sealed class SuppliersInvoicesListState extends Equatable {
+  const SuppliersInvoicesListState();
 
   @override
   List<Object> get props => [];
 }
 
-final class SuppliersListInitial extends SuppliersListState {}
+final class SuppliersInvoicesListInitial extends SuppliersInvoicesListState {}
 
-final class SuppliersListLoaded extends SuppliersListState {
-  final List<SupplierEntity> suppliersList;
+final class SuppliersInvoicesListLoaded extends SuppliersInvoicesListState {
+  final List<SupplierInvoiceEntity> invoicesList;
   final PaginationFilterDTO paginationFilterDTO;
   final int totalCount;
   final bool loading;
   final bool loadingPagination;
   final Option<Either<Failure, String>> failureOrSuccessOption;
-  const SuppliersListLoaded({
-    required this.suppliersList,
+  const SuppliersInvoicesListLoaded({
+    required this.invoicesList,
     required this.totalCount,
     required this.paginationFilterDTO,
     this.loading = false,
@@ -26,7 +26,7 @@ final class SuppliersListLoaded extends SuppliersListState {
   });
   @override
   List<Object> get props => [
-        suppliersList,
+        invoicesList,
         paginationFilterDTO,
         totalCount,
         loading,
@@ -34,16 +34,16 @@ final class SuppliersListLoaded extends SuppliersListState {
         loadingPagination,
       ];
 
-  SuppliersListLoaded copyWith({
-    List<SupplierEntity>? suppliersList,
+  SuppliersInvoicesListLoaded copyWith({
+    List<SupplierInvoiceEntity>? invoicesList,
     PaginationFilterDTO? paginationFilterDTO,
     int? totalCount,
     bool? loading,
     Option<Either<Failure, String>>? failureOrSuccessOption,
     bool? loadingPagination,
   }) {
-    return SuppliersListLoaded(
-      suppliersList: suppliersList ?? this.suppliersList,
+    return SuppliersInvoicesListLoaded(
+      invoicesList: invoicesList ?? this.invoicesList,
       paginationFilterDTO: paginationFilterDTO ?? this.paginationFilterDTO,
       totalCount: totalCount ?? this.totalCount,
       loading: loading ?? this.loading,
@@ -53,14 +53,15 @@ final class SuppliersListLoaded extends SuppliersListState {
   }
 
   int get totalPages => (totalCount / paginationFilterDTO.pageSize).ceil();
+
   bool get canGoNextPage => paginationFilterDTO.pageNumber < totalCount / paginationFilterDTO.pageSize && !loadingPagination;
   bool get canGoPreviousPage => paginationFilterDTO.pageNumber > 1 && !loadingPagination;
 }
 
-class SuppliersListError extends SuppliersListState {
+class SuppliersInvoicesListError extends SuppliersInvoicesListState {
   final Failure failure;
 
-  const SuppliersListError({required this.failure});
+  const SuppliersInvoicesListError({required this.failure});
 
   @override
   List<Object> get props => [failure];

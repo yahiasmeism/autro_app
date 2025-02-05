@@ -25,6 +25,7 @@ import 'core/di/di.dart';
 import 'core/storage/hive_box_manager.dart';
 import 'features/authentication/bloc/app_auth/app_auth_bloc.dart';
 import 'features/invoices/presentation/bloc/customers_invoices_list/customers_invoices_list_bloc.dart';
+import 'features/invoices/presentation/bloc/suppliers_invoices_list/suppliers_invoices_list_bloc.dart';
 import 'features/settings/presentation/bloc/invoice_settings/invoice_settings_cubit.dart';
 
 void main() async {
@@ -105,6 +106,9 @@ class MyApp extends StatelessWidget {
         ),
         BlocProvider(
           create: (context) => sl<DealBillsListBloc>(),
+        ),
+        BlocProvider(
+          create: (context) => sl<SuppliersInvoicesListBloc>(),
         ),
       ],
       child: MaterialApp(
