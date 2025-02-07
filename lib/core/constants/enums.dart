@@ -29,6 +29,7 @@ enum MenuItemType {
   settings,
   bills,
   suppliers,
+  packingLists,
   messages,
 }
 

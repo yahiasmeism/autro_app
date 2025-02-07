@@ -15,21 +15,26 @@ class SupplierEntity extends Equatable {
   final String notes;
   final DateTime createdAt;
   final DateTime updatedAt;
+  final int dealsCount;
+  final double netProfit;
 
-  const SupplierEntity(
-      {required this.id,
-      required this.name,
-      required this.country,
-      required this.city,
-      required this.website,
-      required this.businessDetails,
-      required this.email,
-      required this.phone,
-      required this.altPhone,
-      required this.primaryContactType,
-      required this.notes,
-      required this.createdAt,
-      required this.updatedAt});
+  const SupplierEntity({
+    required this.id,
+    required this.name,
+    required this.country,
+    required this.city,
+    required this.website,
+    required this.businessDetails,
+    required this.email,
+    required this.phone,
+    required this.altPhone,
+    required this.primaryContactType,
+    required this.notes,
+    required this.createdAt,
+    required this.updatedAt,
+    required this.dealsCount,
+    required this.netProfit,
+  });
 
   String get primaryContact {
     switch (primaryContactType) {
@@ -57,6 +62,8 @@ class SupplierEntity extends Equatable {
         notes,
         createdAt,
         updatedAt,
+        dealsCount,
+        netProfit,
       ];
 
   SupplierEntity copyWith({
@@ -73,6 +80,8 @@ class SupplierEntity extends Equatable {
     String? notes,
     DateTime? createdAt,
     DateTime? updatedAt,
+    int? dealsCount,
+    double? netProfit,
   }) {
     return SupplierEntity(
       id: id ?? this.id,
@@ -88,6 +97,8 @@ class SupplierEntity extends Equatable {
       notes: notes ?? this.notes,
       createdAt: createdAt ?? this.createdAt,
       updatedAt: updatedAt ?? this.updatedAt,
+      dealsCount: dealsCount ?? this.dealsCount,
+      netProfit: netProfit ?? this.netProfit,
     );
   }
 }

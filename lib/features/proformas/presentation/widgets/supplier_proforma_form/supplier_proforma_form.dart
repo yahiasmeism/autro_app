@@ -47,10 +47,6 @@ class SupplierProformaForm extends StatelessWidget {
                               }
                               bloc.supplierIdController.text = deal.supplier?.id.toString() ?? '';
                               bloc.supplierNameController.text = deal.supplier?.name ?? '';
-                              if (deal.supplier != null) {
-                                bloc.supplierIdController.text = deal.supplier!.id.toString();
-                                bloc.supplierNameController.text = deal.supplier!.name;
-                              }
                             },
                           ),
                         ),

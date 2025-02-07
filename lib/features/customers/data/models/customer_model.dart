@@ -20,6 +20,8 @@ class CustomerModel extends CustomerEntity implements BaseMapable {
     required super.notes,
     required super.createdAt,
     required super.updatedAt,
+    required super.dealsCount,
+    required super.totalRevenue,
   });
 
   factory CustomerModel.fromEntity(CustomerEntity entity) {
@@ -37,6 +39,8 @@ class CustomerModel extends CustomerEntity implements BaseMapable {
       notes: entity.notes,
       createdAt: entity.createdAt,
       updatedAt: entity.updatedAt,
+      dealsCount: entity.dealsCount,
+      totalRevenue: entity.totalRevenue,
     );
   }
 
@@ -55,6 +59,8 @@ class CustomerModel extends CustomerEntity implements BaseMapable {
       notes: (json['notes'] as String?).orEmpty,
       createdAt: DateTime.tryParse((json['created_at'] as String?).orEmpty).orDefault,
       updatedAt: DateTime.tryParse((json['updated_at'] as String?).orEmpty).orDefault,
+      dealsCount: (json['deals_count'] as int?).toIntOrZero,
+      totalRevenue: (json['total_revenue'] as num?).toDoubleOrZero,
     );
   }
 

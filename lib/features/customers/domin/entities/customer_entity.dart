@@ -15,21 +15,26 @@ class CustomerEntity extends Equatable {
   final String notes;
   final DateTime createdAt;
   final DateTime updatedAt;
+  final double totalRevenue;
+  final int dealsCount;
 
-  const CustomerEntity(
-      {required this.id,
-      required this.name,
-      required this.country,
-      required this.city,
-      required this.website,
-      required this.businessDetails,
-      required this.email,
-      required this.phone,
-      required this.altPhone,
-      required this.primaryContactType,
-      required this.notes,
-      required this.createdAt,
-      required this.updatedAt});
+  const CustomerEntity({
+    required this.id,
+    required this.name,
+    required this.country,
+    required this.city,
+    required this.website,
+    required this.businessDetails,
+    required this.email,
+    required this.phone,
+    required this.altPhone,
+    required this.primaryContactType,
+    required this.notes,
+    required this.createdAt,
+    required this.updatedAt,
+    required this.totalRevenue,
+    required this.dealsCount,
+  });
 
   String get primaryContact {
     switch (primaryContactType) {
@@ -57,6 +62,8 @@ class CustomerEntity extends Equatable {
         notes,
         createdAt,
         updatedAt,
+        totalRevenue,
+        dealsCount,
       ];
 
   CustomerEntity copyWith({
@@ -73,6 +80,8 @@ class CustomerEntity extends Equatable {
     String? notes,
     DateTime? createdAt,
     DateTime? updatedAt,
+    double? totalRevenue,
+    int? dealsCount,
   }) {
     return CustomerEntity(
       id: id ?? this.id,
@@ -88,6 +97,8 @@ class CustomerEntity extends Equatable {
       notes: notes ?? this.notes,
       createdAt: createdAt ?? this.createdAt,
       updatedAt: updatedAt ?? this.updatedAt,
+      totalRevenue: totalRevenue ?? this.totalRevenue,
+      dealsCount: dealsCount ?? this.dealsCount,
     );
   }
 }

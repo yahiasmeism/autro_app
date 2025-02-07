@@ -10,6 +10,7 @@ import 'package:autro_app/features/deals/presentation/bloc/deal_bills_list/deal_
 import 'package:autro_app/features/deals/presentation/bloc/deal_details/deal_details_cubit.dart';
 import 'package:autro_app/features/deals/presentation/bloc/deals_list/deals_list_bloc.dart';
 import 'package:autro_app/features/home/bloc/home_bloc.dart';
+import 'package:autro_app/features/packing-lists/presentation/bloc/packing_lists/packing_lists_bloc.dart';
 import 'package:autro_app/features/proformas/presentation/bloc/customers_proformas_list/customers_proformas_list_bloc.dart';
 import 'package:autro_app/features/proformas/presentation/bloc/suppliers_proformas_list/suppliers_proformas_list_bloc.dart';
 import 'package:autro_app/features/settings/presentation/bloc/bank_accounts_list/bank_accounts_list_cubit.dart';
@@ -46,8 +47,6 @@ _initializeDesktopWindow() {
       const aspectRatio = 16 / 9;
       appWindow
         ..minSize = const Size(initialWidth, initialWidth / aspectRatio)
-        ..size = const Size(initialWidth, initialWidth / aspectRatio)
-        ..maxSize = const Size(1920, 1080)
         ..alignment = Alignment.center
         ..maximize()
         ..show();
@@ -113,6 +112,9 @@ class MyApp extends StatelessWidget {
         ),
         BlocProvider(
           create: (context) => sl<SuppliersProformasListBloc>(),
+        ),
+        BlocProvider(
+          create: (context) => sl<PackingListsBloc>(),
         ),
       ],
       child: MaterialApp(

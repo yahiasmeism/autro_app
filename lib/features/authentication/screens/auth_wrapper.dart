@@ -4,6 +4,7 @@ import 'package:autro_app/features/customers/presentation/bloc/customers_list/cu
 import 'package:autro_app/features/deals/presentation/bloc/deals_list/deals_list_bloc.dart';
 import 'package:autro_app/features/invoices/presentation/bloc/customers_invoices_list/customers_invoices_list_bloc.dart';
 import 'package:autro_app/features/invoices/presentation/bloc/suppliers_invoices_list/suppliers_invoices_list_bloc.dart';
+import 'package:autro_app/features/packing-lists/presentation/bloc/packing_lists/packing_lists_bloc.dart';
 import 'package:autro_app/features/proformas/presentation/bloc/customers_proformas_list/customers_proformas_list_bloc.dart';
 import 'package:autro_app/features/settings/presentation/bloc/bank_accounts_list/bank_accounts_list_cubit.dart';
 import 'package:autro_app/features/settings/presentation/bloc/company/company_cubit.dart';
@@ -71,6 +72,7 @@ class AuthWrapper extends StatelessWidget {
       context.read<DealsListBloc>().add(GetDealsListEvent());
       context.read<SuppliersInvoicesListBloc>().add(GetSuppliersInvoicesListEvent());
       context.read<SuppliersProformasListBloc>().add(GetSuppliersProformasListEvent());
+      context.read<PackingListsBloc>().add(GetPackingListsEvent());
     }
   }
 }
