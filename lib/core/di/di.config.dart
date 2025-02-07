@@ -157,6 +157,8 @@ import 'package:autro_app/features/packing-lists/domin/use_cases/get_all_packing
     as _i3;
 import 'package:autro_app/features/packing-lists/domin/use_cases/update_packing_list_use_case.dart'
     as _i494;
+import 'package:autro_app/features/packing-lists/presentation/bloc/packing_list_form/packing_list_form_cubit.dart'
+    as _i615;
 import 'package:autro_app/features/packing-lists/presentation/bloc/packing_lists/packing_lists_bloc.dart'
     as _i79;
 import 'package:autro_app/features/proformas/data/data_sources/remote/customers_proformas_remote_data_source.dart'
@@ -594,6 +596,10 @@ extension GetItInjectableX on _i174.GetIt {
     gh.lazySingleton<_i413.UpdateSupplierProformaUseCase>(() =>
         _i413.UpdateSupplierProformaUseCase(
             proformasRepository: gh<_i851.SupplierProformasRepository>()));
+    gh.factory<_i615.PackingListFormCubit>(() => _i615.PackingListFormCubit(
+          gh<_i945.CreatePackingListUseCase>(),
+          gh<_i494.UpdatePackingListUseCase>(),
+        ));
     gh.factory<_i90.SuppliersProformasListBloc>(
         () => _i90.SuppliersProformasListBloc(
               gh<_i556.GetSuppliersProformasListUseCase>(),

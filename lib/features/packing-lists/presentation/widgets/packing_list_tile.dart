@@ -7,7 +7,10 @@ import 'package:autro_app/features/packing-lists/presentation/bloc/packing_lists
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
+import '../../../../core/constants/enums.dart';
+import '../../../../core/utils/nav_util.dart';
 import '../../domin/entities/packing_list_entity.dart';
+import '../screen/packing_list_form_screen.dart';
 
 class PackingListListTile extends StatelessWidget {
   const PackingListListTile({super.key, required this.packingListEntity});
@@ -18,7 +21,7 @@ class PackingListListTile extends StatelessWidget {
     return InkWell(
       borderRadius: BorderRadius.circular(8),
       onTap: () {
-        // NavUtil.push(context, PackingListFormScreen(formType: FormType.edit, packingList: packingListEntity));
+        NavUtil.push(context, PackingListFormScreen(formType: FormType.edit, packingList: packingListEntity));
       },
       child: Container(
         decoration: const BoxDecoration(
@@ -62,7 +65,7 @@ class PackingListListTile extends StatelessWidget {
                 children: [
                   EditIconButton(
                     onPressed: () {
-                      // NavUtil.push(context, PackingListFormScreen(formType: FormType.edit, packingList: packingListEntity));
+                      NavUtil.push(context, PackingListFormScreen(formType: FormType.edit, packingList: packingListEntity));
                     },
                   ),
                   const SizedBox(width: 8),
