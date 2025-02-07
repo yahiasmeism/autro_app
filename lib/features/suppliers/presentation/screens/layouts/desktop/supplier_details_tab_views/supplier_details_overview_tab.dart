@@ -3,7 +3,6 @@
 import 'package:autro_app/core/constants/assets.dart';
 
 import 'package:autro_app/core/constants/enums.dart';
-import 'package:autro_app/core/di/di.dart';
 import 'package:autro_app/core/extensions/primary_contact_type_extension.dart';
 import 'package:autro_app/core/theme/app_colors.dart';
 import 'package:autro_app/core/theme/text_styles.dart';
@@ -149,11 +148,11 @@ class SupplierDetailsOverviewTab extends StatelessWidget {
           Row(
             children: [
               Expanded(
-                child: _buildTotalRevenue(),
+                child: _buildNetProfit(supplierEntity.netProfit),
               ),
               const SizedBox(width: 12),
               Expanded(
-                child: _buildTotalDeals(),
+                child: _buildTotalDeals(supplierEntity.dealsCount),
               ),
             ],
           ),
@@ -221,7 +220,7 @@ class SupplierDetailsOverviewTab extends StatelessWidget {
     );
   }
 
-  Widget _buildTotalDeals() {
+  Widget _buildTotalDeals(int totalDeals) {
     return StandardContainer(
       padding: const EdgeInsets.all(22),
       child: Row(
@@ -238,7 +237,7 @@ class SupplierDetailsOverviewTab extends StatelessWidget {
                 style: TextStyles.font20SemiBold,
               ),
               Text(
-                '5',
+                '$totalDeals',
                 style: TextStyles.font24SemiBold,
               ),
             ],
@@ -248,7 +247,7 @@ class SupplierDetailsOverviewTab extends StatelessWidget {
     );
   }
 
-  Widget _buildTotalRevenue() {
+  Widget _buildNetProfit(double netProfit) {
     return StandardContainer(
       padding: const EdgeInsets.all(24),
       child: Row(
@@ -261,11 +260,11 @@ class SupplierDetailsOverviewTab extends StatelessWidget {
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               Text(
-                'Total Revenue',
+                'Net Profit',
                 style: TextStyles.font20SemiBold,
               ),
               Text(
-                '€2342',
+                '€$netProfit',
                 style: TextStyles.font24SemiBold,
               ),
             ],
@@ -329,7 +328,7 @@ class SupplierDetailsOverviewTab extends StatelessWidget {
     if (isOk) {
       if (context.mounted) {
         NavUtil.pop(context);
-        sl<SuppliersListBloc>().add(DeleteSupplierEvent(supplierId: supplierEntity.id));
+        context.read<SuppliersListBloc>().add(DeleteSupplierEvent(supplierId: supplierEntity.id));
       }
     }
   }

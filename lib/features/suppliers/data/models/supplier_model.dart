@@ -20,6 +20,8 @@ class SupplierModel extends SupplierEntity implements BaseMapable {
     required super.notes,
     required super.createdAt,
     required super.updatedAt,
+    required super.dealsCount,
+    required super.netProfit,
   });
 
   factory SupplierModel.fromEntity(SupplierEntity entity) {
@@ -37,6 +39,8 @@ class SupplierModel extends SupplierEntity implements BaseMapable {
       notes: entity.notes,
       createdAt: entity.createdAt,
       updatedAt: entity.updatedAt,
+      dealsCount: entity.dealsCount,
+      netProfit: entity.netProfit,
     );
   }
 
@@ -55,6 +59,8 @@ class SupplierModel extends SupplierEntity implements BaseMapable {
       notes: (json['notes'] as String?).orEmpty,
       createdAt: DateTime.tryParse(json['created_at']).orDefault,
       updatedAt: DateTime.tryParse(json['updated_at']).orDefault,
+      dealsCount: (json['deals_count'] as int?).toIntOrZero,
+      netProfit: (json['net_profit'] as num?).toDoubleOrZero,
     );
   }
 

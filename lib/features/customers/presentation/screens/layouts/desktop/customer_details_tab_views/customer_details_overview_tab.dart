@@ -148,11 +148,11 @@ class CustomerDetailsOverviewTab extends StatelessWidget {
           Row(
             children: [
               Expanded(
-                child: _buildTotalRevenue(),
+                child: _buildTotalRevenue(customerEntity.totalRevenue),
               ),
               const SizedBox(width: 12),
               Expanded(
-                child: _buildTotalDeals(),
+                child: _buildTotalDeals(customerEntity.dealsCount),
               ),
             ],
           ),
@@ -220,7 +220,7 @@ class CustomerDetailsOverviewTab extends StatelessWidget {
     );
   }
 
-  Widget _buildTotalDeals() {
+  Widget _buildTotalDeals(int totalDeals) {
     return StandardContainer(
       padding: const EdgeInsets.all(22),
       child: Row(
@@ -237,7 +237,7 @@ class CustomerDetailsOverviewTab extends StatelessWidget {
                 style: TextStyles.font20SemiBold,
               ),
               Text(
-                '5',
+                '$totalDeals',
                 style: TextStyles.font24SemiBold,
               ),
             ],
@@ -247,7 +247,7 @@ class CustomerDetailsOverviewTab extends StatelessWidget {
     );
   }
 
-  Widget _buildTotalRevenue() {
+  Widget _buildTotalRevenue(double totalRevenue) {
     return StandardContainer(
       padding: const EdgeInsets.all(24),
       child: Row(
@@ -264,7 +264,7 @@ class CustomerDetailsOverviewTab extends StatelessWidget {
                 style: TextStyles.font20SemiBold,
               ),
               Text(
-                '€2342',
+                '€$totalRevenue',
                 style: TextStyles.font24SemiBold,
               ),
             ],

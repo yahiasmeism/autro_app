@@ -47,8 +47,6 @@ _initializeDesktopWindow() {
       const aspectRatio = 16 / 9;
       appWindow
         ..minSize = const Size(initialWidth, initialWidth / aspectRatio)
-        ..size = const Size(initialWidth, initialWidth / aspectRatio)
-        ..maxSize = const Size(1920, 1080)
         ..alignment = Alignment.center
         ..maximize()
         ..show();
