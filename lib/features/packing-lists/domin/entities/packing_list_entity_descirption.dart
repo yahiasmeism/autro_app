@@ -4,19 +4,25 @@ class PackingListDescriptionEntity extends Equatable {
   final int packingListId;
   final int id;
   final String containerNumber;
+  final double emptyContainerWeight;
   final double weight;
-  final double vgm;
   final DateTime date;
-  final double percent;
+  final String percento;
+  final int itemsCount;
+  final String type;
+
+  double get vgm => weight * emptyContainerWeight;
 
   const PackingListDescriptionEntity({
     required this.packingListId,
     required this.containerNumber,
     required this.weight,
-    required this.vgm,
+    required this.emptyContainerWeight,
+    required this.itemsCount,
     required this.date,
-    required this.percent,
+    required this.percento,
     required this.id,
+    required this.type,
   });
 
   @override
@@ -26,7 +32,9 @@ class PackingListDescriptionEntity extends Equatable {
         weight,
         vgm,
         date,
-        percent,
+        percento,
         id,
+        type,
+        itemsCount,
       ];
 }

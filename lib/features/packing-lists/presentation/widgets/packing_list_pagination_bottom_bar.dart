@@ -1,8 +1,11 @@
+import 'package:autro_app/core/constants/enums.dart';
 import 'package:autro_app/core/widgets/generic_pagination_bottom_bar.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
+import '../../../../core/utils/nav_util.dart';
 import '../bloc/packing_lists/packing_lists_bloc.dart';
+import '../screen/packing_list_form_screen.dart';
 
 class PackingListPaginationBottomBar extends StatelessWidget {
   const PackingListPaginationBottomBar({super.key});
@@ -40,7 +43,7 @@ class PackingListPaginationBottomBar extends StatelessWidget {
           labelAddButton: 'Add New Packing List',
           onAddTap: isLoaded
               ? () {
-                  // NavUtil.push(context, const PackingListFormScreen(formType: FormType.create));
+                  NavUtil.push(context, const PackingListFormScreen(formType: FormType.create));
                 }
               : null,
         );

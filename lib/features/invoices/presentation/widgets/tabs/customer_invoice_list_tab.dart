@@ -4,7 +4,6 @@ import 'package:autro_app/core/widgets/failure_screen.dart';
 import 'package:autro_app/core/widgets/loading_indecator.dart';
 import 'package:autro_app/core/widgets/no_data_screen.dart';
 import 'package:autro_app/core/widgets/overley_loading.dart';
-import 'package:autro_app/features/customers/presentation/widgets/customers_list_headers_row.dart';
 import 'package:autro_app/features/invoices/presentation/widgets/customer_invoice_list_headers_row.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';

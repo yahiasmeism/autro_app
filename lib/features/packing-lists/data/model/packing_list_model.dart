@@ -17,7 +17,7 @@ class PackingListModel extends PackingListEntity implements BaseMapable {
 
   factory PackingListModel.fromJson(Map<String, dynamic> json) {
     return PackingListModel(
-      dealId: (json['dealId'] as int?).toIntOrZero,
+      dealId: (json['deal_id'] as int?).toIntOrZero,
       number: (json['number'] as String?).orEmpty,
       details: (json['details'] as String?).orEmpty,
       descriptions: List<PackingListDescriptionModel>.of(
