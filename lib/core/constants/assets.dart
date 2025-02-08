@@ -14,6 +14,10 @@ class Assets {
   /// assets/icons/contact-details.svg
   static const String iconsContactDetails = "assets/icons/contact-details.svg";
 
+  /// Assets for iconsCustomersIcon
+  /// assets/icons/customers_icon.svg
+  static const String iconsCustomersIcon = "assets/icons/customers_icon.svg";
+
   /// Assets for iconsDate
   /// assets/icons/date.svg
   static const String iconsDate = "assets/icons/date.svg";
@@ -89,6 +93,10 @@ class Assets {
   /// Assets for iconsTimeHalf
   /// assets/icons/time-half.svg
   static const String iconsTimeHalf = "assets/icons/time-half.svg";
+
+  /// Assets for iconsTopProduct
+  /// assets/icons/top_product.svg
+  static const String iconsTopProduct = "assets/icons/top_product.svg";
 
   /// Assets for iconsTricycleLogo
   /// assets/icons/Tricycle-logo.svg

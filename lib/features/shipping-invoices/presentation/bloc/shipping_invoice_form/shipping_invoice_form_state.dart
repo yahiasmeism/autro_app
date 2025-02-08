@@ -82,3 +82,13 @@ final class ShippingInvoiceFormLoaded extends ShippingInvoiceFormState {
     );
   }
 }
+
+class ShippingInvoiceFormError extends ShippingInvoiceFormState {
+  final Failure failure;
+  final int id;
+
+  const ShippingInvoiceFormError({required this.failure, required this.id});
+
+  @override
+  List<Object?> get props => [failure, id];
+}

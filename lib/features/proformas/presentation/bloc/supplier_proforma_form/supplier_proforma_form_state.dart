@@ -82,3 +82,13 @@ final class SupplierProformaFormLoaded extends SupplierProformaFormState {
     );
   }
 }
+
+class SupplierProformaFormError extends SupplierProformaFormState {
+  final Failure failure;
+  final int id;
+
+  const SupplierProformaFormError({required this.failure, required this.id});
+
+  @override
+  List<Object?> get props => [failure, id];
+}

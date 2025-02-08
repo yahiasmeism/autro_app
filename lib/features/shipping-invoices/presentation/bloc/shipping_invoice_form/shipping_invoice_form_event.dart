@@ -8,11 +8,11 @@ sealed class ShippingInvoiceFormEvent extends Equatable {
 }
 
 class InitialShippingInvoiceFormEvent extends ShippingInvoiceFormEvent {
-  final ShippingInvoiceEntity? shippingInvoice;
-  const InitialShippingInvoiceFormEvent({this.shippingInvoice});
+  final int? id;
+  const InitialShippingInvoiceFormEvent({this.id});
 
   @override
-  List<Object?> get props => [shippingInvoice];
+  List<Object?> get props => [id];
 }
 
 final class SubmitShippingInvoiceFormEvent extends ShippingInvoiceFormEvent {}
@@ -37,3 +37,5 @@ class PickAttachmentEvent extends ShippingInvoiceFormEvent {
 }
 
 class ClearAttachmentEvent extends ShippingInvoiceFormEvent {}
+
+class ShippingInvoiceFormHandleFailure extends ShippingInvoiceFormEvent{}

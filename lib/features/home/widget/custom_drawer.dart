@@ -53,7 +53,7 @@ class CustomDrawer extends StatelessWidget {
                                 if (scaffoldKey != null) {
                                   scaffoldKey!.currentState?.openEndDrawer();
                                 }
-                                context.read<HomeBloc>().add(NavigationItemTappedEvent(item: item));
+                                context.read<HomeBloc>().add(NavigationItemTappedEvent(item: item.type));
                               },
                             );
                           },

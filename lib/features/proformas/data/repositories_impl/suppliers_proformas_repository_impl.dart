@@ -14,7 +14,7 @@ import '../../../../core/network_info/network_info.dart';
 import '../../domin/repositories/supplier_invoices_repository.dart';
 import '../../domin/use_cases/get_supplier_proforma_list_use_case.dart';
 import '../../domin/use_cases/update_supplier_proforma_use_case.dart';
-import '../data_sources/remote/suppliers_invoices_remote_data_source.dart';
+import '../data_sources/remote/suppliers_proformas_remote_data_source.dart';
 import '../models/requests/create_supplier_proforma_request.dart';
 import '../models/requests/get_suppliers_proforma_list_request.dart';
 import '../models/requests/update_supplier_proforma_request.dart';

@@ -10,7 +10,7 @@ sealed class HomeEvent extends Equatable {
 final class BlocCreatedEvent extends HomeEvent {}
 
 final class NavigationItemTappedEvent extends HomeEvent {
-  final AppNavMenuItem item;
+  final MenuItemType item;
 
   const NavigationItemTappedEvent({required this.item});
 

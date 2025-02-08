@@ -21,6 +21,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/svg.dart';
 
+import '../../../../../../../core/widgets/failure_screen.dart';
+
 class SupplierDetailsOverviewTab extends StatelessWidget {
   const SupplierDetailsOverviewTab({
     super.key,
@@ -33,9 +35,15 @@ class SupplierDetailsOverviewTab extends StatelessWidget {
           return const LoadingIndicator();
         } else if (state is SupplierDetailsLoaded) {
           return _buildLoadedState(state, context);
-        } else {
-          return const SizedBox.shrink();
+        } else if (state is SupplierDetailsError) {
+          return FailureScreen(
+            failure: state.failure,
+            onRetryTap: () {
+              context.read<SupplierDetailsCubit>().handleError();
+            },
+          );
         }
+        return const SizedBox.shrink();
       },
     );
   }

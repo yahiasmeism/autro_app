@@ -21,7 +21,7 @@ class PackingListListTile extends StatelessWidget {
     return InkWell(
       borderRadius: BorderRadius.circular(8),
       onTap: () {
-        NavUtil.push(context, PackingListFormScreen(formType: FormType.edit, packingList: packingListEntity));
+        NavUtil.push(context, PackingListFormScreen(formType: FormType.edit, id: packingListEntity.id));
       },
       child: Container(
         decoration: const BoxDecoration(
@@ -65,7 +65,7 @@ class PackingListListTile extends StatelessWidget {
                 children: [
                   EditIconButton(
                     onPressed: () {
-                      NavUtil.push(context, PackingListFormScreen(formType: FormType.edit, packingList: packingListEntity));
+                      NavUtil.push(context, PackingListFormScreen(formType: FormType.edit, id: packingListEntity.id));
                     },
                   ),
                   const SizedBox(width: 8),

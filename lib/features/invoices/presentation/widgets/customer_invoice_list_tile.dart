@@ -20,7 +20,7 @@ class CustomerInvoiceListTile extends StatelessWidget {
     return InkWell(
       borderRadius: BorderRadius.circular(8),
       onTap: () {
-        NavUtil.push(context, CustomerInvoiceFormScreen(formType: FormType.edit, invoice: invoiceEntity));
+        NavUtil.push(context, CustomerInvoiceFormScreen(formType: FormType.edit, invoiceId: invoiceEntity.id));
       },
       child: Container(
         decoration: const BoxDecoration(
@@ -64,7 +64,7 @@ class CustomerInvoiceListTile extends StatelessWidget {
                 children: [
                   EditIconButton(
                     onPressed: () {
-                      NavUtil.push(context, CustomerInvoiceFormScreen(formType: FormType.edit, invoice: invoiceEntity));
+                      NavUtil.push(context, CustomerInvoiceFormScreen(formType: FormType.edit, invoiceId: invoiceEntity.id));
                     },
                   ),
                   const SizedBox(width: 8),

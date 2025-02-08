@@ -2,6 +2,8 @@ import 'package:autro_app/core/constants/enums.dart';
 import 'package:autro_app/core/errors/failure_mapper.dart';
 import 'package:autro_app/core/utils/dialog_utils.dart';
 import 'package:autro_app/core/utils/nav_util.dart';
+import 'package:autro_app/core/widgets/failure_screen.dart';
+import 'package:autro_app/core/widgets/loading_indecator.dart';
 import 'package:autro_app/core/widgets/overley_loading.dart';
 import 'package:autro_app/features/proformas/presentation/bloc/customer_proforma_form_cubit/customer_proforma_form_cubit.dart';
 import 'package:autro_app/features/proformas/presentation/bloc/customers_proformas_list/customers_proformas_list_bloc.dart';
@@ -44,7 +46,9 @@ class CustomerProformaFormDesktopLayout extends StatelessWidget {
           }
         },
         builder: (context, state) {
-          if (state is CustomerProformaFormLoaded) {
+          if (state is CustomerProformaFormInitial) {
+            return const LoadingIndicator();
+          } else if (state is CustomerProformaFormLoaded) {
             return Stack(
               children: [
                 Positioned.fill(
@@ -58,6 +62,13 @@ class CustomerProformaFormDesktopLayout extends StatelessWidget {
                 ),
                 if (state.loading) const LoadingOverlay(),
               ],
+            );
+          } else if (state is CustomerProformaFormError) {
+            return FailureScreen(
+              failure: state.failure,
+              onRetryTap: () {
+                context.read<CustomerProformaFormCubit>().handleError();
+              },
             );
           }
           return const SizedBox.shrink();

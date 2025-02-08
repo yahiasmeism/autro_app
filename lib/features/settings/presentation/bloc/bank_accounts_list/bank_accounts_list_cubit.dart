@@ -21,6 +21,7 @@ class BankAccountsListCubit extends Cubit<BankAccountsListState> {
       : super(BankAccountsListInitial());
 
   getBankAccountList() async {
+    emit(BankAccountsListInitial());
     final either = await getBankAccountListUseCase.call(NoParams());
     either.fold(
       (failure) => emit(BankAccountsListError(failure: failure)),

@@ -21,6 +21,6 @@ class AppMenuItems {
     AppNavMenuItem(title: 'Packing Lists', icon: Icons.receipt_long, type: MenuItemType.packingLists),
     AppNavMenuItem(title: 'Bills', icon: Icons.receipt_long, type: MenuItemType.bills),
     AppNavMenuItem(title: 'Settings', icon: Icons.settings, type: MenuItemType.settings),
-    AppNavMenuItem(title: 'Messages', icon: Icons.message, type: MenuItemType.messages),
+    // AppNavMenuItem(title: 'Messages', icon: Icons.message, type: MenuItemType.messages),
   ];
 }

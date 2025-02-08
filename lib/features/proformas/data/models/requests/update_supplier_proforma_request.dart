@@ -27,7 +27,7 @@ class UpdateSupplierProformaRequest extends UpdateSupplierProformaUseCaseParams 
         totalAmount: params.totalAmount,
       );
 
-  Future<FormData> toFormDate() async {
+  Future<FormData> toFormData() async {
     return FormData.fromMap({
       ...toJson(),
       if (attachementPath != null) 'attachment': await MultipartFile.fromFile(attachementPath!),

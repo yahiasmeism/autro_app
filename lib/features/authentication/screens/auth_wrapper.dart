@@ -1,7 +1,10 @@
+import 'package:autro_app/core/di/di.dart';
 import 'package:autro_app/core/theme/text_styles.dart';
 import 'package:autro_app/features/bills/presentation/bloc/bills_list/bills_list_bloc.dart';
 import 'package:autro_app/features/customers/presentation/bloc/customers_list/customers_list_bloc.dart';
+import 'package:autro_app/features/dashboard/presentation/bloc/dashboard/dashboard_cubit.dart';
 import 'package:autro_app/features/deals/presentation/bloc/deals_list/deals_list_bloc.dart';
+import 'package:autro_app/features/home/bloc/home_bloc.dart';
 import 'package:autro_app/features/invoices/presentation/bloc/customers_invoices_list/customers_invoices_list_bloc.dart';
 import 'package:autro_app/features/invoices/presentation/bloc/suppliers_invoices_list/suppliers_invoices_list_bloc.dart';
 import 'package:autro_app/features/packing-lists/presentation/bloc/packing_lists/packing_lists_bloc.dart';
@@ -59,6 +62,7 @@ class AuthWrapper extends StatelessWidget {
 
   void listener(BuildContext context, AppAuthState state) {
     if (state is AuthenticatedState) {
+      sl<HomeBloc>().add(BlocCreatedEvent());
       context.read<CustomersListBloc>().add(GetCustomersListEvent());
       context.read<SuppliersListBloc>().add(GetSuppliersListEvent());
       context.read<CompanyCubit>().getCompany();
@@ -73,6 +77,7 @@ class AuthWrapper extends StatelessWidget {
       context.read<SuppliersInvoicesListBloc>().add(GetSuppliersInvoicesListEvent());
       context.read<SuppliersProformasListBloc>().add(GetSuppliersProformasListEvent());
       context.read<PackingListsBloc>().add(GetPackingListsEvent());
+      context.read<DashboardCubit>().getDashboard();
     }
   }
 }

@@ -77,6 +77,7 @@ class AppAuthBloc extends Bloc<AppAuthEvent, AppAuthState> {
 
   Future<void> _handleLogout(Emitter<AppAuthState> emit) async {
     emit(const LoggingOutState());
+
     await Future.delayed(const Duration(seconds: 1));
     await authRepo.logout();
     emit(const LoggedOutState());

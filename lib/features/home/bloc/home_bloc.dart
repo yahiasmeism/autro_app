@@ -3,6 +3,7 @@ import 'package:equatable/equatable.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:injectable/injectable.dart';
 
+import '../../../core/constants/enums.dart';
 import '../../../core/errors/failures.dart';
 
 part 'home_event.dart';
@@ -25,6 +26,7 @@ class HomeBloc extends Bloc<HomeEvent, HomeState> {
   }
 
   _init(BlocCreatedEvent event, Emitter<HomeState> emit) async {
+    emit(HomeInitial());
     final navItems = AppMenuItems.appNavItems;
     emit(HomeLoaded(selectedItem: navItems.first, appNavMenuItems: navItems));
   }
@@ -32,7 +34,7 @@ class HomeBloc extends Bloc<HomeEvent, HomeState> {
   _onNavigationItemTap(NavigationItemTappedEvent event, Emitter<HomeState> emit) {
     final state = this.state as HomeLoaded;
 
-    final index = state.appNavMenuItems.indexOf(event.item);
+    final index = state.appNavMenuItems.indexWhere((element) => element.type == event.item);
 
     final selectedItem = state.appNavMenuItems.elementAt(index);
 

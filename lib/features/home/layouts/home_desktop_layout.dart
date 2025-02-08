@@ -1,6 +1,7 @@
 import 'package:autro_app/core/constants/enums.dart';
 import 'package:autro_app/features/bills/presentation/screens/bills_list_screen.dart';
 import 'package:autro_app/features/customers/presentation/screens/customers_list_screen.dart';
+import 'package:autro_app/features/dashboard/presentation/screens/dashboard_screen.dart';
 import 'package:autro_app/features/deals/presentation/screens/deals_list_screen.dart';
 import 'package:autro_app/features/home/bloc/home_bloc.dart';
 import 'package:autro_app/features/home/widget/custom_drawer.dart';
@@ -44,7 +45,7 @@ class HomeWrapperDesktopLayout extends StatelessWidget {
 
   Widget _buildSelectedScreen(BuildContext context, HomeLoaded state) {
     final screens = <MenuItemType, Widget>{
-      MenuItemType.dashboard: _buildNavigator(const Center(child: Text('Dashboard'))),
+      MenuItemType.dashboard: _buildNavigator(const Center(child: DashboardScreen())),
       MenuItemType.invoices: _buildNavigator(const InvoicesListWrapperScreen()),
       MenuItemType.deals: _buildNavigator(Center(child: DealsListScreen(key: UniqueKey()))),
       MenuItemType.proformas: _buildNavigator(const ProformasListWrapperScreen()),
@@ -54,7 +55,7 @@ class HomeWrapperDesktopLayout extends StatelessWidget {
       MenuItemType.bills: _buildNavigator(const Center(child: BillsListScreen())),
       MenuItemType.suppliers: _buildNavigator(const SuppliersListScreen()),
       MenuItemType.packingLists: _buildNavigator(const PackingListsScreen()),
-      MenuItemType.messages: _buildNavigator(const Center(child: Text('Messages'))),
+      // MenuItemType.messages: _buildNavigator(const Center(child: Text('Messages'))),
     };
     return IndexedStack(
       sizing: StackFit.expand,

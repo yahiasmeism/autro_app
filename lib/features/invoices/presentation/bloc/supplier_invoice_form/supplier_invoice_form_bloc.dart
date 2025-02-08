@@ -3,6 +3,7 @@ import 'dart:io';
 import 'package:autro_app/core/errors/failures.dart';
 import 'package:autro_app/core/extensions/date_time_extension.dart';
 import 'package:autro_app/core/extensions/num_extension.dart';
+import 'package:autro_app/features/invoices/domin/use_cases/get_supplier_invoice_use_case.dart';
 import 'package:bloc/bloc.dart';
 import 'package:dartz/dartz.dart';
 import 'package:equatable/equatable.dart';
@@ -20,9 +21,11 @@ part 'supplier_invoice_form_state.dart';
 class SupplierInvoiceFormBloc extends Bloc<SupplierInvoiceFormEvent, SupplierInvoiceFormState> {
   final CreateSupplierInvoiceUseCase createSupplierInvoiceUsecase;
   final UpdateSupplierInvoiceUseCase updateSupplierInvoiceUsecase;
+  final GetSupplierInvoiceUseCase getSupplierInvoiceUseCase;
   SupplierInvoiceFormBloc(
     this.createSupplierInvoiceUsecase,
     this.updateSupplierInvoiceUsecase,
+    this.getSupplierInvoiceUseCase,
   ) : super(SupplierInvoiceInfoInitial()) {
     on<SupplierInvoiceFormEvent>(_mapEvents);
   }
@@ -57,6 +60,10 @@ class SupplierInvoiceFormBloc extends Bloc<SupplierInvoiceFormEvent, SupplierInv
     if (event is ClearAttachmentEvent) {
       await _onClearAttachment(event, emit);
     }
+
+    if (event is SupplierInvoiceHandleError) {
+      await _onHandleError(event, emit);
+    }
   }
 
   /* 
@@ -81,28 +88,42 @@ class SupplierInvoiceFormBloc extends Bloc<SupplierInvoiceFormEvent, SupplierInv
   final typeMaterialNameController = TextEditingController();
   final dateController = TextEditingController();
 
-  _initial(InitialSupplierInvoiceFormEvent event, Emitter<SupplierInvoiceFormState> emit) {
-    final attachment = event.supplierInvoice?.attachmentUrl;
-    emit(SupplierInvoiceFormLoaded(
-      supplierInvoice: event.supplierInvoice,
-      updatedMode: event.supplierInvoice != null,
-      attachmentUrl: attachment?.isNotEmpty == true ? some(attachment!) : none(),
-    ));
+  _initial(InitialSupplierInvoiceFormEvent event, Emitter<SupplierInvoiceFormState> emit) async {
+    if (event.id != null) {
+      final either = await getSupplierInvoiceUseCase.call(event.id!);
+      either.fold(
+        (failure) {
+          emit(SupplierInvoiceFormError(failure: failure, id: event.id!));
+        },
+        (invoice) {
+          emit(SupplierInvoiceFormLoaded(
+            supplierInvoice: invoice,
+            updatedMode: true,
+            attachmentUrl: invoice.attachmentUrl.isNotEmpty == true ? some(invoice.attachmentUrl) : none(),
+          ));
+        },
+      );
+    } else {
+      emit(const SupplierInvoiceFormLoaded());
+    }
+
     _initializeControllers();
   }
 
   _initializeControllers() {
-    final state = this.state as SupplierInvoiceFormLoaded;
-    formKey.currentState?.reset();
-    dealIdController.text = state.supplierInvoice?.dealId.toString() ?? '';
-    dealNumberController.text = state.supplierInvoice?.number ?? '';
-    supplierNameController.text = state.supplierInvoice?.supplier.name ?? '';
-    supplierIdController.text = state.supplierInvoice?.supplier.id.toString() ?? '';
-    totalAmountController.text = state.supplierInvoice?.totalAmount.toString() ?? '';
-    typeMaterialNameController.text = state.supplierInvoice?.material ?? '';
-    dateController.text = state.supplierInvoice?.date.formattedDateYYYYMMDD ?? DateTime.now().formattedDateYYYYMMDD;
-    setupControllersListeners();
-    add(SupplierInvoiceFormChangedEvent());
+    if (state is SupplierInvoiceFormLoaded) {
+      final state = this.state as SupplierInvoiceFormLoaded;
+      formKey.currentState?.reset();
+      dealIdController.text = state.supplierInvoice?.dealId.toString() ?? '';
+      dealNumberController.text = state.supplierInvoice?.number ?? '';
+      supplierNameController.text = state.supplierInvoice?.supplier.name ?? '';
+      supplierIdController.text = state.supplierInvoice?.supplier.id.toString() ?? '';
+      totalAmountController.text = state.supplierInvoice?.totalAmount.toString() ?? '';
+      typeMaterialNameController.text = state.supplierInvoice?.material ?? '';
+      dateController.text = state.supplierInvoice?.date.formattedDateYYYYMMDD ?? DateTime.now().formattedDateYYYYMMDD;
+      setupControllersListeners();
+      add(SupplierInvoiceFormChangedEvent());
+    }
   }
 
   setupControllersListeners() {
@@ -188,7 +209,7 @@ class SupplierInvoiceFormBloc extends Bloc<SupplierInvoiceFormEvent, SupplierInv
     final params = CreateSupplierInvoiceUseCaseParams(
       material: typeMaterialNameController.text,
       supplierId: int.tryParse(supplierIdController.text).toIntOrZero,
-      totalAmount: int.tryParse(totalAmountController.text).toDoubleOrZero,
+      totalAmount: double.tryParse(totalAmountController.text).toDoubleOrZero,
       dealId: int.tryParse(dealIdController.text).toIntOrZero,
       date: DateTime.tryParse(dateController.text).orDefault,
       attachementPath: state.pickedAttachment.fold(() => null, (file) => file.path),
@@ -254,7 +275,14 @@ class SupplierInvoiceFormBloc extends Bloc<SupplierInvoiceFormEvent, SupplierInv
 
   _onCancelSupplierInvoiceFormEvent(SupplierInvoiceFormEvent event, Emitter<SupplierInvoiceFormState> emit) {
     final state = this.state as SupplierInvoiceFormLoaded;
-    add(InitialSupplierInvoiceFormEvent(supplierInvoice: state.supplierInvoice));
+    final invoice = state.supplierInvoice;
+    if (invoice != null) {
+      emit(state.copyWith(
+        pickedAttachment: none(),
+        attachmentUrl: some(invoice.attachmentUrl),
+      ));
+    }
+    _initializeControllers();
   }
 
   @override
@@ -284,5 +312,17 @@ class SupplierInvoiceFormBloc extends Bloc<SupplierInvoiceFormEvent, SupplierInv
       ),
     );
     add(SupplierInvoiceFormChangedEvent());
+  }
+
+  _onHandleError(SupplierInvoiceHandleError event, Emitter<SupplierInvoiceFormState> emit) async {
+    if (state is SupplierInvoiceFormError) {
+      final state = this.state as SupplierInvoiceFormError;
+
+      emit(SupplierInvoiceInfoInitial());
+
+      await Future.delayed(const Duration(milliseconds: 300));
+
+      add(InitialSupplierInvoiceFormEvent(id: state.id));
+    }
   }
 }

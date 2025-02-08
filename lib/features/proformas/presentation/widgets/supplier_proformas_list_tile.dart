@@ -21,7 +21,7 @@ class SupplierProformaListTile extends StatelessWidget {
     return InkWell(
       borderRadius: BorderRadius.circular(8),
       onTap: () {
-        NavUtil.push(context, SupplierProformaFormScreen(formType: FormType.edit, supplierProforma: proformaEntity));
+        NavUtil.push(context, SupplierProformaFormScreen(formType: FormType.edit, supplierProformaId: proformaEntity.id));
       },
       child: Container(
         decoration: const BoxDecoration(
@@ -65,7 +65,8 @@ class SupplierProformaListTile extends StatelessWidget {
                 children: [
                   EditIconButton(
                     onPressed: () {
-                      NavUtil.push(context, SupplierProformaFormScreen(formType: FormType.edit, supplierProforma: proformaEntity));
+                      NavUtil.push(
+                          context, SupplierProformaFormScreen(formType: FormType.edit, supplierProformaId: proformaEntity.id));
                     },
                   ),
                   const SizedBox(width: 8),

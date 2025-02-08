@@ -26,3 +26,13 @@ final class SupplierDetailsLoaded extends SupplierDetailsState {
     );
   }
 }
+
+class SupplierDetailsError extends SupplierDetailsState {
+  final Failure failure;
+  final int id;
+
+  const SupplierDetailsError({required this.failure, required this.id});
+
+  @override
+  List<Object> get props => [failure, id];
+}

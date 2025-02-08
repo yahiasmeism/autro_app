@@ -3,20 +3,19 @@ import 'package:autro_app/core/widgets/custom_tab_bar.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
-import '../../../../domin/entities/supplier_entity.dart';
 import '../../../bloc/supplier_details/supplier_details_cubit.dart';
 import 'supplier_details_tab_views/supplier_details_overview_tab.dart';
 
 class SupplierDetailsDesktopLayout extends StatelessWidget {
   const SupplierDetailsDesktopLayout({
     super.key,
-    required this.customerEntity,
+    required this.id,
   });
-  final SupplierEntity customerEntity;
+  final int id;
   @override
   Widget build(BuildContext context) {
     return BlocProvider.value(
-      value: sl<SupplierDetailsCubit>()..init(customerEntity),
+      value: sl<SupplierDetailsCubit>()..getSupplier(id),
       child: Scaffold(
         appBar: AppBar(
           elevation: 0,

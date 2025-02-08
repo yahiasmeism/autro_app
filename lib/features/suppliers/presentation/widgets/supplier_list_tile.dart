@@ -23,7 +23,7 @@ class SupplierListTile extends StatelessWidget {
   Widget build(BuildContext context) {
     return InkWell(
       onTap: () {
-        NavUtil.push(context, SupplierDetailsScreen(supplierEntity: supplierEntity));
+        NavUtil.push(context, SupplierDetailsScreen(id: supplierEntity.id));
       },
       child: Container(
         decoration: const BoxDecoration(
@@ -125,7 +125,7 @@ class SupplierListTile extends StatelessWidget {
                   const SizedBox(width: 8),
                   ShowIconButton(
                     onPressed: () {
-                      NavUtil.push(context, SupplierDetailsScreen(supplierEntity: supplierEntity));
+                      NavUtil.push(context, SupplierDetailsScreen(id: supplierEntity.id));
                     },
                   ),
                   const SizedBox(width: 8),

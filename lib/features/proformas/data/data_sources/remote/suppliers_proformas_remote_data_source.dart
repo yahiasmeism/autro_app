@@ -78,7 +78,8 @@ class SuppliersProformasRemoteDataSourceImpl implements SuppliersProformasRemote
   @override
   Future<SupplierProformaModel> updateProforma(UpdateSupplierProformaRequest body) async {
     final path = ApiPaths.supplierProformasById(body.id);
-    final request = ApiRequest(path: path, body: await body.toFormDate());
+    final formDataBody = await body.toFormData();
+    final request = ApiRequest(path: path, body: formDataBody);
     final response = await client.post(request);
     if (ResponseCode.isOk(response.statusCode)) {
       return SupplierProformaModel.fromJson(response.data);

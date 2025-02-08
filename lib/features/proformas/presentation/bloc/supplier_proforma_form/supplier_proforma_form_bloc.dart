@@ -11,6 +11,7 @@ import 'package:injectable/injectable.dart';
 
 import '../../../domin/entities/supplier_proforma_entity.dart';
 import '../../../domin/use_cases/create_supplier_proforma_use_case.dart';
+import '../../../domin/use_cases/get_supplier_proforma_by_id_use_case.dart';
 import '../../../domin/use_cases/update_supplier_proforma_use_case.dart';
 
 part 'supplier_proforma_form_event.dart';
@@ -20,9 +21,11 @@ part 'supplier_proforma_form_state.dart';
 class SupplierProformaFormBloc extends Bloc<SupplierProformaFormEvent, SupplierProformaFormState> {
   final CreateSupplierProformaUseCase createSupplierProformaUsecase;
   final UpdateSupplierProformaUseCase updateSupplierProformaUsecase;
+  final GetSupplierProformaByIdUseCase getSupplierProformaUsecase;
   SupplierProformaFormBloc(
     this.createSupplierProformaUsecase,
     this.updateSupplierProformaUsecase,
+    this.getSupplierProformaUsecase,
   ) : super(SupplierProformaInfoInitial()) {
     on<SupplierProformaFormEvent>(_mapEvents);
   }
@@ -81,28 +84,42 @@ class SupplierProformaFormBloc extends Bloc<SupplierProformaFormEvent, SupplierP
   final typeMaterialNameController = TextEditingController();
   final dateController = TextEditingController();
 
-  _initial(InitialSupplierProformaFormEvent event, Emitter<SupplierProformaFormState> emit) {
-    final attachment = event.supplierProforma?.attachmentUrl;
-    emit(SupplierProformaFormLoaded(
-      supplierProforma: event.supplierProforma,
-      updatedMode: event.supplierProforma != null,
-      attachmentUrl: attachment?.isNotEmpty == true ? some(attachment!) : none(),
-    ));
+  _initial(InitialSupplierProformaFormEvent event, Emitter<SupplierProformaFormState> emit) async {
+    if (event.supplierProformaId != null) {
+      final supplierProformaEither = await getSupplierProformaUsecase.call(event.supplierProformaId!);
+
+      supplierProformaEither.fold(
+        (failure) {},
+        (supplierProforma) {
+          final attachment = supplierProforma.attachmentUrl;
+          emit(SupplierProformaFormLoaded(
+            supplierProforma: supplierProforma,
+            updatedMode: true,
+            attachmentUrl: attachment.isNotEmpty ? some(attachment) : none(),
+          ));
+        },
+      );
+    } else {
+      emit(const SupplierProformaFormLoaded());
+    }
+
     _initializeControllers();
   }
 
   _initializeControllers() {
-    final state = this.state as SupplierProformaFormLoaded;
-    formKey.currentState?.reset();
-    dealIdController.text = state.supplierProforma?.dealId.toString() ?? '';
-    dealNumberController.text = state.supplierProforma?.number ?? '';
-    supplierNameController.text = state.supplierProforma?.supplier.name ?? '';
-    supplierIdController.text = state.supplierProforma?.supplier.id.toString() ?? '';
-    totalAmountController.text = state.supplierProforma?.totalAmount.toString() ?? '';
-    typeMaterialNameController.text = state.supplierProforma?.material ?? '';
-    dateController.text = state.supplierProforma?.date.formattedDateYYYYMMDD ?? DateTime.now().formattedDateYYYYMMDD;
-    setupControllersListeners();
-    add(SupplierProformaFormChangedEvent());
+    if (state is SupplierProformaFormLoaded) {
+      final state = this.state as SupplierProformaFormLoaded;
+      formKey.currentState?.reset();
+      dealIdController.text = state.supplierProforma?.dealId.toString() ?? '';
+      dealNumberController.text = state.supplierProforma?.number ?? '';
+      supplierNameController.text = state.supplierProforma?.supplier.name ?? '';
+      supplierIdController.text = state.supplierProforma?.supplier.id.toString() ?? '';
+      totalAmountController.text = state.supplierProforma?.totalAmount.toString() ?? '';
+      typeMaterialNameController.text = state.supplierProforma?.material ?? '';
+      dateController.text = state.supplierProforma?.date.formattedDateYYYYMMDD ?? DateTime.now().formattedDateYYYYMMDD;
+      setupControllersListeners();
+      add(SupplierProformaFormChangedEvent());
+    }
   }
 
   setupControllersListeners() {
@@ -204,7 +221,8 @@ class SupplierProformaFormBloc extends Bloc<SupplierProformaFormEvent, SupplierP
         )),
       ),
       (supplierProforma) {
-        emit(state.copyWith(supplierProforma: supplierProforma, failureOrSuccessOption: some(right('Supplier Proforma created'))));
+        emit(
+            state.copyWith(supplierProforma: supplierProforma, failureOrSuccessOption: some(right('Supplier Proforma created'))));
       },
     );
   }
@@ -217,7 +235,7 @@ class SupplierProformaFormBloc extends Bloc<SupplierProformaFormEvent, SupplierP
       date: DateTime.tryParse(dateController.text).orDefault,
       material: typeMaterialNameController.text,
       supplierId: int.tryParse(supplierIdController.text).toIntOrZero,
-      totalAmount: int.tryParse(totalAmountController.text).toDoubleOrZero,
+      totalAmount: double.tryParse(totalAmountController.text).toDoubleOrZero,
       id: state.supplierProforma!.id,
       dealId: int.tryParse(dealIdController.text).toIntOrZero,
       attachementPath: state.pickedAttachment.fold(() => null, (file) => file.path),
@@ -230,7 +248,8 @@ class SupplierProformaFormBloc extends Bloc<SupplierProformaFormEvent, SupplierP
     either.fold(
       (failure) => emit((state.copyWith(failureOrSuccessOption: some(left(failure))))),
       (supplierProforma) {
-        emit(state.copyWith(supplierProforma: supplierProforma, failureOrSuccessOption: some(right('Supplier Proforma updated'))));
+        emit(
+            state.copyWith(supplierProforma: supplierProforma, failureOrSuccessOption: some(right('Supplier Proforma updated'))));
         _initializeControllers();
       },
     );
@@ -254,7 +273,14 @@ class SupplierProformaFormBloc extends Bloc<SupplierProformaFormEvent, SupplierP
 
   _onCancelSupplierProformaFormEvent(SupplierProformaFormEvent event, Emitter<SupplierProformaFormState> emit) {
     final state = this.state as SupplierProformaFormLoaded;
-    add(InitialSupplierProformaFormEvent(supplierProforma: state.supplierProforma));
+    final proforma = state.supplierProforma;
+    if (proforma != null) {
+      emit(state.copyWith(
+        pickedAttachment: none(),
+        attachmentUrl: some(proforma.attachmentUrl),
+      ));
+    }
+    _initializeControllers();
   }
 
   @override

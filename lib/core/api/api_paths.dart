@@ -60,8 +60,9 @@ abstract class ApiPaths {
   static String dealBillById(int billId) => 'deals/bills/$billId';
   static String dealBills(int dealId) => 'deals/$dealId/bills';
 
-
-
   static String packingListById(int id) => 'packing-lists/$id';
   static const String packingLists = 'packing-lists';
+
+  // dashboard
+  static const String dashboard = 'dashboard';
 }

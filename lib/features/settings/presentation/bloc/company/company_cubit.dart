@@ -74,6 +74,7 @@ class CompanyCubit extends Cubit<CompanyState> {
   }
 
   Future<void> getCompany() async {
+    emit(CompanyInitial());
     final either = await getCompanyUseCase.call(NoParams());
     either.fold(
       (failure) => emit(CompanyError(failure)),

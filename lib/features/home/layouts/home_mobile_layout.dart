@@ -43,7 +43,7 @@ class _HomeMobileLayoutState extends State<HomeMobileLayout> {
       MenuItemType.settings: const Center(child: Text('Settings')),
       MenuItemType.bills: const Center(child: Text('Bills')),
       MenuItemType.suppliers: const Center(child: Text('Suppliers')),
-      MenuItemType.messages: const Center(child: Text('Messages')),
+      // MenuItemType.messages: const Center(child: Text('Messages')),
     };
 
     return IndexedStack(

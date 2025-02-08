@@ -80,3 +80,13 @@ final class PackingListFormLoaded extends PackingListFormState {
     return weight;
   }
 }
+
+class PackingListFormError extends PackingListFormState {
+  final Failure failure;
+  final int id;
+
+  const PackingListFormError({required this.failure, required this.id});
+
+  @override
+  List<Object?> get props => [failure, id];
+}

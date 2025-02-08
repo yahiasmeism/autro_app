@@ -96,3 +96,13 @@ final class CustomerProformaFormLoaded extends CustomerProformaFormState {
     return price;
   }
 }
+
+class CustomerProformaFormError extends CustomerProformaFormState {
+  final Failure failure;
+  final int id;
+
+  const CustomerProformaFormError({required this.failure, required this.id});
+
+  @override
+  List<Object?> get props => [failure, id];
+}

@@ -2,6 +2,7 @@ import 'package:autro_app/core/errors/failures.dart';
 import 'package:autro_app/core/extensions/date_time_extension.dart';
 import 'package:autro_app/features/bills/domin/entities/bill_entity.dart';
 import 'package:autro_app/features/bills/domin/use_cases/add_bill_use_case.dart';
+import 'package:autro_app/features/bills/domin/use_cases/get_bill_use_case.dart';
 import 'package:bloc/bloc.dart';
 import 'package:dartz/dartz.dart';
 import 'package:equatable/equatable.dart';
@@ -16,9 +17,11 @@ part 'bill_form_state.dart';
 @injectable
 class BillFormBloc extends Bloc<BillFormEvent, BillFormState> {
   final AddBillUseCase addBillUsecase;
+  final GetBillUseCase getBillUseCase;
   final UpdateBillUseCase updateBillUsecase;
   BillFormBloc(
     this.addBillUsecase,
+    this.getBillUseCase,
     this.updateBillUsecase,
   ) : super(BillInfoInitial()) {
     on<BillFormEvent>(_mapEvents);
@@ -46,6 +49,9 @@ class BillFormBloc extends Bloc<BillFormEvent, BillFormState> {
     if (event is ClearBillFormEvent) {
       await _onClearBillForm(event, emit);
     }
+    if (event is BillFormHandleError) {
+      await _onHandleError(event, emit);
+    }
   }
 
   final vendorController = TextEditingController();
@@ -55,21 +61,36 @@ class BillFormBloc extends Bloc<BillFormEvent, BillFormState> {
 
   final formKey = GlobalKey<FormState>();
 
-  _initial(InitialBillFormEvent event, Emitter<BillFormState> emit) {
-    emit(BillFormLoaded(bill: event.bill, updatedMode: event.bill != null));
+  _initial(InitialBillFormEvent event, Emitter<BillFormState> emit) async {
+    if (event.billId != null) {
+      final either = await getBillUseCase.call(event.billId!);
+      either.fold(
+        (failure) {
+          emit(BillFormError(failure: failure, id: event.billId!));
+        },
+        (bill) {
+          emit(BillFormLoaded(bill: bill, updatedMode: true));
+        },
+      );
+    } else {
+      emit(const BillFormLoaded());
+    }
+
     _initializeControllers();
   }
 
   _initializeControllers() {
-    final state = this.state as BillFormLoaded;
-    formKey.currentState?.reset();
-    vendorController.text = state.bill?.vendor ?? '';
-    amountController.text = state.bill?.amount.toString() ?? '';
-    dateController.text = state.bill?.date.formattedDateYYYYMMDD ?? DateTime.now().formattedDateYYYYMMDD;
-    notesController.text = state.bill?.notes ?? '';
+    if (state is BillFormLoaded) {
+      final state = this.state as BillFormLoaded;
+      formKey.currentState?.reset();
+      vendorController.text = state.bill?.vendor ?? '';
+      amountController.text = state.bill?.amount.toString() ?? '';
+      dateController.text = state.bill?.date.formattedDateYYYYMMDD ?? DateTime.now().formattedDateYYYYMMDD;
+      notesController.text = state.bill?.notes ?? '';
 
-    setupControllersListeners();
-    add(BillFormChangedEvent());
+      setupControllersListeners();
+      add(BillFormChangedEvent());
+    }
   }
 
   setupControllersListeners() {
@@ -172,5 +193,14 @@ class BillFormBloc extends Bloc<BillFormEvent, BillFormState> {
     dateController.dispose();
     notesController.dispose();
     return super.close();
+  }
+
+  _onHandleError(BillFormHandleError event, Emitter<BillFormState> emit) async {
+    if (state is BillFormError) {
+      final state = this.state as BillFormError;
+      emit(BillInfoInitial());
+      await Future.delayed(const Duration(milliseconds: 300));
+      add(InitialBillFormEvent(billId: state.id));
+    }
   }
 }

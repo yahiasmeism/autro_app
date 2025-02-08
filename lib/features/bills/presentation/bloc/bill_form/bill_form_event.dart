@@ -8,11 +8,11 @@ sealed class BillFormEvent extends Equatable {
 }
 
 class InitialBillFormEvent extends BillFormEvent {
-  final BillEntity? bill;
-  const InitialBillFormEvent({this.bill});
+  final int? billId;
+  const InitialBillFormEvent({this.billId});
 
   @override
-  List<Object?> get props => [bill];
+  List<Object?> get props => [billId];
 }
 
 final class SubmitBillFormEvent extends BillFormEvent {}
@@ -27,3 +27,6 @@ class BillFormChangedEvent extends BillFormEvent {}
 class ClearBillFormEvent extends BillFormEvent {}
 
 class CancelBillFormEvent extends BillFormEvent {}
+
+
+class BillFormHandleError extends BillFormEvent{}

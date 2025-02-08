@@ -2,6 +2,7 @@ import 'package:autro_app/core/errors/failures.dart';
 import 'package:autro_app/core/extensions/date_time_extension.dart';
 import 'package:autro_app/features/proformas/domin/dtos/proforma_good_description_dto.dart';
 import 'package:autro_app/features/proformas/domin/entities/customer_proforma_entity.dart';
+import 'package:autro_app/features/proformas/domin/use_cases/get_customer_proforma_by_id_use_case.dart';
 import 'package:bloc/bloc.dart';
 import 'package:dartz/dartz.dart';
 import 'package:equatable/equatable.dart';
@@ -17,7 +18,9 @@ part 'customer_proforma_form_state.dart';
 class CustomerProformaFormCubit extends Cubit<CustomerProformaFormState> {
   final CreateCustomerProformaUseCase createProformaUsecase;
   final UpdateCustomerProformaUseCase updateProformaUsecase;
-  CustomerProformaFormCubit(this.createProformaUsecase, this.updateProformaUsecase) : super(CustomerProformaFormInitial());
+  final GetCustomerProformaByIdUseCase getCustomerProformaByIdUseCase;
+  CustomerProformaFormCubit(this.createProformaUsecase, this.updateProformaUsecase, this.getCustomerProformaByIdUseCase)
+      : super(CustomerProformaFormInitial());
 
   // Goods Descriptions
   final descriptionController = TextEditingController();
@@ -42,33 +45,44 @@ class CustomerProformaFormCubit extends Cubit<CustomerProformaFormState> {
   final bankNameController = TextEditingController();
   final notesController = TextEditingController();
 
-  Future init({required CustomerProformaEntity? proforma}) async {
-    final goodsDescriptions = proforma?.goodsDescriptions.map((e) => ProformaGoodDescriptionDto.fromEntity(e)).toList() ?? [];
-    emit(CustomerProformaFormLoaded(
-      proforma: proforma,
-      goodDescriptionsList: goodsDescriptions,
-      updatedMode: proforma != null,
-    ));
+  Future init({required int? proformaId}) async {
+    if (proformaId != null) {
+      final either = await getCustomerProformaByIdUseCase.call(proformaId);
+
+      either.fold(
+        (failure) {
+          emit(CustomerProformaFormError(failure: failure, id: proformaId));
+        },
+        (proforma) {
+          final goodsDescriptions = proforma.goodsDescriptions.map((e) => ProformaGoodDescriptionDto.fromEntity(e)).toList();
+          emit(CustomerProformaFormLoaded(updatedMode: true, goodDescriptionsList: goodsDescriptions, proforma: proforma));
+        },
+      );
+    } else {
+      emit(const CustomerProformaFormLoaded());
+    }
     await _initializeControllers();
   }
 
   _initializeControllers() {
-    final state = this.state as CustomerProformaFormLoaded;
-    formKey.currentState?.reset();
-    proformaNumberController.text = state.proforma?.proformaNumber ?? '';
-    proformaDateController.text = state.proforma?.date.formattedDateYYYYMMDD ?? DateTime.now().formattedDateYYYYMMDD;
-    customerIdController.text = state.proforma?.customer.id.toString() ?? '';
-    customerNameController.text = state.proforma?.customer.name ?? '';
-    taxIdController.text = state.proforma?.taxId ?? '';
-    portsController.text = state.proforma?.ports ?? '';
-    delivaryTermsController.text = state.proforma?.deliveryTerms ?? '';
-    paymentTermsController.text = state.proforma?.paymentTerms ?? '';
-    bankIdController.text = state.proforma?.bankAccount.id.toString() ?? '';
-    bankNameController.text = state.proforma?.bankAccount.formattedLabel ?? '';
-    notesController.text = state.proforma?.notes ?? '';
+    if (state is CustomerProformaFormLoaded) {
+      final state = this.state as CustomerProformaFormLoaded;
+      formKey.currentState?.reset();
+      proformaNumberController.text = state.proforma?.proformaNumber ?? '';
+      proformaDateController.text = state.proforma?.date.formattedDateYYYYMMDD ?? DateTime.now().formattedDateYYYYMMDD;
+      customerIdController.text = state.proforma?.customer.id.toString() ?? '';
+      customerNameController.text = state.proforma?.customer.name ?? '';
+      taxIdController.text = state.proforma?.taxId ?? '';
+      portsController.text = state.proforma?.ports ?? '';
+      delivaryTermsController.text = state.proforma?.deliveryTerms ?? '';
+      paymentTermsController.text = state.proforma?.paymentTerms ?? '';
+      bankIdController.text = state.proforma?.bankAccount.id.toString() ?? '';
+      bankNameController.text = state.proforma?.bankAccount.formattedLabel ?? '';
+      notesController.text = state.proforma?.notes ?? '';
 
-    _setupControllersListeners();
-    _onProformaFormChanged();
+      _setupControllersListeners();
+      _onProformaFormChanged();
+    }
   }
 
   _setupControllersListeners() {
@@ -294,11 +308,25 @@ class CustomerProformaFormCubit extends Cubit<CustomerProformaFormState> {
 
   cancelChanges() {
     final state = this.state as CustomerProformaFormLoaded;
-    init(proforma: state.proforma);
+    final goodsDescriptions =
+        state.proforma?.goodsDescriptions.map((e) => ProformaGoodDescriptionDto.fromEntity(e)).toList() ?? [];
+    emit(CustomerProformaFormLoaded(
+      goodDescriptionsList: goodsDescriptions,
+    ));
+    _initializeControllers();
   }
 
   toggleGenerateAutoProformaNumber() {
     final state = this.state as CustomerProformaFormLoaded;
     emit(state.copyWith(isGenerateAutoProformaNumber: !state.isGenerateAutoProformaNumber));
+  }
+
+  handleError() async {
+    if (state is CustomerProformaFormError) {
+      final state = this.state as CustomerProformaFormError;
+      emit(CustomerProformaFormInitial());
+      await Future.delayed(const Duration(milliseconds: 300));
+      init(proformaId: state.id);
+    }
   }
 }

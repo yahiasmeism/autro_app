@@ -11,6 +11,7 @@ import 'package:autro_app/core/utils/link_util.dart';
 import 'package:autro_app/core/utils/nav_util.dart';
 import 'package:autro_app/core/widgets/buttons/delete_outline_button.dart';
 import 'package:autro_app/core/widgets/buttons/edit_outline_button.dart';
+import 'package:autro_app/core/widgets/failure_screen.dart';
 import 'package:autro_app/core/widgets/loading_indecator.dart';
 import 'package:autro_app/core/widgets/standard_container.dart';
 import 'package:autro_app/features/customers/domin/entities/customer_entity.dart';
@@ -33,9 +34,15 @@ class CustomerDetailsOverviewTab extends StatelessWidget {
           return const LoadingIndicator();
         } else if (state is CustomerDetailsLoaded) {
           return _buildLoadedState(state, context);
-        } else {
-          return const SizedBox.shrink();
+        } else if (state is CustomerDetailsError) {
+          return FailureScreen(
+            failure: state.failure,
+            onRetryTap: () {
+              context.read<CustomerDetailsCubit>().handleError();
+            },
+          );
         }
+        return const SizedBox.shrink();
       },
     );
   }

@@ -1,7 +1,9 @@
 import 'package:autro_app/core/errors/failures.dart';
 import 'package:autro_app/core/extensions/date_time_extension.dart';
+import 'package:autro_app/core/extensions/list_extension.dart';
 import 'package:autro_app/features/invoices/domin/dtos/invoice_good_description_dto.dart';
 import 'package:autro_app/features/invoices/domin/entities/customer_invoice_entity.dart';
+import 'package:autro_app/features/invoices/domin/use_cases/get_customer_invoice_use_case.dart';
 import 'package:bloc/bloc.dart';
 import 'package:dartz/dartz.dart';
 import 'package:equatable/equatable.dart';
@@ -17,9 +19,11 @@ part 'customer_invoice_form_state.dart';
 class CustomerInvoiceFormCubit extends Cubit<CustomerInvoiceFormState> {
   final CreateCustomerInvoiceUseCase createInvoiceUsecase;
   final UpdateCustomerInvoiceUseCase updateInvoiceUsecase;
+  final GetCustomerInvoiceUseCase getCustomerInvoiceUseCase;
   CustomerInvoiceFormCubit(
     this.createInvoiceUsecase,
     this.updateInvoiceUsecase,
+    this.getCustomerInvoiceUseCase,
   ) : super(CustomerInvoiceFormInitial());
 
   // Goods Descriptions
@@ -43,31 +47,43 @@ class CustomerInvoiceFormCubit extends Cubit<CustomerInvoiceFormState> {
   final dealSeriesNumberController = TextEditingController();
   final dealIdController = TextEditingController();
 
-  Future init({required CustomerInvoiceEntity? invoice}) async {
-    final goodsDescriptions = invoice?.goodsDescriptions.map((e) => InvoiceGoodDescriptionDto.fromEntity(e)).toList() ?? [];
-    emit(CustomerInvoiceFormLoaded(
-      invoice: invoice,
-      goodDescriptionsList: goodsDescriptions,
-      updatedMode: invoice != null,
-    ));
+  Future init({required int? invoiceId}) async {
+    emit(CustomerInvoiceFormInitial());
+    if (invoiceId != null) {
+      final either = await getCustomerInvoiceUseCase.call(invoiceId);
+      either.fold((failure) {
+        emit(CustomerInvoiceFormError(failure: failure, id: invoiceId));
+      }, (invoice) {
+        final goodsDescriptions = invoice.goodsDescriptions.map((e) => InvoiceGoodDescriptionDto.fromEntity(e)).toList();
+        emit(CustomerInvoiceFormLoaded(
+          invoice: invoice,
+          updatedMode: true,
+          goodDescriptionsList: goodsDescriptions,
+        ));
+      });
+    } else {
+      emit(const CustomerInvoiceFormLoaded());
+    }
     await _initializeControllers();
   }
 
   _initializeControllers() {
-    final state = this.state as CustomerInvoiceFormLoaded;
-    formKey.currentState?.reset();
-    invoiceNumberController.text = state.invoice?.invoiceNumber ?? '';
-    invoiceDateController.text = state.invoice?.date.formattedDateYYYYMMDD ?? DateTime.now().formattedDateYYYYMMDD;
-    customerIdController.text = state.invoice?.customer.id.toString() ?? '';
-    customerNameController.text = state.invoice?.customer.name ?? '';
-    taxIdController.text = state.invoice?.taxId ?? '';
-    bankIdController.text = state.invoice?.bankAccount.id.toString() ?? '';
-    bankNameController.text = state.invoice?.bankAccount.formattedLabel ?? '';
-    notesController.text = state.invoice?.notes ?? '';
-    dealIdController.text = state.invoice?.dealId.toString() ?? '';
-    dealSeriesNumberController.text = state.invoice?.invoiceNumber ?? '';
-    _setupControllersListeners();
-    _onInvoiceFormChanged();
+    if (state is CustomerInvoiceFormLoaded) {
+      final state = this.state as CustomerInvoiceFormLoaded;
+      formKey.currentState?.reset();
+      invoiceNumberController.text = state.invoice?.invoiceNumber ?? '';
+      invoiceDateController.text = state.invoice?.date.formattedDateYYYYMMDD ?? DateTime.now().formattedDateYYYYMMDD;
+      customerIdController.text = state.invoice?.customer.id.toString() ?? '';
+      customerNameController.text = state.invoice?.customer.name ?? '';
+      taxIdController.text = state.invoice?.taxId ?? '';
+      bankIdController.text = state.invoice?.bankAccount.id.toString() ?? '';
+      bankNameController.text = state.invoice?.bankAccount.formattedLabel ?? '';
+      notesController.text = state.invoice?.notes ?? '';
+      dealIdController.text = state.invoice?.dealId.toString() ?? '';
+      dealSeriesNumberController.text = state.invoice?.invoiceNumber ?? '';
+      _setupControllersListeners();
+      _onInvoiceFormChanged();
+    }
   }
 
   _setupControllersListeners() {
@@ -266,6 +282,19 @@ class CustomerInvoiceFormCubit extends Cubit<CustomerInvoiceFormState> {
 
   cancelChanges() {
     final state = this.state as CustomerInvoiceFormLoaded;
-    init(invoice: state.invoice);
+    final goodDescription =
+        (state.invoice?.goodsDescriptions).orEmpty.map((e) => InvoiceGoodDescriptionDto.fromEntity(e)).toList();
+
+    emit(state.copyWith(descriptionList: goodDescription));
+    _initializeControllers();
+  }
+
+  handleError() async {
+    if (state is CustomerInvoiceFormError) {
+      final state = this.state as CustomerInvoiceFormError;
+      emit(CustomerInvoiceFormInitial());
+      await Future.delayed(const Duration(milliseconds: 300));
+      init(invoiceId: state.id);
+    }
   }
 }

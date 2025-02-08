@@ -83,3 +83,10 @@ final class CustomerInvoiceFormLoaded extends CustomerInvoiceFormState {
     return price;
   }
 }
+
+class CustomerInvoiceFormError extends CustomerInvoiceFormState {
+  final Failure failure;
+  final int id;
+
+  const CustomerInvoiceFormError({required this.failure, required this.id});
+}

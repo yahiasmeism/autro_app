@@ -24,7 +24,7 @@ class PackingListDescriptionDto extends Equatable {
   });
 
   @override
-  List<Object?> get props => [containerNumber, weight, emptyContainerWeight, type, itemsCount, date, percento];
+  List<Object?> get props => [containerNumber, weight, emptyContainerWeight, type, itemsCount, date, percento, uniqueKey];
 
   factory PackingListDescriptionDto.fromEntity(PackingListDescriptionEntity entity) => PackingListDescriptionDto(
         containerNumber: entity.containerNumber,

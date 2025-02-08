@@ -23,7 +23,7 @@ class CustomerListTile extends StatelessWidget {
   Widget build(BuildContext context) {
     return InkWell(
       onTap: () {
-        NavUtil.push(context, CustomerDetailsScreen(customerEntity: customerEntity));
+        NavUtil.push(context, CustomerDetailsScreen(customerId: customerEntity.id));
       },
       child: Container(
         decoration: const BoxDecoration(
@@ -125,7 +125,7 @@ class CustomerListTile extends StatelessWidget {
                   const SizedBox(width: 8),
                   ShowIconButton(
                     onPressed: () {
-                      NavUtil.push(context, CustomerDetailsScreen(customerEntity: customerEntity));
+                      NavUtil.push(context, CustomerDetailsScreen(customerId: customerEntity.id));
                     },
                   ),
                   const SizedBox(width: 8),

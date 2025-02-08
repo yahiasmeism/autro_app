@@ -1,6 +1,5 @@
 import 'package:autro_app/core/di/di.dart';
 import 'package:autro_app/core/widgets/custom_tab_bar.dart';
-import 'package:autro_app/features/customers/domin/entities/customer_entity.dart';
 import 'package:autro_app/features/customers/presentation/bloc/customer_details/customer_details_cubit.dart';
 import 'package:autro_app/features/customers/presentation/screens/layouts/desktop/customer_details_tab_views/customer_details_overview_tab.dart';
 import 'package:flutter/material.dart';
@@ -9,13 +8,13 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 class CustomerDetailsDesktopLayout extends StatelessWidget {
   const CustomerDetailsDesktopLayout({
     super.key,
-    required this.customerEntity,
+    required this.customerId,
   });
-  final CustomerEntity customerEntity;
+  final int customerId;
   @override
   Widget build(BuildContext context) {
     return BlocProvider.value(
-      value: sl<CustomerDetailsCubit>()..init(customerEntity),
+      value: sl<CustomerDetailsCubit>()..getCustomer(customerId),
       child: Scaffold(
         appBar: AppBar(
           elevation: 0,

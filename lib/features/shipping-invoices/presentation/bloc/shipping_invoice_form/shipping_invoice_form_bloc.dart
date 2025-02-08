@@ -12,6 +12,7 @@ import 'package:injectable/injectable.dart';
 
 import '../../../domin/entities/shipping_invoice_entity.dart';
 import '../../../domin/usecases/create_shipping_invoice_use_case.dart';
+import '../../../domin/usecases/get_shipping_invoice_by_id_use_case.dart';
 
 part 'shipping_invoice_form_event.dart';
 part 'shipping_invoice_form_state.dart';
@@ -20,9 +21,11 @@ part 'shipping_invoice_form_state.dart';
 class ShippingInvoiceFormBloc extends Bloc<ShippingInvoiceFormEvent, ShippingInvoiceFormState> {
   final CreateShippingInvoiceUseCase createShippingInvoiceUsecase;
   final UpdateShippingInvoicesUseCase updateShippingInvoiceUsecase;
+  final GetShippingInvoiceByIdUseCase getShippingInvoiceByIdUseCase;
   ShippingInvoiceFormBloc(
     this.createShippingInvoiceUsecase,
     this.updateShippingInvoiceUsecase,
+    this.getShippingInvoiceByIdUseCase,
   ) : super(ShippingInvoiceInfoInitial()) {
     on<ShippingInvoiceFormEvent>(_mapEvents);
   }
@@ -57,6 +60,10 @@ class ShippingInvoiceFormBloc extends Bloc<ShippingInvoiceFormEvent, ShippingInv
     if (event is ClearAttachmentEvent) {
       await _onClearAttachment(event, emit);
     }
+
+    if (event is ShippingInvoiceFormHandleFailure) {
+      await _onHandleFailure(event, emit);
+    }
   }
 
   final formKey = GlobalKey<FormState>();
@@ -67,27 +74,43 @@ class ShippingInvoiceFormBloc extends Bloc<ShippingInvoiceFormEvent, ShippingInv
   final typeMaterialNameController = TextEditingController();
   final shippingDateController = TextEditingController();
 
-  _initial(InitialShippingInvoiceFormEvent event, Emitter<ShippingInvoiceFormState> emit) {
-    final attachment = event.shippingInvoice?.attachmentUrl;
-    emit(ShippingInvoiceFormLoaded(
-      shippingInvoice: event.shippingInvoice,
-      updatedMode: event.shippingInvoice != null,
-      attachmentUrl: attachment?.isNotEmpty == true ? some(attachment!) : none(),
-    ));
+  _initial(InitialShippingInvoiceFormEvent event, Emitter<ShippingInvoiceFormState> emit) async {
+    if (event.id != null) {
+      final either = await getShippingInvoiceByIdUseCase.call(event.id!);
+
+      either.fold(
+        (failure) {
+          emit(ShippingInvoiceFormError(failure: failure, id: event.id!));
+        },
+        (invoice) {
+          final attachment = invoice.attachmentUrl;
+          emit(ShippingInvoiceFormLoaded(
+            shippingInvoice: invoice,
+            updatedMode: true,
+            attachmentUrl: attachment.isNotEmpty == true ? some(attachment) : none(),
+          ));
+        },
+      );
+    } else {
+      emit(const ShippingInvoiceFormLoaded());
+    }
+
     _initializeControllers();
   }
 
   _initializeControllers() {
-    final state = this.state as ShippingInvoiceFormLoaded;
-    formKey.currentState?.reset();
-    dealIdController.text = state.shippingInvoice?.dealId.toString() ?? '';
-    dealSeriesNumberController.text = state.shippingInvoice?.shippingInvoiceNumber ?? '';
-    shippingCompanyNameController.text = state.shippingInvoice?.shippingCompanyName ?? '';
-    shippingCostController.text = state.shippingInvoice?.shippingCost.toString() ?? '';
-    typeMaterialNameController.text = state.shippingInvoice?.typeMaterialName ?? '';
-    shippingDateController.text = (state.shippingInvoice?.shippingDate ?? DateTime.now()).formattedDateYYYYMMDD;
-    setupControllersListeners();
-    add(ShippingInvoiceFormChangedEvent());
+    if (state is ShippingInvoiceFormLoaded) {
+      final state = this.state as ShippingInvoiceFormLoaded;
+      formKey.currentState?.reset();
+      dealIdController.text = state.shippingInvoice?.dealId.toString() ?? '';
+      dealSeriesNumberController.text = state.shippingInvoice?.shippingInvoiceNumber ?? '';
+      shippingCompanyNameController.text = state.shippingInvoice?.shippingCompanyName ?? '';
+      shippingCostController.text = state.shippingInvoice?.shippingCost.toString() ?? '';
+      typeMaterialNameController.text = state.shippingInvoice?.typeMaterialName ?? '';
+      shippingDateController.text = (state.shippingInvoice?.shippingDate ?? DateTime.now()).formattedDateYYYYMMDD;
+      setupControllersListeners();
+      add(ShippingInvoiceFormChangedEvent());
+    }
   }
 
   setupControllersListeners() {
@@ -229,7 +252,15 @@ class ShippingInvoiceFormBloc extends Bloc<ShippingInvoiceFormEvent, ShippingInv
 
   _onCancelShippingInvoiceFormEvent(ShippingInvoiceFormEvent event, Emitter<ShippingInvoiceFormState> emit) {
     final state = this.state as ShippingInvoiceFormLoaded;
-    add(InitialShippingInvoiceFormEvent(shippingInvoice: state.shippingInvoice));
+    if (state.shippingInvoice != null) {
+      emit(
+        state.copyWith(
+          pickedAttachment: none(),
+          attachmentUrl: some(state.shippingInvoice!.attachmentUrl),
+        ),
+      );
+    }
+    _initializeControllers();
   }
 
   @override
@@ -258,5 +289,15 @@ class ShippingInvoiceFormBloc extends Bloc<ShippingInvoiceFormEvent, ShippingInv
       ),
     );
     add(ShippingInvoiceFormChangedEvent());
+  }
+
+  _onHandleFailure(ShippingInvoiceFormHandleFailure event, Emitter<ShippingInvoiceFormState> emit) async {
+    if (state is ShippingInvoiceFormError) {
+      final state = this.state as ShippingInvoiceFormError;
+      emit(ShippingInvoiceInfoInitial());
+      await Future.delayed(const Duration(milliseconds: 300));
+
+      add(InitialShippingInvoiceFormEvent(id: state.id));
+    }
   }
 }

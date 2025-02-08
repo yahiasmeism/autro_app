@@ -27,7 +27,7 @@ final class BillFormLoaded extends BillFormState {
     this.clearEnabled = false,
   });
   @override
-  List<Object?> get props => [bill, loading, failureOrSuccessOption, updatedMode, saveEnabled, cancelEnabled,clearEnabled];
+  List<Object?> get props => [bill, loading, failureOrSuccessOption, updatedMode, saveEnabled, cancelEnabled, clearEnabled];
 
   BillFormLoaded copyWith({
     BillEntity? bill,
@@ -48,4 +48,14 @@ final class BillFormLoaded extends BillFormState {
       failureOrSuccessOption: failureOrSuccessOption ?? none(),
     );
   }
+}
+
+class BillFormError extends BillFormState {
+  final Failure failure;
+  final int id;
+
+  const BillFormError({required this.failure, required this.id});
+
+  @override
+  List<Object?> get props => [failure, id];
 }

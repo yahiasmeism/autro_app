@@ -19,7 +19,7 @@ class DealListTile extends StatelessWidget {
     return InkWell(
       borderRadius: BorderRadius.circular(8),
       onTap: () {
-        NavUtil.push(context, DealDetailsScreen(deal: dealEntity));
+        NavUtil.push(context, DealDetailsScreen(dealId: dealEntity.id));
       },
       child: Container(
         decoration: const BoxDecoration(

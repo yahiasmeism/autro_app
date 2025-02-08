@@ -59,11 +59,13 @@ class TextStyles {
   static TextStyle font16SemiBold = const TextStyle(
     fontSize: 16,
     fontWeight: FontWeightHelper.semiBold,
+    color: AppColors.secondary,
   );
 
   static TextStyle font14SemiBold = const TextStyle(
     fontSize: 14,
     fontWeight: FontWeightHelper.semiBold,
+    color: AppColors.secondary,
   );
 
   static TextStyle font28SemiBold = const TextStyle(

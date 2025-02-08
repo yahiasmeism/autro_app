@@ -20,7 +20,7 @@ class BillListTile extends StatelessWidget {
     return InkWell(
       borderRadius: BorderRadius.circular(8),
       onTap: () {
-        NavUtil.push(context, BillFormScreen(formType: FormType.edit, bill: billEntity));
+        NavUtil.push(context, BillFormScreen(formType: FormType.edit, billId: billEntity.id));
       },
       child: Container(
         decoration: const BoxDecoration(
@@ -59,7 +59,7 @@ class BillListTile extends StatelessWidget {
                 children: [
                   EditIconButton(
                     onPressed: () {
-                      NavUtil.push(context, BillFormScreen(formType: FormType.edit, bill: billEntity));
+                      NavUtil.push(context, BillFormScreen(formType: FormType.edit, billId: billEntity.id));
                     },
                   ),
                   const SizedBox(width: 8),

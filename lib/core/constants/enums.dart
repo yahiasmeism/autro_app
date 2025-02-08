@@ -30,7 +30,7 @@ enum MenuItemType {
   bills,
   suppliers,
   packingLists,
-  messages,
+  // messages,
 }
 
 enum ConditionOperator {
@@ -59,3 +59,27 @@ enum FormType {
 }
 
 enum PackingType { bales, loose, bults, rollosm, packing, lot, unknown }
+
+enum ModuleType {
+  bankAccount,
+  bill,
+  customer,
+  customerInvoice,
+  customerProforma,
+  deal,
+  packingList,
+  shippingInvoice,
+  supplier,
+  supplierInvoice,
+  supplierProforma,
+  user,
+  company,
+  unknown,
+}
+
+enum ActivityType {
+  create,
+  update,
+  delete,
+  unknown,
+}

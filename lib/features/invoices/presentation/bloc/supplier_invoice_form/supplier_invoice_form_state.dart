@@ -82,3 +82,13 @@ final class SupplierInvoiceFormLoaded extends SupplierInvoiceFormState {
     );
   }
 }
+
+class SupplierInvoiceFormError extends SupplierInvoiceFormState {
+  final Failure failure;
+  final int id;
+
+  const SupplierInvoiceFormError({required this.failure, required this.id});
+
+  @override
+  List<Object?> get props => [failure, id];
+}

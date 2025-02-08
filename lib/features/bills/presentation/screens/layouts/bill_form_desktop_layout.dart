@@ -1,4 +1,6 @@
 import 'package:autro_app/core/constants/enums.dart';
+import 'package:autro_app/core/widgets/failure_screen.dart';
+import 'package:autro_app/core/widgets/loading_indecator.dart';
 import 'package:autro_app/core/widgets/overley_loading.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -17,7 +19,9 @@ class BillFormDesktopLayout extends StatelessWidget {
       ),
       body: BlocBuilder<BillFormBloc, BillFormState>(
         builder: (context, state) {
-          if (state is BillFormLoaded) {
+          if (state is BillInfoInitial) {
+            return const LoadingIndicator();
+          } else if (state is BillFormLoaded) {
             return Stack(
               children: [
                 const Positioned.fill(
@@ -30,6 +34,13 @@ class BillFormDesktopLayout extends StatelessWidget {
                 ),
                 if (state.loading) const LoadingOverlay(),
               ],
+            );
+          } else if (state is BillFormError) {
+            return FailureScreen(
+              failure: state.failure,
+              onRetryTap: () {
+                context.read<BillFormBloc>().add(BillFormHandleError());
+              },
             );
           }
           return const SizedBox.shrink();

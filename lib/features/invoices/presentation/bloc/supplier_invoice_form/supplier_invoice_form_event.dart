@@ -8,11 +8,11 @@ sealed class SupplierInvoiceFormEvent extends Equatable {
 }
 
 class InitialSupplierInvoiceFormEvent extends SupplierInvoiceFormEvent {
-  final SupplierInvoiceEntity? supplierInvoice;
-  const InitialSupplierInvoiceFormEvent({this.supplierInvoice});
+  final int? id;
+  const InitialSupplierInvoiceFormEvent({this.id});
 
   @override
-  List<Object?> get props => [supplierInvoice];
+  List<Object?> get props => [id];
 }
 
 final class SubmitSupplierInvoiceFormEvent extends SupplierInvoiceFormEvent {}
@@ -37,3 +37,4 @@ class PickAttachmentEvent extends SupplierInvoiceFormEvent {
 }
 
 class ClearAttachmentEvent extends SupplierInvoiceFormEvent {}
+class SupplierInvoiceHandleError extends SupplierInvoiceFormEvent{}

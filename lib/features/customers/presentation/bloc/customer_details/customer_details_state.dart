@@ -26,3 +26,12 @@ final class CustomerDetailsLoaded extends CustomerDetailsState {
     );
   }
 }
+
+class CustomerDetailsError extends CustomerDetailsState {
+  final Failure failure;
+  final int id;
+  const CustomerDetailsError({required this.failure,required this.id});
+
+  @override
+  List<Object> get props => [failure];
+}

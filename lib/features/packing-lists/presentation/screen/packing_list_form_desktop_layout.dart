@@ -2,6 +2,8 @@ import 'package:autro_app/core/constants/enums.dart';
 import 'package:autro_app/core/errors/failure_mapper.dart';
 import 'package:autro_app/core/utils/dialog_utils.dart';
 import 'package:autro_app/core/utils/nav_util.dart';
+import 'package:autro_app/core/widgets/failure_screen.dart';
+import 'package:autro_app/core/widgets/loading_indecator.dart';
 import 'package:autro_app/core/widgets/overley_loading.dart';
 import 'package:autro_app/features/deals/presentation/bloc/deals_list/deals_list_bloc.dart';
 import 'package:autro_app/features/packing-lists/presentation/bloc/packing_lists/packing_lists_bloc.dart';
@@ -44,7 +46,9 @@ class PackingListFormDesktopLayout extends StatelessWidget {
           }
         },
         builder: (context, state) {
-          if (state is PackingListFormLoaded) {
+          if (state is PackingListFormInitial) {
+            return const LoadingIndicator();
+          } else if (state is PackingListFormLoaded) {
             return Stack(
               children: [
                 const Positioned.fill(
@@ -57,6 +61,13 @@ class PackingListFormDesktopLayout extends StatelessWidget {
                 ),
                 if (state.loading) const LoadingOverlay(),
               ],
+            );
+          } else if (state is PackingListFormError) {
+            return FailureScreen(
+              failure: state.failure,
+              onRetryTap: () {
+                context.read<PackingListFormCubit>().handleFailure();
+              },
             );
           }
           return const SizedBox.shrink();

@@ -8,11 +8,11 @@ sealed class SupplierProformaFormEvent extends Equatable {
 }
 
 class InitialSupplierProformaFormEvent extends SupplierProformaFormEvent {
-  final SupplierProformaEntity? supplierProforma;
-  const InitialSupplierProformaFormEvent({this.supplierProforma});
+  final int? supplierProformaId;
+  const InitialSupplierProformaFormEvent({this.supplierProformaId});
 
   @override
-  List<Object?> get props => [supplierProforma];
+  List<Object?> get props => [supplierProformaId];
 }
 
 final class SubmitSupplierProformaFormEvent extends SupplierProformaFormEvent {}
@@ -37,3 +37,6 @@ class PickAttachmentEvent extends SupplierProformaFormEvent {
 }
 
 class ClearAttachmentEvent extends SupplierProformaFormEvent {}
+
+
+class SupplierProformaHandleFailure extends SupplierProformaFormEvent{}

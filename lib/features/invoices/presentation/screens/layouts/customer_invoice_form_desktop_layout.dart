@@ -2,6 +2,7 @@ import 'package:autro_app/core/constants/enums.dart';
 import 'package:autro_app/core/errors/failure_mapper.dart';
 import 'package:autro_app/core/utils/dialog_utils.dart';
 import 'package:autro_app/core/utils/nav_util.dart';
+import 'package:autro_app/core/widgets/failure_screen.dart';
 import 'package:autro_app/core/widgets/overley_loading.dart';
 import 'package:autro_app/features/deals/presentation/bloc/deals_list/deals_list_bloc.dart';
 import 'package:autro_app/features/invoices/presentation/bloc/customers_invoices_list/customers_invoices_list_bloc.dart';
@@ -44,6 +45,9 @@ class CustomerInvoiceFormDesktopLayout extends StatelessWidget {
           }
         },
         builder: (context, state) {
+          if (state is CustomerInvoiceFormInitial) {
+            return const LoadingOverlay();
+          }
           if (state is CustomerInvoiceFormLoaded) {
             return Stack(
               children: [
@@ -57,6 +61,13 @@ class CustomerInvoiceFormDesktopLayout extends StatelessWidget {
                 ),
                 if (state.loading) const LoadingOverlay(),
               ],
+            );
+          } else if (state is CustomerInvoiceFormError) {
+            return FailureScreen(
+              failure: state.failure,
+              onRetryTap: () {
+                context.read<CustomerInvoiceFormCubit>().handleError();
+              },
             );
           }
           return const SizedBox.shrink();
