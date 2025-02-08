@@ -1,7 +1,9 @@
 import 'package:autro_app/core/errors/failures.dart';
 import 'package:autro_app/core/network_info/network_info.dart';
+import 'package:autro_app/features/dashboard/data/models/requests/get_dashboard_query_params.dart';
 
 import 'package:autro_app/features/dashboard/domin/entities/dashboard_entity.dart';
+import 'package:autro_app/features/dashboard/domin/use_cases/get_dashboard_use_case.dart';
 
 import 'package:dartz/dartz.dart';
 import 'package:injectable/injectable.dart';
@@ -18,10 +20,11 @@ class DashboardRepositoryImpl extends DashboardRepository {
   DashboardRepositoryImpl({required this.dashboardRemoteDataSource, required this.networkInfo});
 
   @override
-  Future<Either<Failure, DashboardEntity>> getDashboard() async {
+  Future<Either<Failure, DashboardEntity>> getDashboard(GetDashboardUseCaseParams params) async {
     if (await networkInfo.isConnected) {
       try {
-        final result = await dashboardRemoteDataSource.getDashboard();
+        final queryParams = GetDashboardQueryParam.fromParams(params);
+        final result = await dashboardRemoteDataSource.getDashboard(queryParams);
         return Right(result);
       } catch (e) {
         return Left(ErrorHandler.handle(e));
