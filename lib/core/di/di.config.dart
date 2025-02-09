@@ -213,6 +213,8 @@ import 'package:autro_app/features/proformas/presentation/bloc/customer_proforma
     as _i1045;
 import 'package:autro_app/features/proformas/presentation/bloc/customers_proformas_list/customers_proformas_list_bloc.dart'
     as _i612;
+import 'package:autro_app/features/proformas/presentation/bloc/proforma_pdf/proforma_pdf_cubit.dart'
+    as _i1047;
 import 'package:autro_app/features/proformas/presentation/bloc/supplier_proforma_form/supplier_proforma_form_bloc.dart'
     as _i792;
 import 'package:autro_app/features/proformas/presentation/bloc/suppliers_proformas_list/suppliers_proformas_list_bloc.dart'
@@ -566,6 +568,8 @@ extension GetItInjectableX on _i174.GetIt {
         ));
     gh.factory<_i43.InvoicePdfCubit>(
         () => _i43.InvoicePdfCubit(gh<_i223.GetCompanyUseCase>()));
+    gh.factory<_i1047.ProformaPdfCubit>(
+        () => _i1047.ProformaPdfCubit(gh<_i223.GetCompanyUseCase>()));
     gh.lazySingleton<_i511.GetShippingInvoiceByIdUseCase>(() =>
         _i511.GetShippingInvoiceByIdUseCase(
             shippingInvoicesRepository: gh<_i43.ShippingInvoicesRepository>()));

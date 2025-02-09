@@ -1,5 +1,7 @@
 import 'package:autro_app/core/widgets/buttons/save_outline_button.dart';
 import 'package:autro_app/features/proformas/presentation/bloc/customer_proforma_form_cubit/customer_proforma_form_cubit.dart';
+import 'package:autro_app/features/proformas/presentation/widgets/proforama_form/proforma_pdf_export_button.dart';
+import 'package:autro_app/features/proformas/presentation/widgets/proforama_form/proforma_pdf_preview_button.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
@@ -28,6 +30,9 @@ class ProformaFormActions extends StatelessWidget {
                 onPressed: context.read<CustomerProformaFormCubit>().cancelChanges,
               ),
             const SizedBox(width: 8),
+            const ProformaPdfExportButton(),
+            const SizedBox(width: 8),
+            const ProformaPdfPreviewButton(),
             SaveOutLineButton(
                 onPressed: saveEnabled
                     ? () {

@@ -19,9 +19,11 @@ final class CustomerProformaFormLoaded extends CustomerProformaFormState {
   final bool cancelEnabled;
   final bool clearEnabled;
   final bool isGenerateAutoProformaNumber;
+  final ProformaPdfDto? proformaPdfDto;
   final List<ProformaGoodDescriptionDto> goodDescriptionsList;
   const CustomerProformaFormLoaded({
     this.proforma,
+    this.proformaPdfDto,
     this.loading = false,
     this.failureOrSuccessOption = const None(),
     this.updatedMode = false,
@@ -44,6 +46,7 @@ final class CustomerProformaFormLoaded extends CustomerProformaFormState {
         goodDescriptionsList,
         addGoodDescriptionEnabled,
         isGenerateAutoProformaNumber,
+        proformaPdfDto,
       ];
 
   CustomerProformaFormLoaded copyWith({
@@ -57,6 +60,7 @@ final class CustomerProformaFormLoaded extends CustomerProformaFormState {
     Option<Either<Failure, String>>? failureOrSuccessOption,
     bool? addGoodDescriptionEnabled,
     bool? isGenerateAutoProformaNumber,
+    ProformaPdfDto? proformaPdfDto,
   }) {
     return CustomerProformaFormLoaded(
       addGoodDescriptionEnabled: addGoodDescriptionEnabled ?? this.addGoodDescriptionEnabled,
@@ -69,6 +73,7 @@ final class CustomerProformaFormLoaded extends CustomerProformaFormState {
       loading: loading ?? this.loading,
       failureOrSuccessOption: failureOrSuccessOption ?? none(),
       isGenerateAutoProformaNumber: isGenerateAutoProformaNumber ?? this.isGenerateAutoProformaNumber,
+      proformaPdfDto: proformaPdfDto ?? this.proformaPdfDto,
     );
   }
 

@@ -3,6 +3,7 @@ import 'package:autro_app/core/extensions/date_time_extension.dart';
 import 'package:autro_app/features/proformas/domin/dtos/proforma_good_description_dto.dart';
 import 'package:autro_app/features/proformas/domin/entities/customer_proforma_entity.dart';
 import 'package:autro_app/features/proformas/domin/use_cases/get_customer_proforma_by_id_use_case.dart';
+import 'package:autro_app/features/proformas/presentation/bloc/proforma_pdf/proforma_pdf_cubit.dart';
 import 'package:bloc/bloc.dart';
 import 'package:dartz/dartz.dart';
 import 'package:equatable/equatable.dart';
@@ -170,6 +171,7 @@ class CustomerProformaFormCubit extends Cubit<CustomerProformaFormState> {
         saveEnabled: formIsNotEmpty && isFormChanged,
         cancelEnabled: isFormChanged,
         clearEnabled: formIsNotEmpty,
+        proformaPdfDto: formIsNotEmpty ? mapFormDataToInvoicePdfDto() : null,
       ));
     } else {
       emit(state.copyWith(
@@ -328,5 +330,14 @@ class CustomerProformaFormCubit extends Cubit<CustomerProformaFormState> {
       await Future.delayed(const Duration(milliseconds: 300));
       init(proformaId: state.id);
     }
+  }
+
+  ProformaPdfDto? mapFormDataToInvoicePdfDto() {
+    final state = this.state as CustomerProformaFormLoaded;
+
+    return ProformaPdfDto(
+      descriptions: state.goodDescriptionsList,
+      proformaNumber: proformaNumberController.text,
+    );
   }
 }
