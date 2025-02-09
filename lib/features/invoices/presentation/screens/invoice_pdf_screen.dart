@@ -2,6 +2,7 @@ import 'package:autro_app/core/constants/enums.dart';
 import 'package:autro_app/core/di/di.dart';
 import 'package:autro_app/core/extensions/date_time_extension.dart';
 import 'package:autro_app/core/utils/dialog_utils.dart';
+import 'package:autro_app/core/utils/file_utils.dart';
 import 'package:autro_app/core/utils/nav_util.dart';
 import 'package:autro_app/core/widgets/app_pdf_viewer.dart';
 import 'package:autro_app/core/widgets/failure_screen.dart';
@@ -12,6 +13,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:pdf/pdf.dart';
 import 'package:pdf/widgets.dart' as pw;
 
+import '../../../../core/theme/text_styles.dart';
 import '../bloc/invoice_pdf/invoice_pdf_cubit.dart';
 
 class InvoicePdfScreen extends StatelessWidget {
@@ -65,9 +67,21 @@ class InvoicePdfScreen extends StatelessWidget {
     }
     if (state is ExportInvoiceDone) {
       DialogUtil.showSuccessSnackBar(
-        context,
-        'Invoice saved successfully as: ${state.filePath.split('/').last}',
-      );
+          context,
+          'Invoice saved successfully as: ${state.filePath.split('/').last}',
+          InkWell(
+            borderRadius: BorderRadius.circular(12),
+            onTap: () {
+              FileUtils.openFolder(state.filePath);
+            },
+            child: Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
+              child: Text(
+                'show',
+                style: TextStyles.font16Regular,
+              ),
+            ),
+          ));
       NavUtil.pop(context);
     }
   }
@@ -83,14 +97,15 @@ class InvoicePdfScreen extends StatelessWidget {
             buildHeader(state),
             pw.SizedBox(height: 25),
             buildCompanyInfo(state),
-            pw.SizedBox(height: 25),
+            pw.SizedBox(height: 16),
             buildMainTable(state),
             pw.SizedBox(height: 0),
             buildSummaryTable(state),
             pw.SizedBox(height: 20),
             buildNotes(state),
-            pw.SizedBox(height: 20),
+            pw.Spacer(),
             buildFooter(state),
+            pw.SizedBox(height: 20),
           ],
         );
       },
@@ -108,9 +123,9 @@ class InvoicePdfScreen extends StatelessWidget {
           dpi: 3000,
         ),
         pw.Text(
-          "INVOICE: INV${state.invoicePdfDto.invoiceNumber}",
+          "INVOICE",
           style: pw.TextStyle(
-            fontSize: 24,
+            fontSize: 28,
             color: textColor,
             fontWeight: pw.FontWeight.bold,
           ),
@@ -122,32 +137,48 @@ class InvoicePdfScreen extends StatelessWidget {
   pw.Widget buildCompanyInfo(InvoicePdfResourcesLoaded state) {
     final style = pw.TextStyle(
       color: textColor,
-      fontSize: 10,
+      fontSize: 12,
     );
 
     return pw.Column(
       crossAxisAlignment: pw.CrossAxisAlignment.start,
       children: [
         pw.Text("From: ${state.company.name}", style: style),
+        pw.SizedBox(height: 4),
         pw.Text("Address: ${state.company.address}", style: style),
-        pw.Text("VAT: B56194830", style: style),
+        pw.SizedBox(height: 4),
+        pw.Text("VAT: ${state.company.vat}", style: style),
         pw.SizedBox(height: 8),
         pw.Divider(height: 0.5, color: tableBorderColor),
         pw.SizedBox(height: 8),
         pw.Text("To: ${state.invoicePdfDto.customerName}", style: style),
+        pw.SizedBox(height: 4),
         pw.Text("Address: ${state.invoicePdfDto.customerAddress}", style: style),
+        pw.SizedBox(height: 4),
         pw.Text("TAX ID: ${state.invoicePdfDto.taxId}", style: style),
+        pw.SizedBox(height: 4),
         pw.SizedBox(height: 8),
         pw.Divider(height: 0.5, color: tableBorderColor),
-        pw.SizedBox(height: 8),
-        pw.Text(
-          "Invoice Date: ${state.invoicePdfDto.date.formattedDateDDMMYYYY}",
-          style: pw.TextStyle(
-            color: textColor,
-            fontSize: 11,
-            fontWeight: pw.FontWeight.bold,
+        pw.SizedBox(height: 16),
+        pw.Row(children: [
+          pw.Text(
+            "Invoice Number: ${state.invoicePdfDto.invoiceNumber}",
+            style: pw.TextStyle(
+              color: textColor,
+              fontSize: 11,
+              fontWeight: pw.FontWeight.bold,
+            ),
           ),
-        ),
+          pw.Spacer(),
+          pw.Text(
+            "Invoice Date: ${state.invoicePdfDto.date.formattedDateDDMMYYYY}",
+            style: pw.TextStyle(
+              color: textColor,
+              fontSize: 11,
+              fontWeight: pw.FontWeight.bold,
+            ),
+          ),
+        ]),
       ],
     );
   }

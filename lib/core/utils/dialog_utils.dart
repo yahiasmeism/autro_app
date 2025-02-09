@@ -41,10 +41,11 @@ class DialogUtil {
   //   );
   // }
 
-  static showSuccessSnackBar(BuildContext context, String message) {
+  static showSuccessSnackBar(BuildContext context, String message, [Widget? suffix]) {
     const backgroundColor = Color(0xffD1E8D5);
     const textColor = Color(0xff365A37);
     showSnackBar(
+      sufix: suffix,
       context,
       message,
       backgroundColor: backgroundColor,
@@ -95,6 +96,7 @@ class DialogUtil {
     Color? backgroundColor,
     Color? textColor,
     Widget? prefixIcon,
+    Widget? sufix,
     IconData? icon,
     Duration duration = const Duration(seconds: 5),
     SnackBarBehavior behavior = SnackBarBehavior.floating,
@@ -125,6 +127,7 @@ class DialogUtil {
                   ),
                 ),
               ),
+              if (sufix != null) ...[sufix]
             ],
           ),
         ),
