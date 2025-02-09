@@ -11,10 +11,12 @@ class CompanyModel extends CompanyEntity {
     required super.logoUrl,
     required super.signatureUrl,
     required super.telephone,
+    required super.vat,
   });
 
   factory CompanyModel.fromJson(Map<String, dynamic> json) {
     return CompanyModel(
+      vat: (json['vat'] as String?).orEmpty,
       name: (json['name'] as String?).orEmpty,
       address: (json['address'] as String?).orEmpty,
       phone: (json['phone'] as String?).orEmpty,

@@ -23,6 +23,7 @@ class ChangeCompanyInfoUseCaseParams extends Equatable {
   final String address;
   final String phone;
   final String email;
+  final String vat;
   final String telephone;
   final String website;
   final bool deleteLogo;
@@ -35,10 +36,11 @@ class ChangeCompanyInfoUseCaseParams extends Equatable {
     required this.email,
     required this.telephone,
     required this.website,
+    required this.vat,
     this.logoPath,
     this.signaturePath,
     required this.deleteLogo,
-    required this.deleteSignature ,
+    required this.deleteSignature,
   });
   final String? logoPath;
   final String? signaturePath;
@@ -51,5 +53,6 @@ class ChangeCompanyInfoUseCaseParams extends Equatable {
         email,
         website,
         telephone,
+        vat,
       ];
 }

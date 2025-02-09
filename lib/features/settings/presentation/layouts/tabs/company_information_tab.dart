@@ -134,6 +134,19 @@ class CompanyInformationTab extends StatelessWidget {
                 ],
               ),
               const SizedBox(height: 16),
+              Row(
+                children: [
+                  Expanded(
+                      child: StandardInput(
+                    labelText: 'VAT',
+                    hintText: 'Enter VAT',
+                    controller: cubit.vatController,
+                  )),
+                  const SizedBox(width: 28),
+                  const Spacer(),
+                ],
+              ),
+              const SizedBox(height: 16),
               const Row(
                 children: [
                   Expanded(child: CompanyLogoUploader()),

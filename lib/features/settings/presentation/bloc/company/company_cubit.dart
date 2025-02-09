@@ -21,6 +21,7 @@ class CompanyCubit extends Cubit<CompanyState> {
   final TextEditingController companyEmailController = TextEditingController();
   final TextEditingController companyTelephoneController = TextEditingController();
   final TextEditingController companyWebsiteController = TextEditingController();
+  final TextEditingController vatController = TextEditingController();
   final GlobalKey<FormState> formKey = GlobalKey<FormState>();
 
   final GetCompanyUseCase getCompanyUseCase;
@@ -33,6 +34,7 @@ class CompanyCubit extends Cubit<CompanyState> {
     final initailSignature = currentState.company.signatureUrl.isNotEmpty ? some(currentState.company.signatureUrl) : none();
 
     final isEdited = currentState.company.name != companyNameController.text ||
+        currentState.company.vat != vatController.text ||
         currentState.company.address != companyAddressController.text ||
         currentState.company.phone != companyPhoneController.text ||
         currentState.company.email != companyEmailController.text ||
@@ -53,6 +55,7 @@ class CompanyCubit extends Cubit<CompanyState> {
     companyEmailController.addListener(updateDataChanged);
     companyTelephoneController.addListener(updateDataChanged);
     companyWebsiteController.addListener(updateDataChanged);
+    vatController.addListener(updateDataChanged);
   }
 
   initailizeControllers() {
@@ -63,6 +66,7 @@ class CompanyCubit extends Cubit<CompanyState> {
     companyEmailController.text = state.company.email;
     companyTelephoneController.text = state.company.telephone;
     companyWebsiteController.text = state.company.website;
+    vatController.text = state.company.vat;
 
     updateDataChanged();
     setUpListeners();
@@ -90,6 +94,7 @@ class CompanyCubit extends Cubit<CompanyState> {
     final state = this.state as CompanyLoaded;
     final params = ChangeCompanyInfoUseCaseParams(
       name: companyNameController.text,
+      vat: vatController.text,
       address: companyAddressController.text,
       phone: companyPhoneController.text,
       email: companyEmailController.text,
@@ -158,6 +163,7 @@ class CompanyCubit extends Cubit<CompanyState> {
     companyEmailController.dispose();
     companyTelephoneController.dispose();
     companyWebsiteController.dispose();
+    vatController.dispose();
     return super.close();
   }
 }

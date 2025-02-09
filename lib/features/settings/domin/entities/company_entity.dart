@@ -9,6 +9,7 @@ class CompanyEntity extends Equatable {
   final String website;
   final String logoUrl;
   final String signatureUrl;
+  final String vat;
 
   const CompanyEntity({
     required this.name,
@@ -19,6 +20,7 @@ class CompanyEntity extends Equatable {
     required this.website,
     required this.logoUrl,
     required this.signatureUrl,
+    required this.vat,
   });
 
   @override
@@ -31,5 +33,6 @@ class CompanyEntity extends Equatable {
         logoUrl,
         signatureUrl,
         telephone,
+        vat,
       ];
 }
