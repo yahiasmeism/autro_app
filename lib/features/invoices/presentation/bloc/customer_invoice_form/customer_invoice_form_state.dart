@@ -18,6 +18,7 @@ final class CustomerInvoiceFormLoaded extends CustomerInvoiceFormState {
   final bool addGoodDescriptionEnabled;
   final bool cancelEnabled;
   final bool clearEnabled;
+  final InvoicePdfDto? invoicePdfDto;
   final List<InvoiceGoodDescriptionDto> goodDescriptionsList;
   const CustomerInvoiceFormLoaded({
     this.invoice,
@@ -29,6 +30,7 @@ final class CustomerInvoiceFormLoaded extends CustomerInvoiceFormState {
     this.clearEnabled = false,
     this.goodDescriptionsList = const [],
     this.addGoodDescriptionEnabled = false,
+    this.invoicePdfDto,
   });
   @override
   List<Object?> get props => [
@@ -41,7 +43,10 @@ final class CustomerInvoiceFormLoaded extends CustomerInvoiceFormState {
         clearEnabled,
         goodDescriptionsList,
         addGoodDescriptionEnabled,
+        invoicePdfDto,
       ];
+
+
 
   CustomerInvoiceFormLoaded copyWith({
     List<InvoiceGoodDescriptionDto>? descriptionList,
@@ -53,8 +58,10 @@ final class CustomerInvoiceFormLoaded extends CustomerInvoiceFormState {
     bool? loading,
     Option<Either<Failure, String>>? failureOrSuccessOption,
     bool? addGoodDescriptionEnabled,
+    InvoicePdfDto? invoicePdfDto,
   }) {
     return CustomerInvoiceFormLoaded(
+      invoicePdfDto: invoicePdfDto ?? this.invoicePdfDto,
       addGoodDescriptionEnabled: addGoodDescriptionEnabled ?? this.addGoodDescriptionEnabled,
       goodDescriptionsList: descriptionList ?? goodDescriptionsList,
       updatedMode: updatedMode ?? this.updatedMode,
@@ -66,6 +73,8 @@ final class CustomerInvoiceFormLoaded extends CustomerInvoiceFormState {
       failureOrSuccessOption: failureOrSuccessOption ?? none(),
     );
   }
+
+
 
   double get allWeight {
     double weight = 0;

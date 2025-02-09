@@ -22,6 +22,9 @@ class CustomerInvoiceFormCustomerInformation extends StatelessWidget {
               enableOpenDialog: false,
               nameController: bloc.customerNameController,
               idController: bloc.customerIdController,
+              onItemTap: (customer) {
+                bloc.customerAddressController.text = customer.formattedAddress;
+              },
             ),
           ),
           const SizedBox(

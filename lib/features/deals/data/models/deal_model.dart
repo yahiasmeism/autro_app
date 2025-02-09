@@ -44,7 +44,7 @@ class DealModel extends DealEntity implements BaseMapable {
         createdAt: (DateTime.tryParse((json['created_at'] as String?).orEmpty)).orDefault,
         updatedAt: (DateTime.tryParse((json['updated_at'] as String?).orEmpty)).orDefault,
         deliveryDate: (DateTime.tryParse((json['delivery_date'] as String?).orEmpty)),
-        customerInvoice: json['customer_proforma'] == null
+        customerInvoice: json['customer_invoice'] == null
             ? null
             : CustomerInvoiceModel.fromJson((json['customer_invoice'] as Map<String, dynamic>?).orEmpty),
         customerProforma: json['customer_proforma'] == null

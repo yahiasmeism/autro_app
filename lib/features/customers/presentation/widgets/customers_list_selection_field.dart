@@ -7,16 +7,23 @@ import 'package:autro_app/core/utils/dialog_utils.dart';
 import 'package:autro_app/core/widgets/failure_screen.dart';
 import 'package:autro_app/core/widgets/inputs/standard_search_input.dart';
 import 'package:autro_app/core/widgets/overley_loading.dart';
+import 'package:autro_app/features/customers/domin/entities/customer_entity.dart';
 import 'package:autro_app/features/customers/presentation/bloc/customers_list/customers_list_bloc.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 class CustomersListSelectionField extends StatefulWidget {
-  const CustomersListSelectionField(
-      {super.key, required this.nameController, required this.idController, this.enableOpenDialog = true});
+  const CustomersListSelectionField({
+    super.key,
+    required this.nameController,
+    required this.idController,
+    this.enableOpenDialog = true,
+    this.onItemTap,
+  });
 
   final TextEditingController nameController, idController;
   final bool enableOpenDialog;
+  final Function(CustomerEntity customer)? onItemTap;
 
   @override
   State createState() => _CustomersListSelectionFieldState();
@@ -51,8 +58,9 @@ class _CustomersListSelectionFieldState extends State<CustomersListSelectionFiel
           ? () async {
               final value = await showCustomDialog();
               if (value != null) {
-                widget.nameController.text = value.label;
-                widget.idController.text = value.value;
+                widget.nameController.text = value.value.name;
+                widget.idController.text = value.value.id.toString();
+                widget.onItemTap?.call(value.value);
               }
             }
           : null,
@@ -74,8 +82,8 @@ class _CustomersListSelectionFieldState extends State<CustomersListSelectionFiel
     );
   }
 
-  Future<SelectableItemModel<String>?> showCustomDialog() async {
-    return showDialog<SelectableItemModel<String>?>(
+  Future<SelectableItemModel<CustomerEntity>?> showCustomDialog() async {
+    return showDialog<SelectableItemModel<CustomerEntity>?>(
       context: context,
       barrierColor: Colors.black.withOpacity(0.5),
       builder: (context) {
@@ -238,7 +246,7 @@ class _CustomersListSelectionFieldState extends State<CustomersListSelectionFiel
             shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(8)),
             title: Text(item.name, style: TextStyles.font16Regular),
             onTap: () {
-              Navigator.pop(context, SelectableItemModel<String>(label: item.name, value: item.id.toString()));
+              Navigator.pop(context, SelectableItemModel<CustomerEntity>(label: item.name, value: item));
             },
           );
         },

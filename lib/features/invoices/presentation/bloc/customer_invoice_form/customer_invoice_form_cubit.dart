@@ -2,6 +2,7 @@ import 'package:autro_app/core/errors/failures.dart';
 import 'package:autro_app/core/extensions/date_time_extension.dart';
 import 'package:autro_app/core/extensions/list_extension.dart';
 import 'package:autro_app/features/invoices/domin/dtos/invoice_good_description_dto.dart';
+import 'package:autro_app/features/invoices/domin/dtos/invoice_pdf_dto.dart';
 import 'package:autro_app/features/invoices/domin/entities/customer_invoice_entity.dart';
 import 'package:autro_app/features/invoices/domin/use_cases/get_customer_invoice_use_case.dart';
 import 'package:bloc/bloc.dart';
@@ -39,13 +40,20 @@ class CustomerInvoiceFormCubit extends Cubit<CustomerInvoiceFormState> {
   final invoiceDateController = TextEditingController();
   final customerIdController = TextEditingController();
   final customerNameController = TextEditingController();
+  final customerAddressController = TextEditingController();
   final taxIdController = TextEditingController();
-  final bankIdController = TextEditingController();
-  final bankNameController = TextEditingController();
   final notesController = TextEditingController();
   final proformaNameController = TextEditingController();
   final dealSeriesNumberController = TextEditingController();
   final dealIdController = TextEditingController();
+
+  final bankIdController = TextEditingController();
+  final bankLableController = TextEditingController();
+
+  final bankAccountNumberController = TextEditingController();
+  final bankNameController = TextEditingController();
+  final ibanEuroController = TextEditingController();
+  final swiftCodeController = TextEditingController();
 
   Future init({required int? invoiceId}) async {
     emit(CustomerInvoiceFormInitial());
@@ -75,12 +83,17 @@ class CustomerInvoiceFormCubit extends Cubit<CustomerInvoiceFormState> {
       invoiceDateController.text = state.invoice?.date.formattedDateYYYYMMDD ?? DateTime.now().formattedDateYYYYMMDD;
       customerIdController.text = state.invoice?.customer.id.toString() ?? '';
       customerNameController.text = state.invoice?.customer.name ?? '';
+      customerAddressController.text = state.invoice?.customer.formattedAddress ?? '';
       taxIdController.text = state.invoice?.taxId ?? '';
+      bankAccountNumberController.text = state.invoice?.bankAccount.accountNumber ?? '';
+      bankNameController.text = state.invoice?.bankAccount.bankName ?? '';
+      bankLableController.text = state.invoice?.bankAccount.formattedLabel ?? '';
       bankIdController.text = state.invoice?.bankAccount.id.toString() ?? '';
-      bankNameController.text = state.invoice?.bankAccount.formattedLabel ?? '';
       notesController.text = state.invoice?.notes ?? '';
       dealIdController.text = state.invoice?.dealId.toString() ?? '';
       dealSeriesNumberController.text = state.invoice?.invoiceNumber ?? '';
+      ibanEuroController.text = state.invoice?.bankAccount.accountNumber ?? '';
+      swiftCodeController.text = state.invoice?.bankAccount.swiftCode ?? '';
       _setupControllersListeners();
       _onInvoiceFormChanged();
     }
@@ -160,12 +173,14 @@ class CustomerInvoiceFormCubit extends Cubit<CustomerInvoiceFormState> {
         saveEnabled: formIsNotEmpty && isFormChanged,
         cancelEnabled: isFormChanged,
         clearEnabled: formIsNotEmpty,
+        invoicePdfDto: formIsNotEmpty ? mapFormDataToInvoicePdfDto() : null,
       ));
     } else {
       emit(state.copyWith(
         saveEnabled: formIsNotEmpty,
         cancelEnabled: false,
         clearEnabled: formIsNotEmpty,
+        invoicePdfDto: formIsNotEmpty ? mapFormDataToInvoicePdfDto() : null,
       ));
     }
   }
@@ -296,5 +311,23 @@ class CustomerInvoiceFormCubit extends Cubit<CustomerInvoiceFormState> {
       await Future.delayed(const Duration(milliseconds: 300));
       init(invoiceId: state.id);
     }
+  }
+
+  InvoicePdfDto? mapFormDataToInvoicePdfDto() {
+    final state = this.state as CustomerInvoiceFormLoaded;
+
+    return InvoicePdfDto(
+      swiftCode: swiftCodeController.text,
+      bankAccountNumber: bankAccountNumberController.text,
+      customerAddress: customerAddressController.text,
+      invoiceNumber: invoiceNumberController.text,
+      date: DateTime.tryParse(invoiceDateController.text).orDefault,
+      customerName: customerNameController.text,
+      taxId: taxIdController.text,
+      bankName: bankNameController.text,
+      descriptions: state.goodDescriptionsList,
+      notes: notesController.text,
+      dealSeriesNumber: dealSeriesNumberController.text,
+    );
   }
 }

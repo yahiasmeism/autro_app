@@ -5,6 +5,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 
 import '../../../../../core/widgets/buttons/cancel_outline_button.dart';
 import '../../bloc/customer_invoice_form/customer_invoice_form_cubit.dart';
+import 'invoice_pdf_export_button.dart';
 
 class CustomerInvoiceFormActions extends StatelessWidget {
   const CustomerInvoiceFormActions({super.key});
@@ -29,6 +30,10 @@ class CustomerInvoiceFormActions extends StatelessWidget {
                 onPressed: context.read<CustomerInvoiceFormCubit>().cancelChanges,
               ),
             const SizedBox(width: 8),
+            const InvoicePdfExportButton(),
+            const SizedBox(width: 8),
+            const InvoicePdfPreviewButton(),
+            const SizedBox(width: 8),
             SaveOutLineButton(
                 onPressed: saveEnabled
                     ? () {
@@ -39,8 +44,7 @@ class CustomerInvoiceFormActions extends StatelessWidget {
                         }
                       }
                     : null),
-            const SizedBox(width: 8),
-            const InvoicePdfPreviewButton(),
+            // const SizedBox(width: 8),
           ],
         );
       },

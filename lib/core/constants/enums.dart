@@ -7,6 +7,8 @@ enum AuthState {
   unauthenticated,
 }
 
+enum PdfAction { view, export }
+
 enum HiveBoxType { user }
 
 @HiveType(typeId: HiveTypes.userRoles)

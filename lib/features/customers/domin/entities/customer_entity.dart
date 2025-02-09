@@ -66,6 +66,10 @@ class CustomerEntity extends Equatable {
         dealsCount,
       ];
 
+  String get formattedAddress {
+    return '$city, $country'.toUpperCase();
+  }
+
   CustomerEntity copyWith({
     int? id,
     String? name,

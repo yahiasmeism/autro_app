@@ -17,6 +17,7 @@ class ProformaFormBankDetails extends StatelessWidget {
       child: BankAccountsListSelectionField(
         nameController: cubit.bankNameController,
         idController: cubit.bankIdController,
+        onItemTapped: (p0) {},
       ),
     );
   }

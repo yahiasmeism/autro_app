@@ -1,7 +1,11 @@
+import 'package:autro_app/core/constants/enums.dart';
 import 'package:autro_app/core/di/di.dart';
+import 'package:autro_app/core/extensions/date_time_extension.dart';
+import 'package:autro_app/core/utils/dialog_utils.dart';
 import 'package:autro_app/core/utils/nav_util.dart';
 import 'package:autro_app/core/widgets/app_pdf_viewer.dart';
 import 'package:autro_app/core/widgets/failure_screen.dart';
+import 'package:autro_app/core/widgets/loading_indecator.dart';
 import 'package:autro_app/features/invoices/domin/dtos/invoice_pdf_dto.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -13,11 +17,11 @@ import '../bloc/invoice_pdf/invoice_pdf_cubit.dart';
 class InvoicePdfScreen extends StatelessWidget {
   const InvoicePdfScreen._();
 
-  static create(BuildContext context, InvoicePdfDto dto) {
+  static create(BuildContext context, InvoicePdfDto dto, {PdfAction action = PdfAction.view, String? filePath}) {
     NavUtil.push(
       context,
       BlocProvider<InvoicePdfCubit>(
-        create: (context) => sl<InvoicePdfCubit>()..init(dto),
+        create: (context) => sl<InvoicePdfCubit>()..init(dto, action: action, saveFilePath: filePath),
         child: const InvoicePdfScreen._(),
       ),
     );
@@ -31,12 +35,17 @@ class InvoicePdfScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     return BlocConsumer<InvoicePdfCubit, InvoicePdfState>(
       listener: listener,
-      buildWhen: (previous, current) => current is InvoicePdfGenerated || current is InvoicePdfError,
       builder: (context, state) {
         if (state is InvoicePdfInitial) {
-          return const Center(child: CircularProgressIndicator());
+          return const LoadingIndicator();
+        } else if (state is InvoicePdfResourcesLoading) {
+          return const LoadingIndicator(loadingMessage: 'Preparing resoures...');
+        } else if (state is InvoicePdfGenerating) {
+          return const LoadingIndicator(loadingMessage: 'Generating...');
         } else if (state is InvoicePdfGenerated) {
           return AppPdfViewer(localPath: state.pdfPath);
+        } else if (state is ExportInvoiceLoading) {
+          return const LoadingIndicator(loadingMessage: 'Exporting..');
         } else if (state is InvoicePdfError) {
           return Center(child: Scaffold(appBar: AppBar(), body: FailureScreen(failure: state.failure)));
         }
@@ -48,7 +57,18 @@ class InvoicePdfScreen extends StatelessWidget {
   void listener(BuildContext context, InvoicePdfState state) {
     if (state is InvoicePdfResourcesLoaded) {
       final invoiceContent = _buildInvoicePdfContent(state);
-      context.read<InvoicePdfCubit>().generateInvoicePdf(invoiceContent);
+      if (state.action == PdfAction.view) {
+        context.read<InvoicePdfCubit>().generateInvoicePdf(invoiceContent);
+      } else if (state.action == PdfAction.export) {
+        context.read<InvoicePdfCubit>().exportInvoicePdf(state.filePath!, invoiceContent);
+      }
+    }
+    if (state is ExportInvoiceDone) {
+      DialogUtil.showSuccessSnackBar(
+        context,
+        'Invoice saved successfully as: ${state.filePath.split('/').last}',
+      );
+      NavUtil.pop(context);
     }
   }
 
@@ -62,13 +82,13 @@ class InvoicePdfScreen extends StatelessWidget {
           children: [
             buildHeader(state),
             pw.SizedBox(height: 25),
-            buildCompanyInfo(),
+            buildCompanyInfo(state),
             pw.SizedBox(height: 25),
-            buildMainTable(),
+            buildMainTable(state),
             pw.SizedBox(height: 0),
-            buildSummaryTable(),
+            buildSummaryTable(state),
             pw.SizedBox(height: 20),
-            buildNotes(),
+            buildNotes(state),
             pw.SizedBox(height: 20),
             buildFooter(state),
           ],
@@ -88,9 +108,9 @@ class InvoicePdfScreen extends StatelessWidget {
           dpi: 3000,
         ),
         pw.Text(
-          "INVOICE: INV0146",
+          "INVOICE: INV${state.invoicePdfDto.invoiceNumber}",
           style: pw.TextStyle(
-            fontSize: 20,
+            fontSize: 24,
             color: textColor,
             fontWeight: pw.FontWeight.bold,
           ),
@@ -99,7 +119,7 @@ class InvoicePdfScreen extends StatelessWidget {
     );
   }
 
-  pw.Widget buildCompanyInfo() {
+  pw.Widget buildCompanyInfo(InvoicePdfResourcesLoaded state) {
     final style = pw.TextStyle(
       color: textColor,
       fontSize: 10,
@@ -108,20 +128,20 @@ class InvoicePdfScreen extends StatelessWidget {
     return pw.Column(
       crossAxisAlignment: pw.CrossAxisAlignment.start,
       children: [
-        pw.Text("From: TRICYCLE PRODUCTS, S.L", style: style),
-        pw.Text("Address: PEREZ DOLZ, 8, ENTRS. 12003 Castellon – SPAIN", style: style),
+        pw.Text("From: ${state.company.name}", style: style),
+        pw.Text("Address: ${state.company.address}", style: style),
         pw.Text("VAT: B56194830", style: style),
         pw.SizedBox(height: 8),
         pw.Divider(height: 0.5, color: tableBorderColor),
         pw.SizedBox(height: 8),
-        pw.Text("To: LAO QIXIN CO.,LTD.", style: style),
-        pw.Text("Address: PHONKHAM VILLAGE, KEOUDOM DISTRICT, VIENTIANE PROVINCE. LAO PDR", style: style),
-        pw.Text("TAX ID: 662330283-9-00", style: style),
+        pw.Text("To: ${state.invoicePdfDto.customerName}", style: style),
+        pw.Text("Address: ${state.invoicePdfDto.customerAddress}", style: style),
+        pw.Text("TAX ID: ${state.invoicePdfDto.taxId}", style: style),
         pw.SizedBox(height: 8),
         pw.Divider(height: 0.5, color: tableBorderColor),
         pw.SizedBox(height: 8),
         pw.Text(
-          "Invoice Date: 28/11/2024",
+          "Invoice Date: ${state.invoicePdfDto.date.formattedDateDDMMYYYY}",
           style: pw.TextStyle(
             color: textColor,
             fontSize: 11,
@@ -132,25 +152,18 @@ class InvoicePdfScreen extends StatelessWidget {
     );
   }
 
-  pw.Widget buildMainTable() {
+  pw.Widget buildMainTable(InvoicePdfResourcesLoaded state) {
     final headers = [
       'Description',
       'Container Number',
       'Weight (MT)',
-      'Unit Price (€)',
-      'Total Value (€)',
+      'Unit Price (EUR)',
+      'Total Pirce (EUR)',
     ];
 
-    final data = List.generate(
-      11,
-      (index) => [
-        'HDPE PLASTIC SCRAP',
-        'MRKU5526291',
-        '19,14',
-        '320 EUR',
-        '6.124,80 € EUR',
-      ],
-    );
+    final data = state.invoicePdfDto.descriptions
+        .map((e) => [e.description, e.containerNumber, e.weight, e.unitPrice, e.totalPrice])
+        .toList();
 
     return pw.TableHelper.fromTextArray(
       border: pw.TableBorder.all(
@@ -190,7 +203,7 @@ class InvoicePdfScreen extends StatelessWidget {
     );
   }
 
-  pw.Widget buildSummaryTable() {
+  pw.Widget buildSummaryTable(InvoicePdfResourcesLoaded state) {
     final headers = [
       'Origin Of Goods',
       'Containers Count',
@@ -201,9 +214,9 @@ class InvoicePdfScreen extends StatelessWidget {
     final data = [
       [
         'Spain',
-        '4',
-        '51,93 MT',
-        '19.250,00 EUR',
+        state.invoicePdfDto.descriptions.length.toString(),
+        '${state.invoicePdfDto.totalWeight} MT',
+        '${state.invoicePdfDto.totalAmount} EUR',
       ],
     ];
 
@@ -242,7 +255,7 @@ class InvoicePdfScreen extends StatelessWidget {
     );
   }
 
-  pw.Widget buildNotes() {
+  pw.Widget buildNotes(InvoicePdfResourcesLoaded state) {
     return pw.Column(
       crossAxisAlignment: pw.CrossAxisAlignment.start,
       children: [
@@ -256,7 +269,7 @@ class InvoicePdfScreen extends StatelessWidget {
         ),
         pw.SizedBox(height: 5),
         pw.Text(
-          'INVO0149 HDPE PLASTIC SCRAP HS CODE 39151020 - CFR MERSIN PORT: TURKEY CONSIGNEE: OZ BESLENEN TARIM URUNLERI NAK. PET.TEKS. SAN VE TIC LTD STI. AKCATAS MAH. 1 CAD, NO:11-1 VIRANSEHIR/SANLIURBA)',
+          state.invoicePdfDto.notes,
           style: const pw.TextStyle(fontSize: 9),
         ),
       ],
@@ -280,10 +293,10 @@ class InvoicePdfScreen extends StatelessWidget {
                 ),
               ),
               pw.SizedBox(height: 5),
-              pw.Text('Bank Name: Banco Santander S.A', style: const pw.TextStyle(fontSize: 9)),
-              pw.Text('IBAN EURO: ES400049533812210008708', style: const pw.TextStyle(fontSize: 9)),
-              pw.Text('SWIFT BIC: BSCHESMM', style: const pw.TextStyle(fontSize: 9)),
-              pw.Text('Beneficiary: TRICYCLE PRODUCTS S.L.', style: const pw.TextStyle(fontSize: 9)),
+              pw.Text('Bank Name: ${state.invoicePdfDto.bankName}', style: const pw.TextStyle(fontSize: 9)),
+              pw.Text('IBAN EURO: ${state.invoicePdfDto.bankAccountNumber}', style: const pw.TextStyle(fontSize: 9)),
+              pw.Text('SWIFT BIC: ${state.invoicePdfDto.swiftCode}', style: const pw.TextStyle(fontSize: 9)),
+              pw.Text('Beneficiary: ${state.company.name}', style: const pw.TextStyle(fontSize: 9)),
             ],
           ),
         ),

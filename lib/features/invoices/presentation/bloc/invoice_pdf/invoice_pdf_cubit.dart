@@ -1,7 +1,9 @@
 import 'dart:io';
 
+import 'package:autro_app/core/constants/enums.dart';
 import 'package:autro_app/core/errors/failures.dart';
 import 'package:autro_app/core/interfaces/use_case.dart';
+import 'package:autro_app/features/settings/domin/entities/company_entity.dart';
 import 'package:autro_app/features/settings/domin/use_cases/get_company_use_case.dart';
 import 'package:bloc/bloc.dart';
 import 'package:equatable/equatable.dart';
@@ -19,7 +21,10 @@ class InvoicePdfCubit extends Cubit<InvoicePdfState> {
 
   final GetCompanyUseCase getCompanyUseCase;
 
-  init(InvoicePdfDto dto) async {
+  init(InvoicePdfDto dto, {required PdfAction action, required String? saveFilePath}) async {
+    emit(InvoicePdfResourcesLoading());
+    await Future.delayed(const Duration(milliseconds: 300));
+
     final either = await getCompanyUseCase.call(NoParams());
 
     either.fold(
@@ -37,12 +42,36 @@ class InvoicePdfCubit extends Cubit<InvoicePdfState> {
         }
         final logoImageProvider = await networkImage(company.logoUrl, dpi: 3000, cache: true);
         final signatureImageProvider = await networkImage(company.signatureUrl, dpi: 3000, cache: true);
-        emit(InvoicePdfResourcesLoaded(logoImageProvider: logoImageProvider, signatureImageProvider: signatureImageProvider));
+        emit(InvoicePdfResourcesLoaded(
+          company: company,
+          logoImageProvider: logoImageProvider,
+          signatureImageProvider: signatureImageProvider,
+          invoicePdfDto: dto,
+          action: action,
+          filePath: saveFilePath,
+        ));
       },
     );
   }
 
+  Future<void> exportInvoicePdf(String saveFilePath, pw.Page page) async {
+    emit(ExportInvoiceLoading());
+
+    try {
+      final pdf = pw.Document();
+      pdf.addPage(page);
+
+      final file = File(saveFilePath);
+      await file.writeAsBytes(await pdf.save());
+      emit(ExportInvoiceDone(filePath: saveFilePath));
+    } catch (e) {
+      emit(const InvoicePdfError(failure: GeneralFailure(message: 'Error generating PDF')));
+    }
+  }
+
   Future<void> generateInvoicePdf(pw.Page page) async {
+    emit(InvoicePdfGenerating());
+    await Future.delayed(const Duration(milliseconds: 300));
     try {
       final pdf = pw.Document();
       pdf.addPage(page);

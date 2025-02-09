@@ -2,12 +2,10 @@ import 'package:autro_app/core/errors/failure_mapper.dart';
 import 'package:autro_app/core/utils/dialog_utils.dart';
 import 'package:autro_app/core/widgets/buttons/custom_outline_button.dart';
 import 'package:autro_app/core/widgets/buttons/save_outline_button.dart';
-import 'package:autro_app/features/invoices/domin/dtos/invoice_pdf_dto.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 import '../../../../../core/widgets/buttons/cancel_outline_button.dart';
-import '../../../invoices/presentation/screens/invoice_pdf_screen.dart';
 
 import '../bloc/packing_list_form/packing_list_form_cubit.dart';
 
@@ -62,13 +60,13 @@ class PackingListFormActions extends StatelessWidget {
                       }
                     : null),
             const SizedBox(width: 8),
-            CustomOutlineButton(
+            const CustomOutlineButton(
               labelText: 'Preview PDF',
-              onPressed: () => InvoicePdfScreen.create(
-                context,
-                // TODO should be handle
-                InvoicePdfDto(),
-              ),
+              // onPressed: () => InvoicePdfScreen.create(
+              //   context,
+              //   // TODO should be handle
+              //   InvoicePdfDto(),
+              // ),
             ),
           ],
         );

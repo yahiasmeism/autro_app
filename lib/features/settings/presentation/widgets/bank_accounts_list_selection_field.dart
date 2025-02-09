@@ -5,6 +5,7 @@ import 'package:autro_app/core/theme/app_colors.dart';
 import 'package:autro_app/core/theme/text_styles.dart';
 import 'package:autro_app/core/utils/dialog_utils.dart';
 import 'package:autro_app/core/widgets/failure_screen.dart';
+import 'package:autro_app/features/settings/domin/entities/bank_account_entity.dart';
 import 'package:autro_app/features/settings/presentation/bloc/bank_accounts_list/bank_accounts_list_cubit.dart';
 
 import 'package:flutter/material.dart';
@@ -15,10 +16,13 @@ class BankAccountsListSelectionField extends StatefulWidget {
     super.key,
     required this.nameController,
     required this.idController,
+    required this.onItemTapped,
     this.canOpenDialog = true,
   });
 
   final TextEditingController nameController, idController;
+  final Function(BankAccountEntity)? onItemTapped;
+
   final bool canOpenDialog;
 
   @override
@@ -42,7 +46,7 @@ class _BankAccountsListSelectionFieldState extends State<BankAccountsListSelecti
   Widget _buildLabel() {
     return Padding(
       padding: const EdgeInsets.only(bottom: 8),
-      child: Text('BankAccount Name', style: TextStyles.font16Regular),
+      child: Text('Bank Account Name', style: TextStyles.font16Regular),
     );
   }
 
@@ -53,8 +57,9 @@ class _BankAccountsListSelectionFieldState extends State<BankAccountsListSelecti
           ? () async {
               final value = await showCustomDialog();
               if (value != null) {
-                widget.nameController.text = value.label;
-                widget.idController.text = value.value;
+                widget.nameController.text = value.value.formattedLabel;
+                widget.idController.text = value.value.id.toString();
+                
               }
             }
           : null,
@@ -73,8 +78,8 @@ class _BankAccountsListSelectionFieldState extends State<BankAccountsListSelecti
     );
   }
 
-  Future<SelectableItemModel<String>?> showCustomDialog() async {
-    return showDialog<SelectableItemModel<String>?>(
+  Future<SelectableItemModel<BankAccountEntity>?> showCustomDialog() async {
+    return showDialog<SelectableItemModel<BankAccountEntity>?>(
       context: context,
       barrierColor: Colors.black.withOpacity(0.5),
       builder: (context) {
@@ -183,7 +188,7 @@ class _BankAccountsListSelectionFieldState extends State<BankAccountsListSelecti
           shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(8)),
           title: Text(item.formattedLabel, style: TextStyles.font16Regular),
           onTap: () {
-            Navigator.pop(context, SelectableItemModel<String>(label: item.formattedLabel, value: item.id.toString()));
+            Navigator.pop(context, SelectableItemModel<BankAccountEntity>(label: item.formattedLabel, value: item));
           },
         );
       },
