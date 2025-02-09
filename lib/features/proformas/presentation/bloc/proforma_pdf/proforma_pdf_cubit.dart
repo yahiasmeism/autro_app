@@ -13,14 +13,17 @@ import 'package:path_provider/path_provider.dart';
 import 'package:printing/printing.dart';
 import 'package:pdf/widgets.dart' as pw;
 
+import '../../../../settings/domin/entities/invoice_settings_entity.dart';
+import '../../../../settings/domin/use_cases/get_invoice_settings_use_case.dart';
+
 part 'proforma_pdf_state.dart';
 
 @injectable
 class ProformaPdfCubit extends Cubit<ProformaPdfState> {
-  ProformaPdfCubit(this.getCompanyUseCase) : super(ProformaPdfInitial());
+  ProformaPdfCubit(this.getCompanyUseCase, this.getInvoiceSettingsUseCase) : super(ProformaPdfInitial());
 
   final GetCompanyUseCase getCompanyUseCase;
-
+  final GetInvoiceSettingsUseCase getInvoiceSettingsUseCase;
   init(ProformaPdfDto dto, {required PdfAction action, required String? saveFilePath}) async {
     emit(ProformaPdfResourcesLoading());
     await Future.delayed(const Duration(milliseconds: 300));
@@ -42,14 +45,25 @@ class ProformaPdfCubit extends Cubit<ProformaPdfState> {
         }
         final logoImageProvider = await networkImage(company.logoUrl, dpi: 3000, cache: true);
         final signatureImageProvider = await networkImage(company.signatureUrl, dpi: 3000, cache: true);
-        emit(ProformaPdfResourcesLoaded(
-          company: company,
-          logoImageProvider: logoImageProvider,
-          signatureImageProvider: signatureImageProvider,
-          proformaPdfDto: dto,
-          action: action,
-          filePath: saveFilePath,
-        ));
+
+        final invoiceSettingsEither = await getInvoiceSettingsUseCase.call(NoParams());
+
+        invoiceSettingsEither.fold(
+          (l) => emit(ProformaPdfError(failure: l)),
+          (invoiceSettings) {
+            emit(
+              ProformaPdfResourcesLoaded(
+                invoiceSettings: invoiceSettings,
+                company: company,
+                logoImageProvider: logoImageProvider,
+                signatureImageProvider: signatureImageProvider,
+                proformaPdfDto: dto,
+                action: action,
+                filePath: saveFilePath,
+              ),
+            );
+          },
+        );
       },
     );
   }

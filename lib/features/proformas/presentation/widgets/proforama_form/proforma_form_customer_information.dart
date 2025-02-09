@@ -18,6 +18,9 @@ class ProformaFormCustomerInformation extends StatelessWidget {
         children: [
           Expanded(
             child: CustomersListSelectionField(
+              onItemTap: (customer) {
+                bloc.customerAddressController.text = customer.formattedAddress;
+              },
               nameController: bloc.customerNameController,
               idController: bloc.customerIdController,
             ),

@@ -43,8 +43,13 @@ class CustomerProformaFormCubit extends Cubit<CustomerProformaFormState> {
   final delivaryTermsController = TextEditingController();
   final paymentTermsController = TextEditingController();
   final bankIdController = TextEditingController();
-  final bankNameController = TextEditingController();
+  final bankLabelController = TextEditingController();
   final notesController = TextEditingController();
+
+  final bankAccountNumberController = TextEditingController();
+  final bankNameController = TextEditingController();
+  final customerAddressController = TextEditingController();
+  final swiftCodeController = TextEditingController();
 
   Future init({required int? proformaId}) async {
     if (proformaId != null) {
@@ -78,8 +83,12 @@ class CustomerProformaFormCubit extends Cubit<CustomerProformaFormState> {
       delivaryTermsController.text = state.proforma?.deliveryTerms ?? '';
       paymentTermsController.text = state.proforma?.paymentTerms ?? '';
       bankIdController.text = state.proforma?.bankAccount.id.toString() ?? '';
-      bankNameController.text = state.proforma?.bankAccount.formattedLabel ?? '';
+      bankLabelController.text = state.proforma?.bankAccount.formattedLabel ?? '';
       notesController.text = state.proforma?.notes ?? '';
+      bankAccountNumberController.text = state.proforma?.bankAccount.accountNumber ?? '';
+      bankNameController.text = state.proforma?.bankAccount.bankName ?? '';
+      customerAddressController.text = state.proforma?.customer.formattedAddress ?? '';
+      swiftCodeController.text = state.proforma?.bankAccount.swiftCode ?? '';
 
       _setupControllersListeners();
       _onProformaFormChanged();
@@ -336,6 +345,16 @@ class CustomerProformaFormCubit extends Cubit<CustomerProformaFormState> {
     final state = this.state as CustomerProformaFormLoaded;
 
     return ProformaPdfDto(
+      bankName: bankNameController.text,
+      customerAddress: customerAddressController.text,
+      swift: swiftCodeController.text,
+      customerName: customerNameController.text,
+      delivartLocation: portsController.text,
+      delivaryTerms: delivaryTermsController.text,
+      paymentTerms: paymentTermsController.text,
+      proformaDate: DateTime.tryParse(proformaDateController.text).orDefault,
+      taxId: taxIdController.text,
+      accountNumber: bankAccountNumberController.text,
       descriptions: state.goodDescriptionsList,
       proformaNumber: proformaNumberController.text,
     );

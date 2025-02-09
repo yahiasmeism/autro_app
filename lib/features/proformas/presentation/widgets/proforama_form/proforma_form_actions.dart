@@ -33,6 +33,7 @@ class ProformaFormActions extends StatelessWidget {
             const ProformaPdfExportButton(),
             const SizedBox(width: 8),
             const ProformaPdfPreviewButton(),
+            const SizedBox(width: 8),
             SaveOutLineButton(
                 onPressed: saveEnabled
                     ? () {

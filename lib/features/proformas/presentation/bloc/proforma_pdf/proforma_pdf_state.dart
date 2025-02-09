@@ -18,9 +18,11 @@ final class ProformaPdfResourcesLoaded extends ProformaPdfState {
   final ProformaPdfDto proformaPdfDto;
   final PdfAction action;
   final String? filePath;
+  final InvoiceSettingsEntity invoiceSettings;
 
   const ProformaPdfResourcesLoaded({
     required this.logoImageProvider,
+    required this.invoiceSettings,
     required this.signatureImageProvider,
     required this.company,
     required this.proformaPdfDto,
@@ -29,7 +31,7 @@ final class ProformaPdfResourcesLoaded extends ProformaPdfState {
   });
 
   @override
-  List<Object?> get props => [logoImageProvider, signatureImageProvider, company, proformaPdfDto, action, filePath];
+  List<Object?> get props => [logoImageProvider, signatureImageProvider, company, proformaPdfDto, action, filePath,invoiceSettings];
 }
 
 final class ProformaPdfGenerating extends ProformaPdfState {}
@@ -59,7 +61,39 @@ final class ExportProformaDone extends ProformaPdfState {
 
 class ProformaPdfDto {
   final String proformaNumber;
-  final List<ProformaGoodDescriptionDto> descriptions;
+  final String customerName;
+  final String customerAddress;
+  final String taxId;
+  final DateTime proformaDate;
 
-  ProformaPdfDto({required this.proformaNumber,required this.descriptions});
+  final String delivartLocation;
+  final String paymentTerms;
+  final String delivaryTerms;
+  final List<ProformaGoodDescriptionDto> descriptions;
+  final String bankName;
+  final String accountNumber;
+  final String swift;
+
+  ProformaPdfDto(
+      {required this.proformaNumber,
+      required this.customerName,
+      required this.customerAddress,
+      required this.taxId,
+      required this.proformaDate,
+      required this.delivartLocation,
+      required this.paymentTerms,
+      required this.delivaryTerms,
+      required this.descriptions,
+      required this.bankName,
+      required this.accountNumber,
+      required this.swift});
+  double get totalWeight => descriptions.fold<double>(
+        0,
+        (previousValue, element) => previousValue + element.weight,
+      );
+
+  double get totalAmount => descriptions.fold<double>(
+        0,
+        (previousValue, element) => previousValue + (element.unitPrice * element.weight),
+      );
 }

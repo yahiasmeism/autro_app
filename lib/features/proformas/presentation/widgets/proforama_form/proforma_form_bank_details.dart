@@ -15,9 +15,13 @@ class ProformaFormBankDetails extends StatelessWidget {
     return StandardCard(
       title: 'Bank Details',
       child: BankAccountsListSelectionField(
-        nameController: cubit.bankNameController,
+        nameController: cubit.bankLabelController,
         idController: cubit.bankIdController,
-        onItemTapped: (p0) {},
+        onItemTapped: (p0) {
+          cubit.bankNameController.text = p0.bankName;
+          cubit.bankAccountNumberController.text = p0.accountNumber;
+          cubit.swiftCodeController.text = p0.swiftCode;
+        },
       ),
     );
   }

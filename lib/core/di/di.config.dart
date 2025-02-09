@@ -568,8 +568,6 @@ extension GetItInjectableX on _i174.GetIt {
         ));
     gh.factory<_i43.InvoicePdfCubit>(
         () => _i43.InvoicePdfCubit(gh<_i223.GetCompanyUseCase>()));
-    gh.factory<_i1047.ProformaPdfCubit>(
-        () => _i1047.ProformaPdfCubit(gh<_i223.GetCompanyUseCase>()));
     gh.lazySingleton<_i511.GetShippingInvoiceByIdUseCase>(() =>
         _i511.GetShippingInvoiceByIdUseCase(
             shippingInvoicesRepository: gh<_i43.ShippingInvoicesRepository>()));
@@ -633,6 +631,10 @@ extension GetItInjectableX on _i174.GetIt {
               gh<_i981.UpdateCustomerInvoiceUseCase>(),
               gh<_i954.CreateCustomerInvoiceUseCase>(),
             ));
+    gh.factory<_i1047.ProformaPdfCubit>(() => _i1047.ProformaPdfCubit(
+          gh<_i223.GetCompanyUseCase>(),
+          gh<_i321.GetInvoiceSettingsUseCase>(),
+        ));
     gh.factory<_i997.SupplierDetailsCubit>(
         () => _i997.SupplierDetailsCubit(gh<_i941.GetSupplierUsecase>()));
     gh.factory<_i815.CustomersListBloc>(() => _i815.CustomersListBloc(

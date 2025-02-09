@@ -14,14 +14,12 @@ class FileUtils {
   }
 
   static void openFolder(String filePath) {
-    final folderPath = filePath.substring(0, filePath.lastIndexOf(Platform.pathSeparator));
-
     if (Platform.isWindows) {
-      Process.run('explorer', [folderPath]);
+      Process.run('explorer', ['/select,', filePath]);
     } else if (Platform.isMacOS) {
-      Process.run('open', [folderPath]);
+      Process.run('open', ['-R', filePath]);
     } else if (Platform.isLinux) {
-      Process.run('xdg-open', [folderPath]);
+      Process.run('xdg-open', [filePath]);
     }
   }
 }
