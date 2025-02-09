@@ -106,7 +106,7 @@ class DialogUtil {
       ..clearSnackBars()
       ..showSnackBar(
         SnackBar(
-          width: MediaQuery.of(context).size.width > 600 ? 600 : null,
+          width: MediaQuery.of(context).size.width > 700 ? 700 : null,
           behavior: behavior,
           duration: duration,
           elevation: elevation,

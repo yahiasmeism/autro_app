@@ -195,6 +195,14 @@ class CustomerInvoiceFormCubit extends Cubit<CustomerInvoiceFormState> {
 
   addGoodDescription() {
     final state = this.state as CustomerInvoiceFormLoaded;
+    if (state.goodDescriptionsList.length >= 12) {
+      emit(state.copyWith(
+          loading: true,
+          failureOrSuccessOption: some(left(const GeneralFailure(message: 'You cannot add more than 12 good descriptions')))));
+      emit(state.copyWith(loading: false));
+      return;
+    }
+
     final goodDescription = InvoiceGoodDescriptionDto(
       containerNumber: containerNumberController.text,
       description: descriptionController.text,

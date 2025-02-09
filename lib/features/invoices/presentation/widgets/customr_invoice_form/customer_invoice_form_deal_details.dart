@@ -21,7 +21,6 @@ class CustomerInvoiceFormProformaDetails extends StatelessWidget {
             children: [
               Expanded(
                 child: DealsListSelectionField(
-                  
                   enabled: state is CustomerInvoiceFormLoaded && !state.updatedMode,
                   seriesNumberController: bloc.dealSeriesNumberController,
                   idController: bloc.dealIdController,
@@ -46,6 +45,7 @@ class CustomerInvoiceFormProformaDetails extends StatelessWidget {
                     bloc.dealIdController.text = deal.id.toString();
                     bloc.dealSeriesNumberController.text = deal.dealNumber;
 
+                    bloc.customerAddressController.text = deal.customer?.formattedAddress ?? '';
                     bloc.bankLableController.text = deal.bankAccount?.formattedLabel ?? '';
                     bloc.bankIdController.text = deal.bankAccount?.id.toString() ?? '';
                     bloc.bankAccountNumberController.text = deal.bankAccount?.accountNumber ?? '';

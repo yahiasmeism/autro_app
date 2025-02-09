@@ -20,7 +20,7 @@ class InvoicePdfExportButton extends StatelessWidget {
           return CustomOutlineButton(
               labelText: 'Export',
               onPressed: () async {
-                final filePath = await FileUtils.pickSaveLocation("INV${state.invoicePdfDto!.invoiceNumber}", 'pdf');
+                final filePath = await FileUtils.pickSaveLocation("INVOICE-${state.invoicePdfDto!.invoiceNumber}", 'pdf');
                 if (filePath != null && context.mounted) {
                   InvoicePdfScreen.create(context, state.invoicePdfDto!, action: PdfAction.export, filePath: filePath);
                 }

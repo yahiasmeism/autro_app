@@ -138,6 +138,7 @@ class InvoicePdfScreen extends StatelessWidget {
     final style = pw.TextStyle(
       color: textColor,
       fontSize: 12,
+      fontWeight: pw.FontWeight.bold,
     );
 
     return pw.Column(
@@ -146,26 +147,25 @@ class InvoicePdfScreen extends StatelessWidget {
         pw.Text("From: ${state.company.name}", style: style),
         pw.SizedBox(height: 4),
         pw.Text("Address: ${state.company.address}", style: style),
-        pw.SizedBox(height: 4),
+        pw.SizedBox(height: 2),
         pw.Text("VAT: ${state.company.vat}", style: style),
         pw.SizedBox(height: 8),
         pw.Divider(height: 0.5, color: tableBorderColor),
         pw.SizedBox(height: 8),
         pw.Text("To: ${state.invoicePdfDto.customerName}", style: style),
-        pw.SizedBox(height: 4),
+        pw.SizedBox(height: 2),
         pw.Text("Address: ${state.invoicePdfDto.customerAddress}", style: style),
-        pw.SizedBox(height: 4),
+        pw.SizedBox(height: 2),
         pw.Text("TAX ID: ${state.invoicePdfDto.taxId}", style: style),
-        pw.SizedBox(height: 4),
         pw.SizedBox(height: 8),
         pw.Divider(height: 0.5, color: tableBorderColor),
-        pw.SizedBox(height: 16),
+        pw.SizedBox(height: 8),
         pw.Row(children: [
           pw.Text(
-            "Invoice Number: ${state.invoicePdfDto.invoiceNumber}",
+            "Invoice Number: INV${state.invoicePdfDto.invoiceNumber}",
             style: pw.TextStyle(
               color: textColor,
-              fontSize: 11,
+              fontSize: 14,
               fontWeight: pw.FontWeight.bold,
             ),
           ),
@@ -174,7 +174,7 @@ class InvoicePdfScreen extends StatelessWidget {
             "Invoice Date: ${state.invoicePdfDto.date.formattedDateDDMMYYYY}",
             style: pw.TextStyle(
               color: textColor,
-              fontSize: 11,
+              fontSize: 14,
               fontWeight: pw.FontWeight.bold,
             ),
           ),
@@ -203,16 +203,17 @@ class InvoicePdfScreen extends StatelessWidget {
       ),
       headerStyle: pw.TextStyle(
         fontWeight: pw.FontWeight.bold,
-        color: PdfColors.black,
+        color: textColor,
         fontSize: 10,
       ),
       headerDecoration: pw.BoxDecoration(
         color: tableHeaderColor,
       ),
       headerHeight: 25,
-      cellStyle: const pw.TextStyle(
+      cellStyle: pw.TextStyle(
         fontSize: 10,
         lineSpacing: 1,
+        color: textColor,
       ),
       cellHeight: 25,
       cellAlignments: {
@@ -258,15 +259,16 @@ class InvoicePdfScreen extends StatelessWidget {
       ),
       headerStyle: pw.TextStyle(
         fontWeight: pw.FontWeight.bold,
-        color: PdfColors.black,
+        color: textColor,
         fontSize: 10,
       ),
       headerDecoration: pw.BoxDecoration(
         color: tableHeaderColor,
       ),
       headerHeight: 25,
-      cellStyle: const pw.TextStyle(
+      cellStyle: pw.TextStyle(
         fontSize: 10,
+        color: textColor,
       ),
       cellHeight: 25,
       cellAlignments: {
@@ -294,20 +296,25 @@ class InvoicePdfScreen extends StatelessWidget {
           'Notes:',
           style: pw.TextStyle(
             color: textColor,
-            fontSize: 11,
+            fontSize: 12,
             fontWeight: pw.FontWeight.bold,
           ),
         ),
         pw.SizedBox(height: 5),
         pw.Text(
           state.invoicePdfDto.notes,
-          style: const pw.TextStyle(fontSize: 9),
+          style: pw.TextStyle(fontSize: 10, color: textColor),
         ),
       ],
     );
   }
 
   pw.Widget buildFooter(InvoicePdfResourcesLoaded state) {
+    final style = pw.TextStyle(
+      color: textColor,
+      fontSize: 12,
+      // fontWeight: pw.FontWeight.bold,
+    );
     return pw.Row(
       crossAxisAlignment: pw.CrossAxisAlignment.start,
       children: [
@@ -319,15 +326,18 @@ class InvoicePdfScreen extends StatelessWidget {
                 'Bank Details:',
                 style: pw.TextStyle(
                   color: PdfColors.red,
-                  fontSize: 11,
+                  fontSize: 12,
                   fontWeight: pw.FontWeight.bold,
                 ),
               ),
               pw.SizedBox(height: 5),
-              pw.Text('Bank Name: ${state.invoicePdfDto.bankName}', style: const pw.TextStyle(fontSize: 9)),
-              pw.Text('IBAN EURO: ${state.invoicePdfDto.bankAccountNumber}', style: const pw.TextStyle(fontSize: 9)),
-              pw.Text('SWIFT BIC: ${state.invoicePdfDto.swiftCode}', style: const pw.TextStyle(fontSize: 9)),
-              pw.Text('Beneficiary: ${state.company.name}', style: const pw.TextStyle(fontSize: 9)),
+              pw.Text('Bank Name: ${state.invoicePdfDto.bankName}', style: style),
+              pw.SizedBox(height: 3),
+              pw.Text('IBAN EURO: ${state.invoicePdfDto.bankAccountNumber}', style: style),
+              pw.SizedBox(height: 3),
+              pw.Text('SWIFT BIC: ${state.invoicePdfDto.swiftCode}', style: style),
+              pw.SizedBox(height: 3),
+              pw.Text('Beneficiary: ${state.company.name}', style: style),
             ],
           ),
         ),

@@ -168,7 +168,7 @@ class ProformaPdfScreen extends StatelessWidget {
         pw.SizedBox(height: 4),
         pw.Text("Address: ${state.company.address}", style: style),
         pw.SizedBox(height: 2),
-        pw.Text("VAT: B56194830", style: style),
+        pw.Text("VAT: ${state.company.vat}", style: style),
         pw.SizedBox(height: 8),
         pw.Divider(height: 0.5, color: tableBorderColor),
         pw.SizedBox(height: 8),

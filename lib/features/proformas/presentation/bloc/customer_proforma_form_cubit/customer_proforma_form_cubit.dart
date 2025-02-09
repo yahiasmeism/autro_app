@@ -202,6 +202,20 @@ class CustomerProformaFormCubit extends Cubit<CustomerProformaFormState> {
 
   addGoodDescription() {
     final state = this.state as CustomerProformaFormLoaded;
+
+    if (state.goodDescriptionsList.length >= 5) {
+      emit(
+        state.copyWith(
+          loading: true,
+          failureOrSuccessOption: some(
+            left(const GeneralFailure(message: 'You cannot add more than 5 good descriptions')),
+          ),
+        ),
+      );
+      emit(state.copyWith(loading: false));
+      return;
+    }
+
     final goodDescription = ProformaGoodDescriptionDto(
       description: descriptionController.text,
       containersCount: int.parse(containersCountController.text),

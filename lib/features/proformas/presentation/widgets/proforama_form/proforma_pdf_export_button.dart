@@ -20,7 +20,7 @@ class ProformaPdfExportButton extends StatelessWidget {
           return CustomOutlineButton(
               labelText: 'Export',
               onPressed: () async {
-                final filePath = await FileUtils.pickSaveLocation("PROF${state.proformaPdfDto!.proformaNumber}", 'pdf');
+                final filePath = await FileUtils.pickSaveLocation("PROFORMA-${state.proformaPdfDto!.proformaNumber}", 'pdf');
                 if (filePath != null && context.mounted) {
                   ProformaPdfScreen.create(context, state.proformaPdfDto!, action: PdfAction.export, filePath: filePath);
                 }
