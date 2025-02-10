@@ -37,7 +37,6 @@ class PackingListFormCubit extends Cubit<PackingListFormState> {
   final customerNameController = TextEditingController();
   final customerAddressController = TextEditingController();
   final taxIdController = TextEditingController();
-
   // packing list
   final formKey = GlobalKey<FormState>();
   final numberController = TextEditingController();
@@ -384,5 +383,10 @@ class PackingListFormCubit extends Cubit<PackingListFormState> {
       descriptions: state.goodDescriptionsList,
       packingListNumber: numberController.text,
     );
+  }
+
+  toggleOnePackingTypeForAllCheckBox() {
+    final state = this.state as PackingListFormLoaded;
+    emit(state.copyWith(onePackingTypeForAll: !state.onePackingTypeForAll));
   }
 }

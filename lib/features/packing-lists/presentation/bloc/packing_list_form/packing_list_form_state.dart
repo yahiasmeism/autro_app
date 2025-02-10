@@ -21,6 +21,7 @@ final class PackingListFormLoaded extends PackingListFormState {
   final bool isGenerateAutoPackingListNumber;
   final PackingListPdfDto? packingListPdfDto;
   final List<PackingListDescriptionDto> goodDescriptionsList;
+  final bool onePackingTypeForAll;
   const PackingListFormLoaded({
     this.packingList,
     this.loading = false,
@@ -32,6 +33,7 @@ final class PackingListFormLoaded extends PackingListFormState {
     this.goodDescriptionsList = const [],
     this.addGoodDescriptionEnabled = false,
     this.isGenerateAutoPackingListNumber = false,
+    this.onePackingTypeForAll = false,
     this.packingListPdfDto,
   });
   @override
@@ -47,6 +49,7 @@ final class PackingListFormLoaded extends PackingListFormState {
         addGoodDescriptionEnabled,
         isGenerateAutoPackingListNumber,
         packingListPdfDto,
+        onePackingTypeForAll,
       ];
 
   PackingListFormLoaded copyWith({
@@ -61,6 +64,7 @@ final class PackingListFormLoaded extends PackingListFormState {
     bool? addGoodDescriptionEnabled,
     bool? isGenerateAutoPackingListNumber,
     PackingListPdfDto? packingListPdfDto,
+    bool? onePackingTypeForAll,
   }) {
     return PackingListFormLoaded(
       packingListPdfDto: packingListPdfDto ?? this.packingListPdfDto,
@@ -74,6 +78,7 @@ final class PackingListFormLoaded extends PackingListFormState {
       loading: loading ?? this.loading,
       failureOrSuccessOption: failureOrSuccessOption ?? none(),
       isGenerateAutoPackingListNumber: isGenerateAutoPackingListNumber ?? this.isGenerateAutoPackingListNumber,
+      onePackingTypeForAll: onePackingTypeForAll ?? this.onePackingTypeForAll,
     );
   }
 
@@ -120,7 +125,7 @@ class PackingListPdfDto {
     return weight;
   }
 
-  double get totalCount{
+  double get totalCount {
     double amount = 0;
     for (var element in descriptions) {
       amount += element.itemsCount;
