@@ -23,7 +23,7 @@ class UpdatePackingListRequest extends UpdatePackingListUseCaseParams implements
   @override
   Map<String, dynamic> toJson() {
     return {
-      'tax_id': id,
+      'tax_id': taxId,
       'details': details,
       'number': number,
       'deal_id': dealId,

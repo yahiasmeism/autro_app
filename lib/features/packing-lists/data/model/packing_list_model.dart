@@ -1,4 +1,3 @@
-import 'package:autro_app/core/constants/enums.dart';
 import 'package:autro_app/core/extensions/list_extension.dart';
 import 'package:autro_app/core/extensions/map_extension.dart';
 import 'package:autro_app/core/extensions/num_extension.dart';
