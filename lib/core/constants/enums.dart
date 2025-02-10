@@ -60,7 +60,7 @@ enum FormType {
   edit,
 }
 
-enum PackingType { bales, loose, bults, rollosm, packing, lot, unknown }
+enum PackingType { bales, loose, bults, rolls, packing, lot, unknown }
 
 enum ModuleType {
   bankAccount,

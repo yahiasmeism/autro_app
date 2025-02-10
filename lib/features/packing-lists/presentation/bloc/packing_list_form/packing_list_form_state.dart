@@ -19,6 +19,7 @@ final class PackingListFormLoaded extends PackingListFormState {
   final bool cancelEnabled;
   final bool clearEnabled;
   final bool isGenerateAutoPackingListNumber;
+  final PackingListPdfDto? packingListPdfDto;
   final List<PackingListDescriptionDto> goodDescriptionsList;
   const PackingListFormLoaded({
     this.packingList,
@@ -31,6 +32,7 @@ final class PackingListFormLoaded extends PackingListFormState {
     this.goodDescriptionsList = const [],
     this.addGoodDescriptionEnabled = false,
     this.isGenerateAutoPackingListNumber = false,
+    this.packingListPdfDto,
   });
   @override
   List<Object?> get props => [
@@ -44,6 +46,7 @@ final class PackingListFormLoaded extends PackingListFormState {
         goodDescriptionsList,
         addGoodDescriptionEnabled,
         isGenerateAutoPackingListNumber,
+        packingListPdfDto,
       ];
 
   PackingListFormLoaded copyWith({
@@ -57,8 +60,10 @@ final class PackingListFormLoaded extends PackingListFormState {
     Option<Either<Failure, String>>? failureOrSuccessOption,
     bool? addGoodDescriptionEnabled,
     bool? isGenerateAutoPackingListNumber,
+    PackingListPdfDto? packingListPdfDto,
   }) {
     return PackingListFormLoaded(
+      packingListPdfDto: packingListPdfDto ?? this.packingListPdfDto,
       addGoodDescriptionEnabled: addGoodDescriptionEnabled ?? this.addGoodDescriptionEnabled,
       goodDescriptionsList: descriptionList ?? goodDescriptionsList,
       updatedMode: updatedMode ?? this.updatedMode,
@@ -89,4 +94,37 @@ class PackingListFormError extends PackingListFormState {
 
   @override
   List<Object?> get props => [failure, id];
+}
+
+class PackingListPdfDto {
+  final String packingListNumber;
+  final List<PackingListDescriptionDto> descriptions;
+  final String details;
+  final String customerName;
+  final String customerAddress;
+  final String taxId;
+
+  PackingListPdfDto(
+      {required this.packingListNumber,
+      required this.descriptions,
+      required this.details,
+      required this.customerName,
+      required this.customerAddress,
+      required this.taxId});
+
+  double get allWeight {
+    double weight = 0;
+    for (var element in descriptions) {
+      weight += element.weight;
+    }
+    return weight;
+  }
+
+  double get totalCount{
+    double amount = 0;
+    for (var element in descriptions) {
+      amount += element.itemsCount;
+    }
+    return amount;
+  }
 }

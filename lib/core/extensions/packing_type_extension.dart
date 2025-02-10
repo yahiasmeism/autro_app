@@ -9,8 +9,8 @@ extension PackingTypeX on PackingType {
         return 'Loose';
       case PackingType.bults:
         return 'Bults';
-      case PackingType.rollosm:
-        return 'Rollosm';
+      case PackingType.rolls:
+        return 'Rolls';
       case PackingType.packing:
         return 'Packing';
       case PackingType.lot:
@@ -28,8 +28,8 @@ extension PackingTypeX on PackingType {
         return PackingType.loose;
       case 'bults':
         return PackingType.bults;
-      case 'rollosm':
-        return PackingType.rollosm;
+      case 'rolls':
+        return PackingType.rolls;
       case 'packing':
         return PackingType.packing;
       case 'lot':

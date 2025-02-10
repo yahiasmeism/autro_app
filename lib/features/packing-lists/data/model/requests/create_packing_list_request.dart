@@ -7,6 +7,7 @@ class CreatePackingListRequest extends CreatePackingListUseCaseParams implements
     required super.number,
     required super.dealId,
     required super.descriptions,
+    required super.taxId,
   });
 
   factory CreatePackingListRequest.fromParams(CreatePackingListUseCaseParams params) => CreatePackingListRequest(
@@ -14,11 +15,13 @@ class CreatePackingListRequest extends CreatePackingListUseCaseParams implements
         number: params.number,
         dealId: params.dealId,
         descriptions: params.descriptions,
+        taxId: params.taxId,
       );
 
   @override
   Map<String, dynamic> toJson() {
     return {
+      'tax_id': taxId,
       'details': details,
       'number': number,
       'deal_id': dealId,

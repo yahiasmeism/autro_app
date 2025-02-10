@@ -20,6 +20,7 @@ class CreatePackingListUseCase extends UseCase<PackingListEntity, CreatePackingL
 }
 
 class CreatePackingListUseCaseParams extends Equatable {
+  final String taxId;
   final String details;
   final String number;
   final int dealId;
@@ -30,6 +31,7 @@ class CreatePackingListUseCaseParams extends Equatable {
     required this.number,
     required this.dealId,
     required this.descriptions,
+    required this.taxId,
   });
 
   @override

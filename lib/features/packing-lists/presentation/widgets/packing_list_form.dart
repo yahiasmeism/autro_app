@@ -1,5 +1,5 @@
 import 'package:autro_app/features/packing-lists/presentation/bloc/packing_list_form/packing_list_form_cubit.dart';
-import 'package:autro_app/features/packing-lists/presentation/widgets/customer_invoice_form_details.dart';
+import 'package:autro_app/features/packing-lists/presentation/widgets/packing_list_form_details.dart';
 import 'package:autro_app/features/packing-lists/presentation/widgets/packing_list_form_actions.dart';
 import 'package:autro_app/features/packing-lists/presentation/widgets/packing_list_form_good_descriptions.dart';
 import 'package:flutter/material.dart';

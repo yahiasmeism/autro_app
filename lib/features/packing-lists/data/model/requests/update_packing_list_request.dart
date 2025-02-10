@@ -8,6 +8,7 @@ class UpdatePackingListRequest extends UpdatePackingListUseCaseParams implements
     required super.dealId,
     required super.descriptions,
     required super.id,
+    required super.taxId,
   });
 
   factory UpdatePackingListRequest.fromParams(UpdatePackingListUseCaseParams params) => UpdatePackingListRequest(
@@ -16,11 +17,13 @@ class UpdatePackingListRequest extends UpdatePackingListUseCaseParams implements
         dealId: params.dealId,
         descriptions: params.descriptions,
         id: params.id,
+        taxId: params.taxId,
       );
 
   @override
   Map<String, dynamic> toJson() {
     return {
+      'tax_id': id,
       'details': details,
       'number': number,
       'deal_id': dealId,

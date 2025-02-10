@@ -129,7 +129,7 @@ class PackingListFormGoodDescriptions extends StatelessWidget {
                 child: StandardSelectableDropdown(
                   initialValue: type,
                   // readOnly: true,
-                  items: const ['Bales', 'Loose', 'Bults', 'Rollosm', 'Packing', 'Lot'],
+                  items: const ['Bales', 'Loose', 'Bults', 'Rolls', 'Packing', 'Lot'],
                   labelText: 'Packing',
                   onChanged: (p0) => cubit.updateGoodDescription(dto.copyWith(type: p0)),
                   hintText: 'Type',
@@ -246,7 +246,7 @@ class PackingListFormGoodDescriptions extends StatelessWidget {
                 child: StandardSelectableDropdown(
                   hintText: 'Type',
                   initialValue: bloc.typeController.text.isNotEmpty ? bloc.typeController.text : null,
-                  items: const ['Bales', 'Loose', 'Bults', 'Rollosm', 'Packing', 'Lot'],
+                  items: const ['Bales', 'Loose', 'Bults', 'Rolls', 'Packing', 'Lot'],
                   onChanged: (p0) {
                     bloc.typeController.text = p0 ?? '';
                   },

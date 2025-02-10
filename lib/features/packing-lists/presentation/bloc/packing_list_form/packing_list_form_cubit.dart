@@ -34,6 +34,10 @@ class PackingListFormCubit extends Cubit<PackingListFormState> {
   final TextEditingController percentoController = TextEditingController();
   final TextEditingController vgmController = TextEditingController();
 
+  final customerNameController = TextEditingController();
+  final customerAddressController = TextEditingController();
+  final taxIdController = TextEditingController();
+
   // packing list
   final formKey = GlobalKey<FormState>();
   final numberController = TextEditingController();
@@ -41,6 +45,7 @@ class PackingListFormCubit extends Cubit<PackingListFormState> {
   final detailsController = TextEditingController();
 
   Future init({required int? packingListId}) async {
+    emit(PackingListFormInitial());
     if (packingListId != null) {
       final either = await getPackingListByIdUseCase.call(packingListId);
 
@@ -73,6 +78,10 @@ class PackingListFormCubit extends Cubit<PackingListFormState> {
       numberController.text = state.packingList?.number ?? '';
       dealIdController.text = state.packingList?.dealId.toString() ?? '';
       detailsController.text = state.packingList?.details ?? '';
+
+      customerNameController.text = state.packingList?.customer.name ?? '';
+      customerAddressController.text = state.packingList?.customer.formattedAddress ?? '';
+      taxIdController.text = state.packingList?.taxId ?? '';
 
       _setupControllersListeners();
       _onPackingListFormChanged();
@@ -125,19 +134,19 @@ class PackingListFormCubit extends Cubit<PackingListFormState> {
   _onPackingListFormChanged() {
     final state = this.state as PackingListFormLoaded;
     final formIsNotEmpty = [
-      numberController,
-      dealIdController,
-    ].every((controller) => controller.text.isNotEmpty && state.goodDescriptionsList.isNotEmpty);
+          numberController,
+          dealIdController,
+        ].every((controller) => controller.text.isNotEmpty && state.goodDescriptionsList.isNotEmpty) &&
+        state.goodDescriptionsList.any((element) => element.containerNumber.isNotEmpty);
 
     if (state.updatedMode) {
       final initialgoodsDescription =
           state.packingList!.descriptions.map((e) => PackingListDescriptionDto.fromEntity(e)).toList();
 
       bool isGoodsDescriptionChanged = !listEquals(
-        initialgoodsDescription.map((e) => e.uniqueKey).toList(),
-        state.goodDescriptionsList.map((e) => e.uniqueKey).toList(),
+        initialgoodsDescription,
+        state.goodDescriptionsList,
       );
-
       final packingList = state.packingList!;
 
       bool isFormChanged = numberController.text != packingList.number ||
@@ -149,6 +158,7 @@ class PackingListFormCubit extends Cubit<PackingListFormState> {
         saveEnabled: formIsNotEmpty && isFormChanged,
         cancelEnabled: isFormChanged,
         clearEnabled: formIsNotEmpty,
+        packingListPdfDto: formIsNotEmpty ? mapFormDataToPackingListPdfDto() : null,
       ));
     } else {
       emit(state.copyWith(
@@ -205,7 +215,6 @@ class PackingListFormCubit extends Cubit<PackingListFormState> {
     _onPackingListFormChanged();
   }
 
-  // cancelPackingListFormEvent() => _initializeControllers();
   @override
   Future<void> close() {
     for (var controller in [
@@ -241,6 +250,7 @@ class PackingListFormCubit extends Cubit<PackingListFormState> {
       details: detailsController.text,
       number: numberController.text,
       descriptions: state.goodDescriptionsList,
+      taxId: taxIdController.text,
     );
 
     final either = await createPackingListUsecase.call(params);
@@ -268,6 +278,7 @@ class PackingListFormCubit extends Cubit<PackingListFormState> {
     }
     final params = UpdatePackingListUseCaseParams(
       id: state.packingList!.id,
+      taxId: taxIdController.text,
       dealId: int.parse(dealIdController.text),
       details: detailsController.text,
       number: numberController.text,
@@ -283,6 +294,7 @@ class PackingListFormCubit extends Cubit<PackingListFormState> {
         _initializeControllers();
       },
     );
+    _onPackingListFormChanged();
   }
 
   updateGoodDescription(PackingListDescriptionDto dto) {
@@ -299,10 +311,7 @@ class PackingListFormCubit extends Cubit<PackingListFormState> {
 
   cancelChanges() {
     final state = this.state as PackingListFormLoaded;
-    final goodsDescriptions = state.packingList?.descriptions.map((e) => PackingListDescriptionDto.fromEntity(e)).toList() ?? [];
-    emit(state.copyWith(descriptionList: goodsDescriptions));
-
-    _initializeControllers();
+    init(packingListId: state.packingList?.id);
   }
 
   toggleGenerateAutoPackingListNumber() {
@@ -362,5 +371,18 @@ class PackingListFormCubit extends Cubit<PackingListFormState> {
       await Future.delayed(const Duration(milliseconds: 300));
       init(packingListId: state.id);
     }
+  }
+
+  PackingListPdfDto? mapFormDataToPackingListPdfDto() {
+    final state = this.state as PackingListFormLoaded;
+
+    return PackingListPdfDto(
+      customerName: customerNameController.text,
+      customerAddress: customerAddressController.text,
+      taxId: taxIdController.text,
+      details: detailsController.text,
+      descriptions: state.goodDescriptionsList,
+      packingListNumber: numberController.text,
+    );
   }
 }

@@ -180,7 +180,7 @@ class CustomerProformaFormCubit extends Cubit<CustomerProformaFormState> {
         saveEnabled: formIsNotEmpty && isFormChanged,
         cancelEnabled: isFormChanged,
         clearEnabled: formIsNotEmpty,
-        proformaPdfDto: formIsNotEmpty ? mapFormDataToInvoicePdfDto() : null,
+        proformaPdfDto: formIsNotEmpty ? mapFormDataToProformaPdfDto() : null,
       ));
     } else {
       emit(state.copyWith(
@@ -355,7 +355,7 @@ class CustomerProformaFormCubit extends Cubit<CustomerProformaFormState> {
     }
   }
 
-  ProformaPdfDto? mapFormDataToInvoicePdfDto() {
+  ProformaPdfDto? mapFormDataToProformaPdfDto() {
     final state = this.state as CustomerProformaFormLoaded;
 
     return ProformaPdfDto(

@@ -111,7 +111,7 @@ class ProformaFormGoodDescriptions extends StatelessWidget {
               key: ValueKey(dto.packing),
               initialValue: dto.packing,
               // readOnly: true,
-              items: const ['Bales', 'Loose', 'Bults', 'Rollosm', 'Packing', 'Lot'],
+              items: const ['Bales', 'Loose', 'Bults', 'Rolls', 'Packing', 'Lot'],
               labelText: 'Packing',
               onChanged: (p0) => cubit.updateGoodDescription(dto.copyWith(packing: p0)),
               hintText: 'Type',
@@ -193,7 +193,7 @@ class ProformaFormGoodDescriptions extends StatelessWidget {
             child: StandardSelectableDropdown(
               hintText: 'Type',
               initialValue: bloc.packingController.text.isNotEmpty ? bloc.packingController.text : null,
-              items: const ['Bales', 'Loose', 'Bults', 'Rollosm', 'Packing', 'Lot'],
+              items: const ['Bales', 'Loose', 'Bults', 'Rolls', 'Packing', 'Lot'],
               onChanged: (p0) {
                 bloc.packingController.text = p0 ?? '';
               },

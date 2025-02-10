@@ -23,6 +23,7 @@ class UpdatePackingListUseCaseParams extends CreatePackingListUseCaseParams {
 
   const UpdatePackingListUseCaseParams({
     required super.details,
+    required super.taxId,
     required super.number,
     required super.dealId,
     required super.descriptions,
