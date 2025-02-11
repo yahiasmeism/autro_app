@@ -3,12 +3,15 @@ import 'dart:io';
 import 'package:autro_app/core/theme/app_colors.dart';
 import 'package:autro_app/core/theme/text_styles.dart';
 import 'package:autro_app/core/utils/dialog_utils.dart';
+import 'package:autro_app/core/utils/nav_util.dart';
 import 'package:autro_app/features/settings/presentation/bloc/company/company_cubit.dart';
 import 'package:autro_app/features/settings/presentation/widgets/upload_button.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:file_picker/file_picker.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+
+import '../../../../core/widgets/image_viewer.dart';
 
 class CompanyLogoUploader extends StatelessWidget {
   const CompanyLogoUploader({super.key});
@@ -31,7 +34,7 @@ class CompanyLogoUploader extends StatelessWidget {
                   Stack(
                     clipBehavior: Clip.none,
                     children: [
-                      _buildImage(state),
+                      _buildImage(state, context),
                       if (state.pickedLogoFile.isSome() || state.logoUrl.isSome())
                         Positioned(
                           top: -8,
@@ -81,7 +84,7 @@ class CompanyLogoUploader extends StatelessWidget {
     );
   }
 
-  Widget _buildImage(CompanyLoaded state) {
+  Widget _buildImage(CompanyLoaded state, BuildContext context) {
     return Container(
       width: 100,
       height: 100,
@@ -96,18 +99,28 @@ class CompanyLogoUploader extends StatelessWidget {
             () => _buildPlaceholder(),
             (url) {
               if (state.company.logoUrl.isNotEmpty) {
-                return CachedNetworkImage(
-                  imageUrl: state.company.logoUrl,
-                  progressIndicatorBuilder: (context, url, progress) {
-                    return Center(child: CircularProgressIndicator(value: progress.progress));
+                return InkWell(
+                  borderRadius: BorderRadius.circular(8),
+                  onTap: () {
+                    NavUtil.push(context, ImageViewer(networkPath: url));
                   },
+                  child: CachedNetworkImage(
+                    imageUrl: state.company.logoUrl,
+                    progressIndicatorBuilder: (context, url, progress) {
+                      return Center(child: CircularProgressIndicator(value: progress.progress));
+                    },
+                  ),
                 );
               } else {
                 return _buildPlaceholder();
               }
             },
           ),
-          (file) => Image.file(file),
+          (file) => InkWell(
+            borderRadius: BorderRadius.circular(8),
+            onTap: () => NavUtil.push(context, ImageViewer(localPath: file.path)),
+            child: Image.file(file),
+          ),
         ),
       ),
     );

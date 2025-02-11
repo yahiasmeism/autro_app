@@ -3,6 +3,8 @@ import 'dart:io';
 import 'package:autro_app/core/theme/app_colors.dart';
 import 'package:autro_app/core/theme/text_styles.dart';
 import 'package:autro_app/core/utils/dialog_utils.dart';
+import 'package:autro_app/core/utils/nav_util.dart';
+import 'package:autro_app/core/widgets/image_viewer.dart';
 import 'package:autro_app/features/settings/presentation/bloc/company/company_cubit.dart';
 import 'package:autro_app/features/settings/presentation/widgets/upload_button.dart';
 import 'package:cached_network_image/cached_network_image.dart';
@@ -31,7 +33,7 @@ class CompanySignatureUploader extends StatelessWidget {
                   Stack(
                     clipBehavior: Clip.none,
                     children: [
-                      _buildImage(state),
+                      _buildImage(state, context),
                       if (state.pickedSignatureFile.isSome() || state.signatureUrl.isSome())
                         Positioned(
                           top: -8,
@@ -81,7 +83,7 @@ class CompanySignatureUploader extends StatelessWidget {
     );
   }
 
-  Widget _buildImage(CompanyLoaded state) {
+  Widget _buildImage(CompanyLoaded state, BuildContext context) {
     return Container(
       width: 100,
       height: 100,
@@ -96,18 +98,26 @@ class CompanySignatureUploader extends StatelessWidget {
             () => _buildPlaceholder(),
             (url) {
               if (state.company.signatureUrl.isNotEmpty) {
-                return CachedNetworkImage(
-                  imageUrl: state.company.signatureUrl,
-                  progressIndicatorBuilder: (context, url, progress) {
-                    return Center(child: CircularProgressIndicator(value: progress.progress));
-                  },
+                return InkWell(
+                  borderRadius: BorderRadius.circular(8),
+                  onTap: () => NavUtil.push(context, ImageViewer(networkPath: url)),
+                  child: CachedNetworkImage(
+                    imageUrl: state.company.signatureUrl,
+                    progressIndicatorBuilder: (context, url, progress) {
+                      return Center(child: CircularProgressIndicator(value: progress.progress));
+                    },
+                  ),
                 );
               } else {
                 return _buildPlaceholder();
               }
             },
           ),
-          (file) => Image.file(file),
+          (file) => InkWell(
+            borderRadius: BorderRadius.circular(8),
+            onTap: () => NavUtil.push(context, ImageViewer(localPath: file.path)),
+            child: Image.file(file),
+          ),
         ),
       ),
     );
