@@ -17,6 +17,9 @@ final class BillFormLoaded extends BillFormState {
   final bool saveEnabled;
   final bool cancelEnabled;
   final bool clearEnabled;
+  final Option<String> attachmentUrl;
+  final Option<File> pickedAttachment;
+
   const BillFormLoaded({
     this.bill,
     this.loading = false,
@@ -25,9 +28,35 @@ final class BillFormLoaded extends BillFormState {
     this.saveEnabled = false,
     this.cancelEnabled = false,
     this.clearEnabled = false,
+    this.attachmentUrl = const None(),
+    this.pickedAttachment = const None(),
   });
   @override
-  List<Object?> get props => [bill, loading, failureOrSuccessOption, updatedMode, saveEnabled, cancelEnabled, clearEnabled];
+  List<Object?> get props => [
+        bill,
+        loading,
+        failureOrSuccessOption,
+        updatedMode,
+        saveEnabled,
+        cancelEnabled,
+        clearEnabled,
+        attachmentUrl,
+        pickedAttachment,
+      ];
+
+  bool get billHasImageAttachment {
+    final attachmentUrl = this.attachmentUrl.fold(() => '', (r) => r);
+    if (attachmentUrl.isEmpty) return false;
+    return attachmentUrl.split('.').last == 'jpg' ||
+        attachmentUrl.split('.').last == 'png' ||
+        attachmentUrl.split('.').last == 'jpeg';
+  }
+
+  bool get billHasPdfAttachment {
+    final attachmentUrl = this.attachmentUrl.fold(() => '', (r) => r);
+    if (attachmentUrl.isEmpty) return false;
+    return attachmentUrl.split('.').last == 'pdf';
+  }
 
   BillFormLoaded copyWith({
     BillEntity? bill,
@@ -37,6 +66,8 @@ final class BillFormLoaded extends BillFormState {
     bool? cancelEnabled,
     bool? loading,
     Option<Either<Failure, String>>? failureOrSuccessOption,
+    Option<String>? attachmentUrl,
+    Option<File>? pickedAttachment,
   }) {
     return BillFormLoaded(
       updatedMode: updatedMode ?? this.updatedMode,
@@ -46,6 +77,8 @@ final class BillFormLoaded extends BillFormState {
       clearEnabled: clearEnabled ?? this.clearEnabled,
       loading: loading ?? this.loading,
       failureOrSuccessOption: failureOrSuccessOption ?? none(),
+      attachmentUrl: attachmentUrl ?? this.attachmentUrl,
+      pickedAttachment: pickedAttachment ?? this.pickedAttachment,
     );
   }
 }

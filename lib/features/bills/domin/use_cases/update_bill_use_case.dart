@@ -25,6 +25,8 @@ class UpdateBillUseCaseParams extends Equatable {
   final double amount;
   final String notes;
   final DateTime date;
+  final String? attachmentPath;
+  final bool deleteAttachment;
 
   const UpdateBillUseCaseParams({
     required this.id,
@@ -32,6 +34,8 @@ class UpdateBillUseCaseParams extends Equatable {
     required this.amount,
     required this.notes,
     required this.date,
+    required this.attachmentPath,
+    required this.deleteAttachment,
   });
 
   @override

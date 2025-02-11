@@ -43,5 +43,11 @@ class AddedUpdatedBillEvent extends BillsListEvent {}
 
 class LoadMoreBillsEvent extends BillsListEvent {}
 
-
 class GetBillsSummaryEvent extends BillsListEvent {}
+
+class ApplyFilter extends BillsListEvent {
+  final BillsFilterDto filterDto;
+  const ApplyFilter({required this.filterDto});
+}
+
+class ResetFilter extends BillsListEvent {}

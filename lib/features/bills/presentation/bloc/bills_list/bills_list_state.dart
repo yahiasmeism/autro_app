@@ -17,6 +17,7 @@ final class BillsListLoaded extends BillsListState {
   final bool loading;
   final bool loadingPagination;
   final bool loadingSummary;
+  final  Option<BillsFilterDto> filterDto;
   final Option<Either<Failure, String>> failureOrSuccessOption;
   const BillsListLoaded({
     required this.billsList,
@@ -27,6 +28,7 @@ final class BillsListLoaded extends BillsListState {
     this.failureOrSuccessOption = const None(),
     this.billsSummary,
     this.loadingSummary = true,
+    this.filterDto = const None(),
   });
   @override
   List<Object?> get props => [
@@ -38,6 +40,7 @@ final class BillsListLoaded extends BillsListState {
         loadingPagination,
         billsSummary,
         loadingSummary,
+        filterDto,
       ];
 
   BillsListLoaded copyWith({
@@ -49,6 +52,7 @@ final class BillsListLoaded extends BillsListState {
     Option<Either<Failure, String>>? failureOrSuccessOption,
     bool? loadingPagination,
     bool? loadingSummary,
+    Option<BillsFilterDto>? filterDto,
   }) {
     return BillsListLoaded(
       billsList: billsList ?? this.billsList,
@@ -59,6 +63,7 @@ final class BillsListLoaded extends BillsListState {
       loadingPagination: loadingPagination ?? this.loadingPagination,
       billsSummary: billsSummary ?? this.billsSummary,
       loadingSummary: loadingSummary ?? this.loadingSummary,
+      filterDto: filterDto ?? this.filterDto,
     );
   }
 

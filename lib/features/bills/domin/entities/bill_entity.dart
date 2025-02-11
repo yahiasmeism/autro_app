@@ -7,6 +7,7 @@ class BillEntity extends Equatable {
   final double amount;
   final String notes;
   final DateTime date;
+  final String attachmentUrl;
   final DateTime createdAt;
   final DateTime updatedAt;
 
@@ -14,6 +15,7 @@ class BillEntity extends Equatable {
 
   const BillEntity({
     required this.id,
+    required this.attachmentUrl,
     required this.vendor,
     required this.amount,
     required this.notes,
@@ -40,6 +42,7 @@ class BillEntity extends Equatable {
     DateTime? date,
     DateTime? createdAt,
     DateTime? updatedAt,
+    String? attachmentUrl,
   }) {
     return BillEntity(
       id: id ?? this.id,
@@ -49,6 +52,7 @@ class BillEntity extends Equatable {
       date: date ?? this.date,
       createdAt: createdAt ?? this.createdAt,
       updatedAt: updatedAt ?? this.updatedAt,
+      attachmentUrl: attachmentUrl ?? this.attachmentUrl,
     );
   }
 }

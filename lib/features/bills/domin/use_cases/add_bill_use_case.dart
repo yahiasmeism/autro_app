@@ -6,6 +6,7 @@ import 'package:equatable/equatable.dart';
 import 'package:injectable/injectable.dart';
 
 import '../repostiries/bills_respository.dart';
+
 @lazySingleton
 class AddBillUseCase extends UseCase<BillEntity, AddBillUseCaseParams> {
   final BillsRepository repository;
@@ -23,15 +24,17 @@ class AddBillUseCaseParams extends Equatable {
   final double amount;
   final String notes;
   final DateTime date;
+  final String? attachmentPath;
 
   const AddBillUseCaseParams({
     required this.vendor,
     required this.amount,
     required this.notes,
     required this.date,
+    required this.attachmentPath,
   });
   @override
-  List<Object?> get props => [vendor, amount, notes, date];
+  List<Object?> get props => [vendor, amount, notes, date, attachmentPath];
 }
 
 /* 

@@ -9,6 +9,7 @@ import 'package:autro_app/core/widgets/inputs/standard_input.dart';
 import 'package:autro_app/core/widgets/standard_card.dart';
 import 'package:autro_app/features/bills/presentation/bloc/bill_form/bill_form_bloc.dart';
 import 'package:autro_app/features/bills/presentation/bloc/bills_list/bills_list_bloc.dart';
+import 'package:autro_app/features/bills/presentation/widgets/bill_attachment_uploader.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -82,6 +83,8 @@ class BillForm extends StatelessWidget {
                     ),
                   ],
                 ),
+                const SizedBox(height: 24),
+                const BillAttachmentUploader(),
                 const SizedBox(height: 24),
                 _buildButtons(context, state),
               ],

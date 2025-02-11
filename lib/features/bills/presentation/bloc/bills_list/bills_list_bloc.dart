@@ -1,5 +1,4 @@
 import 'package:autro_app/core/errors/failures.dart';
-import 'package:autro_app/core/interfaces/use_case.dart';
 import 'package:autro_app/features/bills/domin/entities/bills_summary_entity.dart';
 import 'package:autro_app/features/bills/domin/use_cases/get_bills_list_use_case.dart';
 import 'package:autro_app/features/bills/domin/use_cases/get_bills_summary_use_case.dart';
@@ -9,6 +8,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:injectable/injectable.dart';
 
 import '../../../../../core/common/domin/dto/pagination_query_payload_dto.dart';
+import '../../../domin/dtos/bill_filter_dto.dart';
 import '../../../domin/entities/bill_entity.dart';
 import '../../../domin/repostiries/bills_respository.dart';
 import '../../../domin/use_cases/add_bill_use_case.dart';
@@ -34,7 +34,7 @@ class BillsListBloc extends Bloc<BillsListEvent, BillsListState> {
     this.createBillUsecase,
     this.getBillsSummaryUsecase,
   ) : super(BillsListInitial()) {
-    on<BillsListEvent>(_mapEvents,transformer: (events, mapper) => events.asyncExpand(mapper));
+    on<BillsListEvent>(_mapEvents, transformer: (events, mapper) => events.asyncExpand(mapper));
   }
 
   int get billsCount => billsRepository.billsCount;
@@ -74,6 +74,13 @@ class BillsListBloc extends Bloc<BillsListEvent, BillsListState> {
     if (event is GetBillsSummaryEvent) {
       await onGetBillsSummary(event, emit);
     }
+    if (event is ApplyFilter) {
+      await onApplyFilter(event, emit);
+    }
+
+    if (event is ResetFilter) {
+      await onResetFilter(event, emit);
+    }
   }
 
   Future onGetBillsList(GetBillsListEvent event, Emitter<BillsListState> emit) async {
@@ -97,7 +104,9 @@ class BillsListBloc extends Bloc<BillsListEvent, BillsListState> {
   Future onUpdatePagination(OnUpdatePaginationEvent event, Emitter<BillsListState> emit) async {
     final state = this.state as BillsListLoaded;
     final paginationFilterDto = state.paginationFilterDTO.copyWith(pageNumber: event.pageNumber);
-    final params = GetBillsListUseCaseParams(paginationFilterDTO: paginationFilterDto);
+    final filterDto = state.filterDto.fold(() => null, (a) => a);
+
+    final params = GetBillsListUseCaseParams(paginationFilterDTO: paginationFilterDto, filterDto: filterDto);
 
     emit(state.copyWith(loadingPagination: true));
     final either = await getBillsListUsecase.call(params);
@@ -168,7 +177,9 @@ class BillsListBloc extends Bloc<BillsListEvent, BillsListState> {
 
       final updatedFilterPagination = PaginationFilterDTO.initial().copyWith(filter: updatedFilter);
 
-      final params = GetBillsListUseCaseParams(paginationFilterDTO: updatedFilterPagination);
+      final filterDto = state.filterDto.fold(() => null, (a) => a);
+
+      final params = GetBillsListUseCaseParams(paginationFilterDTO: updatedFilterPagination, filterDto: filterDto);
 
       final either = await getBillsListUsecase.call(params);
       emit(state.copyWith(loading: false));
@@ -188,7 +199,8 @@ class BillsListBloc extends Bloc<BillsListEvent, BillsListState> {
 
   onAddedUpdatedBill(AddedUpdatedBillEvent event, Emitter<BillsListState> emit) async {
     final state = this.state as BillsListLoaded;
-    final params = GetBillsListUseCaseParams(paginationFilterDTO: state.paginationFilterDTO);
+    final filterDto = state.filterDto.fold(() => null, (a) => a);
+    final params = GetBillsListUseCaseParams(paginationFilterDTO: state.paginationFilterDTO, filterDto: filterDto);
     emit(state.copyWith(loading: true));
     final either = await getBillsListUsecase.call(params);
     emit(state.copyWith(loading: false));
@@ -212,7 +224,9 @@ class BillsListBloc extends Bloc<BillsListEvent, BillsListState> {
     if (pageNumber > state.totalPages) return;
     emit(state.copyWith(loadingPagination: true));
     final paginationFilterDto = state.paginationFilterDTO.copyWith(pageNumber: pageNumber);
-    final params = GetBillsListUseCaseParams(paginationFilterDTO: paginationFilterDto);
+    final filterDto = state.filterDto.fold(() => null, (a) => a);
+
+    final params = GetBillsListUseCaseParams(paginationFilterDTO: paginationFilterDto, filterDto: filterDto);
 
     final either = await getBillsListUsecase.call(params);
     emit(state.copyWith(loadingPagination: false));
@@ -234,11 +248,67 @@ class BillsListBloc extends Bloc<BillsListEvent, BillsListState> {
     if (state is BillsListLoaded) {
       final state = this.state as BillsListLoaded;
       emit(state.copyWith(loadingSummary: true));
-      final either = await getBillsSummaryUsecase.call(NoParams());
+
+      final filterDto = state.filterDto.fold(() => null, (a) => a);
+
+      final params = GetBillsSummaryUseCaseParams(filterDto: filterDto);
+      final either = await getBillsSummaryUsecase.call(params);
       either.fold(
         (failure) => null,
         (billsSummary) => emit(state.copyWith(billsSummary: billsSummary, loadingSummary: false)),
       );
     }
+  }
+
+  onApplyFilter(ApplyFilter event, Emitter<BillsListState> emit) async {
+    if (state is BillsListLoaded) {
+      final state = this.state as BillsListLoaded;
+      if (event.filterDto == state.filterDto.fold(() => null, (a) => a)) return;
+
+      emit(state.copyWith(loading: true));
+      final params = GetBillsListUseCaseParams(paginationFilterDTO: state.paginationFilterDTO, filterDto: event.filterDto);
+      final either = await getBillsListUsecase.call(params);
+      either.fold(
+        (failure) => emit(state.copyWith(
+          failureOrSuccessOption: some(left(failure)),
+          loading: false,
+        )),
+        (bills) {
+          emit(state.copyWith(
+            totalCount: billsCount,
+            billsList: bills,
+            loading: false,
+            filterDto: some(event.filterDto),
+          ));
+          add(GetBillsSummaryEvent());
+        },
+      );
+    }
+  }
+
+  onResetFilter(ResetFilter event, Emitter<BillsListState> emit) async {
+    final state = this.state as BillsListLoaded;
+
+    if (state.filterDto.fold(() => null, (a) => a) == null) return;
+
+    emit(state.copyWith(loading: true));
+    final params = GetBillsListUseCaseParams(paginationFilterDTO: state.paginationFilterDTO, filterDto: null);
+    final either = await getBillsListUsecase.call(params);
+
+    either.fold(
+      (failure) => emit(state.copyWith(
+        failureOrSuccessOption: some(left(failure)),
+        loading: false,
+      )),
+      (bills) {
+        emit(state.copyWith(
+          totalCount: billsCount,
+          billsList: bills,
+          loading: false,
+          filterDto: none(),
+        ));
+        add(GetBillsSummaryEvent());
+      },
+    );
   }
 }

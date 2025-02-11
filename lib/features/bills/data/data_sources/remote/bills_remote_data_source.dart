@@ -5,6 +5,7 @@ import 'package:autro_app/core/common/data/responses/pagination_list_response.da
 import 'package:autro_app/core/errors/error_handler.dart';
 import 'package:autro_app/core/errors/exceptions.dart';
 import 'package:autro_app/features/bills/data/models/bills_summary_model.dart';
+import 'package:autro_app/features/bills/data/models/requests/get_bills_summary_query_param.dart';
 import 'package:autro_app/features/bills/data/models/requests/update_bill_request.dart';
 import 'package:injectable/injectable.dart';
 
@@ -18,7 +19,7 @@ abstract class BillsRemoteDataSource {
   Future<BillModel> updateBill(UpdateBillRequest body);
   Future<void> deleteBill(int billId);
   Future<BillModel> getBill(int billId);
-  Future<BillsSummaryModel> getBillsSummary();
+  Future<BillsSummaryModel> getBillsSummary(GetBillsSummaryQueryParam queryParam);
 }
 
 @LazySingleton(as: BillsRemoteDataSource)
@@ -29,7 +30,8 @@ class BillsRemoteDataSourceImpl implements BillsRemoteDataSource {
   @override
   Future<BillModel> addBill(AddBillRequest body) async {
     const path = ApiPaths.bills;
-    final request = ApiRequest(path: path, body: body.toJson());
+    final formData = await body.toFormData();
+    final request = ApiRequest(path: path, body: formData);
     final response = await apiClient.post(request);
     if (ResponseCode.isOk(response.statusCode)) {
       final json = response.data;
@@ -80,7 +82,9 @@ class BillsRemoteDataSourceImpl implements BillsRemoteDataSource {
   @override
   Future<BillModel> updateBill(UpdateBillRequest body) async {
     final path = ApiPaths.billById(body.id);
-    final request = ApiRequest(path: path, body: body.toJson());
+    final formData = await body.toFormData();
+
+    final request = ApiRequest(path: path, body: formData);
     final response = await apiClient.post(request);
     if (ResponseCode.isOk(response.statusCode)) {
       final json = response.data;
@@ -91,9 +95,9 @@ class BillsRemoteDataSourceImpl implements BillsRemoteDataSource {
   }
 
   @override
-  Future<BillsSummaryModel> getBillsSummary() async {
+  Future<BillsSummaryModel> getBillsSummary(GetBillsSummaryQueryParam queryParam) async {
     const path = ApiPaths.billsSummary;
-    final request = ApiRequest(path: path);
+    final request = ApiRequest(path: path, queryParameters: queryParam.toJson());
     final response = await apiClient.get(request);
     if (ResponseCode.isOk(response.statusCode)) {
       final json = response.data;

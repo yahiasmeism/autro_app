@@ -12,6 +12,7 @@ class BillModel extends BillEntity implements BaseMapable {
       required super.notes,
       required super.date,
       required super.createdAt,
+      required super.attachmentUrl,
       required super.updatedAt});
 
   factory BillModel.fromJson(Map<String, dynamic> json) {
@@ -23,9 +24,10 @@ class BillModel extends BillEntity implements BaseMapable {
       date: DateTime.parse((json['date'] as String?).orEmpty).orDefault,
       createdAt: DateTime.parse((json['created_at'] as String?).orEmpty).orDefault,
       updatedAt: DateTime.parse((json['updated_at'] as String?).orEmpty).orDefault,
+      attachmentUrl: (json['attachment'] as String?).orEmpty,
     );
   }
-
+  
   @override
   Map<String, dynamic> toJson() {
     return {

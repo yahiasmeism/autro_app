@@ -2,12 +2,14 @@ import 'package:autro_app/core/errors/error_handler.dart';
 import 'package:autro_app/core/errors/failures.dart';
 import 'package:autro_app/core/network_info/network_info.dart';
 import 'package:autro_app/features/bills/data/data_sources/remote/bills_remote_data_source.dart';
+import 'package:autro_app/features/bills/data/models/requests/get_bills_summary_query_param.dart';
 import 'package:autro_app/features/bills/data/models/requests/update_bill_request.dart';
 import 'package:autro_app/features/bills/domin/entities/bill_entity.dart';
 import 'package:autro_app/features/bills/domin/entities/bills_summary_entity.dart';
 import 'package:autro_app/features/bills/domin/repostiries/bills_respository.dart';
 import 'package:autro_app/features/bills/domin/use_cases/add_bill_use_case.dart';
 import 'package:autro_app/features/bills/domin/use_cases/get_bills_list_use_case.dart';
+import 'package:autro_app/features/bills/domin/use_cases/get_bills_summary_use_case.dart';
 import 'package:autro_app/features/bills/domin/use_cases/update_bill_use_case.dart';
 import 'package:dartz/dartz.dart';
 import 'package:injectable/injectable.dart';
@@ -66,7 +68,7 @@ class BillsRepositoryImpl implements BillsRepository {
   Future<Either<Failure, List<BillEntity>>> getBillsList(GetBillsListUseCaseParams params) async {
     if (await networkInfo.isConnected) {
       try {
-        final body = GetBillsListRequest(paginationFilterDTO: params.paginationFilterDTO);
+        final body = GetBillsListRequest(paginationFilterDTO: params.paginationFilterDTO, filterDto: params.filterDto);
         final list = await billsRemoteDataSource.getBillsList(body);
         _billsCount = list.total;
         return Right(list.data);
@@ -98,10 +100,11 @@ class BillsRepositoryImpl implements BillsRepository {
   int get billsCount => _billsCount;
 
   @override
-  Future<Either<Failure, BillsSummaryEntity>> getBillsSummary() async {
+  Future<Either<Failure, BillsSummaryEntity>> getBillsSummary(GetBillsSummaryUseCaseParams params) async {
     if (await networkInfo.isConnected) {
       try {
-        return Right(await billsRemoteDataSource.getBillsSummary());
+        final queryParam = GetBillsSummaryQueryParam(filterDto: params.filterDto);
+        return Right(await billsRemoteDataSource.getBillsSummary(queryParam));
       } catch (error) {
         return Left(ErrorHandler.handle(error));
       }

@@ -5,6 +5,7 @@ import 'package:dartz/dartz.dart';
 import '../entities/bill_entity.dart';
 import '../use_cases/add_bill_use_case.dart';
 import '../use_cases/get_bills_list_use_case.dart';
+import '../use_cases/get_bills_summary_use_case.dart';
 import '../use_cases/update_bill_use_case.dart';
 
 abstract class BillsRepository {
@@ -18,6 +19,6 @@ abstract class BillsRepository {
 
   Future<Either<Failure, BillEntity>> getBill(int billId);
 
-  Future<Either<Failure,BillsSummaryEntity>> getBillsSummary();
+  Future<Either<Failure,BillsSummaryEntity>> getBillsSummary(GetBillsSummaryUseCaseParams params);
   int get billsCount;
 }

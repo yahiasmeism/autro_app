@@ -23,10 +23,19 @@ class CreateBillFormEvent extends BillFormEvent {}
 
 class BillFormChangedEvent extends BillFormEvent {}
 
-
 class ClearBillFormEvent extends BillFormEvent {}
 
 class CancelBillFormEvent extends BillFormEvent {}
 
+class BillFormHandleError extends BillFormEvent {}
 
-class BillFormHandleError extends BillFormEvent{}
+class PickAttachmentEvent extends BillFormEvent {
+  final File file;
+
+  const PickAttachmentEvent({required this.file});
+
+  @override
+  List<Object?> get props => [file];
+}
+
+class RemoveAttachmentEvent extends BillFormEvent {}

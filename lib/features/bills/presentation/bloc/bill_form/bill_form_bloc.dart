@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:autro_app/core/errors/failures.dart';
 import 'package:autro_app/core/extensions/date_time_extension.dart';
 import 'package:autro_app/features/bills/domin/entities/bill_entity.dart';
@@ -52,6 +54,12 @@ class BillFormBloc extends Bloc<BillFormEvent, BillFormState> {
     if (event is BillFormHandleError) {
       await _onHandleError(event, emit);
     }
+    if (event is PickAttachmentEvent) {
+      await _onPickAttachment(event, emit);
+    }
+    if (event is RemoveAttachmentEvent) {
+      await _onRemoveAttachmentEvent(event, emit);
+    }
   }
 
   final vendorController = TextEditingController();
@@ -69,7 +77,11 @@ class BillFormBloc extends Bloc<BillFormEvent, BillFormState> {
           emit(BillFormError(failure: failure, id: event.billId!));
         },
         (bill) {
-          emit(BillFormLoaded(bill: bill, updatedMode: true));
+          emit(BillFormLoaded(
+            bill: bill,
+            updatedMode: true,
+            attachmentUrl: bill.attachmentUrl.isNotEmpty ? some(bill.attachmentUrl) : none(),
+          ));
         },
       );
     } else {
@@ -106,14 +118,27 @@ class BillFormBloc extends Bloc<BillFormEvent, BillFormState> {
 
     if (state.updatedMode) {
       final bill = state.bill!;
+      final urlChanged = state.attachmentUrl.fold(
+        () => bill.attachmentUrl.isNotEmpty,
+        (a) => a != bill.attachmentUrl,
+      );
       bool isFormChanged = bill.vendor != vendorController.text ||
           bill.amount != (double.tryParse(amountController.text) ?? 0) ||
           bill.date.formattedDateYYYYMMDD != dateController.text ||
-          bill.notes != notesController.text;
+          bill.notes != notesController.text ||
+          urlChanged ||
+          state.pickedAttachment.isSome();
       emit(state.copyWith(
-          saveEnabled: formIsNotEmpty && isFormChanged, cancelEnabled: isFormChanged, clearEnabled: formIsNotEmpty));
+        saveEnabled: formIsNotEmpty && isFormChanged,
+        cancelEnabled: isFormChanged,
+        clearEnabled: formIsNotEmpty,
+      ));
     } else {
-      emit(state.copyWith(saveEnabled: formIsNotEmpty, cancelEnabled: false, clearEnabled: formIsNotEmpty));
+      emit(state.copyWith(
+        saveEnabled: formIsNotEmpty,
+        cancelEnabled: false,
+        clearEnabled: formIsNotEmpty,
+      ));
     }
   }
 
@@ -133,6 +158,7 @@ class BillFormBloc extends Bloc<BillFormEvent, BillFormState> {
     emit(state.copyWith(loading: true));
 
     final params = AddBillUseCaseParams(
+      attachmentPath: state.pickedAttachment.fold(() => null, (file) => file.path),
       vendor: vendorController.text,
       amount: double.tryParse(amountController.text) ?? 0,
       date: DateTime.tryParse(dateController.text) ?? DateTime.now(),
@@ -156,6 +182,7 @@ class BillFormBloc extends Bloc<BillFormEvent, BillFormState> {
 
   Future _onUpdateBill(UpdateBillFormEvent event, Emitter<BillFormState> emit) async {
     final state = this.state as BillFormLoaded;
+    final deleteAttachment = state.attachmentUrl.isNone() && state.pickedAttachment.isNone();
 
     emit(state.copyWith(loading: true));
     final params = UpdateBillUseCaseParams(
@@ -164,6 +191,8 @@ class BillFormBloc extends Bloc<BillFormEvent, BillFormState> {
       amount: double.tryParse(amountController.text) ?? 0,
       date: DateTime.tryParse(dateController.text) ?? DateTime.now(),
       notes: notesController.text,
+      attachmentPath: state.pickedAttachment.fold(() => null, (file) => file.path),
+      deleteAttachment: deleteAttachment,
     );
     final either = await updateBillUsecase.call(params);
     emit(state.copyWith(loading: false));
@@ -182,9 +211,24 @@ class BillFormBloc extends Bloc<BillFormEvent, BillFormState> {
     amountController.clear();
     dateController.clear();
     notesController.clear();
+    if (state is BillFormLoaded) {
+      final state = this.state as BillFormLoaded;
+      emit(state.copyWith(pickedAttachment: none(), attachmentUrl: none()));
+    }
   }
 
-  _onCancelBillFormEvent(BillFormEvent event, Emitter<BillFormState> emit) => _initializeControllers();
+  _onCancelBillFormEvent(BillFormEvent event, Emitter<BillFormState> emit) {
+    final state = this.state as BillFormLoaded;
+    if (state.bill != null) {
+      emit(
+        state.copyWith(
+          pickedAttachment: none(),
+          attachmentUrl: some(state.bill!.attachmentUrl),
+        ),
+      );
+    }
+    return _initializeControllers();
+  }
 
   @override
   Future<void> close() {
@@ -202,5 +246,17 @@ class BillFormBloc extends Bloc<BillFormEvent, BillFormState> {
       await Future.delayed(const Duration(milliseconds: 300));
       add(InitialBillFormEvent(billId: state.id));
     }
+  }
+
+  _onPickAttachment(PickAttachmentEvent event, Emitter<BillFormState> emit) async {
+    final state = this.state as BillFormLoaded;
+    emit(state.copyWith(pickedAttachment: some(event.file)));
+    add(BillFormChangedEvent());
+  }
+
+  _onRemoveAttachmentEvent(RemoveAttachmentEvent event, Emitter<BillFormState> emit) async {
+    final state = this.state as BillFormLoaded;
+    emit(state.copyWith(pickedAttachment: none(), attachmentUrl: none()));
+    add(BillFormChangedEvent());
   }
 }
