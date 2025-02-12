@@ -51,6 +51,7 @@ class CustomerInvoiceFormProformaDetails extends StatelessWidget {
                     bloc.bankAccountNumberController.text = deal.bankAccount?.accountNumber ?? '';
                     bloc.swiftCodeController.text = deal.bankAccount?.swiftCode ?? '';
                     bloc.bankNameController.text = deal.bankAccount?.bankName ?? '';
+                    bloc.currencyController.text = deal.bankAccount?.currency ?? '';
                   },
                 ),
               ),

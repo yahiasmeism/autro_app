@@ -11,6 +11,7 @@ class InvoicePdfDto {
   final String taxId;
   final String notes;
   final String dealSeriesNumber;
+  final String currency;
   final List<InvoiceGoodDescriptionDto> descriptions;
 
   InvoicePdfDto({
@@ -25,6 +26,7 @@ class InvoicePdfDto {
     required this.notes,
     required this.dealSeriesNumber,
     required this.descriptions,
+    required this.currency,
   });
 
   double get totalWeight => descriptions.fold<double>(

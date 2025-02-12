@@ -188,8 +188,8 @@ class InvoicePdfScreen extends StatelessWidget {
       'Description',
       'Container Number',
       'Weight (MT)',
-      'Unit Price (EUR)',
-      'Total Pirce (EUR)',
+      'Unit Price (${state.invoicePdfDto.currency})',
+      'Total Pirce (${state.invoicePdfDto.currency})',
     ];
 
     final data = state.invoicePdfDto.descriptions
@@ -240,7 +240,7 @@ class InvoicePdfScreen extends StatelessWidget {
       'Origin Of Goods',
       'Containers Count',
       'Total Weight (MT)',
-      'Total Amount EUR',
+      'Total Amount (${state.invoicePdfDto.currency})',
     ];
 
     final data = [
@@ -248,7 +248,7 @@ class InvoicePdfScreen extends StatelessWidget {
         'Spain',
         state.invoicePdfDto.descriptions.length.toString(),
         '${state.invoicePdfDto.totalWeight} MT',
-        '${state.invoicePdfDto.totalAmount} EUR',
+        '${state.invoicePdfDto.totalAmount} ${state.invoicePdfDto.currency}',
       ],
     ];
 
@@ -333,7 +333,7 @@ class InvoicePdfScreen extends StatelessWidget {
               pw.SizedBox(height: 5),
               pw.Text('Bank Name: ${state.invoicePdfDto.bankName}', style: style),
               pw.SizedBox(height: 3),
-              pw.Text('IBAN EURO: ${state.invoicePdfDto.bankAccountNumber}', style: style),
+              pw.Text('IBAN ${state.invoicePdfDto.currency}: ${state.invoicePdfDto.bankAccountNumber}', style: style),
               pw.SizedBox(height: 3),
               pw.Text('SWIFT BIC: ${state.invoicePdfDto.swiftCode}', style: style),
               pw.SizedBox(height: 3),

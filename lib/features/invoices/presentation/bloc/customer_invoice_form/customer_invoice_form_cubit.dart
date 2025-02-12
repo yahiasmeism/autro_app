@@ -52,7 +52,9 @@ class CustomerInvoiceFormCubit extends Cubit<CustomerInvoiceFormState> {
 
   final bankAccountNumberController = TextEditingController();
   final bankNameController = TextEditingController();
-  final ibanEuroController = TextEditingController();
+  final ibanController = TextEditingController();
+  final currencyController = TextEditingController();
+
   final swiftCodeController = TextEditingController();
 
   Future init({required int? invoiceId}) async {
@@ -92,8 +94,9 @@ class CustomerInvoiceFormCubit extends Cubit<CustomerInvoiceFormState> {
       notesController.text = state.invoice?.notes ?? '';
       dealIdController.text = state.invoice?.dealId.toString() ?? '';
       dealSeriesNumberController.text = state.invoice?.invoiceNumber ?? '';
-      ibanEuroController.text = state.invoice?.bankAccount.accountNumber ?? '';
+      ibanController.text = state.invoice?.bankAccount.accountNumber ?? '';
       swiftCodeController.text = state.invoice?.bankAccount.swiftCode ?? '';
+      currencyController.text = state.invoice?.bankAccount.currency ?? '';
       _setupControllersListeners();
       _onInvoiceFormChanged();
     }
@@ -325,6 +328,7 @@ class CustomerInvoiceFormCubit extends Cubit<CustomerInvoiceFormState> {
     final state = this.state as CustomerInvoiceFormLoaded;
 
     return InvoicePdfDto(
+      currency: currencyController.text,
       swiftCode: swiftCodeController.text,
       bankAccountNumber: bankAccountNumberController.text,
       customerAddress: customerAddressController.text,
