@@ -5,12 +5,13 @@ class BankAccountEntity extends Equatable {
   final String accountNumber;
   final String bankName;
   final String swiftCode;
-
+  final String currency;
   const BankAccountEntity({
     required this.id,
     required this.accountNumber,
     required this.bankName,
     required this.swiftCode,
+    required this.currency,
   });
 
   @override

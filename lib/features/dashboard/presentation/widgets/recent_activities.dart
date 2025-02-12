@@ -23,6 +23,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/svg.dart';
 
 import '../../../../core/widgets/standard_card.dart';
+import '../../../settings/presentation/widgets/update_bank_account_form.dart';
 import '../../../suppliers/presentation/screens/supplier_details_screen.dart';
 
 class RecentActivities extends StatelessWidget {
@@ -162,6 +163,7 @@ class RecentActivities extends StatelessWidget {
         NavUtil.push(context, PackingListFormScreen(formType: FormType.edit, id: activity.moduleId));
         break;
       case ModuleType.bankAccount:
+        NavUtil.push(context, UpdateBankAccountFormScreen(id: activity.moduleId));
         break;
       case ModuleType.user:
         break;

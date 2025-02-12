@@ -3,6 +3,7 @@ import 'package:autro_app/core/widgets/buttons/add_button.dart';
 import 'package:autro_app/core/widgets/buttons/clear_all_button.dart';
 import 'package:autro_app/core/widgets/inputs/standard_input.dart';
 import 'package:autro_app/core/widgets/standard_card.dart';
+import 'package:autro_app/core/widgets/standard_selection_dropdown.dart';
 import 'package:autro_app/features/settings/domin/use_cases/add_bank_account_use_case.dart';
 import 'package:autro_app/features/settings/presentation/bloc/bank_accounts_list/bank_accounts_list_cubit.dart';
 import 'package:flutter/material.dart';
@@ -28,6 +29,7 @@ class _AddBankAccountFormState extends State<AddBankAccountForm> {
     accountNumberController.addListener(updateOnChanged);
     bankNameController.addListener(updateOnChanged);
     swiftCodeController.addListener(updateOnChanged);
+    currencyController.addListener(updateOnChanged);
   }
 
   updateOnChanged() {
@@ -37,7 +39,8 @@ class _AddBankAccountFormState extends State<AddBankAccountForm> {
 
   updateSavedEnabled() {
     bool isChanged =
-        accountNumberController.text.isNotEmpty && bankNameController.text.isNotEmpty && swiftCodeController.text.isNotEmpty;
+        accountNumberController.text.isNotEmpty && bankNameController.text.isNotEmpty && swiftCodeController.text.isNotEmpty ||
+            currencyController.text.isNotEmpty;
 
     if (isChanged != addBankAccountEnabled) {
       addBankAccountEnabled = isChanged;
@@ -46,8 +49,10 @@ class _AddBankAccountFormState extends State<AddBankAccountForm> {
   }
 
   updateClearAllEnabled() {
-    bool isChanged =
-        accountNumberController.text.isNotEmpty || bankNameController.text.isNotEmpty || swiftCodeController.text.isNotEmpty;
+    bool isChanged = accountNumberController.text.isNotEmpty ||
+        bankNameController.text.isNotEmpty ||
+        swiftCodeController.text.isNotEmpty ||
+        currencyController.text.isNotEmpty;
 
     if (isChanged != clearAllEnabled) {
       clearAllEnabled = isChanged;
@@ -59,6 +64,7 @@ class _AddBankAccountFormState extends State<AddBankAccountForm> {
   final accountNumberController = TextEditingController();
   final bankNameController = TextEditingController();
   final swiftCodeController = TextEditingController();
+  final currencyController = TextEditingController();
 
   Future<void> addBankAccount() async {
     if (formKey.currentState?.validate() == true) {
@@ -66,6 +72,7 @@ class _AddBankAccountFormState extends State<AddBankAccountForm> {
         accountNumber: accountNumberController.text,
         bankName: bankNameController.text,
         swiftCode: swiftCodeController.text,
+        currency: currencyController.text,
       );
       context.read<BankAccountsListCubit>().addNewBankAccount(params: params);
     }
@@ -109,10 +116,17 @@ class _AddBankAccountFormState extends State<AddBankAccountForm> {
                   hintText: 'Enter SWIFT code',
                 )),
                 const SizedBox(width: 32),
-                const Expanded(
-                    child: StandardInput(
-                  readOnly: true,
-                  initialValue: 'EUR(€)',
+                Expanded(
+                    child: StandardSelectableDropdown(
+                  hintText: 'Select currency',
+                  onChanged: (p0) {
+                    currencyController.text = p0 ?? '';
+                  },
+                  items: const [
+                    'EUR',
+                    'USD',
+                  ],
+                  initialValue: currencyController.text.isNotEmpty ? currencyController.text : null,
                   labelText: 'Currency',
                 )),
               ],
@@ -123,6 +137,7 @@ class _AddBankAccountFormState extends State<AddBankAccountForm> {
               ClearAllButton(
                 onPressed: clearAllEnabled
                     ? () {
+                        currencyController.clear();
                         accountNumberController.clear();
                         bankNameController.clear();
                         swiftCodeController.clear();
@@ -151,6 +166,7 @@ class _AddBankAccountFormState extends State<AddBankAccountForm> {
     accountNumberController.dispose();
     bankNameController.dispose();
     swiftCodeController.dispose();
+    currencyController.dispose();
     super.dispose();
   }
 }

@@ -53,6 +53,10 @@ class BankAccountsListCubit extends Cubit<BankAccountsListState> {
     );
   }
 
+  refrshList() {
+    getBankAccountList();
+  }
+
   deleteBankAccount(BankAccountEntity bankAccount) async {
     final state = this.state as BankAccountsListLoaded;
     emit(state.copyWith(loading: true));

@@ -10,6 +10,7 @@ class BankAccountModel extends BankAccountEntity implements BaseMapable {
     required super.accountNumber,
     required super.bankName,
     required super.swiftCode,
+    required super.currency,
   });
 
   factory BankAccountModel.fromJson(Map<String, dynamic> json) => BankAccountModel(
@@ -17,6 +18,7 @@ class BankAccountModel extends BankAccountEntity implements BaseMapable {
         accountNumber: (json['account_number'] as String?).orEmpty,
         bankName: (json['bank_name'] as String?).orEmpty,
         swiftCode: (json['swift_code'] as String?).orEmpty,
+        currency: (json['currency'] as String?).orEmpty,
       );
 
   @override
@@ -25,6 +27,7 @@ class BankAccountModel extends BankAccountEntity implements BaseMapable {
       'account_number': accountNumber,
       'bank_name': bankName,
       'swift_code': swiftCode,
+      'currency': currency,
     };
   }
 }

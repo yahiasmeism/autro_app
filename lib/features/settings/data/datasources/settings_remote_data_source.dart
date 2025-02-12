@@ -9,10 +9,12 @@ import 'package:autro_app/features/settings/data/models/company_model.dart';
 import 'package:autro_app/features/settings/data/models/invoice_settings_model.dart';
 import 'package:autro_app/features/settings/data/models/requests/add_new_user_request.dart';
 import 'package:autro_app/features/settings/data/models/requests/change_company_info_request.dart';
+import 'package:autro_app/features/settings/domin/entities/bank_account_entity.dart';
 import 'package:injectable/injectable.dart';
 
 import '../models/bank_account_model.dart';
 import '../models/requests/add_bank_account_request.dart';
+import '../models/requests/update_bank_account_request.dart';
 
 abstract class SettingsRemoteDataSource {
   Future<CompanyModel> changeCompanyInfo(ChangeCompanyInfoRequest body);
@@ -25,6 +27,8 @@ abstract class SettingsRemoteDataSource {
   Future<void> removeUser(int userId);
   Future<InvoiceSettingsModel> getInvoiceSettings();
   Future<InvoiceSettingsModel> setInvoiceSettings(InvoiceSettingsModel invoiceSettings);
+  Future<BankAccountEntity> getBankAccount(int bankAccountId);
+  Future<BankAccountModel> updateBankAccount(UpdateBankAccountRequest body);
 }
 
 @LazySingleton(as: SettingsRemoteDataSource)
@@ -168,6 +172,34 @@ class SettingsRemoteDataSourceImpl implements SettingsRemoteDataSource {
     if (ResponseCode.isOk(response.statusCode)) {
       final json = response.data;
       return InvoiceSettingsModel.fromJson(json);
+    }
+
+    throw ServerException(response.statusCode, response.statusMessage);
+  }
+
+  @override
+  Future<BankAccountEntity> getBankAccount(int bankAccountId) async {
+    final path = ApiPaths.bankAccountById(bankAccountId);
+    final request = ApiRequest(path: path);
+    final response = await client.get(request);
+
+    if (ResponseCode.isOk(response.statusCode)) {
+      final json = response.data;
+      return BankAccountModel.fromJson(json);
+    }
+
+    throw ServerException(response.statusCode, response.statusMessage);
+  }
+
+  @override
+  Future<BankAccountModel> updateBankAccount(UpdateBankAccountRequest body) async {
+    final path = ApiPaths.bankAccountById(body.id);
+    final request = ApiRequest(path: path, body: body.toJson());
+    final response = await client.put(request);
+
+    if (ResponseCode.isOk(response.statusCode)) {
+      final json = response.data;
+      return BankAccountModel.fromJson(json);
     }
 
     throw ServerException(response.statusCode, response.statusMessage);

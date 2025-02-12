@@ -8,6 +8,7 @@ import 'package:dartz/dartz.dart';
 import '../entities/invoice_settings_entity.dart';
 import '../use_cases/add_bank_account_use_case.dart';
 import '../use_cases/add_new_user_use_case.dart';
+import '../use_cases/update_bank_account_use_case.dart';
 
 abstract class SettingsRepository {
   Future<Either<Failure, CompanyEntity>> getCompany();
@@ -20,4 +21,6 @@ abstract class SettingsRepository {
   Future<Either<Failure, Unit>> removeUser(int userId);
   Future<Either<Failure, InvoiceSettingsEntity>> getInvoiceSettings();
   Future<Either<Failure, InvoiceSettingsEntity>> setInvoiceSettingsUseCase(InvoiceSettingsEntity invoiceSettings);
+  Future<Either<Failure, BankAccountEntity>> updateBankAccount(UpdateBankAccountUseCaseParams params);
+  Future<Either<Failure, BankAccountEntity>> getBankAccount(int bankAccountId);
 }

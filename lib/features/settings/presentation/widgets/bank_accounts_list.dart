@@ -1,10 +1,12 @@
 import 'package:autro_app/core/theme/app_colors.dart';
 import 'package:autro_app/core/theme/text_styles.dart';
+import 'package:autro_app/core/utils/nav_util.dart';
 import 'package:autro_app/core/widgets/delete_icon_button.dart';
 import 'package:autro_app/core/widgets/edit_icon_button.dart';
 import 'package:autro_app/core/widgets/standard_list_title.dart';
 import 'package:autro_app/features/settings/domin/entities/bank_account_entity.dart';
 import 'package:autro_app/features/settings/presentation/bloc/bank_accounts_list/bank_accounts_list_cubit.dart';
+import 'package:autro_app/features/settings/presentation/widgets/update_bank_account_form.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
@@ -102,7 +104,9 @@ class BankAccountsList extends StatelessWidget {
 
   Widget _buildTileRow(BankAccountEntity bankAccount, BuildContext context) {
     return InkWell(
-      onTap: () {},
+      onTap: () {
+        NavUtil.push(context, UpdateBankAccountFormScreen(id: bankAccount.id));
+      },
       child: Container(
         decoration: const BoxDecoration(
           borderRadius: BorderRadius.all(Radius.circular(8)),
@@ -142,7 +146,7 @@ class BankAccountsList extends StatelessWidget {
             Expanded(
               flex: 3,
               child: Text(
-                'EUR',
+                bankAccount.currency,
                 style: TextStyles.font16Regular.copyWith(
                   color: AppColors.secondaryOpacity50,
                 ),
@@ -154,7 +158,9 @@ class BankAccountsList extends StatelessWidget {
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
-                  EditIconButton(onPressed: () {}),
+                  EditIconButton(onPressed: () {
+                    NavUtil.push(context, UpdateBankAccountFormScreen(id: bankAccount.id));
+                  }),
                   const SizedBox(width: 8),
                   DeleteIconButton(
                     onPressed: () {

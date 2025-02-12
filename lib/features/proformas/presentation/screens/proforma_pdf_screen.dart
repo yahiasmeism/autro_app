@@ -102,7 +102,7 @@ class ProformaPdfScreen extends StatelessWidget {
             buildSummaryTable(state),
             pw.SizedBox(height: 10),
             _buildExempt(state),
-            pw.SizedBox(height: 15),
+            pw.SizedBox(height: 10),
             buildLoadingConditions(state),
             pw.Spacer(),
             buildFooter(state),
@@ -296,7 +296,7 @@ class ProformaPdfScreen extends StatelessWidget {
   pw.Widget buildSummaryTable(ProformaPdfResourcesLoaded state) {
     final headers = [
       'Origin Of Goods',
-      'Containers Count',
+      '40ft',
       'Total Weight (MT)',
       'Total Amount EUR',
     ];
@@ -349,7 +349,7 @@ class ProformaPdfScreen extends StatelessWidget {
   pw.Widget buildLoadingConditions(ProformaPdfResourcesLoaded state) {
     final style = pw.TextStyle(
       color: textColor,
-      fontSize: 12,
+      fontSize: 10,
       // fontWeight: pw.FontWeight.bold,
     );
     return pw.Column(
@@ -358,10 +358,10 @@ class ProformaPdfScreen extends StatelessWidget {
         pw.Text('Loading Conditions:',
             style: pw.TextStyle(
               color: textColor,
-              fontSize: 14,
+              fontSize: 12,
               fontWeight: pw.FontWeight.bold,
             )),
-        pw.SizedBox(height: 6),
+        pw.SizedBox(height: 4),
         pw.Row(children: [
           pw.Text('Shipping Instructions: ', style: style),
           pw.Expanded(

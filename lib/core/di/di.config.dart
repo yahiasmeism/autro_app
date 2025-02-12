@@ -235,6 +235,8 @@ import 'package:autro_app/features/settings/domin/use_cases/change_company_info_
     as _i855;
 import 'package:autro_app/features/settings/domin/use_cases/delete_bank_account_use_case.dart'
     as _i253;
+import 'package:autro_app/features/settings/domin/use_cases/get_bank_account_by_id_use_case.dart'
+    as _i688;
 import 'package:autro_app/features/settings/domin/use_cases/get_bank_account_list_use_case.dart'
     as _i362;
 import 'package:autro_app/features/settings/domin/use_cases/get_company_use_case.dart'
@@ -249,6 +251,10 @@ import 'package:autro_app/features/settings/domin/use_cases/remove_user_use_case
     as _i130;
 import 'package:autro_app/features/settings/domin/use_cases/set_invoice_settings_use_case.dart'
     as _i252;
+import 'package:autro_app/features/settings/domin/use_cases/update_bank_account_use_case.dart'
+    as _i1045;
+import 'package:autro_app/features/settings/presentation/bloc/bank_account_form/bank_account_form_bloc.dart'
+    as _i1032;
 import 'package:autro_app/features/settings/presentation/bloc/bank_accounts_list/bank_accounts_list_cubit.dart'
     as _i827;
 import 'package:autro_app/features/settings/presentation/bloc/company/company_cubit.dart'
@@ -389,6 +395,9 @@ extension GetItInjectableX on _i174.GetIt {
     gh.lazySingleton<_i252.SetInvoiceSettingsUseCase>(() =>
         _i252.SetInvoiceSettingsUseCase(
             settingsRepository: gh<_i275.SettingsRepository>()));
+    gh.lazySingleton<_i1045.UpdateBankAccountUseCase>(() =>
+        _i1045.UpdateBankAccountUseCase(
+            settingsRepository: gh<_i275.SettingsRepository>()));
     gh.lazySingleton<_i829.SuppliersRemoteDataSource>(() =>
         _i829.SuppliersRemoteDataSourceImpl(apiClient: gh<_i228.ApiClient>()));
     gh.lazySingleton<_i1017.DealsRemoteDataSource>(
@@ -460,6 +469,9 @@ extension GetItInjectableX on _i174.GetIt {
         _i223.GetCompanyUseCase(repository: gh<_i275.SettingsRepository>()));
     gh.lazySingleton<_i176.GetUsersListUseCase>(() =>
         _i176.GetUsersListUseCase(repository: gh<_i275.SettingsRepository>()));
+    gh.lazySingleton<_i688.GetBankAccountByIdUseCase>(() =>
+        _i688.GetBankAccountByIdUseCase(
+            repository: gh<_i275.SettingsRepository>()));
     gh.lazySingleton<_i557.SupplierInvoicesRepository>(
         () => _i54.SuppliersInvoicesRepositoryImpl(
               remoteDataSource: gh<_i514.SuppliersInvoicesRemoteDataSource>(),
@@ -506,6 +518,11 @@ extension GetItInjectableX on _i174.GetIt {
     gh.lazySingleton<_i763.UpdateSupplierInvoiceUseCase>(() =>
         _i763.UpdateSupplierInvoiceUseCase(
             invoicesRepository: gh<_i557.SupplierInvoicesRepository>()));
+    gh.factory<_i1032.BankAccountFormBloc>(() => _i1032.BankAccountFormBloc(
+          gh<_i232.AddBankAccountUseCase>(),
+          gh<_i688.GetBankAccountByIdUseCase>(),
+          gh<_i1045.UpdateBankAccountUseCase>(),
+        ));
     gh.lazySingleton<_i57.CreateSupplierUsecase>(() =>
         _i57.CreateSupplierUsecase(
             suplliersRepository: gh<_i712.SuppliersRepository>()));

@@ -4,6 +4,7 @@ import 'package:autro_app/core/network_info/network_info.dart';
 import 'package:autro_app/features/authentication/data/models/user_model.dart';
 import 'package:autro_app/features/settings/data/models/invoice_settings_model.dart';
 import 'package:autro_app/features/settings/data/models/requests/add_new_user_request.dart';
+import 'package:autro_app/features/settings/data/models/requests/update_bank_account_request.dart';
 import 'package:autro_app/features/settings/domin/entities/bank_account_entity.dart';
 
 import 'package:autro_app/features/settings/domin/entities/company_entity.dart';
@@ -12,6 +13,7 @@ import 'package:autro_app/features/settings/domin/use_cases/add_bank_account_use
 import 'package:autro_app/features/settings/domin/use_cases/add_new_user_use_case.dart';
 
 import 'package:autro_app/features/settings/domin/use_cases/change_company_info_use_case.dart';
+import 'package:autro_app/features/settings/domin/use_cases/update_bank_account_use_case.dart';
 
 import 'package:dartz/dartz.dart';
 import 'package:injectable/injectable.dart';
@@ -164,6 +166,35 @@ class SettingsRepositoryImpl extends SettingsRepository {
         var invoiceSettingsModel = InvoiceSettingsModel.fromEntity(invoiceSettings);
         final updatedinvoiceSettings = await remoteDataSource.setInvoiceSettings(invoiceSettingsModel);
         return Right(updatedinvoiceSettings);
+      } catch (e) {
+        return Left(ErrorHandler.handle(e));
+      }
+    } else {
+      return Left(ErrorHandler.noInternet());
+    }
+  }
+
+  @override
+  Future<Either<Failure, BankAccountEntity>> updateBankAccount(UpdateBankAccountUseCaseParams params) async {
+    if (await networkInfo.isConnected) {
+      try {
+        var body = UpdateBankAccountRequest.fromParams(params);
+        final updatedAccount = await remoteDataSource.updateBankAccount(body);
+        return Right(updatedAccount);
+      } catch (e) {
+        return Left(ErrorHandler.handle(e));
+      }
+    } else {
+      return Left(ErrorHandler.noInternet());
+    }
+  }
+
+  @override
+  Future<Either<Failure, BankAccountEntity>> getBankAccount(int bankAccountId) async {
+    if (await networkInfo.isConnected) {
+      try {
+        final bankAccount = await remoteDataSource.getBankAccount(bankAccountId);
+        return Right(bankAccount);
       } catch (e) {
         return Left(ErrorHandler.handle(e));
       }
