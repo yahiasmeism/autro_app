@@ -24,6 +24,7 @@ class CustomerInvoiceModel extends CustomerInvoiceEntity implements BaseMapable 
     required super.customer,
     required super.totalPrice,
     required super.dealId,
+    required super.status,
   });
 
   factory CustomerInvoiceModel.fromParams(CustomerInvoiceEntity entity) {
@@ -40,6 +41,7 @@ class CustomerInvoiceModel extends CustomerInvoiceEntity implements BaseMapable 
       customer: entity.customer,
       totalPrice: entity.totalPrice,
       dealId: entity.dealId,
+      status: entity.status,
     );
   }
 
@@ -61,6 +63,7 @@ class CustomerInvoiceModel extends CustomerInvoiceEntity implements BaseMapable 
       customer: CustomerModel.fromJson((json['customer'] as Map<String, dynamic>?).orEmpty),
       totalPrice: (json['total_price'] as num?).toDoubleOrZero,
       dealId: (json['deal_id'] as int?).toIntOrZero,
+      status: ((json['status'] as String?).orEmpty),
     );
   }
 

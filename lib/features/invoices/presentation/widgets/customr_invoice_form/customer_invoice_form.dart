@@ -5,7 +5,6 @@ import 'customer_invoice_form_bank_details.dart';
 import 'customer_invoice_form_customer_information.dart';
 import 'customer_invoice_form_details.dart';
 import 'customer_invoice_form_good_descriptions.dart';
-import 'customer_invoice_form_deal_details.dart';
 import 'customer_invoice_form_shipping_details.dart';
 
 class CustomerInvoiceForm extends StatelessWidget {
@@ -15,8 +14,6 @@ class CustomerInvoiceForm extends StatelessWidget {
   Widget build(BuildContext context) {
     return const Column(
       children: [
-        CustomerInvoiceFormProformaDetails(),
-        SizedBox(height: 24),
         CustomerInvoiceFormDetails(),
         SizedBox(height: 24),
         CustomerInvoiceFormCustomerInformation(),

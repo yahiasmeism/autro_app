@@ -14,6 +14,7 @@ class UpdateCustomerInvoiceRequest extends UpdateCustomerInvoiceUseCaseParams im
     required super.bankAccountId,
     required super.notes,
     required super.descriptions,
+    required super.status,
   });
 
   factory UpdateCustomerInvoiceRequest.fromParams(UpdateCustomerInvoiceUseCaseParams params) => UpdateCustomerInvoiceRequest(
@@ -26,6 +27,7 @@ class UpdateCustomerInvoiceRequest extends UpdateCustomerInvoiceUseCaseParams im
         bankAccountId: params.bankAccountId,
         notes: params.notes,
         descriptions: params.descriptions,
+        status: params.status,
       );
 
   @override
@@ -39,6 +41,7 @@ class UpdateCustomerInvoiceRequest extends UpdateCustomerInvoiceUseCaseParams im
       "bank_account_id": bankAccountId,
       "notes": notes,
       "goods_descriptions": descriptions.map((e) => InvoiceGoodDescriptionRequest.fromParams(e).toJson()).toList(),
+      'status': status.toLowerCase(),
     };
   }
 }

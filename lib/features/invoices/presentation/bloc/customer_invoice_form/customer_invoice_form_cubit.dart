@@ -1,6 +1,7 @@
 import 'package:autro_app/core/errors/failures.dart';
 import 'package:autro_app/core/extensions/date_time_extension.dart';
 import 'package:autro_app/core/extensions/list_extension.dart';
+import 'package:autro_app/core/extensions/string_extension.dart';
 import 'package:autro_app/features/invoices/domin/dtos/invoice_good_description_dto.dart';
 import 'package:autro_app/features/invoices/domin/dtos/invoice_pdf_dto.dart';
 import 'package:autro_app/features/invoices/domin/entities/customer_invoice_entity.dart';
@@ -36,7 +37,9 @@ class CustomerInvoiceFormCubit extends Cubit<CustomerInvoiceFormState> {
 
   // Invoice
   final formKey = GlobalKey<FormState>();
+
   final invoiceNumberController = TextEditingController();
+  final statusController = TextEditingController();
   final invoiceDateController = TextEditingController();
   final customerIdController = TextEditingController();
   final customerNameController = TextEditingController();
@@ -97,6 +100,7 @@ class CustomerInvoiceFormCubit extends Cubit<CustomerInvoiceFormState> {
       ibanController.text = state.invoice?.bankAccount.accountNumber ?? '';
       swiftCodeController.text = state.invoice?.bankAccount.swiftCode ?? '';
       currencyController.text = state.invoice?.bankAccount.currency ?? '';
+      statusController.text = state.invoice?.status.capitalized ?? '';
       _setupControllersListeners();
       _onInvoiceFormChanged();
     }
@@ -113,6 +117,7 @@ class CustomerInvoiceFormCubit extends Cubit<CustomerInvoiceFormState> {
       notesController,
       dealIdController,
       dealSeriesNumberController,
+      statusController,
     ]) {
       controller.addListener(() => _onInvoiceFormChanged());
     }
@@ -170,7 +175,8 @@ class CustomerInvoiceFormCubit extends Cubit<CustomerInvoiceFormState> {
           invoice.bankAccount.id.toString() != bankIdController.text ||
           invoice.notes != notesController.text ||
           invoice.dealId.toString() != dealIdController.text ||
-          isGoodsDescriptionChanged;
+          isGoodsDescriptionChanged ||
+          statusController.text.toLowerCase() != invoice.status.toLowerCase();
 
       emit(state.copyWith(
         saveEnabled: formIsNotEmpty && isFormChanged,
@@ -234,6 +240,7 @@ class CustomerInvoiceFormCubit extends Cubit<CustomerInvoiceFormState> {
     taxIdController.dispose();
     bankIdController.dispose();
     notesController.dispose();
+    statusController.dispose();
     return super.close();
   }
 
@@ -250,6 +257,7 @@ class CustomerInvoiceFormCubit extends Cubit<CustomerInvoiceFormState> {
       descriptions: state.goodDescriptionsList,
       bankAccountId: int.parse(bankIdController.text),
       notes: notesController.text,
+      status: statusController.text,
     );
 
     final either = await createInvoiceUsecase.call(params);
@@ -281,6 +289,7 @@ class CustomerInvoiceFormCubit extends Cubit<CustomerInvoiceFormState> {
       bankAccountId: int.parse(bankIdController.text),
       notes: notesController.text,
       dealId: int.parse(dealIdController.text),
+      status: statusController.text,
     );
 
     final either = await updateInvoiceUsecase.call(params);

@@ -12,6 +12,7 @@ class CreateCustomerInvoiceRequest extends CreateCustomerInvoiceUseCaseParams im
     required super.notes,
     required super.descriptions,
     required super.dealId,
+    required super.status,
   });
 
   factory CreateCustomerInvoiceRequest.fromParams(CreateCustomerInvoiceUseCaseParams params) {
@@ -24,6 +25,7 @@ class CreateCustomerInvoiceRequest extends CreateCustomerInvoiceUseCaseParams im
       notes: params.notes,
       descriptions: params.descriptions,
       dealId: params.dealId,
+      status: params.status,
     );
   }
 
@@ -38,6 +40,7 @@ class CreateCustomerInvoiceRequest extends CreateCustomerInvoiceUseCaseParams im
       "bank_account_id": bankAccountId,
       "notes": notes,
       "goods_descriptions": descriptions.map((e) => InvoiceGoodDescriptionRequest.fromParams(e).toJson()).toList(),
+      "status": status.toLowerCase(),
     };
   }
 }

@@ -30,5 +30,6 @@ class UpdateCustomerInvoiceUseCaseParams extends CreateCustomerInvoiceUseCasePar
     required super.notes,
     required super.descriptions,
     required super.dealId,
+    required super.status,
   });
 }

@@ -16,6 +16,7 @@ class CustomerInvoiceEntity extends Equatable {
   final DateTime createdAt;
   final DateTime updatedAt;
   final List<InvoiceGoodsDescriptionEntity> goodsDescriptions;
+  final String status;
   final BankAccountEntity bankAccount;
   final CustomerEntity customer;
 
@@ -32,6 +33,7 @@ class CustomerInvoiceEntity extends Equatable {
     required this.customer,
     required this.totalPrice,
     required this.dealId,
+    required this.status,
   });
 
   @override
@@ -48,6 +50,7 @@ class CustomerInvoiceEntity extends Equatable {
         customer,
         totalPrice,
         dealId,
+        status,
       ];
 
   String get formattedSeriesNumber => "Deal: ${dealId.toString().padLeft(4, '0')}";
@@ -73,6 +76,7 @@ class CustomerInvoiceEntity extends Equatable {
     CustomerEntity? customer,
     int? dealId,
     String? dealSeriesNumber,
+    String? status,
   }) {
     return CustomerInvoiceEntity(
       id: id ?? this.id,
@@ -87,6 +91,7 @@ class CustomerInvoiceEntity extends Equatable {
       bankAccount: bankAccount ?? this.bankAccount,
       customer: customer ?? this.customer,
       dealId: dealId ?? this.dealId,
+      status: status ?? this.status,
     );
   }
 }

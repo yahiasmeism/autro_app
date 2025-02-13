@@ -26,6 +26,7 @@ class CreateCustomerInvoiceUseCaseParams extends Equatable {
   final String date;
   final String taxId;
   final String notes;
+  final String status;
   final List<InvoiceGoodDescriptionParams> descriptions;
 
   const CreateCustomerInvoiceUseCaseParams({
@@ -37,6 +38,7 @@ class CreateCustomerInvoiceUseCaseParams extends Equatable {
     required this.notes,
     required this.descriptions,
     required this.dealId,
+    required this.status,
   });
   @override
   List<Object?> get props => [
