@@ -65,4 +65,8 @@ abstract class ApiPaths {
 
   // dashboard
   static const String dashboard = 'dashboard';
+
+  // bl-instructions
+  static const String blInstructions = 'bl-instructions';
+  static String blInstructionById(int id) => 'bl-instructions/$id';
 }

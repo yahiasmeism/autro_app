@@ -1,6 +1,7 @@
 import 'package:autro_app/core/di/di.dart';
 import 'package:autro_app/core/theme/text_styles.dart';
 import 'package:autro_app/features/bills/presentation/bloc/bills_list/bills_list_bloc.dart';
+import 'package:autro_app/features/bl-instructions/presentation/bloc/bl_instruction_list/bl_instructions_list_bloc.dart';
 import 'package:autro_app/features/customers/presentation/bloc/customers_list/customers_list_bloc.dart';
 import 'package:autro_app/features/dashboard/presentation/bloc/dashboard/dashboard_cubit.dart';
 import 'package:autro_app/features/deals/presentation/bloc/deals_list/deals_list_bloc.dart';
@@ -78,6 +79,7 @@ class AuthWrapper extends StatelessWidget {
       context.read<SuppliersProformasListBloc>().add(GetSuppliersProformasListEvent());
       context.read<PackingListsBloc>().add(GetPackingListsEvent());
       context.read<DashboardCubit>().getDashboard();
+      context.read<BlInstructionsListBloc>().add(GetBlInstructionsListEvent());
     }
   }
 }

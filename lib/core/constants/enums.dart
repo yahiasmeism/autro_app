@@ -32,7 +32,7 @@ enum MenuItemType {
   bills,
   suppliers,
   packingLists,
-  // messages,
+  blInstructions,
 }
 
 enum ConditionOperator {

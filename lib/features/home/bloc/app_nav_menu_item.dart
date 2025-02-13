@@ -19,8 +19,8 @@ class AppMenuItems {
     AppNavMenuItem(title: 'Customers', icon: Icons.people, type: MenuItemType.customers),
     AppNavMenuItem(title: 'Shipping', icon: Icons.receipt, type: MenuItemType.shipping),
     AppNavMenuItem(title: 'Packing Lists', icon: Icons.receipt_long, type: MenuItemType.packingLists),
+    AppNavMenuItem(title: 'BL Instructions', icon: Icons.receipt, type: MenuItemType.blInstructions),
     AppNavMenuItem(title: 'Bills', icon: Icons.receipt_long, type: MenuItemType.bills),
     AppNavMenuItem(title: 'Settings', icon: Icons.settings, type: MenuItemType.settings),
-    // AppNavMenuItem(title: 'Messages', icon: Icons.message, type: MenuItemType.messages),
   ];
 }

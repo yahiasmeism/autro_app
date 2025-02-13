@@ -5,6 +5,7 @@ import 'dart:io';
 import 'package:autro_app/core/theme/theme_data.dart';
 import 'package:autro_app/features/authentication/screens/auth_wrapper.dart';
 import 'package:autro_app/features/bills/presentation/bloc/bills_list/bills_list_bloc.dart';
+import 'package:autro_app/features/bl-instructions/presentation/bloc/bl_instruction_list/bl_instructions_list_bloc.dart';
 import 'package:autro_app/features/customers/presentation/bloc/customers_list/customers_list_bloc.dart';
 import 'package:autro_app/features/dashboard/presentation/bloc/dashboard/dashboard_cubit.dart';
 import 'package:autro_app/features/deals/presentation/bloc/deal_bills_list/deal_bills_list_bloc.dart';
@@ -119,6 +120,9 @@ class MyApp extends StatelessWidget {
         ),
         BlocProvider(
           create: (context) => sl<DashboardCubit>(),
+        ),
+        BlocProvider(
+          create: (context) => sl<BlInstructionsListBloc>(),
         ),
       ],
       child: MaterialApp(

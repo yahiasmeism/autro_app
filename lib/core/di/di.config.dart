@@ -44,6 +44,26 @@ import 'package:autro_app/features/bills/presentation/bloc/bill_form/bill_form_b
     as _i363;
 import 'package:autro_app/features/bills/presentation/bloc/bills_list/bills_list_bloc.dart'
     as _i813;
+import 'package:autro_app/features/bl-instructions/data/data_sources/remote/bl_instructions_remote_date_source.dart'
+    as _i1007;
+import 'package:autro_app/features/bl-instructions/data/repository_impl/bl_instruction_repository_impl.dart'
+    as _i846;
+import 'package:autro_app/features/bl-instructions/domin/repositories/bl_instructions_repo.dart'
+    as _i831;
+import 'package:autro_app/features/bl-instructions/domin/usecases/create_bl_instruction_use_case.dart'
+    as _i464;
+import 'package:autro_app/features/bl-instructions/domin/usecases/delete_bl_instruction_use_case.dart'
+    as _i931;
+import 'package:autro_app/features/bl-instructions/domin/usecases/get_bl_instruction_by_id_use_case.dart'
+    as _i170;
+import 'package:autro_app/features/bl-instructions/domin/usecases/get_bl_instruction_list_use_case.dart'
+    as _i370;
+import 'package:autro_app/features/bl-instructions/domin/usecases/update_bl_instruction_use_case.dart'
+    as _i57;
+import 'package:autro_app/features/bl-instructions/presentation/bloc/bl_instruction_form/bl_instruction_bloc.dart'
+    as _i105;
+import 'package:autro_app/features/bl-instructions/presentation/bloc/bl_instruction_list/bl_instructions_list_bloc.dart'
+    as _i1029;
 import 'package:autro_app/features/customers/data/datasources/customers_remote_datesourse.dart'
     as _i438;
 import 'package:autro_app/features/customers/data/repositories/customers_repository_impl.dart'
@@ -355,6 +375,14 @@ extension GetItInjectableX on _i174.GetIt {
               remoteDataSource: gh<_i336.CustomersProformasRemoteDataSource>(),
               networkInfo: gh<_i646.NetworkInfo>(),
             ));
+    gh.lazySingleton<_i1007.BlInsturctionsRemoteDateSource>(() =>
+        _i1007.BlInsturctionsRemoteDateSourceImpl(
+            client: gh<_i228.ApiClient>()));
+    gh.lazySingleton<_i831.BlInsturctionsRepository>(
+        () => _i846.BlInsturctionsRepositoryImpl(
+              networkInfo: gh<_i646.NetworkInfo>(),
+              remoteDataSource: gh<_i1007.BlInsturctionsRemoteDateSource>(),
+            ));
     gh.lazySingleton<_i997.DashboardRemoteDataSource>(() =>
         _i997.DashboardRemoteDataSourceImpl(apiClient: gh<_i228.ApiClient>()));
     gh.lazySingleton<_i166.DashboardRepository>(
@@ -432,15 +460,30 @@ extension GetItInjectableX on _i174.GetIt {
                   gh<_i486.PackingListsRemoteDataSource>(),
               networkInfo: gh<_i646.NetworkInfo>(),
             ));
+    gh.lazySingleton<_i464.CreateBlInsturctionUseCase>(() =>
+        _i464.CreateBlInsturctionUseCase(
+            repository: gh<_i831.BlInsturctionsRepository>()));
+    gh.lazySingleton<_i931.DeleteBlInsturctionUseCase>(() =>
+        _i931.DeleteBlInsturctionUseCase(
+            repository: gh<_i831.BlInsturctionsRepository>()));
+    gh.lazySingleton<_i370.GetBlInsturctionsListUseCase>(() =>
+        _i370.GetBlInsturctionsListUseCase(
+            repository: gh<_i831.BlInsturctionsRepository>()));
     gh.lazySingleton<_i239.GetCustomerProformaByIdUseCase>(() =>
         _i239.GetCustomerProformaByIdUseCase(
             customersProformasRepository:
                 gh<_i5.CustomersProformasRepository>()));
+    gh.lazySingleton<_i57.UpdateBlInsturctionsUseCase>(() =>
+        _i57.UpdateBlInsturctionsUseCase(
+            shippingInvoiceRepository: gh<_i831.BlInsturctionsRepository>()));
     gh.lazySingleton<_i712.SuppliersRepository>(
         () => _i903.SuppliersRepositoryImpl(
               remoteDataSource: gh<_i829.SuppliersRemoteDataSource>(),
               networkInfo: gh<_i646.NetworkInfo>(),
             ));
+    gh.lazySingleton<_i170.GetBlInsturctionByIdUseCase>(() =>
+        _i170.GetBlInsturctionByIdUseCase(
+            shippingInvoicesRepository: gh<_i831.BlInsturctionsRepository>()));
     gh.lazySingleton<_i884.GetSuppliersListUsecase>(() =>
         _i884.GetSuppliersListUsecase(
             supplierRepository: gh<_i712.SuppliersRepository>()));
@@ -532,6 +575,14 @@ extension GetItInjectableX on _i174.GetIt {
                 gh<_i557.SupplierInvoicesRepository>()));
     gh.lazySingleton<_i10.GetDashboardUseCase>(() => _i10.GetDashboardUseCase(
         dashboardRepository: gh<_i166.DashboardRepository>()));
+    gh.factory<_i1029.BlInstructionsListBloc>(
+        () => _i1029.BlInstructionsListBloc(
+              gh<_i370.GetBlInsturctionsListUseCase>(),
+              gh<_i931.DeleteBlInsturctionUseCase>(),
+              gh<_i831.BlInsturctionsRepository>(),
+              gh<_i57.UpdateBlInsturctionsUseCase>(),
+              gh<_i464.CreateBlInsturctionUseCase>(),
+            ));
     gh.lazySingleton<_i163.CreateShippingInvoiceUseCase>(() =>
         _i163.CreateShippingInvoiceUseCase(
             repository: gh<_i43.ShippingInvoicesRepository>()));
@@ -614,6 +665,11 @@ extension GetItInjectableX on _i174.GetIt {
     gh.lazySingleton<_i134.UpdateCustomerUsecase>(() =>
         _i134.UpdateCustomerUsecase(
             customersRepository: gh<_i54.CustomersRepository>()));
+    gh.factory<_i105.BlInstructionFormBloc>(() => _i105.BlInstructionFormBloc(
+          gh<_i464.CreateBlInsturctionUseCase>(),
+          gh<_i57.UpdateBlInsturctionsUseCase>(),
+          gh<_i170.GetBlInsturctionByIdUseCase>(),
+        ));
     gh.lazySingleton<_i226.DeleteSupplierUsecase>(() =>
         _i226.DeleteSupplierUsecase(
             suppliersRepository: gh<_i712.SuppliersRepository>()));
