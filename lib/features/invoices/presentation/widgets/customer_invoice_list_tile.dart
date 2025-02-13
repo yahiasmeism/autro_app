@@ -4,6 +4,7 @@ import 'package:autro_app/core/theme/text_styles.dart';
 import 'package:autro_app/core/utils/nav_util.dart';
 import 'package:autro_app/core/widgets/delete_icon_button.dart';
 import 'package:autro_app/core/widgets/edit_icon_button.dart';
+import 'package:autro_app/core/widgets/send_status.dart';
 import 'package:autro_app/features/invoices/domin/entities/customer_invoice_entity.dart';
 import 'package:autro_app/features/invoices/presentation/screens/custoemr_invoice_form_screen.dart';
 import 'package:flutter/material.dart';
@@ -55,6 +56,11 @@ class CustomerInvoiceListTile extends StatelessWidget {
             _buildCell(
               flex: 4,
               text: invoiceEntity.goodsDescriptions.firstOrNull?.description ?? '-',
+            ),
+            const SizedBox(width: 16),
+            Expanded(
+              flex: 4,
+              child: SendStatus(status: invoiceEntity.status),
             ),
             const SizedBox(width: 16),
             Flexible(
