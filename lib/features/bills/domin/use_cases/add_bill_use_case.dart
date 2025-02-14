@@ -22,6 +22,7 @@ class AddBillUseCase extends UseCase<BillEntity, AddBillUseCaseParams> {
 class AddBillUseCaseParams extends Equatable {
   final String vendor;
   final double amount;
+  final double vat;
   final String notes;
   final DateTime date;
   final String? attachmentPath;
@@ -32,9 +33,10 @@ class AddBillUseCaseParams extends Equatable {
     required this.notes,
     required this.date,
     required this.attachmentPath,
+    required this.vat,
   });
   @override
-  List<Object?> get props => [vendor, amount, notes, date, attachmentPath];
+  List<Object?> get props => [vendor, amount, notes, date, attachmentPath, vat];
 }
 
 /* 

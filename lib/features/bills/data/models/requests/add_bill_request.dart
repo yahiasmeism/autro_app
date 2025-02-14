@@ -10,6 +10,7 @@ class AddBillRequest extends AddBillUseCaseParams implements RequestMapable {
     required super.notes,
     required super.date,
     required super.attachmentPath,
+    required super.vat,
   });
 
   factory AddBillRequest.fromParams(AddBillUseCaseParams params) => AddBillRequest(
@@ -18,6 +19,7 @@ class AddBillRequest extends AddBillUseCaseParams implements RequestMapable {
         notes: params.notes,
         date: params.date,
         attachmentPath: params.attachmentPath,
+        vat: params.vat,
       );
 
   Future<FormData> toFormData() async {
@@ -34,6 +36,7 @@ class AddBillRequest extends AddBillUseCaseParams implements RequestMapable {
       'amount': amount,
       'notes': notes,
       'date': date.formattedDateYYYYMMDD,
+      'vat': vat,
     };
   }
 }

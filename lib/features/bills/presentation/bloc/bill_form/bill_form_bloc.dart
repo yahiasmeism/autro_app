@@ -64,8 +64,10 @@ class BillFormBloc extends Bloc<BillFormEvent, BillFormState> {
 
   final vendorController = TextEditingController();
   final amountController = TextEditingController();
+  final vatController = TextEditingController();
   final dateController = TextEditingController();
   final notesController = TextEditingController();
+  final remainingAmountController = TextEditingController();
 
   final formKey = GlobalKey<FormState>();
 
@@ -99,6 +101,7 @@ class BillFormBloc extends Bloc<BillFormEvent, BillFormState> {
       amountController.text = state.bill?.amount.toString() ?? '';
       dateController.text = state.bill?.date.formattedDateYYYYMMDD ?? DateTime.now().formattedDateYYYYMMDD;
       notesController.text = state.bill?.notes ?? '';
+      vatController.text = state.bill?.vat.toStringAsFixed(2) ?? '';
 
       setupControllersListeners();
       add(BillFormChangedEvent());
@@ -110,10 +113,13 @@ class BillFormBloc extends Bloc<BillFormEvent, BillFormState> {
     amountController.addListener(() => add(BillFormChangedEvent()));
     dateController.addListener(() => add(BillFormChangedEvent()));
     notesController.addListener(() => add(BillFormChangedEvent()));
+    vatController.addListener(() => add(BillFormChangedEvent()));
   }
 
   _onBillFormChanged(BillFormChangedEvent event, Emitter<BillFormState> emit) {
     final state = this.state as BillFormLoaded;
+    remainingAmountController.text =
+        ((double.tryParse(amountController.text) ?? 0.0) - (double.tryParse(vatController.text) ?? 0.0)).toStringAsFixed(2);
     final formIsNotEmpty = vendorController.text.isNotEmpty && amountController.text.isNotEmpty && dateController.text.isNotEmpty;
 
     if (state.updatedMode) {
@@ -126,6 +132,7 @@ class BillFormBloc extends Bloc<BillFormEvent, BillFormState> {
           bill.amount != (double.tryParse(amountController.text) ?? 0) ||
           bill.date.formattedDateYYYYMMDD != dateController.text ||
           bill.notes != notesController.text ||
+          bill.vat != (double.tryParse(vatController.text) ?? 0) ||
           urlChanged ||
           state.pickedAttachment.isSome();
       emit(state.copyWith(
@@ -155,9 +162,13 @@ class BillFormBloc extends Bloc<BillFormEvent, BillFormState> {
 
   Future _onCreateBill(CreateBillFormEvent event, Emitter<BillFormState> emit) async {
     final state = this.state as BillFormLoaded;
+
+    if (formKey.currentState?.validate() == false) return;
+
     emit(state.copyWith(loading: true));
 
     final params = AddBillUseCaseParams(
+      vat: double.tryParse(vatController.text) ?? 0,
       attachmentPath: state.pickedAttachment.fold(() => null, (file) => file.path),
       vendor: vendorController.text,
       amount: double.tryParse(amountController.text) ?? 0,
@@ -182,10 +193,13 @@ class BillFormBloc extends Bloc<BillFormEvent, BillFormState> {
 
   Future _onUpdateBill(UpdateBillFormEvent event, Emitter<BillFormState> emit) async {
     final state = this.state as BillFormLoaded;
+    if (formKey.currentState?.validate() == false) return;
+
     final deleteAttachment = state.attachmentUrl.isNone() && state.pickedAttachment.isNone();
 
     emit(state.copyWith(loading: true));
     final params = UpdateBillUseCaseParams(
+      vat: double.tryParse(vatController.text) ?? 0,
       id: state.bill!.id,
       vendor: vendorController.text,
       amount: double.tryParse(amountController.text) ?? 0,
@@ -211,6 +225,7 @@ class BillFormBloc extends Bloc<BillFormEvent, BillFormState> {
     amountController.clear();
     dateController.clear();
     notesController.clear();
+    vatController.clear();
     if (state is BillFormLoaded) {
       final state = this.state as BillFormLoaded;
       emit(state.copyWith(pickedAttachment: none(), attachmentUrl: none()));
@@ -236,6 +251,7 @@ class BillFormBloc extends Bloc<BillFormEvent, BillFormState> {
     amountController.dispose();
     dateController.dispose();
     notesController.dispose();
+    vatController.dispose();
     return super.close();
   }
 

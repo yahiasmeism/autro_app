@@ -15,16 +15,22 @@ class BillsSummaryTopSection extends StatelessWidget {
       builder: (context, state) {
         double amount = 0;
         int count = 0;
+        double totalAfterVat = 0;
         bool loading = state is BillsListInitial;
         if (state is BillsListLoaded) {
           amount = state.billsSummary?.totalAmount ?? 0.0;
           count = state.billsSummary?.totalBillsCount ?? 0;
           loading = state.loadingSummary;
+          totalAfterVat = state.billsSummary?.totalAfterVat ?? 0;
         }
         return Row(
           children: [
             Expanded(
               child: _buildTotalBillsAmount(amount, loading),
+            ),
+            const SizedBox(width: 16),
+            Expanded(
+              child: _buildTotalAfterVat(totalAfterVat, loading),
             ),
             const SizedBox(width: 16),
             Expanded(
@@ -65,6 +71,47 @@ class BillsSummaryTopSection extends StatelessWidget {
                     )
                   : Text(
                       '€${amount.toStringAsFixed(2)}',
+                      style: const TextStyle(
+                        fontSize: 16,
+                        fontWeight: FontWeight.bold,
+                      ),
+                    ),
+            ],
+          ),
+        ],
+      ),
+    );
+  }
+
+  Widget _buildTotalAfterVat(double totalAfterVat, bool loading) {
+    return Container(
+      padding: const EdgeInsets.all(16),
+      decoration: const BoxDecoration(
+        color: Colors.white,
+        borderRadius: BorderRadius.all(Radius.circular(10)),
+      ),
+      child: Row(
+        children: [
+          SvgPicture.asset(Assets.iconsDollar, width: 60, height: 60),
+          const SizedBox(width: 10),
+          Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              const Text(
+                'Total After Vat',
+                style: TextStyle(
+                  fontSize: 16,
+                  fontWeight: FontWeight.bold,
+                ),
+              ),
+              const SizedBox(height: 5),
+              loading
+                  ? const Padding(
+                      padding: EdgeInsets.symmetric(vertical: 4),
+                      child: SkeletonContainer.rounded(width: 100, height: 16),
+                    )
+                  : Text(
+                      '€${totalAfterVat.toStringAsFixed(2)}',
                       style: const TextStyle(
                         fontSize: 16,
                         fontWeight: FontWeight.bold,

@@ -5,15 +5,17 @@ import 'package:autro_app/core/interfaces/mapable.dart';
 import 'package:autro_app/features/bills/domin/entities/bill_entity.dart';
 
 class BillModel extends BillEntity implements BaseMapable {
-  const BillModel(
-      {required super.id,
-      required super.vendor,
-      required super.amount,
-      required super.notes,
-      required super.date,
-      required super.createdAt,
-      required super.attachmentUrl,
-      required super.updatedAt});
+  const BillModel({
+    required super.id,
+    required super.vendor,
+    required super.amount,
+    required super.notes,
+    required super.date,
+    required super.createdAt,
+    required super.attachmentUrl,
+    required super.vat,
+    required super.updatedAt,
+  });
 
   factory BillModel.fromJson(Map<String, dynamic> json) {
     return BillModel(
@@ -25,9 +27,10 @@ class BillModel extends BillEntity implements BaseMapable {
       createdAt: DateTime.parse((json['created_at'] as String?).orEmpty).orDefault,
       updatedAt: DateTime.parse((json['updated_at'] as String?).orEmpty).orDefault,
       attachmentUrl: (json['attachment'] as String?).orEmpty,
+      vat: (json['vat'] as num?).toDoubleOrZero,
     );
   }
-  
+
   @override
   Map<String, dynamic> toJson() {
     return {
@@ -38,6 +41,7 @@ class BillModel extends BillEntity implements BaseMapable {
       'date': date,
       'created_at': createdAt,
       'updated_at': updatedAt,
+      'vat': vat,
     };
   }
 }

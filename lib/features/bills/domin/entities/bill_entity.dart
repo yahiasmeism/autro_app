@@ -7,6 +7,7 @@ class BillEntity extends Equatable {
   final double amount;
   final String notes;
   final DateTime date;
+  final double vat;
   final String attachmentUrl;
   final DateTime createdAt;
   final DateTime updatedAt;
@@ -18,6 +19,7 @@ class BillEntity extends Equatable {
     required this.attachmentUrl,
     required this.vendor,
     required this.amount,
+    required this.vat,
     required this.notes,
     required this.date,
     required this.createdAt,
@@ -32,12 +34,14 @@ class BillEntity extends Equatable {
         date,
         createdAt,
         updatedAt,
+        vat,
       ];
 
   BillEntity copyWith({
     int? id,
     String? vendor,
     double? amount,
+    double? vat,
     String? notes,
     DateTime? date,
     DateTime? createdAt,
@@ -45,6 +49,7 @@ class BillEntity extends Equatable {
     String? attachmentUrl,
   }) {
     return BillEntity(
+      vat: vat ?? this.vat,
       id: id ?? this.id,
       vendor: vendor ?? this.vendor,
       amount: amount ?? this.amount,
@@ -53,6 +58,7 @@ class BillEntity extends Equatable {
       createdAt: createdAt ?? this.createdAt,
       updatedAt: updatedAt ?? this.updatedAt,
       attachmentUrl: attachmentUrl ?? this.attachmentUrl,
+
     );
   }
 }

@@ -12,6 +12,7 @@ class UpdateBillRequest extends UpdateBillUseCaseParams implements RequestMapabl
     required super.date,
     required super.attachmentPath,
     required super.deleteAttachment,
+    required super.vat,
   });
 
   factory UpdateBillRequest.fromParams(UpdateBillUseCaseParams params) => UpdateBillRequest(
@@ -22,6 +23,7 @@ class UpdateBillRequest extends UpdateBillUseCaseParams implements RequestMapabl
         date: params.date,
         attachmentPath: params.attachmentPath,
         deleteAttachment: params.deleteAttachment,
+        vat: params.vat,
       );
 
   Future<FormData> toFormData() async {
@@ -39,6 +41,7 @@ class UpdateBillRequest extends UpdateBillUseCaseParams implements RequestMapabl
       'notes': notes,
       'date': date.formattedDateYYYYMMDD,
       'delete_attachment': deleteAttachment,
+      'vat': vat,
     };
   }
 }

@@ -3,6 +3,7 @@ import 'package:autro_app/core/theme/text_styles.dart';
 import 'package:autro_app/core/widgets/loading_indecator.dart';
 import 'package:drop_down_search_field/drop_down_search_field.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 
 class StandardSelectableSearch extends StatefulWidget {
   final List<String> items;
@@ -13,8 +14,11 @@ class StandardSelectableSearch extends StatefulWidget {
   final bool showRequiredIndicator;
   final bool withValidator;
   final TextEditingController? controller;
+  final String? Function(String?)? validator;
+  final List<TextInputFormatter>? inputFormatters;
   const StandardSelectableSearch({
     super.key,
+    this.inputFormatters,
     this.readOnly = false,
     required this.items,
     this.labelText,
@@ -23,6 +27,7 @@ class StandardSelectableSearch extends StatefulWidget {
     this.showRequiredIndicator = false,
     this.controller,
     this.withValidator = false,
+    this.validator,
   });
 
   @override
@@ -56,16 +61,18 @@ class _StandardSelectableDropDownState extends State<StandardSelectableSearch> {
                 return const LoadingIndicator();
               },
               validator: widget.withValidator
-                  ? (value) {
-                      if (!widget.items.contains(value)) return 'Please select a valid option.';
-                      return null;
-                    }
+                  ? (widget.validator ??
+                      (value) {
+                        if (!widget.items.contains(value)) return 'Please select a valid option.';
+                        return null;
+                      })
                   : null,
               debounceDuration: Duration.zero,
               suggestionsCallback: (pattern) {
                 return getSuggestions(pattern);
               },
               textFieldConfiguration: TextFieldConfiguration(
+                inputFormatters: widget.inputFormatters,
                 controller: textEditingController,
                 decoration: InputDecoration(
                   suffixIcon: const Icon(Icons.keyboard_arrow_down_outlined),
