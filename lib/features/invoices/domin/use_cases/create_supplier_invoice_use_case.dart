@@ -24,6 +24,7 @@ class CreateSupplierInvoiceUseCaseParams extends Equatable {
   final double totalAmount;
   final DateTime date;
   final String? attachementPath;
+  final String status;
 
   const CreateSupplierInvoiceUseCaseParams({
     required this.dealId,
@@ -32,6 +33,7 @@ class CreateSupplierInvoiceUseCaseParams extends Equatable {
     required this.totalAmount,
     required this.date,
     required this.attachementPath,
+    required this.status,
   });
 
   @override
@@ -42,5 +44,6 @@ class CreateSupplierInvoiceUseCaseParams extends Equatable {
         totalAmount,
         date,
         attachementPath,
+        status,
       ];
 }

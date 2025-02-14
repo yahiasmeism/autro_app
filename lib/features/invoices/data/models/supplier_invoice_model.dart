@@ -17,6 +17,7 @@ class SupplierInvoiceModel extends SupplierInvoiceEntity implements BaseMapable 
     required super.date,
     required super.material,
     required super.supplier,
+    required super.status,
   });
 
   factory SupplierInvoiceModel.fromJson(Map<String, dynamic> json) {
@@ -30,6 +31,7 @@ class SupplierInvoiceModel extends SupplierInvoiceEntity implements BaseMapable 
       date: DateTime.tryParse((json['date'] as String?).orEmpty).orDefault,
       material: (json['material'] as String?).orEmpty,
       supplier: SupplierModel.fromJson((json['supplier'] as Map<String, dynamic>).orEmpty),
+      status: (json['status'] as String?).orEmpty,
     );
   }
 

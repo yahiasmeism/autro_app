@@ -9,6 +9,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 
 import '../../../../core/constants/enums.dart';
 import '../../../../core/utils/nav_util.dart';
+import '../../../../core/widgets/send_status.dart';
 import '../bloc/suppliers_invoices_list/suppliers_invoices_list_bloc.dart';
 import '../screens/supplier_invoices_form_screen.dart';
 
@@ -56,6 +57,11 @@ class SupplierInvoiceListTile extends StatelessWidget {
             _buildCell(
               flex: 4,
               text: invoiceEntity.material,
+            ),
+            const SizedBox(width: 16),
+            Expanded(
+              flex: 4,
+              child: SendStatus(status: invoiceEntity.status),
             ),
             const SizedBox(width: 16),
             Flexible(

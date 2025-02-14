@@ -14,6 +14,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
+import '../../../../../core/widgets/standard_selection_dropdown.dart';
 import '../../../../deals/presentation/bloc/deal_details/deal_details_cubit.dart';
 import '../../../../suppliers/presentation/widgets/supplier_list_selection_field.dart';
 import '../../bloc/supplier_invoice_form/supplier_invoice_form_bloc.dart';
@@ -118,7 +119,24 @@ class SupplierInvoiceForm extends StatelessWidget {
                       ],
                     ),
                     const SizedBox(height: 24),
-                    const SupplierInvoiceAttachmentUploader(),
+                    Row(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        const Expanded(child: SupplierInvoiceAttachmentUploader()),
+                        const SizedBox(width: 16),
+                        Expanded(
+                          child: StandardSelectableDropdown(
+                            onChanged: (p0) {
+                              bloc.statusController.text = p0 ?? '';
+                            },
+                            items: const ['Pending', 'Sent'],
+                            hintText: 'e.g yyyy-mm-dd',
+                            initialValue: bloc.statusController.text.isEmpty ? 'Pending' : bloc.statusController.text,
+                            labelText: 'Status',
+                          ),
+                        ),
+                      ],
+                    ),
                     const SizedBox(height: 48),
                     _buildButtons(context, state),
                   ],

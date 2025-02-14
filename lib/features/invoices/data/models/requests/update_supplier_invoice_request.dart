@@ -14,6 +14,7 @@ class UpdateSupplierInvoiceRequest extends UpdateSupplierInvoiceUseCaseParams im
     required super.attachementPath,
     required super.id,
     required super.deleteAttachment,
+    required super.status,
   });
 
   factory UpdateSupplierInvoiceRequest.fromParams(UpdateSupplierInvoiceUseCaseParams params) => UpdateSupplierInvoiceRequest(
@@ -25,6 +26,7 @@ class UpdateSupplierInvoiceRequest extends UpdateSupplierInvoiceUseCaseParams im
         material: params.material,
         supplierId: params.supplierId,
         totalAmount: params.totalAmount,
+        status: params.status,
       );
 
   Future<FormData> toFormDate() async {
@@ -43,6 +45,7 @@ class UpdateSupplierInvoiceRequest extends UpdateSupplierInvoiceUseCaseParams im
       'total_amount': totalAmount,
       'date': date.formattedDateYYYYMMDD,
       'delete_attachment': deleteAttachment,
+      'status': status.toLowerCase(),
     };
   }
 }

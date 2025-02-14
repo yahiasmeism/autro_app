@@ -11,9 +11,11 @@ class SupplierInvoiceEntity extends Equatable {
   final DateTime date;
   final String material;
   final SupplierEntity supplier;
+  final String status;
 
   const SupplierInvoiceEntity({
     required this.id,
+    required this.status,
     required this.number,
     required this.supplierId,
     required this.dealId,
@@ -35,5 +37,6 @@ class SupplierInvoiceEntity extends Equatable {
         date,
         material,
         supplier,
+        status,
       ];
 }

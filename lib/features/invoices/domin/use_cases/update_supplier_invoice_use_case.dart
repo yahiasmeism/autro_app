@@ -29,7 +29,11 @@ class UpdateSupplierInvoiceUseCaseParams extends CreateSupplierInvoiceUseCasePar
     required super.totalAmount,
     required super.date,
     required super.attachementPath,
+    required super.status,
     required this.id,
     required this.deleteAttachment,
   });
+
+  @override
+  List<Object?> get props => [...super.props, id, deleteAttachment];
 }

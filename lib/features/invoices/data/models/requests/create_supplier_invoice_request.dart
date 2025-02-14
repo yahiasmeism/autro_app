@@ -11,6 +11,7 @@ class CreateSupplierInvoiceRequest extends CreateSupplierInvoiceUseCaseParams im
     required super.totalAmount,
     required super.date,
     required super.attachementPath,
+    required super.status,
   });
 
   factory CreateSupplierInvoiceRequest.fromParams(CreateSupplierInvoiceUseCaseParams params) {
@@ -21,6 +22,7 @@ class CreateSupplierInvoiceRequest extends CreateSupplierInvoiceUseCaseParams im
       totalAmount: params.totalAmount,
       date: params.date,
       attachementPath: params.attachementPath,
+      status: params.status,
     );
   }
 
@@ -39,6 +41,7 @@ class CreateSupplierInvoiceRequest extends CreateSupplierInvoiceUseCaseParams im
       'material': material,
       'total_amount': totalAmount,
       "date": date.formattedDateYYYYMMDD,
+      "status": status.toLowerCase(),
     };
   }
 }

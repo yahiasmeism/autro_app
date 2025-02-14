@@ -3,6 +3,7 @@ import 'dart:io';
 import 'package:autro_app/core/errors/failures.dart';
 import 'package:autro_app/core/extensions/date_time_extension.dart';
 import 'package:autro_app/core/extensions/num_extension.dart';
+import 'package:autro_app/core/extensions/string_extension.dart';
 import 'package:autro_app/features/invoices/domin/use_cases/get_supplier_invoice_use_case.dart';
 import 'package:bloc/bloc.dart';
 import 'package:dartz/dartz.dart';
@@ -86,6 +87,7 @@ class SupplierInvoiceFormBloc extends Bloc<SupplierInvoiceFormEvent, SupplierInv
   final supplierIdController = TextEditingController();
   final totalAmountController = TextEditingController();
   final typeMaterialNameController = TextEditingController();
+  final statusController = TextEditingController();
   final dateController = TextEditingController();
 
   _initial(InitialSupplierInvoiceFormEvent event, Emitter<SupplierInvoiceFormState> emit) async {
@@ -121,6 +123,7 @@ class SupplierInvoiceFormBloc extends Bloc<SupplierInvoiceFormEvent, SupplierInv
       totalAmountController.text = state.supplierInvoice?.totalAmount.toString() ?? '';
       typeMaterialNameController.text = state.supplierInvoice?.material ?? '';
       dateController.text = state.supplierInvoice?.date.formattedDateYYYYMMDD ?? DateTime.now().formattedDateYYYYMMDD;
+      statusController.text = state.supplierInvoice?.status.capitalized ?? '';
       setupControllersListeners();
       add(SupplierInvoiceFormChangedEvent());
     }
@@ -135,6 +138,7 @@ class SupplierInvoiceFormBloc extends Bloc<SupplierInvoiceFormEvent, SupplierInv
       totalAmountController,
       typeMaterialNameController,
       dateController,
+      statusController,
     ]) {
       controller.addListener(() => add(SupplierInvoiceFormChangedEvent()));
     }
@@ -149,6 +153,7 @@ class SupplierInvoiceFormBloc extends Bloc<SupplierInvoiceFormEvent, SupplierInv
       supplierIdController.text.isNotEmpty,
       totalAmountController.text.isNotEmpty,
       dateController.text.isNotEmpty,
+      statusController.text.isNotEmpty,
     ].every((element) => element);
 
     final isAnyFieldIsNotEmpty = [
@@ -160,6 +165,7 @@ class SupplierInvoiceFormBloc extends Bloc<SupplierInvoiceFormEvent, SupplierInv
       typeMaterialNameController.text.isNotEmpty,
       dateController.text.isNotEmpty,
       state.pickedAttachment.isSome(),
+      statusController.text.isNotEmpty,
     ].any((element) => element);
 
     if (state.updatedMode) {
@@ -176,7 +182,8 @@ class SupplierInvoiceFormBloc extends Bloc<SupplierInvoiceFormEvent, SupplierInv
           supplierInvoice.material != typeMaterialNameController.text ||
           supplierInvoice.date.formattedDateYYYYMMDD != dateController.text ||
           state.pickedAttachment.isSome() ||
-          urlChanged;
+          urlChanged ||
+          supplierInvoice.status.capitalized != statusController.text;
 
       emit(state.copyWith(
         saveEnabled: formIsNotEmpty && isFormChanged,
@@ -207,6 +214,7 @@ class SupplierInvoiceFormBloc extends Bloc<SupplierInvoiceFormEvent, SupplierInv
     emit(state.copyWith(loading: true));
 
     final params = CreateSupplierInvoiceUseCaseParams(
+      status: statusController.text,
       material: typeMaterialNameController.text,
       supplierId: int.tryParse(supplierIdController.text).toIntOrZero,
       totalAmount: double.tryParse(totalAmountController.text).toDoubleOrZero,
@@ -235,6 +243,7 @@ class SupplierInvoiceFormBloc extends Bloc<SupplierInvoiceFormEvent, SupplierInv
 
     final deleteAttachment = state.attachmentUrl.isNone() && state.pickedAttachment.isNone();
     final parms = UpdateSupplierInvoiceUseCaseParams(
+      status: statusController.text,
       date: DateTime.tryParse(dateController.text).orDefault,
       material: typeMaterialNameController.text,
       supplierId: int.tryParse(supplierIdController.text).toIntOrZero,
@@ -266,6 +275,7 @@ class SupplierInvoiceFormBloc extends Bloc<SupplierInvoiceFormEvent, SupplierInv
     totalAmountController.clear();
     typeMaterialNameController.clear();
     dateController.clear();
+    statusController.text = 'Pending';
 
     if (state is SupplierInvoiceFormLoaded) {
       final state = this.state as SupplierInvoiceFormLoaded;
@@ -293,6 +303,7 @@ class SupplierInvoiceFormBloc extends Bloc<SupplierInvoiceFormEvent, SupplierInv
     supplierIdController.dispose();
     totalAmountController.dispose();
     typeMaterialNameController.dispose();
+    statusController.dispose();
     dateController.dispose();
     return super.close();
   }
