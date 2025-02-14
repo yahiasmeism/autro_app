@@ -11,6 +11,7 @@ class CreateShippingInvoiceRequest extends CreateShippingInvoiceUseCaseParams im
     required super.typeMaterialName,
     required super.shippingDate,
     super.attachmentPath,
+    required super.status,
   });
 
   factory CreateShippingInvoiceRequest.fromParams(CreateShippingInvoiceUseCaseParams params) {
@@ -21,6 +22,7 @@ class CreateShippingInvoiceRequest extends CreateShippingInvoiceUseCaseParams im
       typeMaterialName: params.typeMaterialName,
       shippingDate: params.shippingDate,
       attachmentPath: params.attachmentPath,
+      status: params.status,
     );
   }
 
@@ -39,6 +41,7 @@ class CreateShippingInvoiceRequest extends CreateShippingInvoiceUseCaseParams im
       'shipping_cost': shippingCost,
       'type_material_name': typeMaterialName,
       'shipping_date': shippingDate.formattedDateYYYYMMDD,
+      'status': status.toLowerCase(),
     };
   }
 }

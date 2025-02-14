@@ -3,6 +3,7 @@ import 'dart:io';
 import 'package:autro_app/core/errors/failures.dart';
 import 'package:autro_app/core/extensions/date_time_extension.dart';
 import 'package:autro_app/core/extensions/num_extension.dart';
+import 'package:autro_app/core/extensions/string_extension.dart';
 import 'package:autro_app/features/shipping-invoices/domin/usecases/update_shipping_invoices_use_case.dart';
 import 'package:bloc/bloc.dart';
 import 'package:dartz/dartz.dart';
@@ -73,6 +74,7 @@ class ShippingInvoiceFormBloc extends Bloc<ShippingInvoiceFormEvent, ShippingInv
   final shippingCostController = TextEditingController();
   final typeMaterialNameController = TextEditingController();
   final shippingDateController = TextEditingController();
+  final statusController = TextEditingController();
 
   _initial(InitialShippingInvoiceFormEvent event, Emitter<ShippingInvoiceFormState> emit) async {
     if (event.id != null) {
@@ -108,6 +110,7 @@ class ShippingInvoiceFormBloc extends Bloc<ShippingInvoiceFormEvent, ShippingInv
       shippingCostController.text = state.shippingInvoice?.shippingCost.toString() ?? '';
       typeMaterialNameController.text = state.shippingInvoice?.typeMaterialName ?? '';
       shippingDateController.text = (state.shippingInvoice?.shippingDate ?? DateTime.now()).formattedDateYYYYMMDD;
+      statusController.text = state.shippingInvoice?.status.capitalized ?? '';
       setupControllersListeners();
       add(ShippingInvoiceFormChangedEvent());
     }
@@ -120,6 +123,7 @@ class ShippingInvoiceFormBloc extends Bloc<ShippingInvoiceFormEvent, ShippingInv
     shippingCostController.addListener(() => add(ShippingInvoiceFormChangedEvent()));
     typeMaterialNameController.addListener(() => add(ShippingInvoiceFormChangedEvent()));
     shippingDateController.addListener(() => add(ShippingInvoiceFormChangedEvent()));
+    statusController.addListener(() => add(ShippingInvoiceFormChangedEvent()));
   }
 
   _onShippingInvoiceFormChanged(ShippingInvoiceFormChangedEvent event, Emitter<ShippingInvoiceFormState> emit) {
@@ -137,6 +141,7 @@ class ShippingInvoiceFormBloc extends Bloc<ShippingInvoiceFormEvent, ShippingInv
       dealSeriesNumberController.text.isNotEmpty,
       shippingCompanyNameController.text.isNotEmpty,
       shippingCostController.text.isNotEmpty,
+      shippingDateController.text.isNotEmpty,
       typeMaterialNameController.text.isNotEmpty,
       shippingDateController.text != DateTime.now().formattedDateYYYYMMDD,
       state.pickedAttachment.isSome(),
@@ -155,7 +160,8 @@ class ShippingInvoiceFormBloc extends Bloc<ShippingInvoiceFormEvent, ShippingInv
           shippingInvoice.typeMaterialName != typeMaterialNameController.text ||
           shippingInvoice.shippingDate.formattedDateYYYYMMDD != shippingDateController.text ||
           state.pickedAttachment.isSome() ||
-          urlChanged;
+          urlChanged ||
+          shippingInvoice.status.capitalized != statusController.text;
 
       emit(state.copyWith(
         saveEnabled: formIsNotEmpty && isFormChanged,
@@ -186,6 +192,7 @@ class ShippingInvoiceFormBloc extends Bloc<ShippingInvoiceFormEvent, ShippingInv
     emit(state.copyWith(loading: true));
 
     final params = CreateShippingInvoiceUseCaseParams(
+      status: statusController.text,
       dealId: int.tryParse(dealIdController.text).toIntOrZero,
       shippingCompanyName: shippingCompanyNameController.text,
       shippingCost: double.tryParse(shippingCostController.text).toDoubleOrZero,
@@ -222,6 +229,7 @@ class ShippingInvoiceFormBloc extends Bloc<ShippingInvoiceFormEvent, ShippingInv
       shippingDate: DateTime.tryParse(shippingDateController.text).orDefault,
       attachmentPath: state.pickedAttachment.fold(() => null, (file) => file.path),
       deleteAttachment: deleteAttachment,
+      status: statusController.text,
     );
 
     emit(state.copyWith(loading: true));

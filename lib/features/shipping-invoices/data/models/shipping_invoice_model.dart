@@ -17,6 +17,7 @@ class ShippingInvoiceModel extends ShippingInvoiceEntity implements BaseMapable 
     required super.shippingDate,
     required super.invoice,
     required super.shippingInvoiceNumber,
+    required super.status,
   });
 
   factory ShippingInvoiceModel.fromJson(Map<String, dynamic> json) => ShippingInvoiceModel(
@@ -29,6 +30,7 @@ class ShippingInvoiceModel extends ShippingInvoiceEntity implements BaseMapable 
         shippingDate: DateTime.tryParse((json['shipping_date'] as String?).orEmpty).orDefault,
         invoice: CustomerInvoiceModel.fromJson((json['customer_invoice'] as Map<String, dynamic>?).orEmpty),
         shippingInvoiceNumber: (json['shipping_invoice_number'] as String?).orEmpty,
+        status: (json['status'] as String?).orEmpty,
       );
 
   @override

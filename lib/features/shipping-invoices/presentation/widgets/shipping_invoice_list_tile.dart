@@ -10,6 +10,7 @@ import 'package:autro_app/features/shipping-invoices/presentation/screens/shippi
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
+import '../../../../core/widgets/send_status.dart';
 import '../../domin/entities/shipping_invoice_entity.dart';
 import '../bloc/shipping_invoice_list/shipping_invoices_list_bloc.dart';
 
@@ -62,6 +63,11 @@ class ShippingInvoiceListTile extends StatelessWidget {
             _buildCell(
               flex: 4,
               text: shippingInvoiceEntity.typeMaterialName.isEmpty ? "-" : shippingInvoiceEntity.typeMaterialName,
+            ),
+            const SizedBox(width: 16),
+            Expanded(
+              flex: 4,
+              child: SendStatus(status: shippingInvoiceEntity.status),
             ),
             const SizedBox(width: 16),
             Flexible(

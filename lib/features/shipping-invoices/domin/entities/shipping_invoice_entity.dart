@@ -10,6 +10,7 @@ class ShippingInvoiceEntity extends Equatable {
   final String typeMaterialName;
   final DateTime shippingDate;
   final String attachmentUrl;
+  final String status;
   final CustomerInvoiceEntity invoice;
 
   const ShippingInvoiceEntity({
@@ -22,6 +23,7 @@ class ShippingInvoiceEntity extends Equatable {
     required this.shippingDate,
     required this.invoice,
     required this.shippingInvoiceNumber,
+    required this.status,
   });
 
   String get formmatedShippingCost => "€${shippingCost.toStringAsFixed(2)}";
@@ -36,6 +38,7 @@ class ShippingInvoiceEntity extends Equatable {
         shippingDate,
         invoice,
         shippingInvoiceNumber,
+        status,
       ];
 
   bool get hasAttachment => attachmentUrl.isNotEmpty;

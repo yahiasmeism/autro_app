@@ -51,7 +51,7 @@ class CustomerInvoiceFormDetails extends StatelessWidget {
               items: const ['Pending', 'Sent'],
               hintText: 'e.g yyyy-mm-dd',
               initialValue: bloc.statusController.text.isEmpty ? 'Pending' : bloc.statusController.text,
-              labelText: 'Invoice Date',
+              labelText: 'Status',
             ),
           ),
         ],

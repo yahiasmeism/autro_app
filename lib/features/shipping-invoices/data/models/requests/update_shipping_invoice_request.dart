@@ -12,6 +12,7 @@ class UpdateShippingInvoiceRequest extends UpdateShippingInvoiceUseCaseParams im
     required super.typeMaterialName,
     required super.shippingDate,
     required super.deleteAttachment,
+    required super.status,
     super.attachmentPath,
   });
 
@@ -23,6 +24,7 @@ class UpdateShippingInvoiceRequest extends UpdateShippingInvoiceUseCaseParams im
   }
 
   factory UpdateShippingInvoiceRequest.fromParams(UpdateShippingInvoiceUseCaseParams params) => UpdateShippingInvoiceRequest(
+        status: params.status,
         id: params.id,
         dealId: params.dealId,
         shippingCompanyName: params.shippingCompanyName,
@@ -43,6 +45,7 @@ class UpdateShippingInvoiceRequest extends UpdateShippingInvoiceUseCaseParams im
       'type_material_name': typeMaterialName,
       'shipping_date': shippingDate.formattedDateYYYYMMDD,
       'delete_attachment': deleteAttachment,
+      'status': status.toLowerCase(),
     };
   }
 }
