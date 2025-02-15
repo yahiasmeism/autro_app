@@ -63,7 +63,7 @@ class DealEntity extends Equatable {
   bool get hasInvoice => customerInvoice != null;
   bool get hasShippingInvoice => shippingInvoice != null;
   bool get hasProforma => customerProforma != null;
-  bool get paymentCompleted => payments.every((payment) => payment.remaining <= 0 && payment.amount > 0);
+  bool get paymentCompleted => payments.every((payment) => payment.remaining <= 0 && payment.amount > 0) && payments.isNotEmpty;
 
   @override
   List<Object?> get props => [
