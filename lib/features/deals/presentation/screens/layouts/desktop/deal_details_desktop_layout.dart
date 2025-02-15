@@ -15,6 +15,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 import '../../../../../../core/widgets/loading_indecator.dart';
+import '../../../../../../core/widgets/overley_loading.dart';
 import '../../../bloc/deal_details/deal_details_cubit.dart';
 import '../../../widgets/tabs/deal_overview_tab.dart';
 
@@ -102,14 +103,21 @@ class _DealDetailsDesktopLayoutState extends State<DealDetailsDesktopLayout> wit
                     return const LoadingIndicator();
                   }
                   if (state is DealDetailsLoaded) {
-                    return IndexedStack(
-                      index: _tabController.index,
+                    return Stack(
                       children: [
-                        DealOverviewTab(state: state),
-                        DealBillsListTab.create(context, state.deal.id),
-                        DealProformasTab(dealEntity: state.deal),
-                        DealInvoicesTabs(dealEntity: state.deal),
-                        PaymentsScreen(deal: state.deal),
+                        Positioned.fill(
+                          child: IndexedStack(
+                            index: _tabController.index,
+                            children: [
+                              DealOverviewTab(state: state),
+                              DealBillsListTab.create(context, state.deal.id),
+                              DealProformasTab(dealEntity: state.deal),
+                              DealInvoicesTabs(dealEntity: state.deal),
+                              PaymentsScreen(deal: state.deal),
+                            ],
+                          ),
+                        ),
+                        if (state.loading) const LoadingOverlay(),
                       ],
                     );
                   } else if (state is DealDetailsError) {

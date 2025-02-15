@@ -30,7 +30,7 @@ class PaymentsScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     final cubit = sl<PaymentsCubit>();
     return BlocProvider<PaymentsCubit>.value(
-      value: cubit..init(deal),
+      value: cubit..getPayments(deal.id),
       child: BlocConsumer<PaymentsCubit, PaymentsState>(
         bloc: cubit,
         listener: blocListener,
