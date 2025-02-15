@@ -5,6 +5,8 @@ import 'package:autro_app/core/widgets/custom_tab_bar.dart';
 import 'package:autro_app/core/widgets/failure_screen.dart';
 import 'package:autro_app/features/deals/presentation/bloc/deals_list/deals_list_bloc.dart';
 import 'package:autro_app/features/deals/presentation/widgets/tabs/deal_bills_tab.dart';
+import 'package:autro_app/features/deals/presentation/widgets/tabs/deal_invoices_tabs.dart';
+import 'package:autro_app/features/deals/presentation/widgets/tabs/deal_proformas_tab.dart';
 import 'package:autro_app/features/invoices/presentation/bloc/customers_invoices_list/customers_invoices_list_bloc.dart';
 import 'package:autro_app/features/payment/presentation/screens/payment_screen.dart';
 import 'package:autro_app/features/proformas/presentation/bloc/customers_proformas_list/customers_proformas_list_bloc.dart';
@@ -83,10 +85,9 @@ class _DealDetailsDesktopLayoutState extends State<DealDetailsDesktopLayout> wit
               tabs: const [
                 'Overview',
                 'Bills',
+                'Payments',
                 'Proformas',
                 'Invoices',
-                'Packing Lists',
-                'Payments',
               ],
               controller: _tabController,
             ),
@@ -106,10 +107,9 @@ class _DealDetailsDesktopLayoutState extends State<DealDetailsDesktopLayout> wit
                       children: [
                         DealOverviewTab(state: state),
                         DealBillsListTab.create(context, state.deal.id),
-                        const Center(child: Text('Proformas')),
-                        const Center(child: Text('Invoices')),
-                        const Center(child: Text('Packing Lists')),
                         PaymentsScreen(deal: state.deal),
+                        DealProformasTab(dealEntity: state.deal),
+                        DealInvoicesTabs(dealEntity: state.deal),
                       ],
                     );
                   } else if (state is DealDetailsError) {
