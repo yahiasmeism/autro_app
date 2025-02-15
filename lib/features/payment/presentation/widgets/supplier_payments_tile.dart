@@ -15,7 +15,7 @@ class SupplierPaymentTile extends StatelessWidget {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        Text('Supplier ($supplierName) Payments', style: const TextStyle(fontWeight: FontWeight.bold, fontSize: 18)),
+        Text('Supplier ($supplierName) Payments', style: const TextStyle(fontWeight: FontWeight.w600, fontSize: 18)),
         const Divider(),
         PaymentForm(deal: deal, paymentEntity: payment),
       ],

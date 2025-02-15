@@ -4,6 +4,7 @@ import 'package:autro_app/features/invoices/domin/entities/supplier_invoice_enti
 import 'package:autro_app/features/invoices/presentation/widgets/supplier_invoice_list_tile.dart';
 import 'package:flutter/material.dart';
 
+import '../../../../../core/widgets/no_data_screen.dart';
 import '../../../../invoices/presentation/widgets/customer_invoice_list_tile.dart';
 
 class DealInvoicesTabs extends StatelessWidget {
@@ -11,17 +12,20 @@ class DealInvoicesTabs extends StatelessWidget {
   final DealEntity dealEntity;
   @override
   Widget build(BuildContext context) {
+    final invoices = <Widget>[
+      if (dealEntity.customerInvoice != null) _buildCustomerInvoice(dealEntity.customerInvoice!),
+      if (dealEntity.supplierInvoiceEntity != null) ...[
+        const SizedBox(height: 24),
+        _buildSupplierInvoice(dealEntity.supplierInvoiceEntity!)
+      ],
+    ];
     return Padding(
       padding: const EdgeInsets.all(24.0),
-      child: Column(
-        children: [
-          if (dealEntity.customerInvoice != null) _buildCustomerInvoice(dealEntity.customerInvoice!),
-          if (dealEntity.supplierInvoiceEntity != null) ...[
-            const SizedBox(height: 24),
-            _buildSupplierInvoice(dealEntity.supplierInvoiceEntity!)
-          ],
-        ],
-      ),
+      child: invoices.isEmpty
+          ? Center(child: NoDataScreen.invoices())
+          : Column(
+              children: invoices,
+            ),
     );
   }
 

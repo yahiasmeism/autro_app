@@ -1,3 +1,4 @@
+import 'package:autro_app/features/deals/domin/entities/deal_entity.dart';
 import 'package:autro_app/features/payment/domin/usecases/get_payments_use_case.dart';
 import 'package:bloc/bloc.dart';
 import 'package:dartz/dartz.dart';
@@ -15,12 +16,16 @@ class PaymentsCubit extends Cubit<PaymentsState> {
   final GetPaymentsUseCase getPaymentsUseCase;
   PaymentsCubit(this.getPaymentsUseCase) : super(PaymentsInitial());
 
+  init(DealEntity deal) async {
+    emit(PaymentsInitial());
+    emit(PaymentsLoaded(payments: deal.payments, dealId: deal.id));
+  }
+
   getPayments(int dealId) async {
     emit(PaymentsInitial());
     final result = await getPaymentsUseCase(GetPaymentsUseCaseParams(dealId: dealId));
     result.fold((l) => emit(PaymentsError(failure: l)), (r) => emit(PaymentsLoaded(payments: r, dealId: dealId)));
   }
-
 
   refresh() async {
     final state = this.state as PaymentsLoaded;

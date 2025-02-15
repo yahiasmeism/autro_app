@@ -85,9 +85,9 @@ class _DealDetailsDesktopLayoutState extends State<DealDetailsDesktopLayout> wit
               tabs: const [
                 'Overview',
                 'Bills',
-                'Payments',
                 'Proformas',
                 'Invoices',
+                'Payments',
               ],
               controller: _tabController,
             ),
@@ -107,9 +107,9 @@ class _DealDetailsDesktopLayoutState extends State<DealDetailsDesktopLayout> wit
                       children: [
                         DealOverviewTab(state: state),
                         DealBillsListTab.create(context, state.deal.id),
-                        PaymentsScreen(deal: state.deal),
                         DealProformasTab(dealEntity: state.deal),
                         DealInvoicesTabs(dealEntity: state.deal),
+                        PaymentsScreen(deal: state.deal),
                       ],
                     );
                   } else if (state is DealDetailsError) {

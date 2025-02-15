@@ -16,7 +16,7 @@ class CustomerPaymentTile extends StatelessWidget {
       children: [
         Text(
           'Customer ($customerName) Payments',
-          style: const TextStyle(fontWeight: FontWeight.bold, fontSize: 18),
+          style: const TextStyle(fontWeight: FontWeight.w600, fontSize: 18),
         ),
         const Divider(),
         PaymentForm(deal: dealEntity, paymentEntity: payment),

@@ -3,6 +3,7 @@ import 'package:autro_app/features/proformas/domin/entities/customer_proforma_en
 import 'package:autro_app/features/proformas/domin/entities/supplier_proforma_entity.dart';
 import 'package:flutter/material.dart';
 
+import '../../../../../core/widgets/no_data_screen.dart';
 import '../../../../proformas/presentation/widgets/customer_proforma_list_tile.dart';
 import '../../../../proformas/presentation/widgets/supplier_proformas_list_tile.dart';
 
@@ -11,17 +12,20 @@ class DealProformasTab extends StatelessWidget {
   final DealEntity dealEntity;
   @override
   Widget build(BuildContext context) {
+    final proformas = <Widget>[
+      if (dealEntity.customerProforma != null) _buildCustomerProforma(dealEntity.customerProforma!),
+      if (dealEntity.supplierProformaEntity != null) ...[
+        const SizedBox(height: 24),
+        _buildSupplierProforma(dealEntity.supplierProformaEntity!)
+      ],
+    ];
     return Padding(
       padding: const EdgeInsets.all(24.0),
-      child: Column(
-        children: [
-          if (dealEntity.customerProforma != null) _buildCustomerProforma(dealEntity.customerProforma!),
-          if (dealEntity.supplierProformaEntity != null) ...[
-            const SizedBox(height: 24),
-            _buildSupplierProforma(dealEntity.supplierProformaEntity!)
-          ],
-        ],
-      ),
+      child: proformas.isEmpty
+          ? Center(child: NoDataScreen.proformas())
+          : Column(
+              children: proformas,
+            ),
     );
   }
 
