@@ -69,4 +69,8 @@ abstract class ApiPaths {
   // bl-instructions
   static const String blInstructions = 'bl-instructions';
   static String blInstructionById(int id) => 'bl-instructions/$id';
+
+  //deal payments
+  static String dealPayments(int dealId) => 'deals/$dealId/payments';
+  static String dealPaymentById(int id) => 'deals/payments/$id';
 }

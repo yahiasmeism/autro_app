@@ -7,7 +7,7 @@ enum AuthState {
   unauthenticated,
 }
 
-enum ClientType { customer, supplier }
+enum ClientType { customer, supplier, unknown }
 
 enum PdfAction { view, export }
 

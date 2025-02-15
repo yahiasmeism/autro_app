@@ -9,23 +9,21 @@ import '../entities/payment_entity.dart';
 import '../repos/payments_repo.dart';
 
 @lazySingleton
-class GetPaymentsUseCase extends UseCase<List<PaymentEntity>, NoParams> {
+class GetPaymentsUseCase extends UseCase<List<PaymentEntity>, GetPaymentsUseCaseParams> {
   final PaymentsRepo repo;
 
   GetPaymentsUseCase({required this.repo});
   @override
-  Future<Either<Failure, List<PaymentEntity>>> call(NoParams params) async {
-    return await repo.getPayments();
+  Future<Either<Failure, List<PaymentEntity>>> call(GetPaymentsUseCaseParams params) async {
+    return await repo.getPayments(params.dealId);
   }
 }
 
-class UpdatePaymentUseCaseParams extends Equatable {
-  final int paymentId;
-  final double amount;
-  final double prePayment;
-  final DateTime date;
+class GetPaymentsUseCaseParams extends Equatable {
+  final int dealId;
 
-  const UpdatePaymentUseCaseParams(this.paymentId, this.amount, this.prePayment, this.date);
+  const GetPaymentsUseCaseParams({required this.dealId});
+
   @override
-  List<Object?> get props => [paymentId, amount, prePayment, date];
+  List<Object?> get props => [dealId];
 }
