@@ -1,5 +1,6 @@
 import 'package:autro_app/core/extensions/bool_extension.dart';
 import 'package:autro_app/core/extensions/date_time_extension.dart';
+import 'package:autro_app/core/extensions/list_extension.dart';
 import 'package:autro_app/core/extensions/map_extension.dart';
 import 'package:autro_app/core/extensions/num_extension.dart';
 import 'package:autro_app/core/extensions/string_extension.dart';
@@ -7,6 +8,7 @@ import 'package:autro_app/core/interfaces/mapable.dart';
 import 'package:autro_app/features/deals/domin/entities/deal_entity.dart';
 import 'package:autro_app/features/invoices/data/models/customer_invoice_model.dart';
 import 'package:autro_app/features/invoices/data/models/supplier_invoice_model.dart';
+import 'package:autro_app/features/payment/data/models/payment_model.dart';
 import 'package:autro_app/features/proformas/data/models/customer_proforma_model.dart';
 import 'package:autro_app/features/proformas/data/models/supplier_proforma_model.dart';
 import 'package:autro_app/features/shipping-invoices/data/models/shipping_invoice_model.dart';
@@ -37,6 +39,7 @@ class DealModel extends DealEntity implements BaseMapable {
     required super.bankAccount,
     required super.supplierInvoiceEntity,
     required super.supplierProformaEntity,
+    required super.payments,
   });
 
   factory DealModel.fromJson(Map<String, dynamic> json) => DealModel(
@@ -72,6 +75,7 @@ class DealModel extends DealEntity implements BaseMapable {
         supplierProformaEntity: json['supplier_proforma'] == null
             ? null
             : SupplierProformaModel.fromJson(json['supplier_proforma'] as Map<String, dynamic>),
+        payments: (json['payments'] as List?).orEmpty.map((e) => PaymentModel.fromJson(e as Map<String, dynamic>)).toList(),
       );
 
   @override

@@ -58,6 +58,8 @@ class _StandardSelectableDropdownState extends State<StandardSelectableDropdown>
         DropdownButtonFormField<String>(
           alignment: AlignmentDirectional.centerStart,
           hint: Text(
+            overflow: TextOverflow.ellipsis,
+            maxLines: 1,
             widget.hintText ?? '',
             style: TextStyles.font16Regular.copyWith(color: AppColors.hintColor),
           ),

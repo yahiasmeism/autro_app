@@ -17,7 +17,7 @@ class UpdatePaymentRequst extends UpdatePaymentUseCaseParams implements RequestM
   Map<String, dynamic> toJson() {
     return {
       'amount': amount,
-      'prePayment': prePayment,
+      'pre_payment': prePayment,
       'date': date.toIso8601String(),
     };
   }

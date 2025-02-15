@@ -110,7 +110,7 @@ class ShippingInvoiceFormBloc extends Bloc<ShippingInvoiceFormEvent, ShippingInv
       shippingCostController.text = state.shippingInvoice?.shippingCost.toString() ?? '';
       typeMaterialNameController.text = state.shippingInvoice?.typeMaterialName ?? '';
       shippingDateController.text = (state.shippingInvoice?.shippingDate ?? DateTime.now()).formattedDateYYYYMMDD;
-      statusController.text = state.shippingInvoice?.status.capitalized ?? '';
+      statusController.text = state.shippingInvoice?.status.capitalized ?? 'Pending';
       setupControllersListeners();
       add(ShippingInvoiceFormChangedEvent());
     }

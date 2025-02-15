@@ -1,3 +1,4 @@
+import 'package:autro_app/core/constants/assets.dart';
 import 'package:autro_app/core/extensions/date_time_extension.dart';
 import 'package:autro_app/core/theme/app_colors.dart';
 import 'package:autro_app/core/theme/text_styles.dart';
@@ -7,6 +8,7 @@ import 'package:autro_app/features/deals/domin/entities/deal_entity.dart';
 import 'package:autro_app/features/deals/presentation/screens/deal_details_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_svg/svg.dart';
 
 import '../bloc/deals_list/deals_list_bloc.dart';
 
@@ -58,11 +60,9 @@ class DealListTile extends StatelessWidget {
                   '-',
             ),
             const SizedBox(width: 16),
-            _buildCell(
-              flex: 4,
-              text: dealEntity.isComplete ? 'Completed' : 'Incomplete',
-              textColor: dealEntity.isComplete ? AppColors.deepGreen : AppColors.orange,
-            ),
+            _buildStatus(dealEntity.isComplete),
+            const SizedBox(width: 16),
+            _buildStatus(dealEntity.paymentCompleted),
             const SizedBox(width: 16),
             Flexible(
               flex: 4,
@@ -79,6 +79,17 @@ class DealListTile extends StatelessWidget {
             ),
           ],
         ),
+      ),
+    );
+  }
+
+  Widget _buildStatus(bool isComplete) {
+    return Expanded(
+      flex: 4,
+      child: Row(
+        children: [
+          SvgPicture.asset(isComplete ? Assets.iconsComplete : Assets.iconsIncomplete, width: 24),
+        ],
       ),
     );
   }

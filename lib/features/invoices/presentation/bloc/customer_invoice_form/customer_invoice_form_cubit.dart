@@ -100,7 +100,7 @@ class CustomerInvoiceFormCubit extends Cubit<CustomerInvoiceFormState> {
       ibanController.text = state.invoice?.bankAccount.accountNumber ?? '';
       swiftCodeController.text = state.invoice?.bankAccount.swiftCode ?? '';
       currencyController.text = state.invoice?.bankAccount.currency ?? '';
-      statusController.text = state.invoice?.status.capitalized ?? '';
+      statusController.text = state.invoice?.status.capitalized ?? 'Pending';
       _setupControllersListeners();
       _onInvoiceFormChanged();
     }

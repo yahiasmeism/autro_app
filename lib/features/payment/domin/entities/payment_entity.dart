@@ -17,6 +17,14 @@ class PaymentEntity extends Equatable {
     required this.clientType,
   });
 
+  double get remaining => amount - prePayment;
+
   @override
-  List<Object?> get props => [];
+  List<Object?> get props => [
+    id,
+    date,
+    amount,
+    prePayment,
+    clientType,
+  ];
 }

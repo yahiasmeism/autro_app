@@ -199,6 +199,20 @@ import 'package:autro_app/features/packing-lists/presentation/bloc/packing_list_
     as _i721;
 import 'package:autro_app/features/packing-lists/presentation/bloc/packing_lists/packing_lists_bloc.dart'
     as _i79;
+import 'package:autro_app/features/payment/data/data_sources/payments_remote_data_sources.dart'
+    as _i33;
+import 'package:autro_app/features/payment/data/repos_impl/payments_repo_impl.dart'
+    as _i584;
+import 'package:autro_app/features/payment/domin/repos/payments_repo.dart'
+    as _i374;
+import 'package:autro_app/features/payment/domin/usecases/get_payments_use_case.dart'
+    as _i819;
+import 'package:autro_app/features/payment/domin/usecases/update_payment_use_case.dart'
+    as _i1053;
+import 'package:autro_app/features/payment/presentation/bloc/payment_form/payment_form_cubit.dart'
+    as _i502;
+import 'package:autro_app/features/payment/presentation/bloc/payments/payments_cubit.dart'
+    as _i481;
 import 'package:autro_app/features/proformas/data/data_sources/remote/customers_proformas_remote_data_source.dart'
     as _i336;
 import 'package:autro_app/features/proformas/data/data_sources/remote/suppliers_proformas_remote_data_source.dart'
@@ -385,6 +399,8 @@ extension GetItInjectableX on _i174.GetIt {
             ));
     gh.lazySingleton<_i997.DashboardRemoteDataSource>(() =>
         _i997.DashboardRemoteDataSourceImpl(apiClient: gh<_i228.ApiClient>()));
+    gh.lazySingleton<_i33.PaymentsRemoteDataSources>(() =>
+        _i33.PaymentsRemoteDataSourcesImpl(apiClient: gh<_i228.ApiClient>()));
     gh.lazySingleton<_i166.DashboardRepository>(
         () => _i214.DashboardRepositoryImpl(
               dashboardRemoteDataSource: gh<_i997.DashboardRemoteDataSource>(),
@@ -487,6 +503,10 @@ extension GetItInjectableX on _i174.GetIt {
     gh.lazySingleton<_i884.GetSuppliersListUsecase>(() =>
         _i884.GetSuppliersListUsecase(
             supplierRepository: gh<_i712.SuppliersRepository>()));
+    gh.lazySingleton<_i374.PaymentsRepo>(() => _i584.PaymentsRepoImpl(
+          paymentsRemoteDataSources: gh<_i33.PaymentsRemoteDataSources>(),
+          networkInfo: gh<_i646.NetworkInfo>(),
+        ));
     gh.lazySingleton<_i766.UpdateShippingInvoicesUseCase>(() =>
         _i766.UpdateShippingInvoicesUseCase(
             shippingInvoiceRepository: gh<_i43.ShippingInvoicesRepository>()));
@@ -636,6 +656,8 @@ extension GetItInjectableX on _i174.GetIt {
           gh<_i232.AddBankAccountUseCase>(),
           gh<_i253.DeleteBankAccountUseCase>(),
         ));
+    gh.lazySingleton<_i819.GetPaymentsUseCase>(
+        () => _i819.GetPaymentsUseCase(repo: gh<_i374.PaymentsRepo>()));
     gh.factory<_i43.InvoicePdfCubit>(
         () => _i43.InvoicePdfCubit(gh<_i223.GetCompanyUseCase>()));
     gh.factory<_i721.PackingListPdfCubit>(
@@ -670,6 +692,8 @@ extension GetItInjectableX on _i174.GetIt {
           gh<_i57.UpdateBlInsturctionsUseCase>(),
           gh<_i170.GetBlInsturctionByIdUseCase>(),
         ));
+    gh.lazySingleton<_i1053.UpdatePaymentUseCase>(
+        () => _i1053.UpdatePaymentUseCase(gh<_i374.PaymentsRepo>()));
     gh.lazySingleton<_i226.DeleteSupplierUsecase>(() =>
         _i226.DeleteSupplierUsecase(
             suppliersRepository: gh<_i712.SuppliersRepository>()));
@@ -787,6 +811,8 @@ extension GetItInjectableX on _i174.GetIt {
               gh<_i42.UpdateCustomerProformaUseCase>(),
               gh<_i239.GetCustomerProformaByIdUseCase>(),
             ));
+    gh.factory<_i502.PaymentFormCubit>(
+        () => _i502.PaymentFormCubit(gh<_i1053.UpdatePaymentUseCase>()));
     gh.factory<_i612.CustomersProformasListBloc>(
         () => _i612.CustomersProformasListBloc(
               gh<_i330.GetCustomersProformasListUseCase>(),
@@ -815,6 +841,8 @@ extension GetItInjectableX on _i174.GetIt {
           gh<_i473.UpdateDealUseCase>(),
           gh<_i223.DeleteDealUseCase>(),
         ));
+    gh.factory<_i481.PaymentsCubit>(
+        () => _i481.PaymentsCubit(gh<_i819.GetPaymentsUseCase>()));
     gh.factory<_i839.ShippingInvoiceFormBloc>(
         () => _i839.ShippingInvoiceFormBloc(
               gh<_i163.CreateShippingInvoiceUseCase>(),

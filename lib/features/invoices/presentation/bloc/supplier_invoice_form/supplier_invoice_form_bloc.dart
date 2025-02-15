@@ -123,7 +123,7 @@ class SupplierInvoiceFormBloc extends Bloc<SupplierInvoiceFormEvent, SupplierInv
       totalAmountController.text = state.supplierInvoice?.totalAmount.toString() ?? '';
       typeMaterialNameController.text = state.supplierInvoice?.material ?? '';
       dateController.text = state.supplierInvoice?.date.formattedDateYYYYMMDD ?? DateTime.now().formattedDateYYYYMMDD;
-      statusController.text = state.supplierInvoice?.status.capitalized ?? '';
+      statusController.text = state.supplierInvoice?.status.capitalized ?? 'Pending';
       setupControllersListeners();
       add(SupplierInvoiceFormChangedEvent());
     }

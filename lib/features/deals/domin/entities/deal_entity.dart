@@ -1,6 +1,7 @@
 import 'package:autro_app/features/customers/domin/entities/customer_entity.dart';
 import 'package:autro_app/features/invoices/domin/entities/customer_invoice_entity.dart';
 import 'package:autro_app/features/invoices/domin/entities/supplier_invoice_entity.dart';
+import 'package:autro_app/features/payment/domin/entities/payment_entity.dart';
 import 'package:autro_app/features/proformas/domin/entities/customer_proforma_entity.dart';
 import 'package:autro_app/features/proformas/domin/entities/supplier_proforma_entity.dart';
 import 'package:autro_app/features/settings/domin/entities/bank_account_entity.dart';
@@ -27,6 +28,7 @@ class DealEntity extends Equatable {
   final double totalExpenses;
   final double netProfit;
   final CustomerEntity? customer;
+  final List<PaymentEntity> payments;
   final SupplierEntity? supplier;
   final BankAccountEntity? bankAccount;
 
@@ -51,6 +53,7 @@ class DealEntity extends Equatable {
     required this.bankAccount,
     required this.supplierInvoiceEntity,
     required this.supplierProformaEntity,
+    required this.payments,
   });
 
   String get formattedTotalRevenue => "€${totalRevenue.toStringAsFixed(2)}";
@@ -59,6 +62,8 @@ class DealEntity extends Equatable {
 
   bool get hasInvoice => customerInvoice != null;
   bool get hasShippingInvoice => shippingInvoice != null;
+  bool get hasProforma => customerProforma != null;
+  bool get paymentCompleted => payments.every((payment) => payment.remaining <= 0 && payment.amount > 0);
 
   @override
   List<Object?> get props => [

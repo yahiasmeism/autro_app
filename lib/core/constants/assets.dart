@@ -10,6 +10,14 @@ class Assets {
   /// assets/icons/clear_all.svg
   static const String iconsClearAll = "assets/icons/clear_all.svg";
 
+  /// Assets for iconsClose
+  /// assets/icons/close.svg
+  static const String iconsClose = "assets/icons/close.svg";
+
+  /// Assets for iconsComplete
+  /// assets/icons/complete.svg
+  static const String iconsComplete = "assets/icons/complete.svg";
+
   /// Assets for iconsContactDetails
   /// assets/icons/contact-details.svg
   static const String iconsContactDetails = "assets/icons/contact-details.svg";
@@ -49,6 +57,10 @@ class Assets {
   /// Assets for iconsEye
   /// assets/icons/eye.svg
   static const String iconsEye = "assets/icons/eye.svg";
+
+  /// Assets for iconsIncomplete
+  /// assets/icons/incomplete.svg
+  static const String iconsIncomplete = "assets/icons/incomplete.svg";
 
   /// Assets for iconsInternet
   /// assets/icons/internet.svg
@@ -105,6 +117,10 @@ class Assets {
   /// Assets for iconsUpload
   /// assets/icons/upload.svg
   static const String iconsUpload = "assets/icons/upload.svg";
+
+  /// Assets for imagesAppIcon
+  /// assets/images/app_icon.png
+  static const String imagesAppIcon = "assets/images/app_icon.png";
 
   /// Assets for imagesTricycleLogo
   /// assets/images/Tricycle-logo.png

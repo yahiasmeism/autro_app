@@ -13,8 +13,8 @@ class PaymentModel extends PaymentEntity implements BaseMapable {
     return PaymentModel(
       id: (json['id'] as int?).toIntOrZero,
       date: DateTime.tryParse((json['date'] as String?).orEmpty).orDefault,
-      amount: double.tryParse((json['amount'] as String?).orEmpty).toDoubleOrZero,
-      prePayment: double.tryParse((json['pre_payment'] as String?).orEmpty).toDoubleOrZero,
+      amount: (json['amount'] as num?).toDoubleOrZero,
+      prePayment: (json['pre_payment'] as num?).toDoubleOrZero,
       clientType: ClientTypeX.fromName((json['client_type'] as String?).orEmpty),
     );
   }

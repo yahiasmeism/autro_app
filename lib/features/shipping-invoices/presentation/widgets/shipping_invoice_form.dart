@@ -119,7 +119,7 @@ class ShippingInvoiceForm extends StatelessWidget {
                               bloc.statusController.text = p0 ?? '';
                             },
                             items: const ['Pending', 'Sent'],
-                            hintText: 'e.g yyyy-mm-dd',
+                            hintText: 'e.g Status',
                             initialValue: bloc.statusController.text.isEmpty ? 'Pending' : bloc.statusController.text,
                             labelText: 'Status',
                           ),
