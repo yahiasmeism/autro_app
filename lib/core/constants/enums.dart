@@ -7,6 +7,8 @@ enum AuthState {
   unauthenticated,
 }
 
+enum ClientType { customer, supplier }
+
 enum PdfAction { view, export }
 
 enum HiveBoxType { user }
