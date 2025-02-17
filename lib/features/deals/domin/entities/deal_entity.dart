@@ -20,7 +20,7 @@ class DealEntity extends Equatable {
   final DateTime? deliveryDate;
   final DateTime? etaDate;
   final CustomerProformaEntity? customerProforma;
-  final SupplierInvoiceEntity? supplierInvoiceEntity;
+  final List<SupplierInvoiceEntity>? supplierInvoices;
   final SupplierProformaEntity? supplierProformaEntity;
   final CustomerInvoiceEntity? customerInvoice;
   final ShippingInvoiceEntity? shippingInvoice;
@@ -51,7 +51,7 @@ class DealEntity extends Equatable {
     required this.supplier,
     required this.dealNumber,
     required this.bankAccount,
-    required this.supplierInvoiceEntity,
+    required this.supplierInvoices,
     required this.supplierProformaEntity,
     required this.payments,
   });
@@ -64,6 +64,14 @@ class DealEntity extends Equatable {
   bool get hasShippingInvoice => shippingInvoice != null;
   bool get hasProforma => customerProforma != null;
   bool get paymentCompleted => payments.every((payment) => payment.remaining <= 0 && payment.amount > 0) && payments.isNotEmpty;
+
+  double get supplierInvoicesTotalAmount {
+    double total = 0;
+    for (var invoice in supplierInvoices ?? []) {
+      total += invoice.amount;
+    }
+    return total;
+  }
 
   @override
   List<Object?> get props => [
@@ -85,7 +93,7 @@ class DealEntity extends Equatable {
         supplier,
         dealNumber,
         bankAccount,
-        supplierInvoiceEntity,
+        supplierInvoices,
         supplierProformaEntity,
       ];
 }

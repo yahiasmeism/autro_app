@@ -14,9 +14,9 @@ class DealInvoicesTabs extends StatelessWidget {
   Widget build(BuildContext context) {
     final invoices = <Widget>[
       if (dealEntity.customerInvoice != null) _buildCustomerInvoice(dealEntity.customerInvoice!),
-      if (dealEntity.supplierInvoiceEntity != null) ...[
+      if (dealEntity.supplierInvoices != null) ...[
         const SizedBox(height: 24),
-        _buildSupplierInvoice(dealEntity.supplierInvoiceEntity!)
+        _buildSupplierInvoice(dealEntity.supplierInvoices!)
       ],
     ];
     return Padding(
@@ -45,18 +45,21 @@ class DealInvoicesTabs extends StatelessWidget {
     );
   }
 
-  _buildSupplierInvoice(SupplierInvoiceEntity invoice) {
+  _buildSupplierInvoice(List<SupplierInvoiceEntity> invoice) {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         const Text(
-          'Supplier Invoice',
+          'Supplier Invoices',
           style: TextStyle(fontWeight: FontWeight.w600, fontSize: 18),
         ),
         const SizedBox(height: 4),
         const Divider(),
         const SizedBox(height: 4),
-        SupplierInvoiceListTile(invoiceEntity: invoice),
+        ...invoice.map((e) => Padding(
+              padding: const EdgeInsets.only(bottom: 8),
+              child: SupplierInvoiceListTile(invoiceEntity: e),
+            )),
       ],
     );
   }

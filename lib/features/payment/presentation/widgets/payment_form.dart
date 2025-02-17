@@ -85,7 +85,7 @@ class PaymentForm extends StatelessWidget {
                         onChanged: (p0) {
                           if (p0 == 'Invoice') {
                             if (paymentEntity.clientType == ClientType.supplier) {
-                              cubit.totalAmountController.text = deal.supplierInvoiceEntity?.totalAmount.toString() ?? '';
+                              cubit.totalAmountController.text = deal.supplierInvoicesTotalAmount.toString();
                             } else if (paymentEntity.clientType == ClientType.customer) {
                               cubit.totalAmountController.text = deal.customerInvoice?.totalPrice.toString() ?? '';
                             }
@@ -205,7 +205,7 @@ class PaymentForm extends StatelessWidget {
 
   List<String> get items => [
         if ((deal.customerInvoice != null && paymentEntity.clientType == ClientType.customer) ||
-            (deal.supplierInvoiceEntity != null && paymentEntity.clientType == ClientType.supplier))
+            (deal.supplierInvoices?.isNotEmpty == true && paymentEntity.clientType == ClientType.supplier))
           'Invoice',
         if ((deal.customerProforma != null && paymentEntity.clientType == ClientType.customer) ||
             (deal.supplierProformaEntity != null && paymentEntity.clientType == ClientType.supplier))

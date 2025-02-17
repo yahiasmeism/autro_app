@@ -42,7 +42,7 @@ class SupplierInvoiceForm extends StatelessWidget {
                             seriesNumberController: bloc.dealNumberController,
                             idController: bloc.dealIdController,
                             onItemTap: (deal) {
-                              if (deal.supplierInvoiceEntity != null) {
+                              if (deal.supplierInvoices != null) {
                                 DialogUtil.showErrorDialog(context,
                                     content: 'This deal connected with another invoice , please select another deal');
                               }
