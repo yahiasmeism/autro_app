@@ -42,10 +42,6 @@ class SupplierInvoiceForm extends StatelessWidget {
                             seriesNumberController: bloc.dealNumberController,
                             idController: bloc.dealIdController,
                             onItemTap: (deal) {
-                              if (deal.supplierInvoices != null) {
-                                DialogUtil.showErrorDialog(context,
-                                    content: 'This deal connected with another invoice , please select another deal');
-                              }
                               bloc.supplierIdController.text = deal.supplier?.id.toString() ?? '';
                               bloc.supplierNameController.text = deal.supplier?.name ?? '';
                               if (deal.supplier != null) {
@@ -184,7 +180,7 @@ class SupplierInvoiceForm extends StatelessWidget {
           (message) {
             if (state.supplierInvoice != null) {
               context.read<SuppliersInvoicesListBloc>().add(AddedUpdatedSuppliersInvoiceEvent());
-              context.read<DealsListBloc>().add(GetDealsListEvent());
+              context.read<DealsListBloc>().add(const GetDealsListEvent());
               context.read<DealDetailsCubit>().refresh();
             }
             NavUtil.pop(context, state.supplierInvoice);

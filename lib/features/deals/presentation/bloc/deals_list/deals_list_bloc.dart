@@ -48,7 +48,7 @@ class DealsListBloc extends Bloc<DealsListEvent, DealsListState> {
 
     if (event is HandleFailureEvent) {
       await onHandleFailure(event, emit);
-  }
+    }
 
     if (event is NextPageEvent) {
       await onNextPage(event, emit);
@@ -71,11 +71,14 @@ class DealsListBloc extends Bloc<DealsListEvent, DealsListState> {
     if (event is CreateDealEvent) {
       await _onCreateNewDeal(event, emit);
     }
+    if (event is ApplyFilterEvent) {
+      await _onApplyFilter(event, emit);
+    }
   }
 
   Future onGetDealsList(GetDealsListEvent event, Emitter<DealsListState> emit) async {
     emit(DealsListInitial());
-    final paginationFilterDto = PaginationFilterDTO.initial();
+    final paginationFilterDto = PaginationFilterDTO.initial().copyWith(filter: event.filterDTO);
     final params = GetDealsListUseCaseParams(dto: paginationFilterDto);
     final either = await getDealsListUsecase.call(params);
     either.fold(
@@ -109,7 +112,7 @@ class DealsListBloc extends Bloc<DealsListEvent, DealsListState> {
   onHandleFailure(HandleFailureEvent event, Emitter<DealsListState> emit) async {
     emit(DealsListInitial());
     await Future.delayed(const Duration(milliseconds: 300));
-    add(GetDealsListEvent());
+    add(const GetDealsListEvent());
   }
 
   onNextPage(NextPageEvent event, Emitter<DealsListState> emit) {
@@ -251,5 +254,27 @@ class DealsListBloc extends Bloc<DealsListEvent, DealsListState> {
         emit(state.copyWith(dealsList: updateDealsList));
       },
     );
+  }
+
+  _onApplyFilter(ApplyFilterEvent event, Emitter<DealsListState> emit) async {
+    final state = this.state as DealsListLoaded;
+    final paginationFilterDto = state.paginationFilterDTO.copyWith(filter: event.filterDto);
+
+    final params = GetDealsListUseCaseParams(dto: paginationFilterDto);
+
+    emit(state.copyWith(loading: true));
+
+    final either = await getDealsListUsecase.call(params);
+    emit(state.copyWith(loading: false));
+    either.fold(
+      (failure) => emit(state.copyWith(failureOrSuccessOption: some(left(failure)))),
+      (deals) => emit(state.copyWith(
+        totalCount: totalCount,
+        dealsList: deals,
+        paginationFilterDTO: paginationFilterDto,
+      )),
+    );
+
+    emit(state.copyWith(paginationFilterDTO: paginationFilterDto));
   }
 }

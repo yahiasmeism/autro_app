@@ -7,7 +7,11 @@ sealed class DealsListEvent extends Equatable {
   List<Object> get props => [];
 }
 
-class GetDealsListEvent extends DealsListEvent {}
+class GetDealsListEvent extends DealsListEvent {
+  final FilterDTO? filterDTO;
+
+  const GetDealsListEvent({this.filterDTO});
+}
 
 class OnUpdatePaginationEvent extends DealsListEvent {
   final int pageNumber;
@@ -26,10 +30,16 @@ class PreviousPageEvent extends DealsListEvent {}
 class DeleteDealEvent extends DealsListEvent {
   final BuildContext context;
   final int dealId;
-  const DeleteDealEvent({required this.dealId,required this.context});
+  const DeleteDealEvent({required this.dealId, required this.context});
 
   @override
   List<Object> get props => [dealId];
+}
+
+class ApplyFilterEvent extends DealsListEvent {
+  final FilterDTO filterDto;
+
+  const ApplyFilterEvent({required this.filterDto});
 }
 
 class SearchInputChangedEvent extends DealsListEvent {

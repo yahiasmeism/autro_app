@@ -1,5 +1,6 @@
 import 'package:autro_app/core/di/di.dart';
 import 'package:autro_app/core/widgets/custom_tab_bar.dart';
+import 'package:autro_app/features/suppliers/presentation/screens/layouts/desktop/supplier_details_tab_views/supplier_deals_list_tab.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
@@ -25,31 +26,27 @@ class SupplierDetailsDesktopLayout extends StatelessWidget {
             style: TextStyle(color: Colors.black),
           ),
         ),
-        body: const Padding(
-          padding: EdgeInsets.all(24),
+        body: Padding(
+          padding: const EdgeInsets.all(24),
           child: DefaultTabController(
-            length: 4,
+            length: 2,
             child: Column(
               children: [
-                CustomTabBar(
+                const CustomTabBar(
                   tabs: [
                     'Overview',
                     'Deals',
-                    'Proformas',
-                    'Invoices',
                   ],
                 ),
-                SizedBox(
-                  height: 24,
+                const SizedBox(
+                  height: 16,
                 ),
                 Expanded(
                   child: TabBarView(
-                    physics: NeverScrollableScrollPhysics(),
+                    physics: const NeverScrollableScrollPhysics(),
                     children: [
-                      SupplierDetailsOverviewTab(),
-                      Center(child: Text('Deals')),
-                      Center(child: Text('Proformas')),
-                      Center(child: Text('Invoices')),
+                      const SupplierDetailsOverviewTab(),
+                      SupplierDealsListTab(supplierId: id),
                     ],
                   ),
                 ),
