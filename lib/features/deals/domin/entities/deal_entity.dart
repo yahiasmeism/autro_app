@@ -56,6 +56,15 @@ class DealEntity extends Equatable {
     required this.payments,
   });
 
+  String get currencySymbol {
+    if (bankAccount?.currency == "EUR") {
+      return "€";
+    } else if (bankAccount?.currency == "USD") {
+      return "\$";
+    }
+    return "";
+  }
+
   String get formattedTotalRevenue => "€${totalRevenue.toStringAsFixed(2)}";
   String get formattedTotalExpenses => "€${totalExpenses.toStringAsFixed(2)}";
   String get formattedNetProfit => "€${netProfit.toStringAsFixed(2)}";

@@ -6,9 +6,12 @@ import 'package:autro_app/features/payment/domin/entities/payment_actitvity_enti
 import 'package:flutter/material.dart';
 
 class PaymentHistoryListTile extends StatelessWidget {
-  const PaymentHistoryListTile({super.key, required this.paymentActitvityEntity, required this.name});
   final PaymentActitvityEntity paymentActitvityEntity;
   final String name;
+  final String currencySymbol;
+
+  const PaymentHistoryListTile(
+      {super.key, required this.paymentActitvityEntity, required this.name, required this.currencySymbol});
 
   @override
   Widget build(BuildContext context) {
@@ -29,17 +32,17 @@ class PaymentHistoryListTile extends StatelessWidget {
           const SizedBox(width: 16),
           _buildCell(
             flex: 4,
-            text: paymentActitvityEntity.amount.toStringAsFixed(2),
+            text: "$currencySymbol${paymentActitvityEntity.amount.toStringAsFixed(2)}",
           ),
           const SizedBox(width: 16),
           _buildCell(
             flex: 4,
-            text: paymentActitvityEntity.prePayment.toStringAsFixed(2),
+            text: "$currencySymbol${paymentActitvityEntity.prePayment.toStringAsFixed(2)}",
           ),
           const SizedBox(width: 16),
           _buildCell(
             flex: 4,
-            text: paymentActitvityEntity.remainingAmount.toStringAsFixed(2),
+            text: "$currencySymbol ${paymentActitvityEntity.remainingAmount.toStringAsFixed(2)}",
           ),
           const SizedBox(width: 16),
           _buildCell(

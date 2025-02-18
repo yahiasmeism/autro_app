@@ -19,5 +19,8 @@ class PaymentActitvityEntity extends Equatable {
         clientType,
       ];
 
-  double get remainingAmount => amount - prePayment;
+  double get remainingAmount {
+    final result = amount - prePayment;
+    return result < 0 ? 0 : result;
+  }
 }

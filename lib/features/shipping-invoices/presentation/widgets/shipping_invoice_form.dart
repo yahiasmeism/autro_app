@@ -173,7 +173,7 @@ class ShippingInvoiceForm extends StatelessWidget {
           (message) {
             if (state.shippingInvoice != null) {
               context.read<ShippingInvoicesListBloc>().add(AddedUpdatedShippingInvoiceEvent());
-              context.read<DealsListBloc>().add(GetDealsListEvent());
+              context.read<DealsListBloc>().add(const GetDealsListEvent());
               context.read<DealDetailsCubit>().refresh();
             }
             NavUtil.pop(context, state.shippingInvoice);

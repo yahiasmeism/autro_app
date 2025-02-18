@@ -133,7 +133,7 @@ class DealBillForm extends StatelessWidget {
           (message) {
             if (state.dealBill != null) {
               context.read<DealBillsListBloc>().add(AddedUpdatedDealBillEvent());
-              context.read<DealsListBloc>().add(GetDealsListEvent());
+              context.read<DealsListBloc>().add(const GetDealsListEvent());
               context.read<DealDetailsCubit>().refresh();
             }
             NavUtil.pop(context, state.dealBill);

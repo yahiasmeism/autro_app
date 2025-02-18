@@ -33,7 +33,7 @@ class CustomerInvoiceFormDesktopLayout extends StatelessWidget {
                   (message) {
                     if (state.invoice != null) {
                       context.read<CustomersInvoicesListBloc>().add(AddedUpdatedCustomersInvoiceEvent());
-                      context.read<DealsListBloc>().add(GetDealsListEvent());
+                      context.read<DealsListBloc>().add(const GetDealsListEvent());
                       context.read<DealDetailsCubit>().refresh();
                     }
                     NavUtil.pop(context, state.invoice);

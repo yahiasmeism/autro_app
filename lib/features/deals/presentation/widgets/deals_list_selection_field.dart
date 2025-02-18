@@ -95,7 +95,7 @@ class _DealsListSelectionFieldState extends State<DealsListSelectionField> {
             insetPadding: const EdgeInsets.all(0),
             shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(16)),
             child: BlocProvider(
-              create: (context) => sl<DealsListBloc>()..add(GetDealsListEvent()),
+              create: (context) => sl<DealsListBloc>()..add(const GetDealsListEvent()),
               child: SizedBox(
                 width: 600,
                 height: 500,

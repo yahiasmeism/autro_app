@@ -141,7 +141,7 @@ class CustomersInvoicesListBloc extends Bloc<CustomersInvoicesListEvent, Custome
       },
     );
     if (event.context.mounted) {
-      event.context.read<DealsListBloc>().add(GetDealsListEvent());
+      event.context.read<DealsListBloc>().add(const GetDealsListEvent());
       event.context.read<DealDetailsCubit>().refresh();
     }
   }

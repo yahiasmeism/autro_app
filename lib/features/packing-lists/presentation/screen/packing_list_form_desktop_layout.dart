@@ -34,7 +34,7 @@ class PackingListFormDesktopLayout extends StatelessWidget {
                   (message) {
                     if (state.packingList != null) {
                       context.read<PackingListsBloc>().add(AddedUpdatedPackingListEvent());
-                      context.read<DealsListBloc>().add(GetDealsListEvent());
+                      context.read<DealsListBloc>().add(const GetDealsListEvent());
                       context.read<DealDetailsCubit>().refresh();
                     }
                     NavUtil.pop(context, state.packingList);

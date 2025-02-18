@@ -74,7 +74,7 @@ class AuthWrapper extends StatelessWidget {
       context.read<CustomersInvoicesListBloc>().add(GetCustomersInvoicesListEvent());
       context.read<BillsListBloc>().add(GetBillsListEvent());
       context.read<ShippingInvoicesListBloc>().add(GetShippingInvoicesListEvent());
-      context.read<DealsListBloc>().add(GetDealsListEvent());
+      context.read<DealsListBloc>().add(const GetDealsListEvent());
       context.read<SuppliersInvoicesListBloc>().add(GetSuppliersInvoicesListEvent());
       context.read<SuppliersProformasListBloc>().add(GetSuppliersProformasListEvent());
       context.read<PackingListsBloc>().add(GetPackingListsEvent());

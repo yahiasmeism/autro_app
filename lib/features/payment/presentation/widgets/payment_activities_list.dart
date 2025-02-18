@@ -73,7 +73,9 @@ class PaymentActivitiesList extends StatelessWidget {
             },
             itemBuilder: (context, index) {
               return PaymentHistoryListTile(
-                  paymentActitvityEntity: customerPaymentHistory[index], name: dealEntity.customer?.name ?? '');
+                  currencySymbol: dealEntity.currencySymbol,
+                  paymentActitvityEntity: customerPaymentHistory[index],
+                  name: dealEntity.customer?.name ?? '');
             },
             itemCount: customerPaymentHistory.length,
           ),
@@ -101,7 +103,10 @@ class PaymentActivitiesList extends StatelessWidget {
             },
             itemBuilder: (context, index) {
               return PaymentHistoryListTile(
-                  paymentActitvityEntity: supplierPaymentHistory[index], name: dealEntity.supplier?.name ?? '');
+                currencySymbol: dealEntity.currencySymbol,
+                paymentActitvityEntity: supplierPaymentHistory[index],
+                name: dealEntity.supplier?.name ?? '',
+              );
             },
             itemCount: supplierPaymentHistory.length,
           ),

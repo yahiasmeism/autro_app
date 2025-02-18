@@ -34,7 +34,7 @@ class CustomerProformaFormDesktopLayout extends StatelessWidget {
                   (message) {
                     if (state.proforma != null) {
                       context.read<CustomersProformasListBloc>().add(AddedUpdatedProformaEvent());
-                      context.read<DealsListBloc>().add(GetDealsListEvent());
+                      context.read<DealsListBloc>().add(const GetDealsListEvent());
                       context.read<DealDetailsCubit>().refresh();
                     }
                     NavUtil.pop(context, state.proforma);

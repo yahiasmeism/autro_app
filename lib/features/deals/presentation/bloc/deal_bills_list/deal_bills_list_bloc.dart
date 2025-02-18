@@ -141,7 +141,7 @@ class DealBillsListBloc extends Bloc<DealBillsListEvent, DealBillsListState> {
     );
     if (!event.context.mounted) return;
     event.context.read<DealDetailsCubit>().refresh();
-    event.context.read<DealsListBloc>().add(GetDealsListEvent());
+    event.context.read<DealsListBloc>().add(const GetDealsListEvent());
   }
 
   onSearchInputChanged(SearchInputChangedDealBillsEvent event, Emitter<DealBillsListState> emit) async {

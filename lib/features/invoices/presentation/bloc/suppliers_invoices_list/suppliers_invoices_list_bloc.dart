@@ -141,7 +141,7 @@ class SuppliersInvoicesListBloc extends Bloc<SuppliersInvoicesListEvent, Supplie
       },
     );
     if (event.context.mounted) {
-      event.context.read<DealsListBloc>().add(GetDealsListEvent());
+      event.context.read<DealsListBloc>().add(const GetDealsListEvent());
       event.context.read<DealDetailsCubit>().refresh();
     }
   }

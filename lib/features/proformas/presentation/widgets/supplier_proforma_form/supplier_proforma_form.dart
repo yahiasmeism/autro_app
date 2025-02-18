@@ -162,7 +162,7 @@ class SupplierProformaForm extends StatelessWidget {
           (message) {
             if (state.supplierProforma != null) {
               context.read<SuppliersProformasListBloc>().add(AddedUpdatedSuppliersProformaEvent());
-              context.read<DealsListBloc>().add(GetDealsListEvent());
+              context.read<DealsListBloc>().add(const GetDealsListEvent());
               context.read<DealDetailsCubit>().refresh();
             }
             NavUtil.pop(context, state.supplierProforma);
