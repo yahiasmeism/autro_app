@@ -118,8 +118,9 @@ class BillFormBloc extends Bloc<BillFormEvent, BillFormState> {
 
   _onBillFormChanged(BillFormChangedEvent event, Emitter<BillFormState> emit) {
     final state = this.state as BillFormLoaded;
-    remainingAmountController.text =
-        ((double.tryParse(amountController.text) ?? 0.0) - (double.tryParse(vatController.text) ?? 0.0)).toStringAsFixed(2);
+    remainingAmountController.text = ((double.tryParse(amountController.text) ?? 0.0) -
+            (((double.tryParse(vatController.text)) ?? 0.0) / 100) * (double.tryParse(amountController.text) ?? 0.0))
+        .toStringAsFixed(2);
     final formIsNotEmpty = vendorController.text.isNotEmpty && amountController.text.isNotEmpty && dateController.text.isNotEmpty;
 
     if (state.updatedMode) {

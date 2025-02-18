@@ -462,14 +462,14 @@ class ProformaPdfScreen extends StatelessWidget {
         pw.Column(
           crossAxisAlignment: pw.CrossAxisAlignment.end,
           children: [
-            pw.Text(
-              'Seller Signature:',
-              style: pw.TextStyle(
-                color: PdfColors.blue900,
-                fontSize: 11,
-                fontWeight: pw.FontWeight.bold,
-              ),
-            ),
+            // pw.Text(
+            //   'Seller Signature:',
+            //   style: pw.TextStyle(
+            //     color: PdfColors.blue900,
+            //     fontSize: 11,
+            //     fontWeight: pw.FontWeight.bold,
+            //   ),
+            // ),
             pw.SizedBox(height: 10),
             pw.Image(state.signatureImageProvider, width: 150, height: 70, dpi: 3000),
           ],

@@ -7,6 +7,7 @@ import 'package:autro_app/core/utils/dialog_utils.dart';
 import 'package:autro_app/core/widgets/inputs/standard_input.dart';
 import 'package:autro_app/core/widgets/standard_selection_dropdown.dart';
 import 'package:autro_app/features/deals/domin/entities/deal_entity.dart';
+import 'package:autro_app/features/deals/presentation/bloc/deal_details/deal_details_cubit.dart';
 import 'package:autro_app/features/deals/presentation/bloc/deals_list/deals_list_bloc.dart';
 import 'package:autro_app/features/payment/domin/entities/payment_entity.dart';
 import 'package:flutter/material.dart';
@@ -37,7 +38,8 @@ class PaymentForm extends StatelessWidget {
                 },
                 (r) {
                   DialogUtil.showSuccessSnackBar(context, r);
-                  context.read<DealsListBloc>().add(GetDealsListEvent());
+                  context.read<DealsListBloc>().add(const GetDealsListEvent());
+                  context.read<DealDetailsCubit>().refresh();
                 },
               );
             },

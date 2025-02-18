@@ -9,6 +9,7 @@ import 'package:autro_app/core/widgets/standard_card.dart';
 import 'package:autro_app/features/deals/domin/entities/deal_entity.dart';
 import 'package:autro_app/features/payment/presentation/bloc/payments/payments_cubit.dart';
 import 'package:autro_app/features/payment/presentation/widgets/customer_payment_tile.dart';
+import 'package:autro_app/features/payment/presentation/widgets/payment_activities_list.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
@@ -66,31 +67,41 @@ class PaymentsScreen extends StatelessWidget {
         Positioned.fill(
           child: Padding(
             padding: const EdgeInsets.all(8.0),
-            child: StandardCard(
-              title: null,
-              child: Column(
-                children: [
-                  if (state.customerPayments.isNotEmpty && deal.customer != null)
-                    CustomerPaymentTile(
-                      payment: state.customerPayments.first,
-                      dealEntity: deal,
-                      customerName: deal.customer!.name,
-                    ),
-                  if (state.supplierPayments.isNotEmpty && deal.supplier != null) ...[
-                    const SizedBox(height: 16),
-                    SupplierPaymentTile(
-                      deal: deal,
-                      payment: state.supplierPayments.first,
-                      supplierName: deal.supplier!.name,
-                    ),
-                  ],
-                ],
-              ),
+            child: Column(
+              children: [
+                _buildPayments(state),
+                const SizedBox(height: 16),
+                Expanded(child: PaymentActivitiesList(dealEntity: deal, payments: state.payments)),
+              ],
             ),
           ),
         ),
         if (state.loading) const LoadingOverlay(),
       ],
+    );
+  }
+
+  Widget _buildPayments(PaymentsLoaded state) {
+    return StandardCard(
+      title: null,
+      child: Column(
+        children: [
+          if (state.customerPayments.isNotEmpty && deal.customer != null)
+            CustomerPaymentTile(
+              payment: state.customerPayments.first,
+              dealEntity: deal,
+              customerName: deal.customer!.name,
+            ),
+          if (state.supplierPayments.isNotEmpty && deal.supplier != null) ...[
+            const SizedBox(height: 16),
+            SupplierPaymentTile(
+              deal: deal,
+              payment: state.supplierPayments.first,
+              supplierName: deal.supplier!.name,
+            ),
+          ],
+        ],
+      ),
     );
   }
 }

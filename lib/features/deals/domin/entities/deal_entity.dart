@@ -67,8 +67,9 @@ class DealEntity extends Equatable {
 
   double get supplierInvoicesTotalAmount {
     double total = 0;
-    for (var invoice in supplierInvoices ?? []) {
-      total += invoice.amount;
+
+    for (SupplierInvoiceEntity invoice in supplierInvoices ?? []) {
+      total += invoice.totalAmount;
     }
     return total;
   }

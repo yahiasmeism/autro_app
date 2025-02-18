@@ -58,6 +58,12 @@ final class BlInstructionFormLoaded extends BlInstructionFormState {
     return attachmentUrl.split('.').last == 'pdf';
   }
 
+  bool get blInstructionHasWordAttachment {
+    final attachmentUrl = this.attachmentUrl.fold(() => '', (r) => r);
+    if (attachmentUrl.isEmpty) return false;
+    return attachmentUrl.split('.').last == 'docx' || attachmentUrl.split('.').last == 'doc';
+  }
+
   BlInstructionFormLoaded copyWith({
     BlInsturctionEntity? blInstruction,
     bool? clearEnabled,

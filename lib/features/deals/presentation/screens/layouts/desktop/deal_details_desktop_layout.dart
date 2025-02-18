@@ -52,7 +52,7 @@ class _DealDetailsDesktopLayoutState extends State<DealDetailsDesktopLayout> wit
           (failure) => DialogUtil.showErrorSnackBar(context, getErrorMsgFromFailure(failure)),
           (message) {
             DialogUtil.showSuccessSnackBar(context, message);
-            context.read<DealsListBloc>().add(GetDealsListEvent());
+            context.read<DealsListBloc>().add(const GetDealsListEvent());
           },
         ),
       );
@@ -64,7 +64,7 @@ class _DealDetailsDesktopLayoutState extends State<DealDetailsDesktopLayout> wit
           (message) {
             DialogUtil.showSuccessSnackBar(context, message);
             NavUtil.pop(context);
-            context.read<DealsListBloc>().add(GetDealsListEvent());
+            context.read<DealsListBloc>().add(const GetDealsListEvent());
             context.read<CustomersProformasListBloc>().add(GetProformasListEvent());
             context.read<CustomersInvoicesListBloc>().add(GetCustomersInvoicesListEvent());
             context.read<ShippingInvoicesListBloc>().add(GetShippingInvoicesListEvent());

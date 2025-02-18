@@ -110,7 +110,7 @@ class BlInstructionForm extends StatelessWidget {
           (message) {
             if (state.blInstruction != null) {
               context.read<BlInstructionsListBloc>().add(AddedUpdatedBlInstructionEvent());
-              context.read<DealsListBloc>().add(GetDealsListEvent());
+              context.read<DealsListBloc>().add(const GetDealsListEvent());
               context.read<DealDetailsCubit>().refresh();
             }
             NavUtil.pop(context, state.blInstruction);

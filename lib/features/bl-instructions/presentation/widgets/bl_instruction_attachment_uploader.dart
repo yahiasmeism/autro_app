@@ -5,11 +5,9 @@ import 'package:autro_app/core/theme/app_colors.dart';
 import 'package:autro_app/core/theme/text_styles.dart';
 import 'package:autro_app/core/utils/dialog_utils.dart';
 import 'package:autro_app/core/utils/nav_util.dart';
-import 'package:autro_app/core/widgets/image_viewer.dart';
 import 'package:autro_app/core/widgets/app_pdf_viewer.dart';
 import 'package:autro_app/features/bl-instructions/presentation/bloc/bl_instruction_form/bl_instruction_bloc.dart';
 import 'package:autro_app/features/settings/presentation/widgets/upload_button.dart';
-import 'package:cached_network_image/cached_network_image.dart';
 import 'package:file_picker/file_picker.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -77,8 +75,8 @@ class BlInstructionAttachmentUploader extends StatelessWidget {
                   return state.attachmentUrl.fold(
                     () => _buildPlaceholder(),
                     (url) {
-                      if (state.blInstructionHasImageAttachment) {
-                        return _buildCachedNetworkImage(url, context);
+                      if (state.blInstructionHasWordAttachment) {
+                        return _buildNetworkDoc(url, context);
                       } else if (state.blInstructionHasPdfAttachment) {
                         return _buildNetworkPdf(url, context);
                       }
@@ -87,11 +85,8 @@ class BlInstructionAttachmentUploader extends StatelessWidget {
                   );
                 },
                 (file) {
-                  if (file.isImage) {
-                    return InkWell(
-                      onTap: () => NavUtil.push(context, ImageViewer(localPath: file.path)),
-                      child: Image.file(file),
-                    );
+                  if (file.isWordFile) {
+                    return _buildLocalDoc(file, context);
                   } else if (file.isPdf) {
                     return _buildLocalPdf(file, context);
                   }
@@ -136,7 +131,7 @@ class BlInstructionAttachmentUploader extends StatelessWidget {
 
   Future<void> _pickAttachment(BuildContext context) async {
     final result = await FilePicker.platform.pickFiles(
-      allowedExtensions: ['pdf'],
+      allowedExtensions: ['pdf', 'doc', 'docx'],
       type: FileType.custom,
       onFileLoading: (p0) {},
       allowMultiple: false,
@@ -157,24 +152,37 @@ class BlInstructionAttachmentUploader extends StatelessWidget {
     }
   }
 
-  Widget _buildCachedNetworkImage(String url, BuildContext context) {
+  // Widget _buildCachedNetworkImage(String url, BuildContext context) {
+  //   return InkWell(
+  //     onTap: () {
+  //       NavUtil.push(context, ImageViewer(networkPath: url));
+  //     },
+  //     child: CachedNetworkImage(
+  //       errorWidget: (context, url, error) {
+  //         return const Center(
+  //             child: Icon(
+  //           Icons.error_outline,
+  //           color: AppColors.red,
+  //           size: 40,
+  //         ));
+  //       },
+  //       imageUrl: url,
+  //       progressIndicatorBuilder: (context, url, progress) {
+  //         return Center(child: CircularProgressIndicator(value: progress.progress));
+  //       },
+  //     ),
+  //   );
+  // }
+
+  Widget _buildLocalDoc(File file, BuildContext context) {
     return InkWell(
       onTap: () {
-        NavUtil.push(context, ImageViewer(networkPath: url));
+        NavUtil.push(context, AppPdfViewer(localPath: file.path));
       },
-      child: CachedNetworkImage(
-        errorWidget: (context, url, error) {
-          return const Center(
-              child: Icon(
-            Icons.error_outline,
-            color: AppColors.red,
-            size: 40,
-          ));
-        },
-        imageUrl: url,
-        progressIndicatorBuilder: (context, url, progress) {
-          return Center(child: CircularProgressIndicator(value: progress.progress));
-        },
+      child: const Icon(
+        color: AppColors.primary,
+        Icons.description,
+        size: 40,
       ),
     );
   }
@@ -186,6 +194,18 @@ class BlInstructionAttachmentUploader extends StatelessWidget {
       },
       child: const Icon(
         color: AppColors.primary,
+        Icons.picture_as_pdf,
+        size: 40,
+      ),
+    );
+  }
+
+  Widget _buildNetworkDoc(String attachmentUrl, BuildContext context) {
+    return InkWell(
+      onTap: () {
+        NavUtil.push(context, AppPdfViewer(networkPath: attachmentUrl));
+      },
+      child: const Icon(
         Icons.picture_as_pdf,
         size: 40,
       ),
