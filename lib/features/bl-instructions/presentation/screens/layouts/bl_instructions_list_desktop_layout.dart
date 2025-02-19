@@ -30,7 +30,8 @@ class BlInsturctionsListDesktopLayout extends StatelessWidget {
             ),
             const StandartListTitle(title: 'BL Instructions'),
             Expanded(
-              child: BlocConsumer<BlInstructionsListBloc, BlInstructionsListState>(
+              child:
+                  BlocConsumer<BlInstructionsListBloc, BlInstructionsListState>(
                 listener: listener,
                 builder: (context, state) {
                   if (state is BlInstructionsListInitial) {
@@ -42,7 +43,9 @@ class BlInsturctionsListDesktopLayout extends StatelessWidget {
                     return FailureScreen(
                       failure: state.failure,
                       onRetryTap: () {
-                        context.read<BlInstructionsListBloc>().add(HandleFailureBlInstructionsEvent());
+                        context
+                            .read<BlInstructionsListBloc>()
+                            .add(HandleFailureBlInstructionsEvent());
                       },
                     );
                   }
@@ -58,13 +61,15 @@ class BlInsturctionsListDesktopLayout extends StatelessWidget {
   }
 
   Widget _buildLoadedBody(BlInstructionsListLoaded state) {
-    if (state.blInsturctionsList.isEmpty) return NoDataScreen.shippingInvoices();
+    if (state.blInsturctionsList.isEmpty) return NoDataScreen.blInstructions();
     return Stack(
       children: [
         Column(
           children: [
             const BlInstructionListHeadersRow(),
-            Expanded(child: BlInstructionList(shippingInvoices: state.blInsturctionsList)),
+            Expanded(
+                child: BlInstructionList(
+                    shippingInvoices: state.blInsturctionsList)),
           ],
         ),
         if (state.loading) const LoadingOverlay(),
@@ -77,7 +82,8 @@ class BlInsturctionsListDesktopLayout extends StatelessWidget {
       state.failureOrSuccessOption.fold(
         () => null,
         (either) => either.fold(
-          (failure) => DialogUtil.showErrorSnackBar(context, getErrorMsgFromFailure(failure)),
+          (failure) => DialogUtil.showErrorSnackBar(
+              context, getErrorMsgFromFailure(failure)),
           (message) => DialogUtil.showSuccessSnackBar(context, message),
         ),
       );
