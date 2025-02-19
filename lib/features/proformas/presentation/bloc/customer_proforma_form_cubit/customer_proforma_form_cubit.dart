@@ -20,7 +20,8 @@ class CustomerProformaFormCubit extends Cubit<CustomerProformaFormState> {
   final CreateCustomerProformaUseCase createProformaUsecase;
   final UpdateCustomerProformaUseCase updateProformaUsecase;
   final GetCustomerProformaByIdUseCase getCustomerProformaByIdUseCase;
-  CustomerProformaFormCubit(this.createProformaUsecase, this.updateProformaUsecase, this.getCustomerProformaByIdUseCase)
+  CustomerProformaFormCubit(this.createProformaUsecase,
+      this.updateProformaUsecase, this.getCustomerProformaByIdUseCase)
       : super(CustomerProformaFormInitial());
 
   // Goods Descriptions
@@ -60,8 +61,13 @@ class CustomerProformaFormCubit extends Cubit<CustomerProformaFormState> {
           emit(CustomerProformaFormError(failure: failure, id: proformaId));
         },
         (proforma) {
-          final goodsDescriptions = proforma.goodsDescriptions.map((e) => ProformaGoodDescriptionDto.fromEntity(e)).toList();
-          emit(CustomerProformaFormLoaded(updatedMode: true, goodDescriptionsList: goodsDescriptions, proforma: proforma));
+          final goodsDescriptions = proforma.goodsDescriptions
+              .map((e) => ProformaGoodDescriptionDto.fromEntity(e))
+              .toList();
+          emit(CustomerProformaFormLoaded(
+              updatedMode: true,
+              goodDescriptionsList: goodsDescriptions,
+              proforma: proforma));
         },
       );
     } else {
@@ -75,19 +81,25 @@ class CustomerProformaFormCubit extends Cubit<CustomerProformaFormState> {
       final state = this.state as CustomerProformaFormLoaded;
       formKey.currentState?.reset();
       proformaNumberController.text = state.proforma?.proformaNumber ?? '';
-      proformaDateController.text = state.proforma?.date.formattedDateYYYYMMDD ?? DateTime.now().formattedDateYYYYMMDD;
+      proformaDateController.text =
+          state.proforma?.date.formattedDateYYYYMMDD ??
+              DateTime.now().formattedDateYYYYMMDD;
       customerIdController.text = state.proforma?.customer.id.toString() ?? '';
       customerNameController.text = state.proforma?.customer.name ?? '';
       taxIdController.text = state.proforma?.taxId ?? '';
       portsController.text = state.proforma?.ports ?? '';
-      delivaryTermsController.text = state.proforma?.deliveryTerms ?? '';
+      delivaryTermsController.text = state.proforma?.deliveryTerms ??
+          'CIF (Cost, Insurance, and Freight), DTHC Not Included, 14 Free Combined Days of Detention and Demurrage';
       paymentTermsController.text = state.proforma?.paymentTerms ?? '';
       bankIdController.text = state.proforma?.bankAccount.id.toString() ?? '';
-      bankLabelController.text = state.proforma?.bankAccount.formattedLabel ?? '';
+      bankLabelController.text =
+          state.proforma?.bankAccount.formattedLabel ?? '';
       notesController.text = state.proforma?.notes ?? '';
-      bankAccountNumberController.text = state.proforma?.bankAccount.accountNumber ?? '';
+      bankAccountNumberController.text =
+          state.proforma?.bankAccount.accountNumber ?? '';
       bankNameController.text = state.proforma?.bankAccount.bankName ?? '';
-      customerAddressController.text = state.proforma?.customer.formattedAddress ?? '';
+      customerAddressController.text =
+          state.proforma?.customer.formattedAddress ?? '';
       swiftCodeController.text = state.proforma?.bankAccount.swiftCode ?? '';
 
       _setupControllersListeners();
@@ -155,17 +167,22 @@ class CustomerProformaFormCubit extends Cubit<CustomerProformaFormState> {
       paymentTermsController,
       bankIdController,
       // notesController,
-    ].every((controller) => controller.text.isNotEmpty && state.goodDescriptionsList.isNotEmpty);
+    ].every((controller) =>
+        controller.text.isNotEmpty && state.goodDescriptionsList.isNotEmpty);
 
     if (state.updatedMode) {
-      final initialgoodsDescription =
-          state.proforma!.goodsDescriptions.map((e) => ProformaGoodDescriptionDto.fromEntity(e)).toList();
+      final initialgoodsDescription = state.proforma!.goodsDescriptions
+          .map((e) => ProformaGoodDescriptionDto.fromEntity(e))
+          .toList();
 
-      bool isGoodsDescriptionChanged = !Set.from(initialgoodsDescription).containsAll(state.goodDescriptionsList) ||
-          !Set.from(state.goodDescriptionsList).containsAll(initialgoodsDescription);
+      bool isGoodsDescriptionChanged = !Set.from(initialgoodsDescription)
+              .containsAll(state.goodDescriptionsList) ||
+          !Set.from(state.goodDescriptionsList)
+              .containsAll(initialgoodsDescription);
 
       final proforma = state.proforma!;
-      bool isFormChanged = proforma.proformaNumber != proformaNumberController.text ||
+      bool isFormChanged = proforma.proformaNumber !=
+              proformaNumberController.text ||
           proforma.date.formattedDateYYYYMMDD != proformaDateController.text ||
           proforma.customer.id.toString() != customerIdController.text ||
           proforma.taxId != taxIdController.text ||
@@ -208,7 +225,8 @@ class CustomerProformaFormCubit extends Cubit<CustomerProformaFormState> {
         state.copyWith(
           loading: true,
           failureOrSuccessOption: some(
-            left(const GeneralFailure(message: 'You cannot add more than 5 good descriptions')),
+            left(const GeneralFailure(
+                message: 'You cannot add more than 5 good descriptions')),
           ),
         ),
       );
@@ -224,7 +242,8 @@ class CustomerProformaFormCubit extends Cubit<CustomerProformaFormState> {
       packing: packingController.text,
       uniqueKey: state.goodDescriptionsList.length.toString(),
     );
-    emit(state.copyWith(descriptionList: [...state.goodDescriptionsList, goodDescription]));
+    emit(state.copyWith(
+        descriptionList: [...state.goodDescriptionsList, goodDescription]));
     _clearGoodDescriptionForm();
     _onProformaFormChanged();
   }
@@ -263,7 +282,9 @@ class CustomerProformaFormCubit extends Cubit<CustomerProformaFormState> {
     emit(state.copyWith(loading: true));
 
     final params = CreateCustomerProformaUseCaseParams(
-      proformaNumber: state.isGenerateAutoProformaNumber ? null : proformaNumberController.text,
+      proformaNumber: state.isGenerateAutoProformaNumber
+          ? null
+          : proformaNumberController.text,
       date: proformaDateController.text,
       customerId: int.parse(customerIdController.text),
       taxId: taxIdController.text,
@@ -285,7 +306,9 @@ class CustomerProformaFormCubit extends Cubit<CustomerProformaFormState> {
         )),
       ),
       (proforma) {
-        emit(state.copyWith(proforma: proforma, failureOrSuccessOption: some(right('Proforma created'))));
+        emit(state.copyWith(
+            proforma: proforma,
+            failureOrSuccessOption: some(right('Proforma created'))));
       },
     );
   }
@@ -311,9 +334,12 @@ class CustomerProformaFormCubit extends Cubit<CustomerProformaFormState> {
     final either = await updateProformaUsecase.call(params);
     emit(state.copyWith(loading: false));
     either.fold(
-      (failure) => emit((state.copyWith(failureOrSuccessOption: some(left(failure))))),
+      (failure) =>
+          emit((state.copyWith(failureOrSuccessOption: some(left(failure))))),
       (proforma) {
-        emit(state.copyWith(proforma: proforma, failureOrSuccessOption: some(right('Proforma updated'))));
+        emit(state.copyWith(
+            proforma: proforma,
+            failureOrSuccessOption: some(right('Proforma updated'))));
         _initializeControllers();
       },
     );
@@ -321,7 +347,8 @@ class CustomerProformaFormCubit extends Cubit<CustomerProformaFormState> {
 
   updateGoodDescription(ProformaGoodDescriptionDto dto) {
     final state = this.state as CustomerProformaFormLoaded;
-    final index = state.goodDescriptionsList.indexWhere((element) => element.uniqueKey == dto.uniqueKey);
+    final index = state.goodDescriptionsList
+        .indexWhere((element) => element.uniqueKey == dto.uniqueKey);
 
     if (index != -1) {
       final updatedList = List.of(state.goodDescriptionsList);
@@ -333,8 +360,10 @@ class CustomerProformaFormCubit extends Cubit<CustomerProformaFormState> {
 
   cancelChanges() {
     final state = this.state as CustomerProformaFormLoaded;
-    final goodsDescriptions =
-        state.proforma?.goodsDescriptions.map((e) => ProformaGoodDescriptionDto.fromEntity(e)).toList() ?? [];
+    final goodsDescriptions = state.proforma?.goodsDescriptions
+            .map((e) => ProformaGoodDescriptionDto.fromEntity(e))
+            .toList() ??
+        [];
     emit(CustomerProformaFormLoaded(
       goodDescriptionsList: goodsDescriptions,
     ));
@@ -343,7 +372,8 @@ class CustomerProformaFormCubit extends Cubit<CustomerProformaFormState> {
 
   toggleGenerateAutoProformaNumber() {
     final state = this.state as CustomerProformaFormLoaded;
-    emit(state.copyWith(isGenerateAutoProformaNumber: !state.isGenerateAutoProformaNumber));
+    emit(state.copyWith(
+        isGenerateAutoProformaNumber: !state.isGenerateAutoProformaNumber));
   }
 
   handleError() async {
