@@ -22,7 +22,8 @@ class BlInstructionPaginationBottomBar extends StatelessWidget {
         bool canPrevious = false;
         if (isLoaded) {
           currentPage = state.paginationFilterDTO.pageNumber;
-          totalPages = (state.totalCount / state.paginationFilterDTO.pageSize).ceil();
+          totalPages =
+              (state.totalCount / state.paginationFilterDTO.pageSize).ceil();
           canNext = state.canGoNextPage;
           canPrevious = state.canGoPreviousPage;
         }
@@ -32,18 +33,23 @@ class BlInstructionPaginationBottomBar extends StatelessWidget {
           currentPage: currentPage,
           onPreviousTap: canPrevious
               ? () {
-                  context.read<BlInstructionsListBloc>().add(PreviousPageBlInstructionsEvent());
+                  context
+                      .read<BlInstructionsListBloc>()
+                      .add(PreviousPageBlInstructionsEvent());
                 }
               : null,
           onNextTap: canNext
               ? () {
-                  context.read<BlInstructionsListBloc>().add(NextPageBlInstructionsEvent());
+                  context
+                      .read<BlInstructionsListBloc>()
+                      .add(NextPageBlInstructionsEvent());
                 }
               : null,
-          labelAddButton: 'Add New Shipping Invoice',
+          labelAddButton: 'Add New BL Instructions',
           onAddTap: isLoaded
               ? () {
-                  NavUtil.push(context, const BlInsturctionFormScreen(formType: FormType.create));
+                  NavUtil.push(context,
+                      const BlInsturctionFormScreen(formType: FormType.create));
                 }
               : null,
         );
