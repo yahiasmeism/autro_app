@@ -20,7 +20,8 @@ class InvoiceSettingsTab extends StatelessWidget {
       state.failureOrSuccessOption.fold(
         () => null,
         (either) => either.fold(
-          (failure) => DialogUtil.showErrorSnackBar(context, getErrorMsgFromFailure(failure)),
+          (failure) => DialogUtil.showErrorSnackBar(
+              context, getErrorMsgFromFailure(failure)),
           (message) => DialogUtil.showSuccessSnackBar(context, message),
         ),
       );
@@ -47,7 +48,8 @@ class InvoiceSettingsTab extends StatelessWidget {
         } else if (state is InvoiceSettingsError) {
           return FailureScreen(
             failure: state.failure,
-            onRetryTap: () => context.read<InvoiceSettingsCubit>().onHandleError(),
+            onRetryTap: () =>
+                context.read<InvoiceSettingsCubit>().onHandleError(),
           );
         }
         return const SizedBox.shrink();
@@ -74,6 +76,7 @@ class InvoiceSettingsTab extends StatelessWidget {
                         StandardInput(
                           minLines: 4,
                           controller: cubit.modificationsOnBLController,
+                          initialValue: 'Hello there',
                           hintText:
                               'BL AMENDMENTS CAN BE DONE BEFORE SHIP LEAVES BCN PORT OF ORIGIN, AFTERWARDS AMENDMENTS WILL BE ON BUYER´S ACCOUNT AS SHIPPING LINE CHARGE (100 USD/AMENDMENT APROX)',
                           labelText: 'Modifications on BL',
@@ -91,7 +94,8 @@ class InvoiceSettingsTab extends StatelessWidget {
                           minLines: 2,
                           controller: cubit.specialConditionsController,
                           labelText: 'Special conditions',
-                          hintText: 'LOI, AP, PSIC, IMPORT PERMISSIONS UNDER PURCHASER´S ACCOUNT',
+                          hintText:
+                              'LOI, AP, PSIC, IMPORT PERMISSIONS UNDER PURCHASER´S ACCOUNT',
                         ),
                       ],
                     ),
@@ -103,7 +107,8 @@ class InvoiceSettingsTab extends StatelessWidget {
                         StandardInput(
                           controller: cubit.exemptController,
                           labelText: 'Exempt',
-                          hintText: 'Exempt VAT. EXPORT Section21.1 Ley 37/1992',
+                          hintText:
+                              'Exempt VAT. EXPORT Section21.1 Ley 37/1992',
                         ),
                         const SizedBox(height: 16),
                         StandardInput(
@@ -115,14 +120,16 @@ class InvoiceSettingsTab extends StatelessWidget {
                         StandardInput(
                           controller: cubit.loadingPicturesController,
                           labelText: 'Loading Pictures',
-                          hintText: 'FULL SET OF LOADING PICTURES WILL BE PROVI DED',
+                          hintText:
+                              'FULL SET OF LOADING PICTURES WILL BE PROVI DED',
                         ),
                         const SizedBox(height: 16),
                         StandardInput(
                           maxLines: 2,
                           controller: cubit.loadingDateController,
                           labelText: 'Loading date',
-                          hintText: 'AS SOON AS POSSIBLE, MAXIMUM 30 DAYS FROM CONTRACT SIGNING DATE',
+                          hintText:
+                              'AS SOON AS POSSIBLE, MAXIMUM 30 DAYS FROM CONTRACT SIGNING DATE',
                         ),
                       ],
                     ),
@@ -142,10 +149,14 @@ class InvoiceSettingsTab extends StatelessWidget {
     return Row(
       children: [
         const Spacer(),
-        if (state.dataChanged) CancelOutlineButton(onPressed: context.read<InvoiceSettingsCubit>().cancelChanges),
+        if (state.dataChanged)
+          CancelOutlineButton(
+              onPressed: context.read<InvoiceSettingsCubit>().cancelChanges),
         const SizedBox(width: 16),
         SaveScoundaryButton(
-          onPressed: state.dataChanged ? () => context.read<InvoiceSettingsCubit>().setInvoiceSettings() : null,
+          onPressed: state.dataChanged
+              ? () => context.read<InvoiceSettingsCubit>().setInvoiceSettings()
+              : null,
         ),
       ],
     );
