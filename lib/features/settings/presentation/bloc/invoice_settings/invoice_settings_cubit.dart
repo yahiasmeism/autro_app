@@ -34,7 +34,7 @@ class InvoiceSettingsCubit extends Cubit<InvoiceSettingsState> {
         currentState.invoiceSettings.shippingInstructions != shippingInstructionsController.text ||
         currentState.invoiceSettings.typeOfTransport != typeOfTransportController.text ||
         currentState.invoiceSettings.loadingPictures != loadingPicturesController.text ||
-        currentState.invoiceSettings.loadingDate != loadingDateController.text ||
+        currentState.invoiceSettings.loadingDate != loadingDateController.text || 
         currentState.invoiceSettings.specialConditions != specialConditionsController.text;
 
     emit(currentState.copyWith(dataChanged: isEdited));
@@ -76,7 +76,7 @@ class InvoiceSettingsCubit extends Cubit<InvoiceSettingsState> {
     final state = this.state as InvoiceSettingsLoaded;
 
     final newSettings = InvoiceSettingsEntity(
-      modificationOnBl: modificationsOnBLController.text,
+      modificationOnBl: modificationsOnBLController.text ,
       exempt: exemptController.text,
       shippingInstructions: shippingInstructionsController.text,
       typeOfTransport: typeOfTransportController.text,

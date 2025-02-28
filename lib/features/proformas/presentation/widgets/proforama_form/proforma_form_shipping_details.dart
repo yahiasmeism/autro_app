@@ -13,6 +13,7 @@ class ProformaFormShippingDetails extends StatelessWidget {
     return StandardCard(
       title: 'Shipping Details',
       child: StandardInput(
+        enabled: false,
         labelText: 'Notes (optional)',
         hintText:
             'e.g INVO0149 HDPE PLASTIC SCRAP HS CODE 39151020 -CFR MERSIN PORT- TURKEY CONSIGNEE: OZ BESLENEN TARIMURUNLERI NAK. PET.TEKS. SAN VE TIC LTD STİ. AKCATAS MAH. 1CAD, NO:11-1 VIRANSEHIR/SANLIURFA)',

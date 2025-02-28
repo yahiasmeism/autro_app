@@ -18,11 +18,13 @@ import '../bloc/proforma_pdf/proforma_pdf_cubit.dart';
 class ProformaPdfScreen extends StatelessWidget {
   const ProformaPdfScreen._();
 
-  static create(BuildContext context, ProformaPdfDto dto, {PdfAction action = PdfAction.view, String? filePath}) {
+  static create(BuildContext context, ProformaPdfDto dto,
+      {PdfAction action = PdfAction.view, String? filePath}) {
     NavUtil.push(
       context,
       BlocProvider<ProformaPdfCubit>(
-        create: (context) => sl<ProformaPdfCubit>()..init(dto, action: action, saveFilePath: filePath),
+        create: (context) => sl<ProformaPdfCubit>()
+          ..init(dto, action: action, saveFilePath: filePath),
         child: const ProformaPdfScreen._(),
       ),
     );
@@ -30,7 +32,7 @@ class ProformaPdfScreen extends StatelessWidget {
 
   PdfColor get textColor => const PdfColor.fromInt(0xff083156);
   PdfColor get tableHeaderColor => PdfColors.grey100;
-  PdfColor get tableBorderColor => PdfColors.grey400;
+  PdfColor get tableBorderColor => PdfColors.grey300;
 
   @override
   Widget build(BuildContext context) {
@@ -40,7 +42,8 @@ class ProformaPdfScreen extends StatelessWidget {
         if (state is ProformaPdfInitial) {
           return const LoadingIndicator();
         } else if (state is ProformaPdfResourcesLoading) {
-          return const LoadingIndicator(loadingMessage: 'Preparing resoures...');
+          return const LoadingIndicator(
+              loadingMessage: 'Preparing resoures...');
         } else if (state is ProformaPdfGenerating) {
           return const LoadingIndicator(loadingMessage: 'Generating...');
         } else if (state is ProformaPdfGenerated) {
@@ -48,7 +51,10 @@ class ProformaPdfScreen extends StatelessWidget {
         } else if (state is ExportProformaLoading) {
           return const LoadingIndicator(loadingMessage: 'Exporting..');
         } else if (state is ProformaPdfError) {
-          return Center(child: Scaffold(appBar: AppBar(), body: FailureScreen(failure: state.failure)));
+          return Center(
+              child: Scaffold(
+                  appBar: AppBar(),
+                  body: FailureScreen(failure: state.failure)));
         }
         return const SizedBox.shrink();
       },
@@ -61,7 +67,9 @@ class ProformaPdfScreen extends StatelessWidget {
       if (state.action == PdfAction.view) {
         context.read<ProformaPdfCubit>().generateProformaPdf(proformaContent);
       } else if (state.action == PdfAction.export) {
-        context.read<ProformaPdfCubit>().exportProformaPdf(state.filePath!, proformaContent);
+        context
+            .read<ProformaPdfCubit>()
+            .exportProformaPdf(state.filePath!, proformaContent);
       }
     }
     if (state is ExportProformaDone) {
@@ -125,7 +133,7 @@ class ProformaPdfScreen extends StatelessWidget {
         pw.Text(
           "PROFORMA",
           style: pw.TextStyle(
-            fontSize: 28,
+            fontSize: 24,
             color: textColor,
             fontWeight: pw.FontWeight.bold,
           ),
@@ -174,7 +182,8 @@ class ProformaPdfScreen extends StatelessWidget {
         pw.SizedBox(height: 8),
         pw.Text("To: ${state.proformaPdfDto.customerName}", style: style),
         pw.SizedBox(height: 2),
-        pw.Text("Address: ${state.proformaPdfDto.customerAddress}", style: style),
+        pw.Text("Address: ${state.proformaPdfDto.customerAddress}",
+            style: style),
         pw.SizedBox(height: 2),
         pw.Text("TAX ID: ${state.proformaPdfDto.taxId}", style: style),
         pw.SizedBox(height: 8),
@@ -251,8 +260,10 @@ class ProformaPdfScreen extends StatelessWidget {
       'Total Pirce (EUR)',
     ];
 
-    final data =
-        state.proformaPdfDto.descriptions.map((e) => [e.description, e.weight, e.unitPrice, e.packing, e.totalPrice]).toList();
+    final data = state.proformaPdfDto.descriptions
+        .map((e) =>
+            [e.description, e.weight, e.unitPrice, e.packing, e.totalPrice])
+        .toList();
 
     return pw.TableHelper.fromTextArray(
       border: pw.TableBorder.all(
@@ -347,81 +358,116 @@ class ProformaPdfScreen extends StatelessWidget {
   }
 
   pw.Widget buildLoadingConditions(ProformaPdfResourcesLoaded state) {
-    final style = pw.TextStyle(
+    final labelStyle = pw.TextStyle(
       color: textColor,
-      fontSize: 10,
-      // fontWeight: pw.FontWeight.bold,
+      fontSize: 8,
+      fontWeight: pw.FontWeight.bold,
     );
+    final valueStyle = pw.TextStyle(
+      color: textColor,
+      fontSize: 8,
+    );
+
     return pw.Column(
       crossAxisAlignment: pw.CrossAxisAlignment.start,
       children: [
-        pw.Text('Loading Conditions:',
-            style: pw.TextStyle(
-              color: textColor,
-              fontSize: 12,
-              fontWeight: pw.FontWeight.bold,
-            )),
-        pw.SizedBox(height: 4),
-        pw.Row(children: [
-          pw.Text('Shipping Instructions: ', style: style),
-          pw.Expanded(
-            child: pw.Text(
-              state.invoiceSettings.shippingInstructions,
-              style: style,
-            ),
+        pw.Text(
+          'Loading Conditions:',
+          style: pw.TextStyle(
+            color: textColor,
+            fontSize: 12,
+            fontWeight: pw.FontWeight.bold,
           ),
-        ]),
-        pw.Row(crossAxisAlignment: pw.CrossAxisAlignment.start, children: [
-          pw.Text('Loading date: ', style: style),
-          pw.Expanded(
-            child: pw.Text(
-              state.invoiceSettings.loadingDate,
-              style: style,
-            ),
+        ),
+        pw.SizedBox(height: 4), // Adds space after the title
+
+        // Shipping Instructions
+        pw.RichText(
+          text: pw.TextSpan(
+            children: [
+              pw.TextSpan(text: 'Shipping Instructions: ', style: labelStyle),
+              pw.TextSpan(
+                  text: state.invoiceSettings.shippingInstructions,
+                  style: valueStyle),
+            ],
           ),
-        ]),
-        pw.Row(
+        ),
+        pw.SizedBox(height: 2), // Space between sections
+
+        // Loading Date
+        pw.RichText(
+          text: pw.TextSpan(
+            children: [
+              pw.TextSpan(text: 'Loading date: ', style: labelStyle),
+              pw.TextSpan(
+                  text: state.invoiceSettings.loadingDate, style: valueStyle),
+            ],
+          ),
+        ),
+        pw.SizedBox(height: 2), // Space between sections
+
+        // Type of Transport
+        pw.RichText(
+          text: pw.TextSpan(
+            children: [
+              pw.TextSpan(text: 'Type of transport: ', style: labelStyle),
+              pw.TextSpan(
+                  text: state.invoiceSettings.typeOfTransport,
+                  style: valueStyle),
+            ],
+          ),
+        ),
+        pw.SizedBox(height: 2), // Space between sections
+
+        // Modifications on BL
+        pw.Column(
+          crossAxisAlignment: pw.CrossAxisAlignment.start,
           children: [
-            pw.Text('Type of transport: ', style: style),
-            pw.Expanded(
-              child: pw.Text(
-                state.invoiceSettings.typeOfTransport,
-                style: style,
+            pw.RichText(
+              text: pw.TextSpan(
+                children: [
+                  pw.TextSpan(text: 'Modifications on BL: ', style: labelStyle),
+                  pw.TextSpan(
+                      text:
+                          state.invoiceSettings.modificationOnBl.split('\n')[0],
+                      style: valueStyle),
+                ],
               ),
             ),
+            pw.Text(
+                state.invoiceSettings.modificationOnBl
+                    .split('\n')
+                    .sublist(1)
+                    .join('\n'),
+                style: valueStyle),
           ],
-          crossAxisAlignment: pw.CrossAxisAlignment.start,
         ),
-        pw.Row(
-          children: [
-            pw.Text('Modifications on BL: ', style: style),
-            pw.Expanded(
-              child: pw.Text(
-                state.invoiceSettings.modificationOnBl,
-                style: style,
-              ),
-            ),
-          ],
-          crossAxisAlignment: pw.CrossAxisAlignment.start,
+        pw.SizedBox(height: 2), // Space between sections
+
+        // Special Conditions
+        pw.RichText(
+          text: pw.TextSpan(
+            children: [
+              pw.TextSpan(text: 'Special conditions: ', style: labelStyle),
+              pw.TextSpan(
+                  text: state.invoiceSettings.specialConditions,
+                  style: valueStyle),
+            ],
+          ),
         ),
-        pw.Row(crossAxisAlignment: pw.CrossAxisAlignment.start, children: [
-          pw.Text('Special conditions: ', style: style),
-          pw.Expanded(
-            child: pw.Text(
-              state.invoiceSettings.specialConditions,
-              style: style,
-            ),
+        pw.SizedBox(height: 2), // Space between sections
+
+        // Loading Pictures
+        pw.RichText(
+          text: pw.TextSpan(
+            children: [
+              pw.TextSpan(text: 'Loading Pictures: ', style: labelStyle),
+              pw.TextSpan(
+                  text: state.invoiceSettings.loadingPictures,
+                  style: valueStyle),
+            ],
           ),
-        ]),
-        pw.Row(crossAxisAlignment: pw.CrossAxisAlignment.start, children: [
-          pw.Text('Loading Pictures: ', style: style),
-          pw.Expanded(
-            child: pw.Text(
-              state.invoiceSettings.loadingPictures,
-              style: style,
-            ),
-          ),
-        ])
+        ),
       ],
     );
   }
@@ -448,9 +494,11 @@ class ProformaPdfScreen extends StatelessWidget {
                 ),
               ),
               pw.SizedBox(height: 5),
-              pw.Text('Bank Name: ${state.proformaPdfDto.bankName}', style: style),
+              pw.Text('Bank Name: ${state.proformaPdfDto.bankName}',
+                  style: style),
               pw.SizedBox(height: 3),
-              pw.Text('IBAN EURO: ${state.proformaPdfDto.accountNumber}', style: style),
+              pw.Text('IBAN EURO: ${state.proformaPdfDto.accountNumber}',
+                  style: style),
               pw.SizedBox(height: 3),
               pw.Text('SWIFT BIC: ${state.proformaPdfDto.swift}', style: style),
               pw.SizedBox(height: 3),
@@ -471,7 +519,8 @@ class ProformaPdfScreen extends StatelessWidget {
             //   ),
             // ),
             pw.SizedBox(height: 10),
-            pw.Image(state.signatureImageProvider, width: 150, height: 70, dpi: 3000),
+            pw.Image(state.signatureImageProvider,
+                width: 150, height: 70, dpi: 3000),
           ],
         ),
       ],

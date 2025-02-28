@@ -96,4 +96,5 @@ class ProformaPdfDto {
         0,
         (previousValue, element) => previousValue + (element.unitPrice * element.weight),
       );
+  
 }

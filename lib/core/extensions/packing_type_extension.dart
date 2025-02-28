@@ -7,14 +7,14 @@ extension PackingTypeX on PackingType {
         return 'Bales';
       case PackingType.loose:
         return 'Loose';
-      case PackingType.bults:
-        return 'Bults';
+      case PackingType.bulks:
+        return 'Bulks';
       case PackingType.rolls:
         return 'Rolls';
       case PackingType.packing:
         return 'Packing';
-      case PackingType.lot:
-        return 'Lot';
+      case PackingType.lots:
+        return 'Lots';
       default:
         return 'Unknown';
     }
@@ -26,14 +26,14 @@ extension PackingTypeX on PackingType {
         return PackingType.bales;
       case 'loose':
         return PackingType.loose;
-      case 'bults':
-        return PackingType.bults;
+      case 'bulks':
+        return PackingType.bulks;
       case 'rolls':
         return PackingType.rolls;
       case 'packing':
         return PackingType.packing;
-      case 'lot':
-        return PackingType.lot;
+      case 'lots':
+        return PackingType.lots;
       default:
         return PackingType.unknown;
     }

@@ -42,6 +42,8 @@ class ProformaFormDelivaryTerms extends StatelessWidget {
             Expanded(
               child: StandardInput(
                 labelText: 'Delivary Terms',
+                initialValue:
+                    'CIF (Cost, Insurance, and Freight), DTHC Not Included, 14 Free Combined Days of Detention and Demurrage',
                 controller: bloc.delivaryTermsController,
                 hintText:
                     'e.g CIF (Cost, Insurance, and Freight), DTHC Not Included, 14 Free Combined Days of Detention and Demurrage',
