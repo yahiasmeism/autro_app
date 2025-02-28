@@ -8,7 +8,6 @@ import 'package:autro_app/features/deals/presentation/widgets/tabs/deal_bills_ta
 import 'package:autro_app/features/deals/presentation/widgets/tabs/deal_invoices_tabs.dart';
 import 'package:autro_app/features/deals/presentation/widgets/tabs/deal_proformas_tab.dart';
 import 'package:autro_app/features/invoices/presentation/bloc/customers_invoices_list/customers_invoices_list_bloc.dart';
-import 'package:autro_app/features/payment/presentation/screens/payment_screen.dart';
 import 'package:autro_app/features/proformas/presentation/bloc/customers_proformas_list/customers_proformas_list_bloc.dart';
 import 'package:autro_app/features/shipping-invoices/presentation/bloc/shipping_invoice_list/shipping_invoices_list_bloc.dart';
 import 'package:flutter/material.dart';
@@ -88,7 +87,7 @@ class _DealDetailsDesktopLayoutState extends State<DealDetailsDesktopLayout> wit
                 'Bills',
                 'Proformas',
                 'Invoices',
-                'Payments',
+                // 'Payments',
               ],
               controller: _tabController,
             ),
@@ -113,7 +112,7 @@ class _DealDetailsDesktopLayoutState extends State<DealDetailsDesktopLayout> wit
                               DealBillsListTab.create(context, state.deal.id),
                               DealProformasTab(dealEntity: state.deal),
                               DealInvoicesTabs(dealEntity: state.deal),
-                              PaymentsScreen(deal: state.deal),
+                              // PaymentsScreen(deal: state.deal),
                             ],
                           ),
                         ),

@@ -57,6 +57,7 @@ class DealOverviewTab extends StatelessWidget {
                               ),
                               const SizedBox(height: 32),
                               Row(
+                                crossAxisAlignment: CrossAxisAlignment.start,
                                 children: [
                                   Expanded(
                                     child: _buildDetailItem(
@@ -67,8 +68,8 @@ class DealOverviewTab extends StatelessWidget {
                                   ),
                                   Expanded(
                                     child: _buildDetailItem(
-                                      title: 'Supplier',
-                                      value: state.deal.supplier?.name ?? '',
+                                      title: 'Suppliers',
+                                      value: state.deal.suppliers.map((e) => e.name).join('\n'),
                                       svg: Assets.iconsContactDetails,
                                     ),
                                   ),

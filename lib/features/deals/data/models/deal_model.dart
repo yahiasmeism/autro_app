@@ -34,7 +34,7 @@ class DealModel extends DealEntity implements BaseMapable {
     required super.totalExpenses,
     required super.netProfit,
     required super.dealNumber,
-    required super.supplier,
+    required super.suppliers,
     required super.customer,
     required super.bankAccount,
     required super.supplierInvoices,
@@ -64,7 +64,9 @@ class DealModel extends DealEntity implements BaseMapable {
         totalRevenue: (json['total_revenue'] as num?).toDoubleOrZero,
         netProfit: (json['net_profit'] as num?).toDoubleOrZero,
         dealNumber: (json['deal_number'] as String?).orEmpty,
-        supplier: json['supplier'] == null ? null : SupplierModel.fromJson((json['supplier'] as Map<String, dynamic>?).orEmpty),
+        suppliers: List<SupplierModel>.from(
+          (json['suppliers'] as List?)?.map((e) => SupplierModel.fromJson((e as Map<String, dynamic>?).orEmpty)) ?? [],
+        ),
         customer: json['customer'] == null ? null : CustomerModel.fromJson((json['customer'] as Map<String, dynamic>?).orEmpty),
         bankAccount: json['bank_account'] == null
             ? null

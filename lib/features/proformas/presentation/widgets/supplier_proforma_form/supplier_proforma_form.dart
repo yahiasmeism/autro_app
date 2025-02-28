@@ -45,8 +45,8 @@ class SupplierProformaForm extends StatelessWidget {
                                 DialogUtil.showErrorDialog(context,
                                     content: 'This deal connected with another proforma , please select another deal');
                               }
-                              bloc.supplierIdController.text = deal.supplier?.id.toString() ?? '';
-                              bloc.supplierNameController.text = deal.supplier?.name ?? '';
+                              // bloc.supplierIdController.text = deal.supplier?.id.toString() ?? '';
+                              // bloc.supplierNameController.text = deal.supplier?.name ?? '';
                             },
                           ),
                         ),
