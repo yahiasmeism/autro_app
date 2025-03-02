@@ -29,7 +29,7 @@ class DealEntity extends Equatable {
   final double netProfit;
   final CustomerEntity? customer;
   final List<PaymentEntity> payments;
-  final SupplierEntity? supplier;
+  final List<SupplierEntity> suppliers;
   final BankAccountEntity? bankAccount;
 
   const DealEntity({
@@ -48,7 +48,7 @@ class DealEntity extends Equatable {
     required this.totalExpenses,
     required this.netProfit,
     required this.customer,
-    required this.supplier,
+    required this.suppliers,
     required this.dealNumber,
     required this.bankAccount,
     required this.supplierInvoices,
@@ -100,7 +100,7 @@ class DealEntity extends Equatable {
         totalExpenses,
         netProfit,
         customer,
-        supplier,
+        suppliers,
         dealNumber,
         bankAccount,
         supplierInvoices,

@@ -315,7 +315,9 @@ class ProformaPdfScreen extends StatelessWidget {
     final data = [
       [
         'Spain',
-        state.proformaPdfDto.descriptions.length.toString(),
+        state.proformaPdfDto.descriptions
+            .fold<int>(0, (previousValue, element) => previousValue + element.containersCount)
+            .toString(),
         '${state.proformaPdfDto.totalWeight} MT',
         '${state.proformaPdfDto.totalAmount} EUR',
       ],

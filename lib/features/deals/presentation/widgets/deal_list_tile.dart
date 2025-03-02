@@ -50,7 +50,7 @@ class DealListTile extends StatelessWidget {
             const SizedBox(width: 16),
             _buildCell(
               flex: 4,
-              text: dealEntity.supplier?.name ?? '-',
+              text: dealEntity.suppliers.map((e) => e.name).join('\n'),
             ),
             const SizedBox(width: 16),
             _buildCell(
@@ -61,8 +61,8 @@ class DealListTile extends StatelessWidget {
             ),
             const SizedBox(width: 16),
             _buildStatus(dealEntity.isComplete),
-            const SizedBox(width: 16),
-            _buildStatus(dealEntity.paymentCompleted),
+            // const SizedBox(width: 16),
+            // _buildStatus(dealEntity.paymentCompleted),
             const SizedBox(width: 16),
             Flexible(
               flex: 4,

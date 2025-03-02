@@ -41,14 +41,7 @@ class SupplierInvoiceForm extends StatelessWidget {
                           child: DealsListSelectionField(
                             seriesNumberController: bloc.dealNumberController,
                             idController: bloc.dealIdController,
-                            onItemTap: (deal) {
-                              bloc.supplierIdController.text = deal.supplier?.id.toString() ?? '';
-                              bloc.supplierNameController.text = deal.supplier?.name ?? '';
-                              if (deal.supplier != null) {
-                                bloc.supplierIdController.text = deal.supplier!.id.toString();
-                                bloc.supplierNameController.text = deal.supplier!.name;
-                              }
-                            },
+                            onItemTap: (deal) {},
                           ),
                         ),
                         const SizedBox(width: 32),

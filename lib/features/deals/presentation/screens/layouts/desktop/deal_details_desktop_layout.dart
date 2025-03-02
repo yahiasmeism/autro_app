@@ -98,6 +98,9 @@ class _DealDetailsDesktopLayoutState extends State<DealDetailsDesktopLayout>
                 'Proformas',
                 'Invoices',
                 'Shipping Invoice',
+
+                // 'Payments',
+
               ],
               controller: _tabController,
             ),
@@ -124,7 +127,11 @@ class _DealDetailsDesktopLayoutState extends State<DealDetailsDesktopLayout>
                               DealBillsListTab.create(context, state.deal.id),
                               DealProformasTab(dealEntity: state.deal),
                               DealInvoicesTabs(dealEntity: state.deal),
+
                               DealShippingInvoiceTab(dealEntity: state.deal),
+=======
+                              // PaymentsScreen(deal: state.deal),
+
                             ],
                           ),
                         ),
