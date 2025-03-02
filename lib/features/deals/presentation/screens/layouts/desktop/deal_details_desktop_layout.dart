@@ -7,8 +7,8 @@ import 'package:autro_app/features/deals/presentation/bloc/deals_list/deals_list
 import 'package:autro_app/features/deals/presentation/widgets/tabs/deal_bills_tab.dart';
 import 'package:autro_app/features/deals/presentation/widgets/tabs/deal_invoices_tabs.dart';
 import 'package:autro_app/features/deals/presentation/widgets/tabs/deal_proformas_tab.dart';
+import 'package:autro_app/features/deals/presentation/widgets/tabs/deal_shipping_invoice_tab.dart';
 import 'package:autro_app/features/invoices/presentation/bloc/customers_invoices_list/customers_invoices_list_bloc.dart';
-import 'package:autro_app/features/payment/presentation/screens/payment_screen.dart';
 import 'package:autro_app/features/proformas/presentation/bloc/customers_proformas_list/customers_proformas_list_bloc.dart';
 import 'package:autro_app/features/shipping-invoices/presentation/bloc/shipping_invoice_list/shipping_invoices_list_bloc.dart';
 import 'package:flutter/material.dart';
@@ -26,7 +26,8 @@ class DealDetailsDesktopLayout extends StatefulWidget {
   State createState() => _DealDetailsDesktopLayoutState();
 }
 
-class _DealDetailsDesktopLayoutState extends State<DealDetailsDesktopLayout> with SingleTickerProviderStateMixin {
+class _DealDetailsDesktopLayoutState extends State<DealDetailsDesktopLayout>
+    with SingleTickerProviderStateMixin {
   late TabController _tabController;
 
   @override
@@ -49,7 +50,8 @@ class _DealDetailsDesktopLayoutState extends State<DealDetailsDesktopLayout> wit
       state.updateFailureOrSuccessOption.fold(
         () => null,
         (either) => either.fold(
-          (failure) => DialogUtil.showErrorSnackBar(context, getErrorMsgFromFailure(failure)),
+          (failure) => DialogUtil.showErrorSnackBar(
+              context, getErrorMsgFromFailure(failure)),
           (message) {
             DialogUtil.showSuccessSnackBar(context, message);
             context.read<DealsListBloc>().add(const GetDealsListEvent());
@@ -60,14 +62,21 @@ class _DealDetailsDesktopLayoutState extends State<DealDetailsDesktopLayout> wit
       state.deleteFailureOrSuccessOption.fold(
         () => null,
         (either) => either.fold(
-          (failure) => DialogUtil.showErrorSnackBar(context, getErrorMsgFromFailure(failure)),
+          (failure) => DialogUtil.showErrorSnackBar(
+              context, getErrorMsgFromFailure(failure)),
           (message) {
             DialogUtil.showSuccessSnackBar(context, message);
             NavUtil.pop(context);
             context.read<DealsListBloc>().add(const GetDealsListEvent());
-            context.read<CustomersProformasListBloc>().add(GetProformasListEvent());
-            context.read<CustomersInvoicesListBloc>().add(GetCustomersInvoicesListEvent());
-            context.read<ShippingInvoicesListBloc>().add(GetShippingInvoicesListEvent());
+            context
+                .read<CustomersProformasListBloc>()
+                .add(GetProformasListEvent());
+            context
+                .read<CustomersInvoicesListBloc>()
+                .add(GetCustomersInvoicesListEvent());
+            context
+                .read<ShippingInvoicesListBloc>()
+                .add(GetShippingInvoicesListEvent());
           },
         ),
       );
@@ -88,7 +97,7 @@ class _DealDetailsDesktopLayoutState extends State<DealDetailsDesktopLayout> wit
                 'Bills',
                 'Proformas',
                 'Invoices',
-                'Payments',
+                'Shipping Invoice',
               ],
               controller: _tabController,
             ),
@@ -96,7 +105,9 @@ class _DealDetailsDesktopLayoutState extends State<DealDetailsDesktopLayout> wit
               child: BlocConsumer<DealDetailsCubit, DealDetailsState>(
                 listener: blocListener,
                 buildWhen: (previous, current) {
-                  return current is DealDetailsInitial || current is DealDetailsLoaded || current is DealDetailsError;
+                  return current is DealDetailsInitial ||
+                      current is DealDetailsLoaded ||
+                      current is DealDetailsError;
                 },
                 builder: (context, state) {
                   if (state is DealDetailsInitial) {
@@ -113,7 +124,7 @@ class _DealDetailsDesktopLayoutState extends State<DealDetailsDesktopLayout> wit
                               DealBillsListTab.create(context, state.deal.id),
                               DealProformasTab(dealEntity: state.deal),
                               DealInvoicesTabs(dealEntity: state.deal),
-                              PaymentsScreen(deal: state.deal),
+                              DealShippingInvoiceTab(dealEntity: state.deal),
                             ],
                           ),
                         ),
