@@ -41,7 +41,8 @@ class PackingListFormGoodDescriptions extends StatelessWidget {
                   state.goodDescriptionsList[index],
                 ),
               ),
-              if (state.goodDescriptionsList.isNotEmpty) Divider(height: 24, color: AppColors.secondaryOpacity25),
+              if (state.goodDescriptionsList.isNotEmpty)
+                Divider(height: 24, color: AppColors.secondaryOpacity25),
               _buildGoodDescriptionInputs(context, state),
               if (state.goodDescriptionsList.isNotEmpty)
                 Column(
@@ -58,7 +59,8 @@ class PackingListFormGoodDescriptions extends StatelessWidget {
     );
   }
 
-  Widget _buildGoodDescription(BuildContext context, PackingListDescriptionDto dto) {
+  Widget _buildGoodDescription(
+      BuildContext context, PackingListDescriptionDto dto) {
     final type = dto.type?.capitalized;
     final cubit = context.read<PackingListFormCubit>();
     return Padding(
@@ -74,7 +76,8 @@ class PackingListFormGoodDescriptions extends StatelessWidget {
                   controller: TextEditingController(text: dto.containerNumber),
                   hintText: 'enter container number',
                   onChanged: (p0) {
-                    cubit.updateGoodDescription(dto.copyWith(containerNumber: p0));
+                    cubit.updateGoodDescription(
+                        dto.copyWith(containerNumber: p0));
                   },
                 ),
               ),
@@ -83,8 +86,10 @@ class PackingListFormGoodDescriptions extends StatelessWidget {
                 child: StandardInput(
                   hintText: 'e.g percento',
                   labelText: 'percento',
-                  controller: TextEditingController(text: dto.percento.toString()),
-                  onChanged: (p0) => cubit.updateGoodDescription(dto.copyWith(percento: p0)),
+                  controller:
+                      TextEditingController(text: dto.percento.toString()),
+                  onChanged: (p0) =>
+                      cubit.updateGoodDescription(dto.copyWith(percento: p0)),
                 ),
               ),
               const SizedBox(width: 20),
@@ -92,8 +97,10 @@ class PackingListFormGoodDescriptions extends StatelessWidget {
                 child: StandardInput(
                   hintText: 'e.g 3',
                   labelText: 'Items count',
-                  controller: TextEditingController(text: dto.itemsCount.toString()),
-                  onChanged: (p0) => cubit.updateGoodDescription(dto.copyWith(itemsCount: int.tryParse(p0) ?? 0)),
+                  controller:
+                      TextEditingController(text: dto.itemsCount.toString()),
+                  onChanged: (p0) => cubit.updateGoodDescription(
+                      dto.copyWith(itemsCount: int.tryParse(p0) ?? 0)),
                   inputFormatters: [FilteringTextInputFormatter.digitsOnly],
                 ),
               ),
@@ -101,11 +108,15 @@ class PackingListFormGoodDescriptions extends StatelessWidget {
               Expanded(
                 child: StandardInput(
                   // readOnly: true,
-                  inputFormatters: [FilteringTextInputFormatter.allow(RegExp(r'^\d+\.?\d{0,2}'))],
+                  inputFormatters: [
+                    FilteringTextInputFormatter.allow(RegExp(r'^\d+\.?\d{0,2}'))
+                  ],
                   labelText: 'Weight(MT)',
                   hintText: 'e.g 19.6',
-                  onChanged: (p0) => cubit.updateGoodDescription(dto.copyWith(weight: double.tryParse(p0) ?? 0)),
-                  controller: TextEditingController(text: dto.weight.toStringAsFixed(2)),
+                  onChanged: (p0) => cubit.updateGoodDescription(
+                      dto.copyWith(weight: double.tryParse(p0) ?? 0)),
+                  controller: TextEditingController(
+                      text: dto.weight.toStringAsFixed(2)),
                 ),
               ),
               const SizedBox(width: 65),
@@ -117,11 +128,15 @@ class PackingListFormGoodDescriptions extends StatelessWidget {
               Expanded(
                 child: StandardInput(
                   // readOnly: true,
-                  inputFormatters: [FilteringTextInputFormatter.allow(RegExp(r'^\d+\.?\d{0,2}'))],
+                  inputFormatters: [
+                    FilteringTextInputFormatter.allow(RegExp(r'^\d+\.?\d{0,2}'))
+                  ],
                   hintText: 'e.g 19.6',
                   labelText: 'Container Empty Weight(MT)',
-                  onChanged: (p0) => cubit.updateGoodDescription(dto.copyWith(emptyContainerWeight: double.tryParse(p0) ?? 0)),
-                  controller: TextEditingController(text: dto.emptyContainerWeight.toStringAsFixed(2)),
+                  onChanged: (p0) => cubit.updateGoodDescription(dto.copyWith(
+                      emptyContainerWeight: double.tryParse(p0) ?? 0)),
+                  controller: TextEditingController(
+                      text: dto.emptyContainerWeight.toStringAsFixed(2)),
                 ),
               ),
               const SizedBox(width: 20),
@@ -129,9 +144,17 @@ class PackingListFormGoodDescriptions extends StatelessWidget {
                 child: StandardSelectableDropdown(
                   initialValue: type,
                   // readOnly: true,
-                  items: const ['Bales', 'Loose', 'Bults', 'Rolls', 'Packing', 'Lot'],
+                  items: const [
+                    'Bales',
+                    'Loose',
+                    'Bulks',
+                    'Rolls',
+                    'Packing',
+                    'Lot'
+                  ],
                   labelText: 'Packing',
-                  onChanged: (p0) => cubit.updateGoodDescription(dto.copyWith(type: p0)),
+                  onChanged: (p0) =>
+                      cubit.updateGoodDescription(dto.copyWith(type: p0)),
                   hintText: 'Type',
                 ),
               ),
@@ -146,13 +169,15 @@ class PackingListFormGoodDescriptions extends StatelessWidget {
                       lastDate: DateTime(2100),
                     );
                     if (selectedDate != null) {
-                      cubit.updateGoodDescription(dto.copyWith(date: selectedDate));
+                      cubit.updateGoodDescription(
+                          dto.copyWith(date: selectedDate));
                     }
                   },
                   readOnly: true,
                   iconSuffix: const Icon(Icons.calendar_month),
                   hintText: 'e.g yyyy-mm-dd',
-                  controller: TextEditingController(text: dto.date.formattedDateYYYYMMDD),
+                  controller: TextEditingController(
+                      text: dto.date.formattedDateYYYYMMDD),
                   labelText: 'Date',
                 ),
               ),
@@ -163,10 +188,14 @@ class PackingListFormGoodDescriptions extends StatelessWidget {
                   label: Text.rich(
                     TextSpan(children: [
                       TextSpan(text: 'VGM ', style: TextStyles.font16Regular),
-                      TextSpan(text: 'auto', style: TextStyles.font16Regular.copyWith(color: AppColors.primary)),
+                      TextSpan(
+                          text: 'auto',
+                          style: TextStyles.font16Regular
+                              .copyWith(color: AppColors.primary)),
                     ]),
                   ),
-                  controller: TextEditingController(text: dto.vgm.toStringAsFixed(2)),
+                  controller:
+                      TextEditingController(text: dto.vgm.toStringAsFixed(2)),
                   hintText: 'e.g 80',
                 ),
               ),
@@ -182,7 +211,8 @@ class PackingListFormGoodDescriptions extends StatelessWidget {
     );
   }
 
-  Widget _buildGoodDescriptionInputs(BuildContext context, PackingListFormLoaded state) {
+  Widget _buildGoodDescriptionInputs(
+      BuildContext context, PackingListFormLoaded state) {
     final bloc = context.read<PackingListFormCubit>();
     return Padding(
       padding: const EdgeInsets.symmetric(horizontal: 28, vertical: 14),
@@ -223,7 +253,10 @@ class PackingListFormGoodDescriptions extends StatelessWidget {
                   labelText: 'Weight(MT)',
                   keyboardType: TextInputType.number,
                   hintText: 'e.g 3',
-                  inputFormatters: [FilteringTextInputFormatter.allow(RegExp(r'^\d*\.?\d{0,9}$'))],
+                  inputFormatters: [
+                    FilteringTextInputFormatter.allow(
+                        RegExp(r'^\d*\.?\d{0,9}$'))
+                  ],
                 ),
               ),
               const SizedBox(width: 65),
@@ -238,15 +271,27 @@ class PackingListFormGoodDescriptions extends StatelessWidget {
                   labelText: 'Container Empty Weight(MT)',
                   keyboardType: TextInputType.number,
                   hintText: 'e.g 80€',
-                  inputFormatters: [FilteringTextInputFormatter.allow(RegExp(r'^\d*\.?\d{0,9}$'))],
+                  inputFormatters: [
+                    FilteringTextInputFormatter.allow(
+                        RegExp(r'^\d*\.?\d{0,9}$'))
+                  ],
                 ),
               ),
               const SizedBox(width: 20),
               Expanded(
                 child: StandardSelectableDropdown(
                   hintText: 'Type',
-                  initialValue: bloc.typeController.text.isNotEmpty ? bloc.typeController.text : null,
-                  items: const ['Bales', 'Loose', 'Bults', 'Rolls', 'Packing', 'Lot'],
+                  initialValue: bloc.typeController.text.isNotEmpty
+                      ? bloc.typeController.text
+                      : null,
+                  items: const [
+                    'Bales',
+                    'Loose',
+                    'Bulks',
+                    'Rolls',
+                    'Packing',
+                    'Lot'
+                  ],
                   onChanged: (p0) {
                     bloc.typeController.text = p0 ?? '';
                   },
@@ -264,7 +309,8 @@ class PackingListFormGoodDescriptions extends StatelessWidget {
                       lastDate: DateTime(2100),
                     );
                     if (selectedDate != null) {
-                      bloc.dateController.text = selectedDate.formattedDateYYYYMMDD;
+                      bloc.dateController.text =
+                          selectedDate.formattedDateYYYYMMDD;
                     }
                   },
                   readOnly: true,
@@ -282,7 +328,10 @@ class PackingListFormGoodDescriptions extends StatelessWidget {
                   label: Text.rich(
                     TextSpan(children: [
                       TextSpan(text: 'VGM ', style: TextStyles.font16Regular),
-                      TextSpan(text: 'auto', style: TextStyles.font16Regular.copyWith(color: AppColors.primary)),
+                      TextSpan(
+                          text: 'auto',
+                          style: TextStyles.font16Regular
+                              .copyWith(color: AppColors.primary)),
                     ]),
                   ),
                   hintText: 'e.g 80€',
@@ -297,9 +346,11 @@ class PackingListFormGoodDescriptions extends StatelessWidget {
     );
   }
 
-  Widget _buildDeleteButton(BuildContext context, PackingListDescriptionDto dto) {
+  Widget _buildDeleteButton(
+      BuildContext context, PackingListDescriptionDto dto) {
     return InkWell(
-      onTap: () => context.read<PackingListFormCubit>().removeGoodDescription(dto),
+      onTap: () =>
+          context.read<PackingListFormCubit>().removeGoodDescription(dto),
       borderRadius: const BorderRadius.all(Radius.circular(8)),
       child: Container(
           height: 70,
@@ -328,13 +379,17 @@ class PackingListFormGoodDescriptions extends StatelessWidget {
           width: 40,
           height: 70,
           decoration: BoxDecoration(
-            color: state.addGoodDescriptionEnabled ? AppColors.primaryOpacity13 : AppColors.secondaryOpacity13,
+            color: state.addGoodDescriptionEnabled
+                ? AppColors.primaryOpacity13
+                : AppColors.secondaryOpacity13,
             borderRadius: BorderRadius.circular(8),
           ),
           padding: const EdgeInsets.all(8),
           child: Icon(
             Icons.add,
-            color: state.addGoodDescriptionEnabled ? AppColors.primary : AppColors.secondaryOpacity25,
+            color: state.addGoodDescriptionEnabled
+                ? AppColors.primary
+                : AppColors.secondaryOpacity25,
           )),
     );
   }
@@ -348,8 +403,12 @@ class PackingListFormGoodDescriptions extends StatelessWidget {
               child: StandardInput(
             label: Text.rich(
               TextSpan(children: [
-                TextSpan(text: 'Origin of Goods ', style: TextStyles.font16Regular),
-                TextSpan(text: 'auto', style: TextStyles.font16Regular.copyWith(color: AppColors.primary)),
+                TextSpan(
+                    text: 'Origin of Goods ', style: TextStyles.font16Regular),
+                TextSpan(
+                    text: 'auto',
+                    style: TextStyles.font16Regular
+                        .copyWith(color: AppColors.primary)),
               ]),
             ),
             initialValue: 'Spain',
@@ -362,11 +421,17 @@ class PackingListFormGoodDescriptions extends StatelessWidget {
             readOnly: true,
             label: Text.rich(
               TextSpan(children: [
-                TextSpan(text: '40ft Containers Count ', style: TextStyles.font16Regular),
-                TextSpan(text: 'auto', style: TextStyles.font16Regular.copyWith(color: AppColors.primary)),
+                TextSpan(
+                    text: '40ft Containers Count ',
+                    style: TextStyles.font16Regular),
+                TextSpan(
+                    text: 'auto',
+                    style: TextStyles.font16Regular
+                        .copyWith(color: AppColors.primary)),
               ]),
             ),
-            controller: TextEditingController(text: state.goodDescriptionsList.length.toString()),
+            controller: TextEditingController(
+                text: state.goodDescriptionsList.length.toString()),
           )),
           const SizedBox(width: 20),
           Expanded(
@@ -374,11 +439,17 @@ class PackingListFormGoodDescriptions extends StatelessWidget {
             readOnly: true,
             label: Text.rich(
               TextSpan(children: [
-                TextSpan(text: 'Total Weight (MT) ', style: TextStyles.font16Regular),
-                TextSpan(text: 'auto', style: TextStyles.font16Regular.copyWith(color: AppColors.primary)),
+                TextSpan(
+                    text: 'Total Weight (MT) ',
+                    style: TextStyles.font16Regular),
+                TextSpan(
+                    text: 'auto',
+                    style: TextStyles.font16Regular
+                        .copyWith(color: AppColors.primary)),
               ]),
             ),
-            controller: TextEditingController(text: state.allWeight.toStringAsFixed(2)),
+            controller:
+                TextEditingController(text: state.allWeight.toStringAsFixed(2)),
           )),
           // const SizedBox(width: 20),
           // Expanded(

@@ -32,27 +32,37 @@ class PackingListFormDetails extends StatelessWidget {
                       seriesNumberController: bloc.numberController,
                       onItemTap: (deal) {
                         if (deal.customerInvoice == null) {
-                          DialogUtil.showErrorDialog(context, content: 'This deal has no invoice, please add one');
+                          DialogUtil.showErrorDialog(context,
+                              content:
+                                  'This deal has no invoice, please add one');
                           return;
                         }
 
-                        bloc.taxIdController.text = deal.customerInvoice?.taxId ?? '';
-                        bloc.customerAddressController.text = deal.customer?.formattedAddress ?? '';
-                        bloc.customerNameController.text = deal.customer?.name ?? '';
+                        bloc.taxIdController.text =
+                            deal.customerInvoice?.taxId ?? '';
+                        bloc.customerAddressController.text =
+                            deal.customer?.formattedAddress ?? '';
+                        bloc.customerNameController.text =
+                            deal.customer?.name ?? '';
 
                         final customerInvoice = deal.customerInvoice;
-                        if (customerInvoice == null || customerInvoice.goodsDescriptions.isEmpty) return;
+                        if (customerInvoice == null ||
+                            customerInvoice.goodsDescriptions.isEmpty) return;
                         List<PackingListDescriptionDto> descriptionList = [];
 
-                        for (int i = 0; i < customerInvoice.goodsDescriptions.length; i++) {
+                        for (int i = 0;
+                            i < customerInvoice.goodsDescriptions.length;
+                            i++) {
                           descriptionList.add(PackingListDescriptionDto(
                             uniqueKey: i.toString(),
-                            containerNumber: customerInvoice.goodsDescriptions[i].containerNumber,
+                            containerNumber: customerInvoice
+                                .goodsDescriptions[i].containerNumber,
                             weight: customerInvoice.goodsDescriptions[i].weight,
                             emptyContainerWeight: 0,
                             type: null,
                             itemsCount: 0,
-                            date: customerInvoice.goodsDescriptions[i].createdAt,
+                            date:
+                                customerInvoice.goodsDescriptions[i].createdAt,
                             percento: '',
                           ));
                         }
@@ -82,10 +92,21 @@ class PackingListFormDetails extends StatelessWidget {
                         if (state.onePackingTypeForAll) ...[
                           StandardSelectableDropdown(
                             hintText: 'Select Packing Type For All',
-                            items: const ['Bales', 'Loose', 'Bults', 'Rolls', 'Packing', 'Lot'],
+                            items: const [
+                              'Bales',
+                              'Loose',
+                              'Bulks',
+                              'Rolls',
+                              'Packing',
+                              'Lot'
+                            ],
                             onChanged: (p0) {
-                              for (int i = 0; i < state.goodDescriptionsList.length; i++) {
-                                bloc.updateGoodDescription(state.goodDescriptionsList[i].copyWith(type: p0));
+                              for (int i = 0;
+                                  i < state.goodDescriptionsList.length;
+                                  i++) {
+                                bloc.updateGoodDescription(state
+                                    .goodDescriptionsList[i]
+                                    .copyWith(type: p0));
                               }
                             },
                             labelText: 'Packing Type For All',
@@ -100,7 +121,8 @@ class PackingListFormDetails extends StatelessWidget {
                                 bloc.toggleOnePackingTypeForAllCheckBox();
                               },
                             ),
-                            Text('One Packing Type For All', style: TextStyles.font16Regular),
+                            Text('One Packing Type For All',
+                                style: TextStyles.font16Regular),
                           ],
                         )
                       ],

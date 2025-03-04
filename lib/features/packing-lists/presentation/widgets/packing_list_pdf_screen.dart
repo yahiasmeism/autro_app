@@ -19,11 +19,13 @@ import '../bloc/packing_list_pdf/packing_list_pdf_cubit.dart';
 class PackingListPdfScreen extends StatelessWidget {
   const PackingListPdfScreen._();
 
-  static create(BuildContext context, PackingListPdfDto dto, {PdfAction action = PdfAction.view, String? filePath}) {
+  static create(BuildContext context, PackingListPdfDto dto,
+      {PdfAction action = PdfAction.view, String? filePath}) {
     NavUtil.push(
       context,
       BlocProvider<PackingListPdfCubit>(
-        create: (context) => sl<PackingListPdfCubit>()..init(dto, action: action, saveFilePath: filePath),
+        create: (context) => sl<PackingListPdfCubit>()
+          ..init(dto, action: action, saveFilePath: filePath),
         child: const PackingListPdfScreen._(),
       ),
     );
@@ -41,7 +43,8 @@ class PackingListPdfScreen extends StatelessWidget {
         if (state is PackingListPdfInitial) {
           return const LoadingIndicator();
         } else if (state is PackingListPdfResourcesLoading) {
-          return const LoadingIndicator(loadingMessage: 'Preparing resoures...');
+          return const LoadingIndicator(
+              loadingMessage: 'Preparing resoures...');
         } else if (state is PackingListPdfGenerating) {
           return const LoadingIndicator(loadingMessage: 'Generating...');
         } else if (state is PackingListPdfGenerated) {
@@ -49,7 +52,10 @@ class PackingListPdfScreen extends StatelessWidget {
         } else if (state is ExportPackingListLoading) {
           return const LoadingIndicator(loadingMessage: 'Exporting..');
         } else if (state is PackingListPdfError) {
-          return Center(child: Scaffold(appBar: AppBar(), body: FailureScreen(failure: state.failure)));
+          return Center(
+              child: Scaffold(
+                  appBar: AppBar(),
+                  body: FailureScreen(failure: state.failure)));
         }
         return const SizedBox.shrink();
       },
@@ -60,9 +66,13 @@ class PackingListPdfScreen extends StatelessWidget {
     if (state is PackingListPdfResourcesLoaded) {
       final packingListContent = _buildPackingListPdfContent(state);
       if (state.action == PdfAction.view) {
-        context.read<PackingListPdfCubit>().generatePackingListPdf(packingListContent);
+        context
+            .read<PackingListPdfCubit>()
+            .generatePackingListPdf(packingListContent);
       } else if (state.action == PdfAction.export) {
-        context.read<PackingListPdfCubit>().exportPackingListPdf(state.filePath!, packingListContent);
+        context
+            .read<PackingListPdfCubit>()
+            .exportPackingListPdf(state.filePath!, packingListContent);
       }
     }
     if (state is ExportPackingListDone) {
@@ -152,12 +162,25 @@ class PackingListPdfScreen extends StatelessWidget {
         pw.SizedBox(height: 8),
         pw.Text("To: ${state.packingListPdfDto.customerName}", style: style),
         pw.SizedBox(height: 2),
-        pw.Text("Address: ${state.packingListPdfDto.customerAddress}", style: style),
+        pw.Text("Address: ${state.packingListPdfDto.customerAddress}",
+            style: style),
         pw.SizedBox(height: 2),
         pw.Text("TAX ID: ${state.packingListPdfDto.taxId}", style: style),
         pw.SizedBox(height: 8),
         pw.Divider(height: 0.5, color: tableBorderColor),
         pw.SizedBox(height: 8),
+        pw.Row(
+          children: [
+            pw.Text(
+              "Invoice Number: INV${state.packingListPdfDto.packingListNumber}",
+              style: pw.TextStyle(
+                color: textColor,
+                fontSize: 12,
+                fontWeight: pw.FontWeight.bold,
+              ),
+            ),
+          ],
+        ),
       ],
     );
   }
@@ -165,7 +188,7 @@ class PackingListPdfScreen extends StatelessWidget {
   pw.Widget buildMainTable(PackingListPdfResourcesLoaded state) {
     final headers = [
       'CONTAINER',
-      'PERCENTO',
+      'PRECINTO',
       'PACKING TYPE',
       'ITEMS COUNT',
       'WEIGHT',
@@ -292,7 +315,8 @@ class PackingListPdfScreen extends StatelessWidget {
             //   ),
             // ),
             pw.SizedBox(height: 10),
-            pw.Image(state.signatureImageProvider, width: 150, height: 70, dpi: 3000),
+            pw.Image(state.signatureImageProvider,
+                width: 150, height: 70, dpi: 3000),
           ],
         ),
       ],

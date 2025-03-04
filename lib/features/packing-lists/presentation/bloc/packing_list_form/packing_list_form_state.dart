@@ -68,7 +68,8 @@ final class PackingListFormLoaded extends PackingListFormState {
   }) {
     return PackingListFormLoaded(
       packingListPdfDto: packingListPdfDto ?? this.packingListPdfDto,
-      addGoodDescriptionEnabled: addGoodDescriptionEnabled ?? this.addGoodDescriptionEnabled,
+      addGoodDescriptionEnabled:
+          addGoodDescriptionEnabled ?? this.addGoodDescriptionEnabled,
       goodDescriptionsList: descriptionList ?? goodDescriptionsList,
       updatedMode: updatedMode ?? this.updatedMode,
       packingList: packingList ?? this.packingList,
@@ -77,7 +78,8 @@ final class PackingListFormLoaded extends PackingListFormState {
       clearEnabled: clearEnabled ?? this.clearEnabled,
       loading: loading ?? this.loading,
       failureOrSuccessOption: failureOrSuccessOption ?? none(),
-      isGenerateAutoPackingListNumber: isGenerateAutoPackingListNumber ?? this.isGenerateAutoPackingListNumber,
+      isGenerateAutoPackingListNumber: isGenerateAutoPackingListNumber ??
+          this.isGenerateAutoPackingListNumber,
       onePackingTypeForAll: onePackingTypeForAll ?? this.onePackingTypeForAll,
     );
   }
@@ -108,14 +110,17 @@ class PackingListPdfDto {
   final String customerName;
   final String customerAddress;
   final String taxId;
+  // final DateTime packingListDate;
 
-  PackingListPdfDto(
-      {required this.packingListNumber,
-      required this.descriptions,
-      required this.details,
-      required this.customerName,
-      required this.customerAddress,
-      required this.taxId});
+  PackingListPdfDto({
+    required this.packingListNumber,
+    required this.descriptions,
+    required this.details,
+    required this.customerName,
+    required this.customerAddress,
+    required this.taxId,
+    // required this.packingListDate
+  });
 
   double get allWeight {
     double weight = 0;

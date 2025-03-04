@@ -129,7 +129,7 @@ class _DealDetailsDesktopLayoutState extends State<DealDetailsDesktopLayout>
                               DealInvoicesTabs(dealEntity: state.deal),
 
                               DealShippingInvoiceTab(dealEntity: state.deal),
-=======
+
                               // PaymentsScreen(deal: state.deal),
 
                             ],
