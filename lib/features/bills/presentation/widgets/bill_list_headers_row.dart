@@ -26,6 +26,8 @@ class BillsListHeadersRow extends StatelessWidget {
           const SizedBox(width: 16),
           _buildHeaderCell('Notes', 4),
           const SizedBox(width: 16),
+          _buildHeaderCell('Status', 4),
+          const SizedBox(width: 16),
           _buildHeaderCell('Actions', 4, isCenter: true),
         ],
       ),

@@ -28,6 +28,7 @@ class UpdateBillUseCaseParams extends Equatable {
   final String? attachmentPath;
   final bool deleteAttachment;
   final double vat;
+  final String status;
 
   const UpdateBillUseCaseParams({
     required this.id,
@@ -38,10 +39,21 @@ class UpdateBillUseCaseParams extends Equatable {
     required this.attachmentPath,
     required this.deleteAttachment,
     required this.vat,
+    required this.status,
   });
 
   @override
-  List<Object?> get props => [id, vendor, amount, notes, date, attachmentPath, deleteAttachment, vat];
+  List<Object?> get props => [
+        id,
+        vendor,
+        amount,
+        notes,
+        date,
+        attachmentPath,
+        deleteAttachment,
+        vat,
+        status,
+      ];
 }
 
 

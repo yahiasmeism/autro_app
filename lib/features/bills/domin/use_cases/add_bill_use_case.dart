@@ -26,6 +26,7 @@ class AddBillUseCaseParams extends Equatable {
   final String notes;
   final DateTime date;
   final String? attachmentPath;
+  final String status;
 
   const AddBillUseCaseParams({
     required this.vendor,
@@ -34,9 +35,18 @@ class AddBillUseCaseParams extends Equatable {
     required this.date,
     required this.attachmentPath,
     required this.vat,
+    required this.status,
   });
   @override
-  List<Object?> get props => [vendor, amount, notes, date, attachmentPath, vat];
+  List<Object?> get props => [
+        vendor,
+        amount,
+        notes,
+        date,
+        attachmentPath,
+        vat,
+        status,
+      ];
 }
 
 /* 

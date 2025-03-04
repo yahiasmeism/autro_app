@@ -2,6 +2,7 @@ import 'dart:io';
 
 import 'package:autro_app/core/errors/failures.dart';
 import 'package:autro_app/core/extensions/date_time_extension.dart';
+import 'package:autro_app/core/extensions/string_extension.dart';
 import 'package:autro_app/features/bills/domin/entities/bill_entity.dart';
 import 'package:autro_app/features/bills/domin/use_cases/add_bill_use_case.dart';
 import 'package:autro_app/features/bills/domin/use_cases/get_bill_use_case.dart';
@@ -68,6 +69,7 @@ class BillFormBloc extends Bloc<BillFormEvent, BillFormState> {
   final dateController = TextEditingController();
   final notesController = TextEditingController();
   final remainingAmountController = TextEditingController();
+  final statusController = TextEditingController();
 
   final formKey = GlobalKey<FormState>();
 
@@ -102,7 +104,7 @@ class BillFormBloc extends Bloc<BillFormEvent, BillFormState> {
       dateController.text = state.bill?.date.formattedDateYYYYMMDD ?? DateTime.now().formattedDateYYYYMMDD;
       notesController.text = state.bill?.notes ?? '';
       vatController.text = state.bill?.vat.toStringAsFixed(2) ?? '';
-
+      statusController.text = state.bill?.status.capitalized ?? 'Pending';
       setupControllersListeners();
       add(BillFormChangedEvent());
     }
@@ -114,6 +116,7 @@ class BillFormBloc extends Bloc<BillFormEvent, BillFormState> {
     dateController.addListener(() => add(BillFormChangedEvent()));
     notesController.addListener(() => add(BillFormChangedEvent()));
     vatController.addListener(() => add(BillFormChangedEvent()));
+    statusController.addListener(() => add(BillFormChangedEvent()));
   }
 
   _onBillFormChanged(BillFormChangedEvent event, Emitter<BillFormState> emit) {
@@ -135,7 +138,8 @@ class BillFormBloc extends Bloc<BillFormEvent, BillFormState> {
           bill.notes != notesController.text ||
           bill.vat != (double.tryParse(vatController.text) ?? 0) ||
           urlChanged ||
-          state.pickedAttachment.isSome();
+          state.pickedAttachment.isSome() ||
+          bill.status.capitalized != statusController.text;
       emit(state.copyWith(
         saveEnabled: formIsNotEmpty && isFormChanged,
         cancelEnabled: isFormChanged,
@@ -169,6 +173,7 @@ class BillFormBloc extends Bloc<BillFormEvent, BillFormState> {
     emit(state.copyWith(loading: true));
 
     final params = AddBillUseCaseParams(
+      status: statusController.text,
       vat: double.tryParse(vatController.text) ?? 0,
       attachmentPath: state.pickedAttachment.fold(() => null, (file) => file.path),
       vendor: vendorController.text,
@@ -200,6 +205,7 @@ class BillFormBloc extends Bloc<BillFormEvent, BillFormState> {
 
     emit(state.copyWith(loading: true));
     final params = UpdateBillUseCaseParams(
+      status: statusController.text,
       vat: double.tryParse(vatController.text) ?? 0,
       id: state.bill!.id,
       vendor: vendorController.text,

@@ -8,6 +8,7 @@ import 'package:autro_app/features/bills/domin/entities/bill_entity.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
+import '../../../../core/widgets/send_status.dart';
 import '../bloc/bills_list/bills_list_bloc.dart';
 import '../screens/bill_form_screen.dart';
 
@@ -50,6 +51,11 @@ class BillListTile extends StatelessWidget {
             _buildCell(
               flex: 4,
               text: billEntity.notes.isEmpty ? '-' : billEntity.notes,
+            ),
+            const SizedBox(width: 16),
+            Expanded(
+              flex: 4,
+              child: SendStatus(status: billEntity.status),
             ),
             const SizedBox(width: 16),
             Flexible(

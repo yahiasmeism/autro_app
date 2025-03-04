@@ -9,6 +9,7 @@ class BillEntity extends Equatable {
   final DateTime date;
   final double vat;
   final String attachmentUrl;
+  final String status;
   final DateTime createdAt;
   final DateTime updatedAt;
 
@@ -23,6 +24,7 @@ class BillEntity extends Equatable {
     required this.notes,
     required this.date,
     required this.createdAt,
+    required this.status,
     required this.updatedAt,
   });
   @override
@@ -35,6 +37,8 @@ class BillEntity extends Equatable {
         createdAt,
         updatedAt,
         vat,
+        status,
+        attachmentUrl,
       ];
 
   BillEntity copyWith({
@@ -47,6 +51,7 @@ class BillEntity extends Equatable {
     DateTime? createdAt,
     DateTime? updatedAt,
     String? attachmentUrl,
+    String? status,
   }) {
     return BillEntity(
       vat: vat ?? this.vat,
@@ -58,6 +63,7 @@ class BillEntity extends Equatable {
       createdAt: createdAt ?? this.createdAt,
       updatedAt: updatedAt ?? this.updatedAt,
       attachmentUrl: attachmentUrl ?? this.attachmentUrl,
+      status: status ?? this.status,
 
     );
   }

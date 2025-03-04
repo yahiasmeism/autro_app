@@ -15,6 +15,7 @@ class BillModel extends BillEntity implements BaseMapable {
     required super.attachmentUrl,
     required super.vat,
     required super.updatedAt,
+    required super.status,
   });
 
   factory BillModel.fromJson(Map<String, dynamic> json) {
@@ -28,6 +29,7 @@ class BillModel extends BillEntity implements BaseMapable {
       updatedAt: DateTime.parse((json['updated_at'] as String?).orEmpty).orDefault,
       attachmentUrl: (json['attachment'] as String?).orEmpty,
       vat: (json['vat'] as num?).toDoubleOrZero,
+      status: (json['status'] as String?).orEmpty,
     );
   }
 

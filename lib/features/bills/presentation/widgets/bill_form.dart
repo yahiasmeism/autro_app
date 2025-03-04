@@ -15,6 +15,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
+import '../../../../core/widgets/standard_selection_dropdown.dart';
+
 class BillForm extends StatelessWidget {
   const BillForm({super.key});
 
@@ -60,6 +62,18 @@ class BillForm extends StatelessWidget {
                           hintText: 'e.g yyyy-mm-dd',
                           controller: bloc.dateController,
                           labelText: 'Bill Date',
+                        ),
+                      ),
+                      const SizedBox(width: 24),
+                      Expanded(
+                        child: StandardSelectableDropdown(
+                          onChanged: (p0) {
+                            bloc.statusController.text = p0 ?? '';
+                          },
+                          items: const ['Pending', 'Sent'],
+                          hintText: 'e.g yyyy-mm-dd',
+                          initialValue: bloc.statusController.text.isEmpty ? null : bloc.statusController.text,
+                          labelText: 'Status',
                         ),
                       ),
                     ],

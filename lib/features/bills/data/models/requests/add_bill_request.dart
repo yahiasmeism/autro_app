@@ -11,6 +11,7 @@ class AddBillRequest extends AddBillUseCaseParams implements RequestMapable {
     required super.date,
     required super.attachmentPath,
     required super.vat,
+    required super.status,
   });
 
   factory AddBillRequest.fromParams(AddBillUseCaseParams params) => AddBillRequest(
@@ -20,6 +21,7 @@ class AddBillRequest extends AddBillUseCaseParams implements RequestMapable {
         date: params.date,
         attachmentPath: params.attachmentPath,
         vat: params.vat,
+        status: params.status,
       );
 
   Future<FormData> toFormData() async {
@@ -32,6 +34,7 @@ class AddBillRequest extends AddBillUseCaseParams implements RequestMapable {
   @override
   Map<String, dynamic> toJson() {
     return {
+      'status': status.toLowerCase(),
       'vendor': vendor,
       'amount': amount,
       'notes': notes,
