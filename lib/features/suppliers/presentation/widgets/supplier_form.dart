@@ -41,7 +41,10 @@ class SupplierForm extends StatelessWidget {
                     const SizedBox(width: 24),
                     Expanded(
                         child: StandardSelectableDropdown(
-                      initialValue: bloc.primaryContactController.text.isNotEmpty ? bloc.primaryContactController.text : null,
+                      initialValue:
+                          bloc.primaryContactController.text.isNotEmpty
+                              ? bloc.primaryContactController.text
+                              : null,
                       onChanged: (p0) {
                         bloc.primaryContactController.text = p0 ?? '';
                       },
@@ -64,7 +67,7 @@ class SupplierForm extends StatelessWidget {
                     Expanded(
                         child: StandardInput(
                       controller: bloc.city,
-                      labelText: 'City',
+                      labelText: 'Address',
                       hintText: 'e.g SomeWhere',
                       validator: ValidatorUtils.validateNameOptional,
                     )),
@@ -125,7 +128,8 @@ class SupplierForm extends StatelessWidget {
                     maxLines: 3,
                     labelText: 'Notes',
                     controller: bloc.notes,
-                    hintText: 'e.g write anything here that you might need to store about this supplier.',
+                    hintText:
+                        'e.g write anything here that you might need to store about this supplier.',
                   ),
                   const SizedBox(height: 20),
                   _buildButtons(context, state),
@@ -148,14 +152,25 @@ class SupplierForm extends StatelessWidget {
         mainAxisAlignment: MainAxisAlignment.end,
         children: [
           if (state.cancelEnabled)
-            CancelOutlineButton(onPressed: () => context.read<SupplierFormBloc>().add(CancelSupplierFormEvent())),
+            CancelOutlineButton(
+                onPressed: () => context
+                    .read<SupplierFormBloc>()
+                    .add(CancelSupplierFormEvent())),
           const SizedBox(width: 16),
           ClearAllButton(
-            onPressed: state.clearEnabled ? () => context.read<SupplierFormBloc>().add(ClearSupplierFormEvent()) : null,
+            onPressed: state.clearEnabled
+                ? () => context
+                    .read<SupplierFormBloc>()
+                    .add(ClearSupplierFormEvent())
+                : null,
           ),
           const SizedBox(width: 16),
           SaveOutLineButton(
-            onPressed: state.saveEnabled ? () => context.read<SupplierFormBloc>().add(SubmitSupplierFormEvent()) : null,
+            onPressed: state.saveEnabled
+                ? () => context
+                    .read<SupplierFormBloc>()
+                    .add(SubmitSupplierFormEvent())
+                : null,
           ),
         ],
       ),
@@ -167,9 +182,13 @@ class SupplierForm extends StatelessWidget {
       state.failureOrSuccessOption.fold(
         () => null,
         (either) => either.fold(
-          (failure) => DialogUtil.showErrorSnackBar(context, getErrorMsgFromFailure(failure)),
+          (failure) => DialogUtil.showErrorSnackBar(
+              context, getErrorMsgFromFailure(failure)),
           (message) {
-            if (state.supplier != null) context.read<SuppliersListBloc>().add(AddedUpdatedSupplierEvent());
+            if (state.supplier != null)
+              context
+                  .read<SuppliersListBloc>()
+                  .add(AddedUpdatedSupplierEvent());
             NavUtil.pop(context, state.supplier);
             DialogUtil.showSuccessSnackBar(context, message);
           },
