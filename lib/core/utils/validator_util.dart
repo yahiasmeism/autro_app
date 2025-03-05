@@ -1,14 +1,16 @@
 class ValidatorUtils {
   ValidatorUtils._();
   // Validate if the field is not empty
-  static String? validateRequired(String? value, {String fieldName = 'This field'}) {
+  static String? validateRequired(String? value,
+      {String fieldName = 'This field'}) {
     if (value == null || value.trim().isEmpty) {
       return '$fieldName is required.';
     }
     return null;
   }
 
-  static String? validateUserName(String? value, {int minLength = 3, int maxLength = 20}) {
+  static String? validateUserName(String? value,
+      {int minLength = 3, int maxLength = 20}) {
     if (value == null || value.trim().isEmpty) {
       return 'Username is required.';
     }
@@ -52,16 +54,16 @@ class ValidatorUtils {
     if (value == null || value.trim().isEmpty) {
       return 'Name is required.';
     }
-    if (!RegExp(r'^[a-zA-Z.\s]+$').hasMatch(value)) {
-      return 'Name must contain only letters, spaces, and periods.';
+    if (!RegExp(r'^[\p{L}\p{N}\s\W]+$', unicode: true).hasMatch(value)) {
+      return 'Invalid input. Only letters, numbers, and symbols are allowed.';
     }
     return null;
   }
 
   static String? validateNameOptional(String? value) {
     if (value != null && value.trim().isNotEmpty) {
-      if (!RegExp(r'^[a-zA-Z.\s]+$').hasMatch(value)) {
-        return 'Name must contain only letters, spaces, and periods.';
+      if (!RegExp(r'^[\p{L}\p{N}\s\W]+$', unicode: true).hasMatch(value)) {
+        return 'Invalid input. Only letters, numbers, and symbols are allowed.';
       }
     }
     return null;
@@ -78,7 +80,8 @@ class ValidatorUtils {
     return null;
   }
 
-  static String? validateConfirmPassword(String? value, String? originalPassword) {
+  static String? validateConfirmPassword(
+      String? value, String? originalPassword) {
     if (value == null || value.trim().isEmpty) {
       return 'Confirm password is required.';
     }
@@ -89,7 +92,8 @@ class ValidatorUtils {
   }
 
   // Validate matching fields (e.g., password and confirm password)
-  static String? validateMatch(String? value, String? compareTo, {String fieldName = 'Fields'}) {
+  static String? validateMatch(String? value, String? compareTo,
+      {String fieldName = 'Fields'}) {
     if (value != compareTo) {
       return '$fieldName do not match.';
     }
@@ -107,9 +111,10 @@ class ValidatorUtils {
   /// Validate email address
   static String? validateEmail(String? value) {
     if (value == null || value.trim().isEmpty) {
-      return 'Email address cannot be empty.';
+      return null; // ✅ Email is now optional
     }
-    final emailRegex = RegExp(r'^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$');
+    final emailRegex =
+        RegExp(r'^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$');
     if (!emailRegex.hasMatch(value.trim())) {
       return 'Please enter a valid email address.';
     }
@@ -121,7 +126,8 @@ class ValidatorUtils {
     if (value == null || value.trim().isEmpty) {
       return 'Website URL cannot be empty.';
     }
-    final urlRegex = RegExp(r'^(https?:\/\/)?([\w-]+(\.[\w-]+)+)([\/\w .-]*)*\/?$');
+    final urlRegex =
+        RegExp(r'^(https?:\/\/)?([\w-]+(\.[\w-]+)+)([\/\w .-]*)*\/?$');
     if (!urlRegex.hasMatch(value.trim())) {
       return 'Please enter a valid website URL.';
     }
@@ -144,14 +150,14 @@ class ValidatorUtils {
 
   static String? validatePhoneNumber(String? value) {
     if (value == null || value.trim().isEmpty) {
-      return 'Phone number cannot be empty.';
+      return null; // ✅ Now it's optional
     }
 
-    // Regex to accept international phone numbers with spaces, dashes, and parentheses
-    final phoneRegex = RegExp(r'^\+?[0-9]+([ \-()]*[0-9]+)*$');
+    final phoneRegex = RegExp(
+        r'^\+?[0-9\s-]+$'); // ✅ Simple format: numbers, spaces, and dashes only
 
     if (!phoneRegex.hasMatch(value.trim())) {
-      return 'Please enter a valid phone number.';
+      return 'Please enter a valid phone number (numbers, spaces, and dashes only).';
     }
 
     return null;

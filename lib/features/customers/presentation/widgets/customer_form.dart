@@ -61,7 +61,7 @@ class CustomerForm extends StatelessWidget {
                     Expanded(
                         child: StandardInput(
                       controller: bloc.city,
-                      labelText: 'City',
+                      labelText: 'Address',
                       hintText: 'e.g SomeWhere',
                       validator: ValidatorUtils.validateNameOptional,
                     )),
