@@ -17,7 +17,7 @@ class DealShippingInvoiceTab extends StatelessWidget {
     return Padding(
       padding: const EdgeInsets.all(24.0),
       child: shippingInvoices.isEmpty
-          ? Center(child: NoDataScreen.proformas())
+          ? Center(child: NoDataScreen.shippingInvoices())
           : Column(
               children: shippingInvoices,
             ),

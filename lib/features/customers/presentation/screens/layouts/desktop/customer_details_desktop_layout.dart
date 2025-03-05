@@ -28,7 +28,7 @@ class CustomerDetailsDesktopLayout extends StatelessWidget {
         body: Padding(
           padding: const EdgeInsets.all(24),
           child: DefaultTabController(
-            length: 4,
+            length: 2,
             child: Column(
               children: [
                 const CustomTabBar(

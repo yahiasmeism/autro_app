@@ -29,7 +29,8 @@ class TopCustomers extends StatelessWidget {
           shrinkWrap: true,
           physics: const NeverScrollableScrollPhysics(),
           itemBuilder: (context, index) {
-            return _buildCustomerCard(state.dashboard.topCustomers[index], context);
+            return _buildCustomerCard(
+                state.dashboard.topCustomers[index], context);
           },
           separatorBuilder: (context, index) => const SizedBox(height: 16),
           itemCount: state.dashboard.topCustomers.length,
@@ -38,50 +39,83 @@ class TopCustomers extends StatelessWidget {
     );
   }
 
-  Widget _buildCustomerCard(CustomerEntity customerEntity, BuildContext context) {
+  Widget _buildCustomerCard(
+      CustomerEntity customerEntity, BuildContext context) {
     return StandardCard(
       padding: const EdgeInsets.all(16),
       title: null,
       child: Row(
         children: [
-          Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              Text(customerEntity.name, style: TextStyles.font16SemiBold),
-              const SizedBox(height: 14),
-              Row(
-                children: [
-                  SvgPicture.asset(Assets.iconsDeal, width: 24),
-                  const SizedBox(width: 6),
-                  Text('Total Deals:', style: TextStyles.font16Regular.copyWith(color: AppColors.secondaryOpacity50)),
-                  const SizedBox(width: 6),
-                  Text('${customerEntity.dealsCount}', style: TextStyles.font16Regular),
-                ],
-              ),
-              const SizedBox(height: 8),
-              Row(
-                children: [
-                  SvgPicture.asset(Assets.iconsDollar, width: 24),
-                  const SizedBox(width: 6),
-                  Text('Total Revenue:', style: TextStyles.font16Regular.copyWith(color: AppColors.secondaryOpacity50)),
-                  const SizedBox(width: 6),
-                  Text('${customerEntity.totalRevenue}', style: TextStyles.font16Regular),
-                ],
-              )
-            ],
-          ),
-          const Spacer(),
-          InkWell(
-            borderRadius: BorderRadius.circular(100),
-            onTap: () {
-              NavUtil.push(context, CustomerDetailsScreen(customerId: customerEntity.id));
-            },
-            child: Padding(
-              padding: const EdgeInsets.all(4.0),
-              child: SvgPicture.asset(Assets.iconsEye, width: 24),
+          /// **Customer Name & Details Section**
+          Expanded(
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Text(
+                  customerEntity.name,
+                  style: TextStyles.font16SemiBold,
+                  overflow: TextOverflow.ellipsis, // Truncate long names
+                  maxLines: 1,
+                ),
+                const SizedBox(height: 14),
+
+                /// **Total Deals**
+                Row(
+                  mainAxisSize: MainAxisSize.min,
+                  children: [
+                    SvgPicture.asset(Assets.iconsDeal, width: 20),
+                    const SizedBox(width: 6),
+                    Text(
+                      'Total Deals:',
+                      style: TextStyles.font16Regular
+                          .copyWith(color: AppColors.secondaryOpacity50),
+                    ),
+                    const SizedBox(width: 6),
+                    Text('${customerEntity.dealsCount}',
+                        style: TextStyles.font16Regular),
+                  ],
+                ),
+                const SizedBox(height: 8),
+
+                /// **Total Revenue**
+                Row(
+                  mainAxisSize: MainAxisSize.min,
+                  children: [
+                    SvgPicture.asset(Assets.iconsDollar, width: 20),
+                    const SizedBox(width: 6),
+                    Text(
+                      'Total Revenue:',
+                      style: TextStyles.font16Regular
+                          .copyWith(color: AppColors.secondaryOpacity50),
+                    ),
+                    const SizedBox(width: 6),
+                    Text('${customerEntity.totalRevenue}',
+                        style: TextStyles.font16Regular),
+                  ],
+                ),
+              ],
             ),
           ),
-          const SizedBox(width: 8),
+
+          /// **Trailing Eye Icon (View Details)**
+          IntrinsicWidth(
+            child: Row(
+              children: [
+                InkWell(
+                  borderRadius: BorderRadius.circular(100),
+                  onTap: () {
+                    NavUtil.push(context,
+                        CustomerDetailsScreen(customerId: customerEntity.id));
+                  },
+                  child: Padding(
+                    padding: const EdgeInsets.all(4.0),
+                    child: SvgPicture.asset(Assets.iconsEye, width: 24),
+                  ),
+                ),
+                const SizedBox(width: 8),
+              ],
+            ),
+          ),
         ],
       ),
     );
