@@ -10,7 +10,7 @@ class PackingListDescriptionModel extends PackingListDescriptionEntity {
     required super.weight,
     required super.date,
     required super.emptyContainerWeight,
-    required super.percento,
+    required super.precinto,
     required super.id,
     required super.type,
     required super.itemsCount,
@@ -19,7 +19,7 @@ class PackingListDescriptionModel extends PackingListDescriptionEntity {
   factory PackingListDescriptionModel.fromJson(Map<String, dynamic> json) {
     return PackingListDescriptionModel(
       emptyContainerWeight: (json['empty_container_weight'] as num?).toDoubleOrZero,
-      percento: (json['percento'] as String?).orEmpty,
+      precinto: (json['precinto'] as String?).orEmpty,
       packingListId: (json['packing_list_id'] as int?).toIntOrZero,
       containerNumber: (json['container_number'] as String?).orEmpty,
       weight: (json['weight'] as num?).toDoubleOrZero,

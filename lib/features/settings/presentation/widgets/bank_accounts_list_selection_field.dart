@@ -1,3 +1,5 @@
+// ignore_for_file: deprecated_member_use
+
 import 'package:autro_app/core/common/data/models/selectable_item_model.dart';
 import 'package:autro_app/core/di/di.dart';
 import 'package:autro_app/core/errors/failure_mapper.dart';

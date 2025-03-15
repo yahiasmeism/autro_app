@@ -15,12 +15,13 @@ final class PackingListFormLoaded extends PackingListFormState {
   final Option<Either<Failure, String>> failureOrSuccessOption;
   final bool updatedMode;
   final bool saveEnabled;
-  final bool addGoodDescriptionEnabled;
   final bool cancelEnabled;
   final bool clearEnabled;
   final bool isGenerateAutoPackingListNumber;
   final PackingListPdfDto? packingListPdfDto;
-  final List<PackingListDescriptionDto> goodDescriptionsList;
+  final List<PackingListControllersDto> goodDescriptionsControllersDTOsList;
+  List<PackingListDescriptionDto> get goodDescriptionsDTOsList =>
+      goodDescriptionsControllersDTOsList.map((e) => e.toDescriptionDTO()).toList();
   final bool onePackingTypeForAll;
   const PackingListFormLoaded({
     this.packingList,
@@ -30,8 +31,7 @@ final class PackingListFormLoaded extends PackingListFormState {
     this.saveEnabled = false,
     this.cancelEnabled = false,
     this.clearEnabled = false,
-    this.goodDescriptionsList = const [],
-    this.addGoodDescriptionEnabled = false,
+    this.goodDescriptionsControllersDTOsList = const [],
     this.isGenerateAutoPackingListNumber = false,
     this.onePackingTypeForAll = false,
     this.packingListPdfDto,
@@ -45,15 +45,14 @@ final class PackingListFormLoaded extends PackingListFormState {
         saveEnabled,
         cancelEnabled,
         clearEnabled,
-        goodDescriptionsList,
-        addGoodDescriptionEnabled,
+        goodDescriptionsControllersDTOsList,
         isGenerateAutoPackingListNumber,
         packingListPdfDto,
         onePackingTypeForAll,
       ];
 
   PackingListFormLoaded copyWith({
-    List<PackingListDescriptionDto>? descriptionList,
+    List<PackingListControllersDto>? descriptionList,
     PackingListEntity? packingList,
     bool? clearEnabled,
     bool? updatedMode,
@@ -68,9 +67,7 @@ final class PackingListFormLoaded extends PackingListFormState {
   }) {
     return PackingListFormLoaded(
       packingListPdfDto: packingListPdfDto ?? this.packingListPdfDto,
-      addGoodDescriptionEnabled:
-          addGoodDescriptionEnabled ?? this.addGoodDescriptionEnabled,
-      goodDescriptionsList: descriptionList ?? goodDescriptionsList,
+      goodDescriptionsControllersDTOsList: descriptionList ?? goodDescriptionsControllersDTOsList,
       updatedMode: updatedMode ?? this.updatedMode,
       packingList: packingList ?? this.packingList,
       saveEnabled: saveEnabled ?? this.saveEnabled,
@@ -78,19 +75,18 @@ final class PackingListFormLoaded extends PackingListFormState {
       clearEnabled: clearEnabled ?? this.clearEnabled,
       loading: loading ?? this.loading,
       failureOrSuccessOption: failureOrSuccessOption ?? none(),
-      isGenerateAutoPackingListNumber: isGenerateAutoPackingListNumber ??
-          this.isGenerateAutoPackingListNumber,
+      isGenerateAutoPackingListNumber: isGenerateAutoPackingListNumber ?? this.isGenerateAutoPackingListNumber,
       onePackingTypeForAll: onePackingTypeForAll ?? this.onePackingTypeForAll,
     );
   }
 
-  double get allWeight {
-    double weight = 0;
-    for (var element in goodDescriptionsList) {
-      weight += element.weight;
-    }
-    return weight;
-  }
+  // double get allWeight {
+  //   double weight = 0;
+  //   for (var element in goodDescriptionsList) {
+  //     weight += element.weight;
+  //   }
+  //   return weight;
+  // }
 }
 
 class PackingListFormError extends PackingListFormState {

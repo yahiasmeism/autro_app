@@ -36,6 +36,9 @@ class UserRoleAdapter extends TypeAdapter<UserRole> {
       case UserRole.viewer:
         writer.writeByte(2);
         break;
+      case UserRole.unknown:
+        writer.writeByte(2);
+        break;
     }
   }
 

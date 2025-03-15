@@ -21,6 +21,8 @@ enum UserRole {
   user,
   @HiveField(2)
   viewer,
+  @HiveField(3)
+  unknown
 }
 
 enum MenuItemType {
@@ -60,6 +62,7 @@ enum PrimaryContectType {
 enum FormType {
   create,
   edit,
+  view,
 }
 
 enum PackingType { bales, loose, bulks, rolls, packing, lots, unknown }

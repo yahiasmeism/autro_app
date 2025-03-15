@@ -1,6 +1,8 @@
 import 'package:autro_app/core/extensions/date_time_extension.dart';
+import 'package:autro_app/features/packing-lists/domin/dtos/packing_list_controllers_dto.dart';
 import 'package:autro_app/features/packing-lists/domin/entities/packing_list_entity_descirption.dart';
 import 'package:equatable/equatable.dart';
+import 'package:flutter/material.dart';
 
 class PackingListDescriptionDto extends Equatable {
   final String uniqueKey;
@@ -33,7 +35,7 @@ class PackingListDescriptionDto extends Equatable {
         type: entity.type,
         itemsCount: entity.itemsCount,
         date: entity.date,
-        percento: entity.percento,
+        percento: entity.precinto,
         uniqueKey: entity.id.toString(),
       );
 
@@ -60,6 +62,17 @@ class PackingListDescriptionDto extends Equatable {
     );
   }
 
+  PackingListControllersDto toControllersDTO() => PackingListControllersDto(
+        containerNumber: TextEditingController(text: containerNumber),
+        weight: TextEditingController(text: weight.toString()),
+        emptyContainerWeight: TextEditingController(text: emptyContainerWeight.toString()),
+        type: TextEditingController(text: type),
+        itemsCount: TextEditingController(text: itemsCount.toString()),
+        date: TextEditingController(text: date.formattedDateYYYYMMDD),
+        percento: TextEditingController(text: percento),
+        uniqueKey: uniqueKey,
+        vgm: TextEditingController(text: vgm.toString()),
+      );
   Map<String, dynamic> toJson() => {
         'container_number': containerNumber,
         'weight': weight,
@@ -67,6 +80,6 @@ class PackingListDescriptionDto extends Equatable {
         'type': type?.toLowerCase(),
         'items_count': itemsCount,
         'date': date.formattedDateYYYYMMDD,
-        'percento': percento,
+        'precinto': percento,
       };
 }

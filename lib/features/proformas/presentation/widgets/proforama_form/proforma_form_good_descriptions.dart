@@ -23,8 +23,7 @@ class ProformaFormGoodDescriptions extends StatelessWidget {
       child: BlocBuilder<CustomerProformaFormCubit, CustomerProformaFormState>(
         buildWhen: (previous, current) => current is CustomerProformaFormLoaded,
         builder: (context, state) {
-          if (state is! CustomerProformaFormLoaded)
-            return const SizedBox.shrink();
+          if (state is! CustomerProformaFormLoaded) return const SizedBox.shrink();
           return Column(
             children: [
               ListView.separated(
@@ -41,8 +40,7 @@ class ProformaFormGoodDescriptions extends StatelessWidget {
                   isLast: index == state.goodDescriptionsList.length - 1,
                 ),
               ),
-              if (state.goodDescriptionsList.isNotEmpty)
-                Divider(height: 24, color: AppColors.secondaryOpacity8),
+              if (state.goodDescriptionsList.isNotEmpty) Divider(height: 24, color: AppColors.secondaryOpacity8),
               _buildGoodDescriptionInputs(context, state),
               if (state.goodDescriptionsList.isNotEmpty)
                 Column(
@@ -59,9 +57,7 @@ class ProformaFormGoodDescriptions extends StatelessWidget {
     );
   }
 
-  Widget _buildGoodDescription(
-      BuildContext context, ProformaGoodDescriptionDto dto,
-      {bool isLast = false}) {
+  Widget _buildGoodDescription(BuildContext context, ProformaGoodDescriptionDto dto, {bool isLast = false}) {
     final cubit = context.read<CustomerProformaFormCubit>();
     return Padding(
       padding: const EdgeInsets.symmetric(horizontal: 28, vertical: 14),
@@ -83,40 +79,30 @@ class ProformaFormGoodDescriptions extends StatelessWidget {
             child: StandardInput(
               hintText: 'e.g 3',
               labelText: 'Containers count',
-              controller:
-                  TextEditingController(text: dto.containersCount.toString()),
-              onChanged: (p0) => cubit.updateGoodDescription(
-                  dto.copyWith(containersCount: int.tryParse(p0) ?? 0)),
+              controller: TextEditingController(text: dto.containersCount.toString()),
+              onChanged: (p0) => cubit.updateGoodDescription(dto.copyWith(containersCount: int.tryParse(p0) ?? 0)),
             ),
           ),
           const SizedBox(width: 20),
           Expanded(
             child: StandardInput(
               // readOnly: true,
-              inputFormatters: [
-                FilteringTextInputFormatter.allow(RegExp(r'^\d+\.?\d{0,2}'))
-              ],
+              inputFormatters: [FilteringTextInputFormatter.allow(RegExp(r'^\d+\.?\d{0,2}'))],
               labelText: 'Weight(MT)',
               hintText: 'e.g 19.6',
-              onChanged: (p0) => cubit.updateGoodDescription(
-                  dto.copyWith(weight: double.tryParse(p0) ?? 0)),
-              controller:
-                  TextEditingController(text: dto.weight.toStringAsFixed(2)),
+              onChanged: (p0) => cubit.updateGoodDescription(dto.copyWith(weight: double.tryParse(p0) ?? 0)),
+              controller: TextEditingController(text: dto.weight.toStringAsFixed(2)),
             ),
           ),
           const SizedBox(width: 20),
           Expanded(
             child: StandardInput(
               // readOnly: true,
-              inputFormatters: [
-                FilteringTextInputFormatter.allow(RegExp(r'^\d+\.?\d{0,2}'))
-              ],
+              inputFormatters: [FilteringTextInputFormatter.allow(RegExp(r'^\d+\.?\d{0,2}'))],
               hintText: 'e.g 80€',
               labelText: 'Unit price',
-              onChanged: (p0) => cubit.updateGoodDescription(
-                  dto.copyWith(unitPrice: double.tryParse(p0) ?? 0)),
-              controller:
-                  TextEditingController(text: dto.unitPrice.toStringAsFixed(2)),
+              onChanged: (p0) => cubit.updateGoodDescription(dto.copyWith(unitPrice: double.tryParse(p0) ?? 0)),
+              controller: TextEditingController(text: dto.unitPrice.toStringAsFixed(2)),
             ),
           ),
           const SizedBox(width: 20),
@@ -125,17 +111,9 @@ class ProformaFormGoodDescriptions extends StatelessWidget {
               key: ValueKey(dto.packing),
               initialValue: dto.packing,
               // readOnly: true,
-              items: const [
-                'Bales',
-                'Loose',
-                'Bulks',
-                'Rolls',
-                'Packing',
-                'Lot'
-              ],
+              items: const ['Bales', 'Loose', 'Bulks', 'Rolls', 'Packing', 'Lot'],
               labelText: 'Packing',
-              onChanged: (p0) =>
-                  cubit.updateGoodDescription(dto.copyWith(packing: p0)),
+              onChanged: (p0) => cubit.updateGoodDescription(dto.copyWith(packing: p0)),
               hintText: 'Type',
             ),
           ),
@@ -145,16 +123,11 @@ class ProformaFormGoodDescriptions extends StatelessWidget {
               readOnly: true,
               label: Text.rich(
                 TextSpan(children: [
-                  TextSpan(
-                      text: 'Total Value ', style: TextStyles.font16Regular),
-                  TextSpan(
-                      text: 'auto',
-                      style: TextStyles.font16Regular
-                          .copyWith(color: AppColors.primary)),
+                  TextSpan(text: 'Total Value ', style: TextStyles.font16Regular),
+                  TextSpan(text: 'auto', style: TextStyles.font16Regular.copyWith(color: AppColors.primary)),
                 ]),
               ),
-              controller: TextEditingController(
-                  text: dto.totalPrice.toStringAsFixed(2)),
+              controller: TextEditingController(text: dto.totalPrice.toStringAsFixed(2)),
               hintText: 'e.g 80€',
             ),
           ),
@@ -171,8 +144,7 @@ class ProformaFormGoodDescriptions extends StatelessWidget {
     );
   }
 
-  Widget _buildGoodDescriptionInputs(
-      BuildContext context, CustomerProformaFormLoaded state) {
+  Widget _buildGoodDescriptionInputs(BuildContext context, CustomerProformaFormLoaded state) {
     final bloc = context.read<CustomerProformaFormCubit>();
     return Padding(
       padding: const EdgeInsets.symmetric(horizontal: 28, vertical: 14),
@@ -203,9 +175,7 @@ class ProformaFormGoodDescriptions extends StatelessWidget {
               controller: bloc.weightController,
               labelText: 'Weight(MT)',
               keyboardType: TextInputType.number,
-              inputFormatters: [
-                FilteringTextInputFormatter.allow(RegExp(r'^\d*\.?\d{0,9}$'))
-              ],
+              inputFormatters: [FilteringTextInputFormatter.allow(RegExp(r'^\d*\.?\d{0,9}$'))],
             ),
           ),
           const SizedBox(width: 20),
@@ -215,26 +185,15 @@ class ProformaFormGoodDescriptions extends StatelessWidget {
               labelText: 'Unit Price',
               keyboardType: TextInputType.number,
               hintText: 'e.g 80€',
-              inputFormatters: [
-                FilteringTextInputFormatter.allow(RegExp(r'^\d*\.?\d{0,9}$'))
-              ],
+              inputFormatters: [FilteringTextInputFormatter.allow(RegExp(r'^\d*\.?\d{0,9}$'))],
             ),
           ),
           const SizedBox(width: 20),
           Expanded(
             child: StandardSelectableDropdown(
               hintText: 'Type',
-              initialValue: bloc.packingController.text.isNotEmpty
-                  ? bloc.packingController.text
-                  : null,
-              items: const [
-                'Bales',
-                'Loose',
-                'Bulks',
-                'Rolls',
-                'Packing',
-                'Lots'
-              ],
+              initialValue: bloc.packingController.text.isNotEmpty ? bloc.packingController.text : null,
+              items: const ['Bales', 'Loose', 'Bulks', 'Rolls', 'Packing', 'Lots'],
               onChanged: (p0) {
                 bloc.packingController.text = p0 ?? '';
               },
@@ -248,12 +207,8 @@ class ProformaFormGoodDescriptions extends StatelessWidget {
               controller: bloc.totalPriceController,
               label: Text.rich(
                 TextSpan(children: [
-                  TextSpan(
-                      text: 'Total Value ', style: TextStyles.font16Regular),
-                  TextSpan(
-                      text: 'auto',
-                      style: TextStyles.font16Regular
-                          .copyWith(color: AppColors.primary)),
+                  TextSpan(text: 'Total Value ', style: TextStyles.font16Regular),
+                  TextSpan(text: 'auto', style: TextStyles.font16Regular.copyWith(color: AppColors.primary)),
                 ]),
               ),
               hintText: 'e.g 80€',
@@ -266,11 +221,9 @@ class ProformaFormGoodDescriptions extends StatelessWidget {
     );
   }
 
-  Widget _buildDeleteButton(
-      BuildContext context, ProformaGoodDescriptionDto dto) {
+  Widget _buildDeleteButton(BuildContext context, ProformaGoodDescriptionDto dto) {
     return InkWell(
-      onTap: () =>
-          context.read<CustomerProformaFormCubit>().removeGoodDescription(dto),
+      onTap: () => context.read<CustomerProformaFormCubit>().removeGoodDescription(dto),
       borderRadius: const BorderRadius.all(Radius.circular(8)),
       child: Container(
           height: 70,
@@ -286,8 +239,7 @@ class ProformaFormGoodDescriptions extends StatelessWidget {
     );
   }
 
-  Widget _buildAddButton(
-      CustomerProformaFormLoaded state, BuildContext context) {
+  Widget _buildAddButton(CustomerProformaFormLoaded state, BuildContext context) {
     return InkWell(
       splashColor: Colors.transparent,
       onTap: state.addGoodDescriptionEnabled
@@ -300,17 +252,13 @@ class ProformaFormGoodDescriptions extends StatelessWidget {
           width: 40,
           height: 70,
           decoration: BoxDecoration(
-            color: state.addGoodDescriptionEnabled
-                ? AppColors.primaryOpacity13
-                : AppColors.secondaryOpacity13,
+            color: state.addGoodDescriptionEnabled ? AppColors.primaryOpacity13 : AppColors.secondaryOpacity13,
             borderRadius: BorderRadius.circular(8),
           ),
           padding: const EdgeInsets.all(8),
           child: Icon(
             Icons.add,
-            color: state.addGoodDescriptionEnabled
-                ? AppColors.primary
-                : AppColors.secondaryOpacity25,
+            color: state.addGoodDescriptionEnabled ? AppColors.primary : AppColors.secondaryOpacity25,
           )),
     );
   }
@@ -324,12 +272,8 @@ class ProformaFormGoodDescriptions extends StatelessWidget {
               child: StandardInput(
             label: Text.rich(
               TextSpan(children: [
-                TextSpan(
-                    text: 'Origin of Goods ', style: TextStyles.font16Regular),
-                TextSpan(
-                    text: 'auto',
-                    style: TextStyles.font16Regular
-                        .copyWith(color: AppColors.primary)),
+                TextSpan(text: 'Origin of Goods ', style: TextStyles.font16Regular),
+                TextSpan(text: 'auto', style: TextStyles.font16Regular.copyWith(color: AppColors.primary)),
               ]),
             ),
             initialValue: 'Spain',
@@ -342,17 +286,11 @@ class ProformaFormGoodDescriptions extends StatelessWidget {
             readOnly: true,
             label: Text.rich(
               TextSpan(children: [
-                TextSpan(
-                    text: '40ft Containers Count ',
-                    style: TextStyles.font16Regular),
-                TextSpan(
-                    text: 'auto',
-                    style: TextStyles.font16Regular
-                        .copyWith(color: AppColors.primary)),
+                TextSpan(text: '40ft Containers Count ', style: TextStyles.font16Regular),
+                TextSpan(text: 'auto', style: TextStyles.font16Regular.copyWith(color: AppColors.primary)),
               ]),
             ),
-            controller:
-                TextEditingController(text: state.allContainerCount.toString()),
+            controller: TextEditingController(text: state.allContainerCount.toString()),
           )),
           const SizedBox(width: 20),
           Expanded(
@@ -360,17 +298,11 @@ class ProformaFormGoodDescriptions extends StatelessWidget {
             readOnly: true,
             label: Text.rich(
               TextSpan(children: [
-                TextSpan(
-                    text: 'Total Weight (MT) ',
-                    style: TextStyles.font16Regular),
-                TextSpan(
-                    text: 'auto',
-                    style: TextStyles.font16Regular
-                        .copyWith(color: AppColors.primary)),
+                TextSpan(text: 'Total Weight (MT) ', style: TextStyles.font16Regular),
+                TextSpan(text: 'auto', style: TextStyles.font16Regular.copyWith(color: AppColors.primary)),
               ]),
             ),
-            controller:
-                TextEditingController(text: state.allWeight.toStringAsFixed(2)),
+            controller: TextEditingController(text: state.allWeight.toStringAsFixed(2)),
           )),
           const SizedBox(width: 20),
           Expanded(
@@ -378,16 +310,11 @@ class ProformaFormGoodDescriptions extends StatelessWidget {
             readOnly: true,
             label: Text.rich(
               TextSpan(children: [
-                TextSpan(
-                    text: 'Total Amount ', style: TextStyles.font16Regular),
-                TextSpan(
-                    text: 'auto',
-                    style: TextStyles.font16Regular
-                        .copyWith(color: AppColors.primary)),
+                TextSpan(text: 'Total Amount ', style: TextStyles.font16Regular),
+                TextSpan(text: 'auto', style: TextStyles.font16Regular.copyWith(color: AppColors.primary)),
               ]),
             ),
-            controller: TextEditingController(
-                text: state.allTotalAmount.toStringAsFixed(2)),
+            controller: TextEditingController(text: state.allTotalAmount.toStringAsFixed(2)),
             // readOnly: true,
           )),
         ],

@@ -1,5 +1,5 @@
 import 'package:autro_app/core/errors/failures.dart';
-import 'package:autro_app/core/extensions/date_time_extension.dart';
+import 'package:autro_app/features/packing-lists/domin/dtos/packing_list_controllers_dto.dart';
 import 'package:autro_app/features/packing-lists/domin/dtos/packing_list_description_dto.dart';
 import 'package:autro_app/features/packing-lists/domin/entities/packing_list_entity.dart';
 import 'package:autro_app/features/packing-lists/domin/use_cases/create_packing_list_use_case.dart';
@@ -24,16 +24,6 @@ class PackingListFormCubit extends Cubit<PackingListFormState> {
     this.getPackingListByIdUseCase,
   ) : super(PackingListFormInitial());
 
-  // Goods Descriptions
-  final TextEditingController containerNumberController = TextEditingController();
-  final TextEditingController weightController = TextEditingController();
-  final TextEditingController emptyContainerWeightController = TextEditingController();
-  final TextEditingController typeController = TextEditingController();
-  final TextEditingController itemsCountController = TextEditingController();
-  final TextEditingController dateController = TextEditingController();
-  final TextEditingController percentoController = TextEditingController();
-  final TextEditingController vgmController = TextEditingController();
-
   final customerNameController = TextEditingController();
   final customerAddressController = TextEditingController();
   final taxIdController = TextEditingController();
@@ -53,10 +43,10 @@ class PackingListFormCubit extends Cubit<PackingListFormState> {
           emit(PackingListFormError(failure: failure, id: packingListId));
         },
         (packingList) {
-          final initialgoodsDescription = packingList.descriptions.map((e) => PackingListDescriptionDto.fromEntity(e)).toList();
+          final initialgoodsDescription = packingList.descriptions.map((e) => PackingListControllersDto.fromEntity(e)).toList();
           emit(PackingListFormLoaded(
             packingList: packingList,
-            goodDescriptionsList: initialgoodsDescription,
+            goodDescriptionsControllersDTOsList: initialgoodsDescription,
             updatedMode: true,
           ));
         },
@@ -73,7 +63,6 @@ class PackingListFormCubit extends Cubit<PackingListFormState> {
       final state = this.state as PackingListFormLoaded;
       formKey.currentState?.reset();
 
-      dateController.text = DateTime.now().formattedDateYYYYMMDD;
       numberController.text = state.packingList?.number ?? '';
       dealIdController.text = state.packingList?.dealId.toString() ?? '';
       detailsController.text = state.packingList?.details ?? '';
@@ -96,47 +85,47 @@ class PackingListFormCubit extends Cubit<PackingListFormState> {
     ]) {
       controller.addListener(() => _onPackingListFormChanged());
     }
-    // Goods Descriptions
-    for (var controller in [
-      containerNumberController,
-      weightController,
-      emptyContainerWeightController,
-      typeController,
-      itemsCountController,
-      dateController,
-      percentoController,
-    ]) {
-      controller.addListener(() => _onGoodDescriptionInputChanged());
-    }
+    // // Goods Descriptions
+    // for (var controller in [
+    //   containerNumberController,
+    //   weightController,
+    //   emptyContainerWeightController,
+    //   typeController,
+    //   itemsCountController,
+    //   dateController,
+    //   percentoController,
+    // ]) {
+    //   controller.addListener(() => _onGoodDescriptionInputChanged());
+    // }
   }
 
-  _onGoodDescriptionInputChanged() {
-    final addGoodDescriptionIsActive = [
-      containerNumberController,
-      weightController,
-      emptyContainerWeightController,
-      typeController,
-      itemsCountController,
-      dateController,
-      percentoController,
-    ].every((controller) => controller.text.isNotEmpty);
+  // _onGoodDescriptionInputChanged() {
+  //   final addGoodDescriptionIsActive = [
+  //     containerNumberController,
+  //     weightController,
+  //     emptyContainerWeightController,
+  //     typeController,
+  //     itemsCountController,
+  //     dateController,
+  //     percentoController,
+  //   ].every((controller) => controller.text.isNotEmpty);
 
-    final state = this.state as PackingListFormLoaded;
-    emit(state.copyWith(addGoodDescriptionEnabled: addGoodDescriptionIsActive));
+  //   final state = this.state as PackingListFormLoaded;
+  //   emit(state.copyWith(addGoodDescriptionEnabled: addGoodDescriptionIsActive));
 
-    // Calculate vgm
-    final weight = double.tryParse(weightController.text) ?? 0.0;
-    final emptyWeight = double.tryParse(emptyContainerWeightController.text) ?? 0.0;
-    vgmController.text = (weight + emptyWeight).toString();
-  }
+  //   // Calculate vgm
+  //   final weight = double.tryParse(weightController.text) ?? 0.0;
+  //   final emptyWeight = double.tryParse(emptyContainerWeightController.text) ?? 0.0;
+  //   vgmController.text = (weight + emptyWeight).toString();
+  // }
 
   _onPackingListFormChanged() {
     final state = this.state as PackingListFormLoaded;
     final formIsNotEmpty = [
-          numberController,
-          dealIdController,
-        ].every((controller) => controller.text.isNotEmpty && state.goodDescriptionsList.isNotEmpty) &&
-        state.goodDescriptionsList.any((element) => element.containerNumber.isNotEmpty);
+      numberController,
+      dealIdController,
+    ].every((controller) => controller.text.isNotEmpty && state.goodDescriptionsDTOsList.isNotEmpty);
+    // state.goodDescriptionsList.any((element) => element.containerNumber.text.isNotEmpty);
 
     if (state.updatedMode) {
       final initialgoodsDescription =
@@ -144,7 +133,7 @@ class PackingListFormCubit extends Cubit<PackingListFormState> {
 
       bool isGoodsDescriptionChanged = !listEquals(
         initialgoodsDescription,
-        state.goodDescriptionsList,
+        state.goodDescriptionsDTOsList,
       );
       final packingList = state.packingList!;
 
@@ -176,58 +165,32 @@ class PackingListFormCubit extends Cubit<PackingListFormState> {
     return true;
   }
 
-  _clearGoodDescriptionForm() {
-    for (var controller in [
-      containerNumberController,
-      weightController,
-      emptyContainerWeightController,
-      typeController,
-      itemsCountController,
-      dateController,
-      percentoController,
-    ]) {
-      controller.clear();
-    }
-  }
+  // _clearGoodDescriptionForm() {
+  //   for (var controller in [
+  //     containerNumberController,
+  //     weightController,
+  //     emptyContainerWeightController,
+  //     typeController,
+  //     itemsCountController,
+  //     dateController,
+  //     percentoController,
+  //   ]) {
+  //     controller.clear();
+  //   }
+  // }
 
-  addGoodDescription() {
+  addGoodDescription(PackingListControllersDto dto) {
     final state = this.state as PackingListFormLoaded;
-    final goodDescription = PackingListDescriptionDto(
-      uniqueKey: state.goodDescriptionsList.length.toString(),
-      containerNumber: containerNumberController.text,
-      weight: double.tryParse(weightController.text) ?? 0.0,
-      emptyContainerWeight: double.tryParse(emptyContainerWeightController.text) ?? 0.0,
-      type: typeController.text,
-      itemsCount: int.tryParse(itemsCountController.text) ?? 0,
-      date: DateTime.tryParse(dateController.text) ?? DateTime.now(),
-      percento: percentoController.text,
-    );
-    emit(state.copyWith(descriptionList: [...state.goodDescriptionsList, goodDescription]));
-    _clearGoodDescriptionForm();
+    emit(state.copyWith(descriptionList: [...state.goodDescriptionsControllersDTOsList, dto]));
+    // _clearGoodDescriptionForm();
     _onPackingListFormChanged();
   }
 
-  removeGoodDescription(PackingListDescriptionDto dto) {
+  removeGoodDescription(PackingListControllersDto dto) {
     final state = this.state as PackingListFormLoaded;
-    final updatedList = List.of(state.goodDescriptionsList)..remove(dto);
+    final updatedList = List.of(state.goodDescriptionsControllersDTOsList)..remove(dto);
     emit(state.copyWith(descriptionList: updatedList));
     _onPackingListFormChanged();
-  }
-
-  @override
-  Future<void> close() {
-    for (var controller in [
-      containerNumberController,
-      weightController,
-      emptyContainerWeightController,
-      typeController,
-      itemsCountController,
-      dateController,
-      percentoController,
-    ]) {
-      controller.dispose();
-    }
-    return super.close();
   }
 
   Future createPackingList() async {
@@ -248,7 +211,7 @@ class PackingListFormCubit extends Cubit<PackingListFormState> {
       dealId: int.parse(dealIdController.text),
       details: detailsController.text,
       number: numberController.text,
-      descriptions: state.goodDescriptionsList,
+      descriptions: state.goodDescriptionsControllersDTOsList.map((e) => e.toDescriptionDTO()).toList(),
       taxId: taxIdController.text,
     );
 
@@ -281,7 +244,7 @@ class PackingListFormCubit extends Cubit<PackingListFormState> {
       dealId: int.parse(dealIdController.text),
       details: detailsController.text,
       number: numberController.text,
-      descriptions: state.goodDescriptionsList,
+      descriptions: state.goodDescriptionsControllersDTOsList.map((e) => e.toDescriptionDTO()).toList(),
     );
 
     final either = await updatePackingListUsecase.call(params);
@@ -296,12 +259,12 @@ class PackingListFormCubit extends Cubit<PackingListFormState> {
     _onPackingListFormChanged();
   }
 
-  updateGoodDescription(PackingListDescriptionDto dto) {
+  updateGoodDescription(PackingListControllersDto dto) {
     final state = this.state as PackingListFormLoaded;
-    final index = state.goodDescriptionsList.indexWhere((element) => element.uniqueKey == dto.uniqueKey);
+    final index = state.goodDescriptionsControllersDTOsList.indexWhere((element) => element.uniqueKey == dto.uniqueKey);
 
     if (index != -1) {
-      final updatedList = List.of(state.goodDescriptionsList);
+      final updatedList = List.of(state.goodDescriptionsControllersDTOsList);
       updatedList[index] = dto;
       emit(state.copyWith(descriptionList: updatedList));
       _onPackingListFormChanged();
@@ -320,39 +283,39 @@ class PackingListFormCubit extends Cubit<PackingListFormState> {
 
   addGoodsDescription(List<PackingListDescriptionDto> descriptions) {
     final state = this.state as PackingListFormLoaded;
-    emit(state.copyWith(descriptionList: descriptions));
+    emit(state.copyWith(descriptionList: descriptions.map((e) => e.toControllersDTO()).toList()));
   }
 
   bool descriptionsValidations() {
     final state = this.state as PackingListFormLoaded;
-    final isAnyContainerNumberEmpty = state.goodDescriptionsList.any((element) => element.containerNumber.isEmpty);
+    final isAnyContainerNumberEmpty = state.goodDescriptionsDTOsList.any((element) => element.containerNumber.isEmpty);
     if (isAnyContainerNumberEmpty) {
       emit(state.copyWith(failureOrSuccessOption: some(left(const GeneralFailure(message: 'Container number cannot be empty')))));
       return false;
     }
 
-    final isAnyWeightEmpty = state.goodDescriptionsList.any((element) => element.weight == 0.0);
+    final isAnyWeightEmpty = state.goodDescriptionsDTOsList.any((element) => element.weight == 0.0);
 
     if (isAnyWeightEmpty) {
       emit(state.copyWith(failureOrSuccessOption: some(left(const GeneralFailure(message: 'Weight cannot be empty')))));
       return false;
     }
 
-    final isAnyItemsCountEmpty = state.goodDescriptionsList.any((element) => element.itemsCount == 0);
+    final isAnyItemsCountEmpty = state.goodDescriptionsDTOsList.any((element) => element.itemsCount == 0);
 
     if (isAnyItemsCountEmpty) {
       emit(state.copyWith(failureOrSuccessOption: some(left(const GeneralFailure(message: 'Items count cannot be empty')))));
       return false;
     }
 
-    final isAnyTypeEmpty = state.goodDescriptionsList.any((element) => element.type == null);
+    final isAnyTypeEmpty = state.goodDescriptionsDTOsList.any((element) => element.type == null);
 
     if (isAnyTypeEmpty) {
       emit(state.copyWith(failureOrSuccessOption: some(left(const GeneralFailure(message: 'Package type cannot be empty')))));
       return false;
     }
 
-    final isContainerEmptyWeightEmpty = state.goodDescriptionsList.any((element) => element.emptyContainerWeight == 0.0);
+    final isContainerEmptyWeightEmpty = state.goodDescriptionsDTOsList.any((element) => element.emptyContainerWeight == 0.0);
 
     if (isContainerEmptyWeightEmpty) {
       emit(state.copyWith(
@@ -380,7 +343,7 @@ class PackingListFormCubit extends Cubit<PackingListFormState> {
       customerAddress: customerAddressController.text,
       taxId: taxIdController.text,
       details: detailsController.text,
-      descriptions: state.goodDescriptionsList,
+      descriptions: state.goodDescriptionsControllersDTOsList.map((e) => e.toDescriptionDTO()).toList(),
       packingListNumber: numberController.text,
     );
   }
